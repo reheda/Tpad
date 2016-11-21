@@ -2,7 +2,6 @@ package ua.pp.hak.ui;
 
 //package p1;
 
-import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -10,95 +9,36 @@ import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
-/******************************************************/
-class FindReplaceDemo extends JFrame {
-	FindDialog dialog = null;
-	JTextArea ta;
-	JButton findButton, replaceButton;
-
-	FindReplaceDemo() {
-		super("Find Demo");
-
-		ta = new JTextArea(7, 20);
-		findButton = new JButton("Find text");
-
-		ActionListener ac1 = new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				if (dialog == null)
-					dialog = new FindDialog(FindReplaceDemo.this.ta);
-				dialog.showDialog(FindReplaceDemo.this, true);// find
-
-			}
-		};
-		findButton.addActionListener(ac1);
-
-		replaceButton = new JButton("Replace text");
-
-		ActionListener ac2 = new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				if (dialog == null)
-					dialog = new FindDialog(FindReplaceDemo.this.ta);
-				dialog.showDialog(FindReplaceDemo.this, false);// find
-			}
-		};
-		replaceButton.addActionListener(ac2);
-
-		add(ta, BorderLayout.CENTER);
-		add(replaceButton, BorderLayout.NORTH);
-		add(findButton, BorderLayout.SOUTH);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, 400, 400);
-		ta.append("Hello dear. how r u?");
-		ta.append("\nhey i said Hello and not hello or Hel or hello.");
-		ta.append("\nWell do u know what is the meaning of Hello");
-		ta.append("\n Hello is no hello but it is Hello");
-		ta.setCaretPosition(0);
-		setVisible(true);
-	}
-
-	////////////////////////////////
-	public static void main(String[] args) {
-		new FindReplaceDemo();
-	}
-}
-
-/******************************************************/
 public class FindDialog extends JPanel implements ActionListener {
-	JTextArea jta;
-	public int lastIndex;
-	JLabel findLabel;
-	JLabel replaceLabel;
-	JLabel dummyLabel;
+	private JTextArea ta;
+	private int lastIndex;
+	private JLabel findLabel;
+	private JLabel replaceLabel;
 
 	private JTextField findWhat;
 	private JTextField replaceWith;
 
 	private JCheckBox matchCase;
 
-	JRadioButton up, down;
+	private JRadioButton up, down;
 
-	JButton findNextButton, replaceButton, replaceAllButton, cancelButton;
+	private JButton findNextButton, replaceButton, replaceAllButton, cancelButton;
 
-	JPanel direction, buttonPanel, findButtonPanel, replaceButtonPanel;
-	CardLayout card;
+	private JPanel direction;
 
 	private boolean ok;
 	private JDialog dialog;
 	private TitledBorder titledBorder1;
-	private JPanel panel;
 
 	///////////////////////
-	public FindDialog(JTextArea jta) {
+	public FindDialog(JTextArea ta) {
 
-		this.jta = jta;
+		this.ta = ta;
 		findWhat = new JTextField(20);
 		replaceWith = new JTextField(20);
 		findLabel = new JLabel("Find what");
 		replaceLabel = new JLabel("Replace with");
-		dummyLabel = new JLabel(" ");
 
 		matchCase = new JCheckBox("Match case");
 
@@ -170,7 +110,7 @@ public class FindDialog extends JPanel implements ActionListener {
 				dialog.setVisible(false);
 			}
 		};
-		cancelButton.getInputMap(jta.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+		cancelButton.getInputMap(JTextArea.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 				"press_close_dialog_window");
 		cancelButton.getActionMap().put("press_close_dialog_window", buttonListener);
 		cancelButton.addActionListener(buttonListener);
@@ -228,20 +168,20 @@ public class FindDialog extends JPanel implements ActionListener {
 		else if (ev.getSource() == replaceButton)
 			replaceNext();
 		else if (ev.getSource() == replaceAllButton)
-			JOptionPane.showMessageDialog(null, "Total replacements made= " + replaceAllNext());
+			JOptionPane.showMessageDialog(null, "Total replacements made = " + replaceAllNext());
 
 	}
 
 	/////////////////////////
 	int findNext() {
 
-		String s1 = jta.getText();
+		String s1 = ta.getText();
 		String s2 = findWhat.getText();
 
-		lastIndex = jta.getCaretPosition();
+		lastIndex = ta.getCaretPosition();
 
-		int selStart = jta.getSelectionStart();
-		int selEnd = jta.getSelectionEnd();
+		int selStart = ta.getSelectionStart();
+		int selEnd = ta.getSelectionEnd();
 
 		if (up.isSelected()) {
 			if (selStart != selEnd)
@@ -271,40 +211,38 @@ public class FindDialog extends JPanel implements ActionListener {
 	public void findNextWithSelection() {
 		int idx = findNext();
 		if (idx != -1) {
-			jta.setSelectionStart(idx);
-			jta.setSelectionEnd(idx + findWhat.getText().length());
+			ta.setSelectionStart(idx);
+			ta.setSelectionEnd(idx + findWhat.getText().length());
 		} else
 			JOptionPane.showMessageDialog(this, "Cannot find" + " \"" + findWhat.getText() + "\"", "Find",
 					JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	//////////////////////////////////////////////
 	void replaceNext() {
 		// if nothing is selectd
-		if (jta.getSelectionStart() == jta.getSelectionEnd()) {
+		if (ta.getSelectionStart() == ta.getSelectionEnd()) {
 			findNextWithSelection();
 			return;
 		}
 
 		String searchText = findWhat.getText();
-		String temp = jta.getSelectedText(); // get selected text
+		String temp = ta.getSelectedText(); // get selected text
 
 		// check if the selected text matches the search text then do
 		// replacement
 
 		if ((matchCase.isSelected() && temp.equals(searchText))
 				|| (!matchCase.isSelected() && temp.equalsIgnoreCase(searchText)))
-			jta.replaceSelection(replaceWith.getText());
+			ta.replaceSelection(replaceWith.getText());
 
 		findNextWithSelection();
 	}
 
-	//////////////////////////////////////////////
 	int replaceAllNext() {
 		if (up.isSelected())
-			jta.setCaretPosition(jta.getText().length() - 1);
+			ta.setCaretPosition(ta.getText().length() - 1);
 		else
-			jta.setCaretPosition(0);
+			ta.setCaretPosition(0);
 
 		int idx = 0;
 		int counter = 0;
@@ -313,13 +251,12 @@ public class FindDialog extends JPanel implements ActionListener {
 			if (idx == -1)
 				break;
 			counter++;
-			jta.replaceRange(replaceWith.getText(), idx, idx + findWhat.getText().length());
+			ta.replaceRange(replaceWith.getText(), idx, idx + findWhat.getText().length());
 		} while (idx != -1);
 
 		return counter;
 	}
 
-	//////////////////////////////////////////////
 	public boolean showDialog(Component parent, boolean isFind) {
 
 		Frame owner = null;
@@ -357,11 +294,10 @@ public class FindDialog extends JPanel implements ActionListener {
 			dialog.setSize(450, 200);
 			dialog.setTitle("Replace");
 		}
-
+		dialog.setLocationRelativeTo(ta);
 		dialog.setVisible(true);
 
 		// System.out.println(dialog.getWidth()+" "+dialog.getHeight());
 		return ok;
 	}
-	//////////////////////////////
 }

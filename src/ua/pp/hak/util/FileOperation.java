@@ -221,12 +221,15 @@ public class FileOperation implements Constants {
 			int x = JOptionPane.showConfirmDialog(this.npd.getFrame(), strMsg, applicationName,
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (x == JOptionPane.CANCEL_OPTION)
-				return false;
-			if (x == JOptionPane.YES_OPTION && !saveAsFile())
-				return false;
+			if (x == JOptionPane.NO_OPTION)
+				return true;
+			if (x == JOptionPane.YES_OPTION && saveAsFile())
+				return true;
+
+		} else if (saved) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	///////////////////////////////////////

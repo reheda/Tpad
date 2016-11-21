@@ -7,6 +7,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -63,6 +64,8 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.undo.UndoManager;
 
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
@@ -71,60 +74,46 @@ import ua.pp.hak.util.FileOperation;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 
-	private JFrame f;
-	private RSyntaxTextArea ta;
+	private JFrame frame;
+	private RSyntaxTextArea taExpr;
 
-	JTextArea tp;
+	private JTextArea taExprRes;
 	private JLabel statusBar;
-	JScrollPane taScrollPane;
-	JScrollPane tpScrollPane;
-	JToolBar toolBar;
+	private JScrollPane spExpr;
+	private JScrollPane spExprRes;
+	private JToolBar toolBar;
 	static String build = "x";
 
-	String searchString, replaceString;
 	int lastSearchIndex;
 	private Font font = new Font("Consolas", Font.PLAIN, 14);
-	FileOperation fileHandler;
-	FontChooser fontDialog = null;
-	FindDialog findReplaceDialog = null;
-	JColorChooser bcolorChooser = null;
-	JColorChooser fcolorChooser = null;
-	JDialog backgroundDialog = null;
-	JDialog foregroundDialog = null;
-	JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem, undoItem,
-			redoItem;
-	JCheckBoxMenuItem wordWrapItem;
+	private FileOperation fileHandler;
+	private FindDialog findReplaceDialog = null;
+	private JColorChooser bcolorChooser = null;
+	private JColorChooser fcolorChooser = null;
+	private JDialog backgroundDialog = null;
+	private JDialog foregroundDialog = null;
+	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
+			undoItem, redoItem;
+	private JCheckBoxMenuItem wordWrapItem;
 	private UndoManager manager;
-	RedoAction redoAction;
-	UndoAction undoAction;
-	Highlighter highlighter;
-	LinePainter painter;
-	JSplitPane splitPane;
-	JPanel panel;
+	private RedoAction redoAction;
+	private UndoAction undoAction;
+	private Highlighter highlighter;
+	private LinePainter painter;
+	private JSplitPane splitPane;
+	private JPanel rightPanel;
 
 	JButton newButton, openButton, saveButton, runButton, lexButton, parseButton;
-	private JButton undoButton;
-	private JButton redoButton;
-	JButton copyButton;
-	JButton cutButton;
-	JButton pasteButton;
-	JButton findButton;
-	JButton replaceButton;
-	JButton zoomInButton;
-	JButton zoomOutButton;
-	JButton zoomDefaultButton;
-	JButton fontButton;
-	JButton helpButton;
-	JButton aboutButton;
-	JButton wrapButton;
-	JButton shortcutsButton;
+	private JButton undoButton, redoButton;
+	JButton copyButton, cutButton, pasteButton, findButton, replaceButton, zoomInButton, zoomOutButton,
+			zoomDefaultButton, fontButton, helpButton, aboutButton, wrapButton, shortcutsButton;
 
 	public JFrame getFrame() {
-		return f;
+		return frame;
 	}
 
 	public RSyntaxTextArea getTextArea() {
-		return ta;
+		return taExpr;
 	}
 
 	public JLabel getStatusBar() {
@@ -145,15 +134,16 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 	/****************************/
 	Notepad() {
-		f = new JFrame(defaultFileName + " - " + applicationName);
+		frame = new JFrame(defaultFileName + " - " + applicationName);
 		// change icon of the app
-		f.setIconImage(new ImageIcon(f.getClass().getResource("/images/templex-big.png")).getImage());
+		frame.setIconImage(new ImageIcon(frame.getClass().getResource("/images/templex-big.png")).getImage());
 		// change look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		// build
 		try {
 			Date tmpDate = new Date(Notepad.class.getResource("Notepad.class").openConnection().getLastModified());
@@ -167,38 +157,55 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		String[] ctrlHmaps = new String[] { "TextArea.focusInputMap", "TextField.focusInputMap" };
 		for (int i = 0; i < ctrlHmaps.length; i++) {
 			InputMap im = (InputMap) UIManager.get(ctrlHmaps[i]);
-			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_MASK), "none"); // disable
-																						// ctrl+h
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_MASK), "none");
 		}
+
 		// -------
-		ta = new RSyntaxTextArea(30, 60);
-		ta.setFont(font);
-		ta.setTabSize(4);
-		ta.setMargin(new Insets(0, 5, 0, 5));
-		ta.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
-		ta.setCodeFoldingEnabled(true);
+		taExpr = new RSyntaxTextArea(30, 60);
+		taExpr.setFont(font);
+		taExpr.setTabSize(4);
+		taExpr.setMargin(new Insets(0, 5, 0, 5));
+		taExpr.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
+		taExpr.setCodeFoldingEnabled(true);
+		// A CompletionProvider is what knows of all possible completions, and
+		// analyzes the contents of the text area at the caret position to
+		// determine what completion choices should be presented. Most instances
+		// of CompletionProvider (such as DefaultCompletionProvider) are
+		// designed
+		// so that they can be shared among multiple text components.
+		CompletionProvider provider = AutoCompleter.createCompletionProvider();
+
+		// An AutoCompletion acts as a "middle-man" between a text component
+		// and a CompletionProvider. It manages any options associated with
+		// the auto-completion (the popup trigger key, whether to display a
+		// documentation window along with completion choices, etc.). Unlike
+		// CompletionProviders, instances of AutoCompletion cannot be shared
+		// among multiple text components.
+		AutoCompletion ac = new AutoCompletion(provider);
+		ac.install(taExpr);
+
 		// -----
-		taScrollPane = new JScrollPane(ta);
-		TextLineNumber tln = new TextLineNumber(ta);
+		spExpr = new JScrollPane(taExpr);
+		TextLineNumber tln = new TextLineNumber(taExpr);
 		tln.setUpdateFont(true); // enables the automatic updating of the Font
 									// when the Font of the related text
 									// component changes.
-		taScrollPane.setRowHeaderView(tln);
-		taScrollPane.setPreferredSize(new Dimension(600, 450));
+		spExpr.setRowHeaderView(tln);
+		spExpr.setPreferredSize(new Dimension(600, 450));
 		// -----
-		ta.addMouseWheelListener(new MouseWheelListener() {
+		taExpr.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int notches = e.getWheelRotation();
 				int unitsToScroll = e.getUnitsToScroll() * 16;
 				if (e.isControlDown()) {
 					if (notches < 0) {
-						ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() + 1));
+						taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
 					} else {
-						ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() - 1));
+						taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 					}
 				} else {
-					final JScrollBar bar = taScrollPane.getVerticalScrollBar();
+					final JScrollBar bar = spExpr.getVerticalScrollBar();
 					int currentValue = bar.getValue();
 					bar.setValue(currentValue + unitsToScroll);
 				}
@@ -207,111 +214,112 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		Action ctrlPlus = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() + 1));
+				taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
 			}
 		};
 		Action ctrlMinus = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() - 1));
+				taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 			}
 		};
 		Action ctrlZero = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				ta.setFont(font);
+				taExpr.setFont(font);
 			}
 		};
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.CTRL_DOWN_MASK), "ctrlPlus");
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, KeyEvent.CTRL_DOWN_MASK), "ctrlPlus");
-		ta.getActionMap().put("ctrlPlus", ctrlPlus);
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, KeyEvent.CTRL_DOWN_MASK), "ctrlPlus");
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, KeyEvent.CTRL_DOWN_MASK), "ctrlPlus");
+		taExpr.getActionMap().put("ctrlPlus", ctrlPlus);
 
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "ctrlMinus");
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, KeyEvent.CTRL_DOWN_MASK), "ctrlMinus");
-		ta.getActionMap().put("ctrlMinus", ctrlMinus);
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, KeyEvent.CTRL_DOWN_MASK), "ctrlMinus");
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, KeyEvent.CTRL_DOWN_MASK), "ctrlMinus");
+		taExpr.getActionMap().put("ctrlMinus", ctrlMinus);
 
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.CTRL_DOWN_MASK), "ctrlZero");
-		ta.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "ctrlZero");
-		ta.getActionMap().put("ctrlZero", ctrlZero);
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.CTRL_DOWN_MASK), "ctrlZero");
+		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "ctrlZero");
+		taExpr.getActionMap().put("ctrlZero", ctrlZero);
+
 		// -----
-		// create console view
-		tp = new JTextArea();
-		tpScrollPane = new JScrollPane(tp);
-		tpScrollPane.setPreferredSize(new Dimension(400, 450));
-		tpScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		tp.setFont(font.deriveFont(12f));
-		tp.setEditable(false);
+		// create Expression result view
+		taExprRes = new JTextArea();
+		spExprRes = new JScrollPane(taExprRes);
+		spExprRes.setPreferredSize(new Dimension(400, 450));
+		spExprRes.setBorder(new EmptyBorder(0, 0, 0, 0));
+		taExprRes.setFont(font.deriveFont(12f));
+		taExprRes.setEditable(false);
 		// tp.setBackground(new Color(240,240,240)); //light grey
-		tp.setBackground(null);
-		tp.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, new Color(0, 188, 57)),
+		taExprRes.setBackground(null);
+		taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, new Color(0, 188, 57)),
 				new EmptyBorder(2, 5, 2, 0))); // green
-		tp.setText(
+		taExprRes.setText(
 				"Microsoft Bluetooth Mobile Mouse 3600 - Mouse - Bluetooth 4.0 - Dark red\nOutputProcessors=RemarkProcessor+LegacyProductsToTableProcessor+L");
-		tp.setText(tp.getText().replaceAll("\n", "//\n"));
-		tp.setLineWrap(true);
+		taExprRes.setText(taExprRes.getText().replaceAll("\n", "//\n"));
+		taExprRes.setLineWrap(true);
 
 		// Create the undo manager and actions
 		manager = new UndoManager();
 		redoAction = new RedoAction(manager);
 		undoAction = new UndoAction(manager);
-		ta.getDocument().addUndoableEditListener(manager);
+		taExpr.getDocument().addUndoableEditListener(manager);
 		// -----
 		statusBar = new JLabel("Line 1, Column 1  ", JLabel.LEFT);
 		statusBar.setBorder(new CompoundBorder(statusBar.getBorder(), new EmptyBorder(2, 6, 2, 5)));
 		// painter = new LinePainter(ta, new Color(255,255,210));
 
-		panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
-		panel.setBorder(new EmptyBorder(0, 10, 0, 0));
-		JTextField txtFldSKU = new JTextField(20);
-		txtFldSKU.setMaximumSize(new Dimension(4000, 20));
-		txtFldSKU.setFont(font.deriveFont(12f));
-		txtFldSKU.setText("12345679");
+		rightPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		JTextField tfSKU = new JTextField(20);
+		tfSKU.setMaximumSize(new Dimension(4000, 20));
+		tfSKU.setFont(font.deriveFont(12f));
+		tfSKU.setText("12345679");
 
-		txtFldSKU.setBorder(new CompoundBorder(txtFldSKU.getBorder(), new EmptyBorder(2, 2, 2, 2)));
-		JLabel lblExprResult = new JLabel("Expression result: ");
-		JLabel lblExpr = new JLabel("Expression: ");
-		JLabel lblParameters = new JLabel("Parameters: ");
-		JLabel lblSKU = new JLabel("SKU ID: ");
-		JTextArea txtAreaParametrs = new JTextArea();
-		txtAreaParametrs.setLineWrap(true);
-		txtAreaParametrs.setFont(font.deriveFont(12f));
-		txtAreaParametrs.setBorder(new EmptyBorder(3, 3, 3, 3));
-		txtAreaParametrs.setText(
+		tfSKU.setBorder(new CompoundBorder(tfSKU.getBorder(), new EmptyBorder(2, 2, 2, 2)));
+		JLabel lblExprRes = new JLabel(txtExprRes);
+		JLabel lblExpr = new JLabel(txtExpr);
+		JLabel lblParameters = new JLabel(txtParameters);
+		JLabel lblSKU = new JLabel(txtSKU);
+		JTextArea taParameters = new JTextArea();
+		taParameters.setLineWrap(true);
+		taParameters.setFont(font.deriveFont(12f));
+		taParameters.setBorder(new EmptyBorder(3, 3, 3, 3));
+		taParameters.setText(
 				"AlternativeCategoryVersion=16, Evaluate=false, Locale=en-US, ResultSeparator=<>, Verbatim=false, LegacyValues=false");
-		JScrollPane scrlTxtAreaParametrs = new JScrollPane(txtAreaParametrs);
-		scrlTxtAreaParametrs.setBorder(BorderFactory.createLineBorder(new Color(171, 173, 179))); // grey
-		scrlTxtAreaParametrs.setPreferredSize(new Dimension(400, 50));
-		scrlTxtAreaParametrs.setMinimumSize(new Dimension(300, 50));
+		JScrollPane spParameters = new JScrollPane(taParameters);
+		spParameters.setBorder(BorderFactory.createLineBorder(new Color(171, 173, 179))); // grey
+		spParameters.setPreferredSize(new Dimension(400, 50));
+		spParameters.setMinimumSize(new Dimension(300, 50));
 
-		tpScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-		txtFldSKU.setAlignmentX(Component.LEFT_ALIGNMENT);
-		lblExprResult.setAlignmentX(Component.LEFT_ALIGNMENT);
+		spExprRes.setAlignmentX(Component.LEFT_ALIGNMENT);
+		tfSKU.setAlignmentX(Component.LEFT_ALIGNMENT);
+		lblExprRes.setAlignmentX(Component.LEFT_ALIGNMENT);
 		lblExpr.setAlignmentX(Component.LEFT_ALIGNMENT);
 		lblParameters.setAlignmentX(Component.LEFT_ALIGNMENT);
 		lblSKU.setAlignmentX(Component.LEFT_ALIGNMENT);
-		scrlTxtAreaParametrs.setAlignmentX(Component.LEFT_ALIGNMENT);
+		spParameters.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		panel.add(lblExprResult);
-		panel.add(tpScrollPane);
-		panel.add(new JLabel(" "));
+		rightPanel.add(lblExprRes);
+		rightPanel.add(spExprRes);
+		rightPanel.add(new JLabel(" "));
 
-		panel.add(lblParameters);
-		panel.add(scrlTxtAreaParametrs);
-		panel.add(new JLabel(" "));
+		rightPanel.add(lblParameters);
+		rightPanel.add(spParameters);
+		rightPanel.add(new JLabel(" "));
 
-		panel.add(lblSKU);
-		panel.add(txtFldSKU);
+		rightPanel.add(lblSKU);
+		rightPanel.add(tfSKU);
 
-		JPanel pnlExpr = new JPanel();
-		pnlExpr.setLayout(new BoxLayout(pnlExpr, BoxLayout.Y_AXIS));
+		JPanel leftPanel = new JPanel();
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		lblExpr.setAlignmentX(Component.LEFT_ALIGNMENT);
-		taScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-		pnlExpr.add(lblExpr);
-		pnlExpr.add(taScrollPane);
-		pnlExpr.setBorder(new EmptyBorder(0, 0, 0, 10));
+		spExpr.setAlignmentX(Component.LEFT_ALIGNMENT);
+		leftPanel.add(lblExpr);
+		leftPanel.add(spExpr);
+		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 
 		// Create a split pane with the two scroll panes in it.
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, pnlExpr, panel);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, rightPanel);
 		splitPane.setResizeWeight(1.0);
 		splitPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		BasicSplitPaneDivider divider = (BasicSplitPaneDivider) splitPane.getComponent(2);
@@ -320,34 +328,35 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		// splitPane.setDividerSize(1);
 		// Provide minimum sizes for the two components in the split pane.
 		Dimension minimumSize = new Dimension(300, 200);
-		taScrollPane.setMinimumSize(minimumSize);
-		tpScrollPane.setMinimumSize(minimumSize);
+		spExpr.setMinimumSize(minimumSize);
+		spExprRes.setMinimumSize(minimumSize);
 
 		// Provide a preferred size for the split pane.
 		// splitPane.setPreferredSize(new Dimension(1000, 450));
 
-		f.getContentPane().add(splitPane, BorderLayout.CENTER); /// asdasd
+		frame.getContentPane().add(splitPane, BorderLayout.CENTER); ///
 		// f.getContentPane().add(taScrollPane, BorderLayout.CENTER);
 		// f.getContentPane().add(tpScrollPane, BorderLayout.EAST);
-		f.getContentPane().add(statusBar, BorderLayout.SOUTH);
-		f.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
-		f.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
-		createMenuBar(f);
+		frame.getContentPane().add(statusBar, BorderLayout.SOUTH);
+		frame.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
+		frame.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
+		createMenuBar();
 		createToolBar();
-		f.getContentPane().add(toolBar, BorderLayout.NORTH);
-		f.setSize(1000, 450);
-		f.pack();
-		f.setLocation(100, 50);
-		f.setMinimumSize(new Dimension(600, 450));
-		f.setVisible(true);
-		f.setLocation(150, 50);
-		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
+		frame.setSize(1000, 450);
+		frame.pack();
+		frame.setLocation(100, 50);
+		frame.setMinimumSize(new Dimension(600, 450));
+		frame.setLocationRelativeTo(null);
+		// f.setLocation(150, 50);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		fileHandler = new FileOperation(this);
 
 		/////////////////////
 
-		ta.addCaretListener(new CaretListener() {
+		taExpr.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 
 				buttonStatusChange(); // button enable
@@ -357,14 +366,15 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				String text = null, selectedText = null;
 
 				try {
-					text = new String(ta.getText());
-					selectionStartPos = ta.getSelectionStart();
-					selectionEndPos = ta.getSelectionEnd();
+					text = new String(taExpr.getText());
+					selectionStartPos = taExpr.getSelectionStart();
+					selectionEndPos = taExpr.getSelectionEnd();
 					selectedCharsNumber = selectionEndPos - selectionStartPos;
-					selectedLinesNumber = ta.getLineOfOffset(selectionEndPos) - ta.getLineOfOffset(selectionStartPos);
-					pos = ta.getCaretPosition();
-					lineNumber = ta.getLineOfOffset(pos);
-					column = pos - ta.getLineStartOffset(lineNumber);
+					selectedLinesNumber = taExpr.getLineOfOffset(selectionEndPos)
+							- taExpr.getLineOfOffset(selectionStartPos);
+					pos = taExpr.getCaretPosition();
+					lineNumber = taExpr.getLineOfOffset(pos);
+					column = pos - taExpr.getLineStartOffset(lineNumber);
 					selectedText = new String(text.substring(selectionStartPos, selectionEndPos));
 
 				} catch (Exception excp) {
@@ -378,7 +388,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				if (selectedCharsNumber == 0) {
 					statusBar.setText("Line " + (lineNumber + 1) + ", Column " + (column + 1));
 					if (highlighter != null) {
-						ta.getHighlighter().removeAllHighlights();
+						taExpr.getHighlighter().removeAllHighlights();
 						highlighter = null;
 						// painter = new LinePainter(ta, new
 						// Color(255,255,210)); // restore line painter
@@ -388,7 +398,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					// set highlighter
 					if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
 						try {
-							highlighter = ta.getHighlighter();
+							highlighter = taExpr.getHighlighter();
 							HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
 									new Color(191, 255, 178)); // light green
 							int p0 = 0, p1 = 0;
@@ -424,7 +434,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 			private void buttonStatusChange() {
 
-				if (Notepad.this.ta.getText().length() == 0) {
+				if (taExpr.getText().length() == 0) {
 					findButton.setEnabled(false);
 					replaceButton.setEnabled(false);
 				} else {
@@ -433,7 +443,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					replaceButton.setEnabled(true);
 					replaceItem.setEnabled(true);
 				}
-				if (Notepad.this.ta.getSelectionStart() == ta.getSelectionEnd()) {
+				if (taExpr.getSelectionStart() == taExpr.getSelectionEnd()) {
 					cutButton.setEnabled(false);
 					copyButton.setEnabled(false);
 				} else {
@@ -466,7 +476,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				redoButton.setEnabled(manager.canRedo());
 			}
 		};
-		ta.getDocument().addDocumentListener(myListener);
+		taExpr.getDocument().addDocumentListener(myListener);
 		/////////
 		WindowListener frameClose = new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
@@ -474,7 +484,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					System.exit(0);
 			}
 		};
-		f.addWindowListener(frameClose);
+		frame.addWindowListener(frameClose);
 	}
 
 	public String getBuild() {
@@ -485,13 +495,20 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	void goTo() {
 		int lineNumber = 0;
 		try {
-			lineNumber = ta.getLineOfOffset(ta.getCaretPosition()) + 1;
-			String tempStr = JOptionPane.showInputDialog(f, "Enter Line Number:", "" + lineNumber);
+			lineNumber = taExpr.getLineOfOffset(taExpr.getCaretPosition()) + 1;
+			String tempStr = JOptionPane.showInputDialog(frame, "Enter Line Number:", "" + lineNumber);
 			if (tempStr == null) {
 				return;
 			}
 			lineNumber = Integer.parseInt(tempStr);
-			ta.setCaretPosition(ta.getLineStartOffset(lineNumber - 1));
+			if (lineNumber > taExpr.getLineCount()) {
+				taExpr.setCaretPosition(taExpr.getLineStartOffset(taExpr.getLineCount() - 1));
+				return;
+			} else if (lineNumber < 1) {
+				taExpr.setCaretPosition(taExpr.getLineStartOffset(0));
+				return;
+			}
+			taExpr.setCaretPosition(taExpr.getLineStartOffset(lineNumber - 1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -519,32 +536,32 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(filePrint))
-			JOptionPane.showMessageDialog(Notepad.this.f, "Get ur printer repaired first! It seems u dont have one!",
+			JOptionPane.showMessageDialog(frame, "Get ur printer repaired first! It seems u dont have one!",
 					"Bad Printer", JOptionPane.INFORMATION_MESSAGE);
 
 		////////////////////////////////////
 		else if (cmdText.equals(editCut) || evObj.equals(cutButton))
-			ta.cut();
+			taExpr.cut();
 		////////////////////////////////////
 		else if (cmdText.equals(editCopy) || evObj.equals(copyButton))
-			ta.copy();
+			taExpr.copy();
 		////////////////////////////////////
 		else if (cmdText.equals(editPaste) || evObj.equals(pasteButton))
-			ta.paste();
+			taExpr.paste();
 		////////////////////////////////////
 		else if (cmdText.equals(editDelete))
-			ta.replaceSelection("");
+			taExpr.replaceSelection("");
 		////////////////////////////////////
 		else if (cmdText.equals(editFind) || evObj.equals(findButton)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(Notepad.this.ta);
-			findReplaceDialog.showDialog(Notepad.this.f, true);// find
+				findReplaceDialog = new FindDialog(taExpr);
+			findReplaceDialog.showDialog(frame, true);// find
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editFindNext)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
@@ -554,25 +571,25 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editReplace) || evObj.equals(replaceButton)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(Notepad.this.ta);
-			findReplaceDialog.showDialog(Notepad.this.f, false);// replace
+				findReplaceDialog = new FindDialog(taExpr);
+			findReplaceDialog.showDialog(frame, false);// replace
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editGoTo)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 			goTo();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editSelectAll))
-			ta.selectAll();
+			taExpr.selectAll();
 		////////////////////////////////////
 		else if (cmdText.equals(editTimeDate))
-			ta.insert(new Date().toString(), ta.getSelectionStart());
+			taExpr.insert(new Date().toString(), taExpr.getSelectionStart());
 		////////////////////////////////////
 		else if (cmdText.equals(formatWordWrap) || evObj.equals(wrapButton)) {
 			// JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
@@ -580,19 +597,19 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			JCheckBoxMenuItem temp;
 			if (evObj instanceof JCheckBoxMenuItem) {
 				temp = (JCheckBoxMenuItem) evObj;
-				ta.setLineWrap(temp.isSelected());
+				taExpr.setLineWrap(temp.isSelected());
 				wrapButton.setSelected(temp.isSelected());
 			} else {
 				boolean isSelected = wrapButton.isSelected();
 				wordWrapItem.setSelected(!isSelected);
 				wrapButton.setSelected(!isSelected);
-				ta.setLineWrap(!isSelected);
+				taExpr.setLineWrap(!isSelected);
 			}
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(formatFont) || evObj.equals(fontButton)) {
-			font = FontChooser.showDialog(Notepad.this.f, "Font settings", true, Notepad.this.ta.getFont());
-			Notepad.this.ta.setFont(font);
+			font = FontChooser.showDialog(frame, "Font settings", true, taExpr.getFont());
+			taExpr.setFont(font);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(formatForeground))
@@ -609,35 +626,36 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomIn) || evObj.equals(zoomInButton)) {
-			ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() + 1));
+			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
 		}
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomOut) || evObj.equals(zoomOutButton)) {
-			ta.setFont(ta.getFont().deriveFont(ta.getFont().getSize2D() - 1));
+			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 		}
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomDefault) || evObj.equals(zoomDefaultButton)) {
-			ta.setFont(font);
+			taExpr.setFont(font);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpKeyboardShortcuts) || evObj.equals(shortcutsButton)) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
+			textPane.setOpaque(false);
 			textPane.setBorder(null);
 			textPane.setText(shortcutsText);
 			textPane.setEditable(false);
-			JOptionPane.showMessageDialog(Notepad.this.f, textPane, "Keyboard Shortcuts",
-					JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(f.getClass().getResource("/images/templex-big.png")));
+			JOptionPane.showMessageDialog(frame, textPane, "Keyboard Shortcuts", JOptionPane.INFORMATION_MESSAGE,
+					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpAboutNotepad) || evObj.equals(aboutButton)) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
+			textPane.setOpaque(false);
 			textPane.setBorder(null);
 			textPane.setText(aboutText);
 			textPane.setEditable(false);
@@ -655,14 +673,15 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					}
 				}
 			});
-			JOptionPane.showMessageDialog(Notepad.this.f, textPane, "About", JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(f.getClass().getResource("/images/templex-big.png")));
+			JOptionPane.showMessageDialog(frame, textPane, "About", JOptionPane.INFORMATION_MESSAGE,
+					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj.equals(helpButton)) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
+			textPane.setOpaque(false);
 			textPane.setBorder(null);
 			textPane.setText(quickReferenceText);
 			textPane.setEditable(false);
@@ -682,8 +701,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					}
 				}
 			});
-			JOptionPane.showMessageDialog(Notepad.this.f, textPane, "Help topic", JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(f.getClass().getResource("/images/templex-big.png")));
+			JOptionPane.showMessageDialog(frame, textPane, "Help topic", JOptionPane.INFORMATION_MESSAGE,
+					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		} else
 			statusBar.setText("This " + cmdText + " command is yet to be implemented");
 	}// action Performed
@@ -693,10 +712,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		if (bcolorChooser == null)
 			bcolorChooser = new JColorChooser();
 		if (backgroundDialog == null)
-			backgroundDialog = JColorChooser.createDialog(Notepad.this.f, formatBackground, false, bcolorChooser,
+			backgroundDialog = JColorChooser.createDialog(frame, formatBackground, false, bcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							Notepad.this.ta.setBackground(bcolorChooser.getColor());
+							taExpr.setBackground(bcolorChooser.getColor());
 						}
 					}, null);
 
@@ -708,10 +727,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		if (fcolorChooser == null)
 			fcolorChooser = new JColorChooser();
 		if (foregroundDialog == null)
-			foregroundDialog = JColorChooser.createDialog(Notepad.this.f, formatForeground, false, fcolorChooser,
+			foregroundDialog = JColorChooser.createDialog(frame, formatForeground, false, fcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							Notepad.this.ta.setForeground(fcolorChooser.getColor());
+							taExpr.setForeground(fcolorChooser.getColor());
 						}
 					}, null);
 
@@ -741,7 +760,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	JMenuItem createMenuItem(String s, int key, JMenu toMenu, int aclKey, int modifier, ActionListener al) {
 		JMenuItem temp = new JMenuItem(s, key);
 		temp.addActionListener(al);
-		temp.setAccelerator(KeyStroke.getKeyStroke(aclKey, ActionEvent.CTRL_MASK + modifier));
+		temp.setAccelerator(KeyStroke.getKeyStroke(aclKey, ActionEvent.CTRL_MASK | modifier));
 		toMenu.add(temp);
 
 		return temp;
@@ -768,7 +787,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 	////////////////////////////////////
 	JButton createButton(String imgResourse, String toolTipText, boolean isFocusable, ActionListener al) {
-		JButton temp = new JButton(new ImageIcon(f.getClass().getResource(imgResourse)));
+		JButton temp = new JButton(new ImageIcon(frame.getClass().getResource(imgResourse)));
 		temp.setToolTipText(toolTipText);
 		temp.addActionListener(al);
 		temp.setFocusable(isFocusable);
@@ -776,9 +795,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	/*********************************/
-	void createMenuBar(JFrame f) {
+	void createMenuBar() {
 		JMenuBar mb = new JMenuBar();
-		JMenuItem temp;
+		// JMenuItem temp;
 
 		JMenu fileMenu = createMenu(fileText, KeyEvent.VK_F, mb);
 		JMenu editMenu = createMenu(editText, KeyEvent.VK_E, mb);
@@ -791,10 +810,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(fileSave, KeyEvent.VK_S, fileMenu, KeyEvent.VK_S, this);
 		createMenuItem(fileSaveAs, KeyEvent.VK_A, fileMenu, KeyEvent.VK_S, KeyEvent.SHIFT_MASK, this);
 		fileMenu.addSeparator();
-		temp = createMenuItem(filePageSetup, KeyEvent.VK_U, fileMenu, this);
-		temp.setEnabled(false);
-		createMenuItem(filePrint, KeyEvent.VK_P, fileMenu, KeyEvent.VK_P, this);
-		fileMenu.addSeparator();
+		// temp = createMenuItem(filePageSetup, KeyEvent.VK_U, fileMenu, this);
+		// temp.setEnabled(false);
+		// temp = createMenuItem(filePrint, KeyEvent.VK_P, fileMenu,
+		// KeyEvent.VK_P, this);
+		// temp.setEnabled(false);
+		// fileMenu.addSeparator();
 		createMenuItem(fileExit, KeyEvent.VK_X, fileMenu, this);
 
 		undoItem = createMenuItem(editUndo, KeyEvent.VK_U, editMenu, KeyEvent.VK_Z, undoAction);
@@ -817,7 +838,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
 		wordWrapItem = createCheckBoxMenuItem(formatWordWrap, KeyEvent.VK_W, formatMenu, this);
-		ta.setLineWrap(true);
+		taExpr.setLineWrap(true);
 		wordWrapItem.setSelected(true);
 
 		createMenuItem(formatFont, KeyEvent.VK_F, formatMenu, KeyEvent.VK_T, this);
@@ -830,7 +851,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		 * For Look and Feel, May not work properly on different operating
 		 * environment
 		 ***/
-		// LookAndFeelMenu.createLookAndFeelMenuItem(viewMenu, this.f);
+		// LookAndFeelMenu.createLookAndFeelMenuItem(viewMenu, f);
 		{
 			JMenu tmp = new JMenu("Zoom");
 			tmp.setMnemonic('Z');
@@ -840,8 +861,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			viewMenu.add(tmp);
 		}
 
-		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, this).setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
@@ -851,7 +871,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		MenuListener editMenuListener = new MenuListener() {
 			public void menuSelected(MenuEvent evvvv) {
-				if (Notepad.this.ta.getText().length() == 0) {
+				if (taExpr.getText().length() == 0) {
 					findItem.setEnabled(false);
 					findNextItem.setEnabled(false);
 					replaceItem.setEnabled(false);
@@ -864,7 +884,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					selectAllItem.setEnabled(true);
 					gotoItem.setEnabled(true);
 				}
-				if (Notepad.this.ta.getSelectionStart() == ta.getSelectionEnd()) {
+				if (taExpr.getSelectionStart() == taExpr.getSelectionEnd()) {
 					cutItem.setEnabled(false);
 					copyItem.setEnabled(false);
 					deleteItem.setEnabled(false);
@@ -885,7 +905,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		};
 		editMenu.addMenuListener(editMenuListener);
-		f.setJMenuBar(mb);
+		frame.setJMenuBar(mb);
 	}
 
 	private void createToolBar() {
