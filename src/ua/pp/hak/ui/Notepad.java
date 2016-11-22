@@ -46,6 +46,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -396,25 +397,25 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					}
 				} else {
 					// set highlighter
-//					if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
-//						try {
-//							highlighter = taExpr.getHighlighter();
-//							HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
-//									new Color(191, 255, 178)); // light green
-//							int p0 = 0, p1 = 0;
-//							do {
-//								p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
-//								p1 = p0 + selectedText.length();
-//
-//								if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
-//										&& p0 != selectionStartPos) {
-//									highlighter.addHighlight(p0, p1, wordpainter);
-//								}
-//							} while (p0 > -1);
-//						} catch (Exception exc) {
-//							exc.printStackTrace();
-//						}
-//					}
+					if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
+						try {
+							highlighter = taExpr.getHighlighter();
+							HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
+									new Color(191, 255, 178)); // light green
+							int p0 = 0, p1 = 0;
+							do {
+								p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
+								p1 = p0 + selectedText.length();
+
+								if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
+										&& p0 != selectionStartPos) {
+									highlighter.addHighlight(p0, p1, wordpainter);
+								}
+							} while (p0 > -1);
+						} catch (Exception exc) {
+							exc.printStackTrace();
+						}
+					}
 
 					// set status
 					if (selectedLinesNumber == 0)
@@ -470,10 +471,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 			private void foo() {
 				fileHandler.saved = false;
-				undoItem.setEnabled(manager.canUndo());
-				undoButton.setEnabled(manager.canUndo());
-				redoItem.setEnabled(manager.canRedo());
-				redoButton.setEnabled(manager.canRedo());
+				boolean canUndo = manager.canUndo();
+				boolean canRedo = manager.canRedo();
+				undoItem.setEnabled(canUndo);
+				undoButton.setEnabled(canUndo);
+				redoItem.setEnabled(canRedo);
+				redoButton.setEnabled(canRedo);
 			}
 		};
 		taExpr.getDocument().addDocumentListener(myListener);
@@ -519,12 +522,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		String cmdText = ev.getActionCommand();
 		Object evObj = ev.getSource();
 		////////////////////////////////////
-		if (cmdText.equals(fileNew) || evObj.equals(newButton))
+		if (cmdText.equals(fileNew) || evObj == newButton)
 			fileHandler.newFile();
-		else if (cmdText.equals(fileOpen) || evObj.equals(openButton))
+		else if (cmdText.equals(fileOpen) || evObj == openButton)
 			fileHandler.openFile();
 		////////////////////////////////////
-		else if (cmdText.equals(fileSave) || evObj.equals(saveButton))
+		else if (cmdText.equals(fileSave) || evObj == saveButton)
 			fileHandler.saveThisFile();
 		////////////////////////////////////
 		else if (cmdText.equals(fileSaveAs))
@@ -540,19 +543,19 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					"Bad Printer", JOptionPane.INFORMATION_MESSAGE);
 
 		////////////////////////////////////
-		else if (cmdText.equals(editCut) || evObj.equals(cutButton))
+		else if (cmdText.equals(editCut) || evObj == cutButton)
 			taExpr.cut();
 		////////////////////////////////////
-		else if (cmdText.equals(editCopy) || evObj.equals(copyButton))
+		else if (cmdText.equals(editCopy) || evObj == copyButton)
 			taExpr.copy();
 		////////////////////////////////////
-		else if (cmdText.equals(editPaste) || evObj.equals(pasteButton))
+		else if (cmdText.equals(editPaste) || evObj == pasteButton)
 			taExpr.paste();
 		////////////////////////////////////
 		else if (cmdText.equals(editDelete))
 			taExpr.replaceSelection("");
 		////////////////////////////////////
-		else if (cmdText.equals(editFind) || evObj.equals(findButton)) {
+		else if (cmdText.equals(editFind) || evObj == findButton) {
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 			if (findReplaceDialog == null)
@@ -570,7 +573,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				findReplaceDialog.findNextWithSelection();
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(editReplace) || evObj.equals(replaceButton)) {
+		else if (cmdText.equals(editReplace) || evObj == replaceButton) {
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
@@ -591,7 +594,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		else if (cmdText.equals(editTimeDate))
 			taExpr.insert(new Date().toString(), taExpr.getSelectionStart());
 		////////////////////////////////////
-		else if (cmdText.equals(formatWordWrap) || evObj.equals(wrapButton)) {
+		else if (cmdText.equals(formatWordWrap) || evObj == wrapButton) {
 			// JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
 			// ta.setLineWrap(temp.isSelected());
 			JCheckBoxMenuItem temp;
@@ -607,7 +610,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(formatFont) || evObj.equals(fontButton)) {
+		else if (cmdText.equals(formatFont) || evObj == fontButton) {
 			font = FontChooser.showDialog(frame, "Font settings", true, taExpr.getFont());
 			taExpr.setFont(font);
 		}
@@ -625,21 +628,21 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 
-		else if (cmdText.equals(viewZoomIn) || evObj.equals(zoomInButton)) {
+		else if (cmdText.equals(viewZoomIn) || evObj == zoomInButton) {
 			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
 		}
 		////////////////////////////////////
 
-		else if (cmdText.equals(viewZoomOut) || evObj.equals(zoomOutButton)) {
+		else if (cmdText.equals(viewZoomOut) || evObj == zoomOutButton) {
 			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 		}
 		////////////////////////////////////
 
-		else if (cmdText.equals(viewZoomDefault) || evObj.equals(zoomDefaultButton)) {
+		else if (cmdText.equals(viewZoomDefault) || evObj == zoomDefaultButton) {
 			taExpr.setFont(font);
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpKeyboardShortcuts) || evObj.equals(shortcutsButton)) {
+		else if (cmdText.equals(helpKeyboardShortcuts) || evObj == shortcutsButton) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
@@ -651,7 +654,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpAboutNotepad) || evObj.equals(aboutButton)) {
+		else if (cmdText.equals(helpAboutNotepad) || evObj == aboutButton) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
@@ -677,7 +680,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpHelpTopic) || evObj.equals(helpButton)) {
+		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
 			textPane.setBackground(null);
@@ -705,7 +708,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		} else
 			statusBar.setText("This " + cmdText + " command is yet to be implemented");
-	}// action Performed
+	}// action
+		// Performed
 		////////////////////////////////////
 
 	void showBackgroundColorDialog() {
@@ -862,7 +866,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
-		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, KeyEvent.VK_Q, this);
+		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 
 		helpMenu.addSeparator();
 		createMenuItem(helpAboutNotepad, KeyEvent.VK_A, helpMenu, this)
@@ -964,9 +968,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		toolBar.add(aboutButton);
 	}
 
-	/************* Constructor **************/
-	////////////////////////////////////
 	public static void main(String[] s) {
-		new Notepad();
+		// Schedule a job for the event-dispatching thread:
+		// creating and showing this application's GUI.
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new Notepad();
+			}
+		});
 	}
 }
