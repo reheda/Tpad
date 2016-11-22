@@ -1,4 +1,4 @@
-package ua.pp.hak.ui;
+package ua.pp.hak.util;
 
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -144,7 +144,7 @@ public class AutoCompleter {
 		// Add a couple of "shorthand" completions. These completions don't
 		// require the input text to be the same thing as the replacement text.
 		provider.addCompletion(
-				new ShorthandCompletion(provider, "sysout", "System.out.println(", "System.out.println("));
+				new ShorthandCompletion(provider, "line", "-------------------------------------------------------------", "-------------------------------------------------------------"));
 //		provider.addCompletion(new ShorthandCompletion(provider, "a", "A[]", "A[]"));
 //		provider.addCompletion(new ShorthandCompletion(provider, "A", "A[]", "A[]"));
 //		provider.addCompletion(new ShorthandCompletion(provider, "AtLeast", "AtLeast(minimum)", "AtLeast(minimum)"));

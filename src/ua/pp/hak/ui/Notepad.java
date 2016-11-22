@@ -7,7 +7,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -70,6 +69,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import ua.pp.hak.isnotused.LinePainter;
+import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
@@ -396,25 +396,25 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					}
 				} else {
 					// set highlighter
-					if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
-						try {
-							highlighter = taExpr.getHighlighter();
-							HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
-									new Color(191, 255, 178)); // light green
-							int p0 = 0, p1 = 0;
-							do {
-								p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
-								p1 = p0 + selectedText.length();
-
-								if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
-										&& p0 != selectionStartPos) {
-									highlighter.addHighlight(p0, p1, wordpainter);
-								}
-							} while (p0 > -1);
-						} catch (Exception exc) {
-							exc.printStackTrace();
-						}
-					}
+//					if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
+//						try {
+//							highlighter = taExpr.getHighlighter();
+//							HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
+//									new Color(191, 255, 178)); // light green
+//							int p0 = 0, p1 = 0;
+//							do {
+//								p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
+//								p1 = p0 + selectedText.length();
+//
+//								if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
+//										&& p0 != selectionStartPos) {
+//									highlighter.addHighlight(p0, p1, wordpainter);
+//								}
+//							} while (p0 > -1);
+//						} catch (Exception exc) {
+//							exc.printStackTrace();
+//						}
+//					}
 
 					// set status
 					if (selectedLinesNumber == 0)
@@ -862,12 +862,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
-		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this)
-				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, KeyEvent.VK_Q, this);
 
 		helpMenu.addSeparator();
 		createMenuItem(helpAboutNotepad, KeyEvent.VK_A, helpMenu, this)
-				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		MenuListener editMenuListener = new MenuListener() {
 			public void menuSelected(MenuEvent evvvv) {
