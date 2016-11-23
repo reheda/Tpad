@@ -187,8 +187,8 @@ public class FileOperation implements Constants {
 			this.npd.getFrame().setTitle(fileName + " - " + applicationName);
 		} else {
 			this.npd.getManager().discardAllEdits();
-			this.npd.getUndoButton().setEnabled(false);
-			this.npd.getRedoButton().setEnabled(false);
+//			this.npd.getUndoButton().setEnabled(false);
+//			this.npd.getRedoButton().setEnabled(false);
 		}
 		if (!temp.canWrite())
 			newFileFlag = true;
@@ -244,8 +244,8 @@ public class FileOperation implements Constants {
 		newFileFlag = true;
 		this.npd.getFrame().setTitle(fileName + " - " + applicationName);
 		this.npd.getManager().discardAllEdits();
-		this.npd.getUndoButton().setEnabled(false);
-		this.npd.getRedoButton().setEnabled(false);
+//		this.npd.getUndoButton().setEnabled(false);
+//		this.npd.getRedoButton().setEnabled(false);
 	}
 	//////////////////////////////////////
 }

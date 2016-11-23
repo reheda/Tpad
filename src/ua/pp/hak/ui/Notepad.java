@@ -456,28 +456,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		//////////////////
 		DocumentListener myListener = new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
-				foo();
+				fileHandler.saved = false;
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				foo();
+				fileHandler.saved = false;
 			}
 
 			public void insertUpdate(DocumentEvent e) {
-				foo();
-				undoButton.setEnabled(true);
-				undoItem.setEnabled(true);
+				fileHandler.saved = false;
 			}
 
-			private void foo() {
-				fileHandler.saved = false;
-				boolean canUndo = manager.canUndo();
-				boolean canRedo = manager.canRedo();
-				undoItem.setEnabled(canUndo);
-				undoButton.setEnabled(canUndo);
-				redoItem.setEnabled(canRedo);
-				redoButton.setEnabled(canRedo);
-			}
 		};
 		taExpr.getDocument().addDocumentListener(myListener);
 		/////////
@@ -917,9 +906,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		saveButton = createButton("/images/save.png", fileSave, false, this);
 		runButton = createButton("/images/run.png", "Run", false, this);
 		undoButton = createButton("/images/undo.png", editUndo, false, undoAction);
-		undoButton.setEnabled(false);
+		undoButton.setEnabled(true);
 		redoButton = createButton("/images/redo.png", editRedo, false, redoAction);
-		redoButton.setEnabled(false);
+		redoButton.setEnabled(true);
 		copyButton = createButton("/images/copy.png", editCopy, false, this);
 		copyButton.setEnabled(false);
 		cutButton = createButton("/images/cut.png", editCut, false, this);
