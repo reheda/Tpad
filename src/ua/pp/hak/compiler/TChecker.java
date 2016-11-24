@@ -31,20 +31,12 @@ public class TChecker {
 		hm = StAXParser.parse();
 	}
 
-	/**
-	 * Check if string contains even quantity of quotes
-	 * 
-	 * @param str
-	 * @return boolean
-	 */
-	static boolean matchQuotes(String str) {
-		int count = str.length() - str.replace("\"", "").length();
-
-		if (count % 2 == 0) {
-			return true;
+	private static void eraseAllHighlighter(RSyntaxTextArea taExpr) {
+		for (Object tag : highlighterTags) {
+			taExpr.getHighlighter().removeHighlight(tag);
 		}
-
-		return false;
+		highlighterTags.clear();
+		taExpr.repaint();
 	}
 
 	String getAttributeType(int attr) {
@@ -55,15 +47,23 @@ public class TChecker {
 		RSyntaxTextArea taExpr = npd.getExprTextArea();
 		JTextArea taExprRes = npd.getExprResTextArea();
 		String textExpr = taExpr.getText();
-		String textExprRes = taExprRes.getText();
+		StringBuilder sbErrors = new StringBuilder();
 
 		Color green = new Color(0, 188, 57);
 		Color red = new Color(189, 0, 0);
 
 		boolean isWholeExpressionValid = true;
 
-		if (!isValidQuotes(taExpr, textExpr)) {
-			taExprRes.setText("Quotes error found!");
+		eraseAllHighlighter(taExpr);
+		taExprRes.setText("");
+
+		if (!isCommentsValid(taExpr, textExpr)) {
+			sbErrors.append("Comment shouldn't contains quote!");
+			sbErrors.append("\n");
+			isWholeExpressionValid = false;
+		} else if (!isQuotesValid(taExpr, textExpr)) {
+			sbErrors.append("Quote is not closed!");
+			sbErrors.append("\n");
 			isWholeExpressionValid = false;
 		}
 
@@ -73,6 +73,7 @@ public class TChecker {
 			taExprRes.setText("Expression is valid!");
 		} else {
 			color = red;
+			taExprRes.setText(sbErrors.toString());
 		}
 
 		// set color of the expression result text area
@@ -81,10 +82,9 @@ public class TChecker {
 
 	}
 
-	static boolean isValidQuotes(RSyntaxTextArea taExpr, String textExpr) {
+	static boolean isQuotesValid(RSyntaxTextArea taExpr, String textExpr) {
 		int charsBeforeTheCurrentLine = 0;
 		if (!matchQuotes(textExpr)) {
-			eraseAllHighlighter(taExpr);
 			SquigglePainter red = new SquigglePainter(Color.RED);
 			int p0 = 0, p1 = 0;
 			String[] lines = textExpr.split("\\n");
@@ -105,19 +105,51 @@ public class TChecker {
 			}
 
 			return false;
-		} else {
-
-			eraseAllHighlighter(taExpr);
-			return true;
 		}
+
+		return true;
 	}
 
-	private static void eraseAllHighlighter(RSyntaxTextArea taExpr) {
-		for (Object tag : highlighterTags) {
-			taExpr.getHighlighter().removeHighlight(tag);
+	/**
+	 * Check if string contains even quantity of quotes
+	 * 
+	 * @param str
+	 * @return boolean
+	 */
+	static boolean matchQuotes(String str) {
+		int count = str.length() - str.replace("\"", "").length();
+
+		if (count % 2 == 0) {
+			return true;
 		}
-		highlighterTags.clear();
-		taExpr.repaint();
+
+		return false;
+	}
+
+	static boolean isCommentsValid(RSyntaxTextArea taExpr, String textExpr) {
+		int charsBeforeTheCurrentLine = 0;
+		boolean isValid = true;
+		SquigglePainter red = new SquigglePainter(Color.RED);
+		int p0 = 0, p1 = 0;
+		String[] lines = textExpr.split("\\n");
+		for (int i = 0; i < lines.length; i++) {
+			String line = lines[i];
+			if (line.contains("--") && line.contains("\"") && line.indexOf("--") < line.lastIndexOf("\"")) {
+				isValid = false;
+				p0 = line.indexOf("\"");
+				p1 = line.length();
+				try {
+					highlighterTags.add(taExpr.getHighlighter().addHighlight(charsBeforeTheCurrentLine + p0,
+							charsBeforeTheCurrentLine + p1, red));
+					taExpr.repaint();
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
+			charsBeforeTheCurrentLine += line.length() + 1;
+		}
+
+		return isValid;
 	}
 
 }

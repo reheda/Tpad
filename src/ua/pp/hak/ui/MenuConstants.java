@@ -34,7 +34,8 @@ public interface MenuConstants {
 	final String formatFont = "Font...";
 	final String formatForeground = "Set Text color...";
 	final String formatBackground = "Set Pad color...";
-
+	
+	final String viewParserPanel = "Parser Panel";
 	final String viewStatusBar = "Status Bar";
 	final String viewZoomIn = "Zoom In";
 	final String viewZoomOut = "Zoom Out";

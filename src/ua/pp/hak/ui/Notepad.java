@@ -3,10 +3,13 @@ package ua.pp.hak.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -39,13 +42,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -97,14 +100,16 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
 			undoItem, redoItem;
 	private JCheckBoxMenuItem wordWrapItem;
+	private JCheckBoxMenuItem parserPanelItem;
 	private Action redoAction;
 	private Action undoAction;
 	private Highlighter highlighter;
 	private JSplitPane splitPane;
 	private JPanel rightPanel;
+	private JPanel leftPanel;
 	private ArrayList<Object> highlighterTags = new ArrayList<>();
 
-	JButton newButton, openButton, saveButton, runButton, lexButton, parseButton;
+	JButton newButton, openButton, saveButton, parseButton, checkButton;
 	private JButton undoButton, redoButton;
 	JButton copyButton, cutButton, pasteButton, findButton, replaceButton, zoomInButton, zoomOutButton,
 			zoomDefaultButton, fontButton, helpButton, aboutButton, wrapButton, shortcutsButton;
@@ -198,7 +203,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int notches = e.getWheelRotation();
-				int unitsToScroll = e.getUnitsToScroll() * 16;
 				if (e.isControlDown()) {
 					if (notches < 0) {
 						taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
@@ -206,9 +210,30 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 						taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 					}
 				} else {
-					final JScrollBar bar = spExpr.getVerticalScrollBar();
-					int currentValue = bar.getValue();
-					bar.setValue(currentValue + unitsToScroll);
+					// int unitsToScroll = e.getUnitsToScroll() * 16;
+					// final JScrollBar bar = spExpr.getVerticalScrollBar();
+					// int currentValue = bar.getValue();
+					// bar.setValue(currentValue + unitsToScroll);
+					int delta = 3;
+					if (notches < 0) {
+						delta = -delta;
+					}
+					Container parent = taExpr.getParent();
+					if (parent instanceof JViewport) {
+						JViewport viewport = (JViewport) parent;
+						Point p = viewport.getViewPosition();
+						p.y += delta * taExpr.getLineHeight();
+						if (p.y < 0) {
+							p.y = 0;
+						} else {
+							Rectangle viewRect = viewport.getViewRect();
+							int visibleEnd = p.y + viewRect.height;
+							if (visibleEnd >= taExpr.getHeight()) {
+								p.y = taExpr.getHeight() - viewRect.height;
+							}
+						}
+						viewport.setViewPosition(p);
+					}
 				}
 			}
 		});
@@ -264,7 +289,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-
 		rightPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		JTextField tfSKU = new JTextField(20);
 		tfSKU.setMaximumSize(new Dimension(4000, 20));
@@ -306,7 +330,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		rightPanel.add(lblSKU);
 		rightPanel.add(tfSKU);
 
-		JPanel leftPanel = new JPanel();
+		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		lblExpr.setAlignmentX(Component.LEFT_ALIGNMENT);
 		spExpr.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -609,8 +633,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 		else if (cmdText.equals(formatBackground))
 			showBackgroundColorDialog();
-		////////////////////////////////////
 
+		////////////////////////////////////
+		else if (cmdText.equals(viewParserPanel)) {
+			JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
+			if (temp.isSelected()) {
+				splitPane.setRightComponent(rightPanel);
+			} else {
+				splitPane.remove(rightPanel);
+			}
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(viewStatusBar)) {
 			JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
 			statusBar.setVisible(temp.isSelected());
@@ -697,8 +730,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
-		else if (evObj == runButton) {
+		else if (evObj == checkButton) {
 			TChecker.check(this);
+			if (!parserPanelItem.isSelected()){
+				parserPanelItem.doClick();
+			}
 		}
 		////////////////////////////////////
 		else
@@ -855,6 +891,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(formatForeground, KeyEvent.VK_T, formatMenu, this);
 		createMenuItem(formatBackground, KeyEvent.VK_P, formatMenu, this);
 
+		parserPanelItem = createCheckBoxMenuItem(viewParserPanel, KeyEvent.VK_P, viewMenu, this);
+		parserPanelItem.setSelected(true);
+		parserPanelItem.setAccelerator(
+				(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)));
 		createCheckBoxMenuItem(viewStatusBar, KeyEvent.VK_S, viewMenu, this).setSelected(true);
 		/************
 		 * For Look and Feel, May not work properly on different operating
@@ -920,7 +960,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		newButton = createButton("/images/new.png", fileNew, false, this);
 		openButton = createButton("/images/open.png", fileOpen, false, this);
 		saveButton = createButton("/images/save.png", fileSave, false, this);
-		runButton = createButton("/images/run.png", "Run", false, this);
+		
+		checkButton = createButton("/images/check.png", "Check", false, this);
+		parseButton = createButton("/images/parse.png", "Parse", false, this);
 		undoButton = createButton("/images/undo.png", editUndo, false, undoAction);
 		undoButton.setEnabled(true);
 		redoButton = createButton("/images/redo.png", editRedo, false, redoAction);
@@ -949,7 +991,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		toolBar.add(openButton);
 		toolBar.add(saveButton);
 		toolBar.addSeparator();
-		toolBar.add(runButton);
+		toolBar.add(checkButton);
+		toolBar.add(parseButton);
 		toolBar.addSeparator();
 		toolBar.add(undoButton);
 		toolBar.add(redoButton);
