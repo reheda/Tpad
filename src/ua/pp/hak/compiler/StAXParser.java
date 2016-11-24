@@ -12,12 +12,12 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class StAXParserDemo {
+public class StAXParser {
 
 	public static HashMap<Integer, String> parse() {
 		boolean isValid = XSDValidator.validateXMLSchema("dbSchema.xsd", "db.xml");
 		if (!isValid) {
-			System.out.println("XML file is not valid against XSD Schema");
+			System.err.println("XML file is not valid against XSD Schema");
 			return null;
 		}
 

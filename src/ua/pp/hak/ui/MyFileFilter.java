@@ -22,7 +22,7 @@ class FileFilterDemo extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				if (FileFilterDemo.this.chooser == null)
 					chooser = new JFileChooser();
-				chooser.addChoosableFileFilter(new MyFileFilter(".java", "Java Source Files(*.java)"));
+//				chooser.addChoosableFileFilter(new MyFileFilter(".java", "Java Source Files(*.java)"));
 				chooser.addChoosableFileFilter(new MyFileFilter(".txt", "Text Files(*.txt)"));
 				// filter=new MyFilter(); then filter is equivalent to select
 				// all files

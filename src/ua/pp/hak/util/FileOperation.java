@@ -69,7 +69,7 @@ public class FileOperation implements Constants {
 		try {
 			// fout = new FileWriter(temp);
 			fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), encoding));
-			npd.getTextArea().write(fout); // fout.write(npd.ta.getText()); was
+			npd.getExprTextArea().write(fout); // fout.write(npd.ta.getText()); was
 											// changed due
 			// to incorrect saving of new line
 		} catch (IOException ioe) {
@@ -132,7 +132,7 @@ public class FileOperation implements Constants {
 				str = din.readLine();
 				if (str == null)
 					break;
-				this.npd.getTextArea().append(str + System.getProperty("line.separator"));
+				this.npd.getExprTextArea().append(str + System.getProperty("line.separator"));
 			}
 
 		} catch (IOException ioe) {
@@ -148,7 +148,7 @@ public class FileOperation implements Constants {
 			}
 		}
 		updateStatus(temp, true);
-		// this.npd.ta.setCaretPosition(0);
+//		npd.getTextArea().setCaretPosition(0);
 		return true;
 	}
 
@@ -160,7 +160,7 @@ public class FileOperation implements Constants {
 		chooser.setDialogTitle("Open File...");
 		chooser.setApproveButtonText("Open this");
 		chooser.setApproveButtonMnemonic(KeyEvent.VK_O);
-		chooser.setApproveButtonToolTipText("Click me to open the selected file.!");
+		chooser.setApproveButtonToolTipText("Click me to open the selected file!");
 
 		File temp = null;
 		do {
@@ -179,14 +179,13 @@ public class FileOperation implements Constants {
 			}
 		} while (true);
 
-		this.npd.getTextArea().setText("");
+		this.npd.getExprTextArea().setText("");
 
 		if (!openFile(temp)) {
 			fileName = defaultFileName;
 			saved = true;
 			this.npd.getFrame().setTitle(fileName + " - " + applicationName);
 		} else {
-			this.npd.getManager().discardAllEdits();
 //			this.npd.getUndoButton().setEnabled(false);
 //			this.npd.getRedoButton().setEnabled(false);
 		}
@@ -237,13 +236,13 @@ public class FileOperation implements Constants {
 		if (!confirmSave())
 			return;
 
-		this.npd.getTextArea().setText("");
+		this.npd.getExprTextArea().setText("");
 		fileName = defaultFileName;
 		fileRef = new File(fileName);
 		saved = true;
 		newFileFlag = true;
 		this.npd.getFrame().setTitle(fileName + " - " + applicationName);
-		this.npd.getManager().discardAllEdits();
+//		this.npd.getManager().discardAllEdits();
 //		this.npd.getUndoButton().setEnabled(false);
 //		this.npd.getRedoButton().setEnabled(false);
 	}

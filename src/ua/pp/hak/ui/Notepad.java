@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.AbstractAction;
@@ -62,14 +63,14 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
-import javax.swing.undo.UndoManager;
 
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
-import ua.pp.hak.isnotused.LinePainter;
+import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 
@@ -96,13 +97,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
 			undoItem, redoItem;
 	private JCheckBoxMenuItem wordWrapItem;
-	private UndoManager manager;
-	private RedoAction redoAction;
-	private UndoAction undoAction;
+	private Action redoAction;
+	private Action undoAction;
 	private Highlighter highlighter;
-	private LinePainter painter;
 	private JSplitPane splitPane;
 	private JPanel rightPanel;
+	private ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	JButton newButton, openButton, saveButton, runButton, lexButton, parseButton;
 	private JButton undoButton, redoButton;
@@ -113,16 +113,16 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		return frame;
 	}
 
-	public RSyntaxTextArea getTextArea() {
+	public JTextArea getExprResTextArea() {
+		return taExprRes;
+	}
+
+	public RSyntaxTextArea getExprTextArea() {
 		return taExpr;
 	}
 
 	public JLabel getStatusBar() {
 		return statusBar;
-	}
-
-	public UndoManager getManager() {
-		return manager;
 	}
 
 	public JButton getUndoButton() {
@@ -257,11 +257,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExprRes.setText(taExprRes.getText().replaceAll("\n", "//\n"));
 		taExprRes.setLineWrap(true);
 
-		// Create the undo manager and actions
-		manager = new UndoManager();
-		redoAction = new RedoAction(manager);
-		undoAction = new UndoAction(manager);
-		taExpr.getDocument().addUndoableEditListener(manager);
 		// -----
 		statusBar = new JLabel("Line 1, Column 1  ", JLabel.LEFT);
 		statusBar.setBorder(new CompoundBorder(statusBar.getBorder(), new EmptyBorder(2, 6, 2, 5)));
@@ -389,7 +384,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				if (selectedCharsNumber == 0) {
 					statusBar.setText("Line " + (lineNumber + 1) + ", Column " + (column + 1));
 					if (highlighter != null) {
-						taExpr.getHighlighter().removeAllHighlights();
+						// taExpr.getHighlighter().removeAllHighlights();
+						// highlighter.removeAllHighlights();
+						for (Object tag : highlighterTags) {
+							highlighter.removeHighlight(tag);
+						}
+						highlighterTags.clear();
 						highlighter = null;
 						// painter = new LinePainter(ta, new
 						// Color(255,255,210)); // restore line painter
@@ -409,7 +409,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 								if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
 										&& p0 != selectionStartPos) {
-									highlighter.addHighlight(p0, p1, wordpainter);
+									highlighterTags.add(highlighter.addHighlight(p0, p1, wordpainter));
 								}
 							} while (p0 > -1);
 						} catch (Exception exc) {
@@ -695,11 +695,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			});
 			JOptionPane.showMessageDialog(frame, textPane, "Help topic", JOptionPane.INFORMATION_MESSAGE,
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
-		} else
-			statusBar.setText("This " + cmdText + " command is yet to be implemented");
-	}// action
-		// Performed
+		}
 		////////////////////////////////////
+		else if (evObj == runButton) {
+			TChecker.check(this);
+		}
+		////////////////////////////////////
+		else
+			statusBar.setText("This " + cmdText + " command is yet to be implemented");
+	}
+	// action Performed
+	////////////////////////////////////
 
 	void showBackgroundColorDialog() {
 		if (bcolorChooser == null)
@@ -811,6 +817,16 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		// fileMenu.addSeparator();
 		createMenuItem(fileExit, KeyEvent.VK_X, fileMenu, this);
 
+		Action[] actions = taExpr.getActions();
+		int n = actions.length;
+		for (int i = 0; i < n; i++) {
+			Action a = actions[i];
+			if (a.getValue(Action.NAME).equals(RTextAreaEditorKit.rtaUndoAction)) {
+				undoAction = a;
+			} else if (a.getValue(Action.NAME).equals(RTextAreaEditorKit.rtaRedoAction)) {
+				redoAction = a;
+			}
+		}
 		undoItem = createMenuItem(editUndo, KeyEvent.VK_U, editMenu, KeyEvent.VK_Z, undoAction);
 		redoItem = createMenuItem(editRedo, KeyEvent.VK_O, editMenu, KeyEvent.VK_Y, redoAction);
 		editMenu.addSeparator();
@@ -886,8 +902,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					deleteItem.setEnabled(true);
 				}
 
-				undoItem.setEnabled(manager.canUndo());
-				redoItem.setEnabled(manager.canRedo());
+				undoItem.setEnabled(taExpr.canUndo());
+				redoItem.setEnabled(taExpr.canRedo());
 			}
 
 			public void menuDeselected(MenuEvent evvvv) {
