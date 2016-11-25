@@ -26,11 +26,11 @@
 	<xsd:simpleType name="TypeFeature">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="Simple" />
-			<xsd:enumeration value="Multi-valued" />
 			<xsd:enumeration value="Simple numeric" />
+			<xsd:enumeration value="Multi-valued" />
+			<xsd:enumeration value="Multi-valued numeric" />
 			<xsd:enumeration value="Repeating" />
 			<xsd:enumeration value="Repeating numeric" />
-			<xsd:enumeration value="Multi-valued numeric" />
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>

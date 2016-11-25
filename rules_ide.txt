@@ -1,0 +1,134 @@
+1) erase comments (skip/or replace space with something, cos we'll split by space)
+- check brackets for validity (decimal, string or empty)
+- remove content of brackets
+- check for multi-periods (dots)
+- split by space, \n, period
+- check for keywords (if isn't a keyword then mark as error)
+- 
+
+
+
+Main concept:
+RegexReplace("\n+", "\n")
+RegexReplace("\s+", "\s")
+RegexReplace(" . ", ".")
+RegexReplace(" [", "[")
+
+
+1) split by ";"
+for each value in the list:
+variants:
+-if (statement) then (returnValue)
+-if (statement) then (returnValue) else (returnValue)
+-if (statement) then (returnValue) elseif (statement) then (returnValue)
+-if (statement) then (returnValue) elseif (statement) then (returnValue) else (returnValue)
+-if (statement) then (returnValue) else if (statement) then (returnValue)
+-if (statement) then (returnValue) else if (statement) then (returnValue) else (returnValue)
+-...
+
+
+Rules:
+expr = value in the list (which was created by split whole expr by ";")
+statement = value between ("if" or "else if" or "elseif") and  ("then")
+returnValue = value between:
+	a)between ("then") and  ("elseif" or "else if" or "else")
+	b)between ("else") and (end of the expr)
+	c)whole expr if expr does NOT contain "IF"
+
+
+
+
+expr rules:
+	-expr should NOT contains "else" without "if" and "then" before
+	-expr should NOT contains "elseif" without "if" and "then" before
+	-expr should NOT contains "else if" without "if" and "then" before
+
+	-expr should NOT contains "then" without "if" before
+
+	-if erase "else if" and "elseif" lines, then expr should contains "if" only 1 time
+	-if erase "else if" and "elseif" lines, then expr should contains "else" only 1 or 0 times
+
+
+statement rules:
+	-if without "AND" and "OR":
+		-should have 1 and only 1 occurence one of the following ("<", ">", "=", "LIKE", "IS")
+		-should NOT have "_"
+		-should have correct comment (without quotes)
+		-should have pair quotes
+
+	-if with "AND" and "OR":
+		-split by "AND" and "OR" then do the same as without "AND" and "OR"
+
+resultValue:
+	-should NOT start with "_"
+	-should NOT end with "_"
+	-should have correct comment (without quotes)
+	-should have pair quotes
+
+
+	-if starts with quotes(""):
+		-quotes should be followed only by "_"
+	-if starts with "A[]":
+		-if attr type is Simple then attr should be followed by one of them:
+			".GroupName"
+			".Invariant"
+			".Name"
+			".Value"
+			".ValueUSM"
+		-if attr type is Simple numeric then attr should be followed by one of them:
+			".GroupName"
+			".Invariant"
+			".InvariantUnit"
+			".Name"
+			".Unit"
+			".UnitUSM"
+			".Value"
+			".ValueUSM"
+		-if attr type is Multi-valued then attr should be followed by one of them:
+			".Count"
+			".GroupName"
+			".InvariantValues"
+			".Name"
+			".Total"
+			".Values"
+			".ValuesUSM"
+			".Where()"
+			".WhereNot()"
+		-if attr type is Multi-valued numeric then attr should be followed by one of them:
+			".Count"
+			".GroupName"
+			".InvariantValues"
+			".Name"
+			".Total"
+			".Values"
+			".ValuesAndUnits"
+			".ValuesAndUnitsUSM"
+			".ValuesUSM"
+			".Where()"
+			".WhereNot()"
+		-if attr type is Repeating then attr should be followed by one of them:
+			".Count"
+			".GroupName"
+			".InvariantValues"
+			".Match()"
+			".Name"
+			".Total"
+			".Values"
+			".ValuesUSM"
+			".Where()"
+			".WhereNot()"
+		-if attr type is Repeating numeric then attr should be followed by one of them:
+			".Count"
+			".GroupName"
+			".InvariantValues"
+			".Match()"
+			".Name"
+			".Total"
+			".Values"
+			".ValuesAndUnits"
+			".ValuesAndUnitsUSM"
+			".ValuesUSM"
+			".Where()"
+			".WhereNot()"
+			".WhereUnit()"
+			".WhereUnitOrValue()"
