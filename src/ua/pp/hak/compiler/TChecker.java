@@ -16,8 +16,10 @@ import ua.pp.hak.ui.Notepad;
 import ua.pp.hak.ui.SquigglePainter;
 
 public class TChecker {
+	static RSyntaxTextArea taExpr;
+	static final String NEW_LINE = "\n";
 
-	static HashMap<Integer, String> hm;
+	static HashMap<Integer, String> hm = StAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	final String TYPE_SIMPLE = "Simple";
@@ -26,10 +28,6 @@ public class TChecker {
 	final String TYPE_REPEATING = "Repeating";
 	final String TYPE_REPEATING_NUMERIC = "Repeating numeric";
 	final String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
-
-	public TChecker(Notepad npd) {
-		hm = StAXParser.parse();
-	}
 
 	private static void eraseAllHighlighter(RSyntaxTextArea taExpr) {
 		for (Object tag : highlighterTags) {
@@ -44,7 +42,7 @@ public class TChecker {
 	}
 
 	public static void check(Notepad npd) {
-		RSyntaxTextArea taExpr = npd.getExprTextArea();
+		taExpr = npd.getExprTextArea();
 		JTextArea taExprRes = npd.getExprResTextArea();
 		String textExpr = taExpr.getText();
 		StringBuilder sbErrors = new StringBuilder();
@@ -55,13 +53,13 @@ public class TChecker {
 		boolean isWholeExpressionValid = true;
 
 		eraseAllHighlighter(taExpr);
-		taExprRes.setText("");
+		taExprRes.setText("Processing...");
 
-		if (!isCommentsValid(taExpr, textExpr)) {
+		if (!isCommentsValid(textExpr)) {
 			sbErrors.append("Comment shouldn't contains quote!");
 			sbErrors.append("\n");
 			isWholeExpressionValid = false;
-		} else if (!isQuotesValid(taExpr, textExpr)) {
+		} else if (!isQuotesValid(textExpr)) {
 			sbErrors.append("Quote is not closed!");
 			sbErrors.append("\n");
 			isWholeExpressionValid = false;
@@ -73,16 +71,16 @@ public class TChecker {
 			taExprRes.setText("Expression is valid!");
 		} else {
 			color = red;
-			taExprRes.setText(sbErrors.toString());
+			taExprRes.setText("Errors: \n" + sbErrors.toString());
 		}
 
-		// set color of the expression result text area
+		// set color of the expression result's text area
 		taExprRes.setBorder(
 				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
 
 	}
 
-	static boolean isQuotesValid(RSyntaxTextArea taExpr, String textExpr) {
+	static boolean isQuotesValid(String textExpr) {
 		int charsBeforeTheCurrentLine = 0;
 		if (!matchQuotes(textExpr)) {
 			SquigglePainter red = new SquigglePainter(Color.RED);
@@ -126,7 +124,7 @@ public class TChecker {
 		return false;
 	}
 
-	static boolean isCommentsValid(RSyntaxTextArea taExpr, String textExpr) {
+	static boolean isCommentsValid(String textExpr) {
 		int charsBeforeTheCurrentLine = 0;
 		boolean isValid = true;
 		SquigglePainter red = new SquigglePainter(Color.RED);
@@ -150,6 +148,67 @@ public class TChecker {
 		}
 
 		return isValid;
+	}
+
+	static String checkTemplateExpresion(String textExpr) {
+
+		// split by semicolon
+		String delimiter = ";";
+		String[] expressions = textExpr.split(delimiter);
+		int charsBefore = 0;
+		int p0 = 0, p1 = 0;
+		StringBuilder errors = new StringBuilder();
+		for (int i = 0; i < expressions.length; i++) {
+			int exprLength = expressions[i].length();
+
+			String error = checkExpression(expressions[i], charsBefore + p0, charsBefore + p1);
+			if (error != null) {
+				errors.append(error).append(NEW_LINE);
+			}
+
+			charsBefore += exprLength + delimiter.length();
+		}
+
+		return errors.toString();
+	}
+
+	static String checkExpression(String expr, int p0, int p1) {
+	
+		//check comments
+		//erase comments
+		//check quotes
+		//erase values surrounded by quotes
+		String exprCleaned = expr
+		.replaceAll("\\n+", "\\s")
+		.replaceAll("\\s+", "\\s")
+		.replaceAll(" \\. ", ".")
+		.replaceAll(" ?\\[ ", "[")
+		.replaceAll(" ?\\] ", "]")
+		.replaceAll(" ?\\( ", "(")
+		.replaceAll(" ?\\) ", ")")
+		.replaceAll("else if", "elseif");
+		
+		
+		//count "else" words. qty should be 1 or 0 
+		//count "if" words. qty should be 1 or 0
+		//check "then" words. should be same quantity as qty("elseif") -1
+		
+		exprCleaned.matches("^if .* then .*( elseif .* then .*)* (else .*)?");
+		
+		
+		return null;
+	}
+
+	static String checkStatement(String expr, int p0, int p1) {
+		return null;
+	}
+
+	static String checkReturnValue(String expr, int p0, int p1) {
+		return null;
+	}
+
+	static String checkFunction(String expr, int p0, int p1) {
+		return null;
 	}
 
 }

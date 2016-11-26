@@ -9,14 +9,20 @@
 
 
 Main concept:
-RegexReplace("\n+", "\n")
-RegexReplace("\s+", "\s")
-RegexReplace(" . ", ".")
-RegexReplace(" [", "[")
+Split(";")
+for each listValue in list
+	RegexReplace("\n+", "\n")
+	RegexReplace("\s+", "\s")
+	RegexReplace(" \. ", ".")
+	RegexReplace(" ?\[ ", "[")
+	RegexReplace(" ?\] ", "]")
+	RegexReplace(" ?\( ", "(")
+	RegexReplace(" ?\) ", ")")
+next listValue
 
 
 1) split by ";"
-for each value in the list:
+for each listValue in the list:
 variants:
 -if (statement) then (returnValue)
 -if (statement) then (returnValue) else (returnValue)
@@ -28,7 +34,7 @@ variants:
 
 
 Rules:
-expr = value in the list (which was created by split whole expr by ";")
+expr = listValue (which was created by split whole expr by ";")
 statement = value between ("if" or "else if" or "elseif") and  ("then")
 returnValue = value between:
 	a)between ("then") and  ("elseif" or "else if" or "else")
@@ -59,7 +65,7 @@ statement rules:
 	-if with "AND" and "OR":
 		-split by "AND" and "OR" then do the same as without "AND" and "OR"
 
-resultValue:
+resultValue rules:
 	-should NOT start with "_"
 	-should NOT end with "_"
 	-should have correct comment (without quotes)
