@@ -27,7 +27,7 @@ public class Test {
 	private static String NEW_LINE = "\n";
 
 	public static void main(String[] args) {
-		String expr = "  IF A[335].Values LIKE \"%in%\"  AND CAT.Main.Key>=1 --asdasd\n OR CAT.Main.Key>1 THEN \"asda else sd\" --- sdfsdf\n"
+		String expr = "  IF A[8033].Value LIKE \"%in%\"  AND CAT.Main.Key>=1 --asdasd\n OR CAT.Main.Key>1 THEN \"asda else sd\" --- sdfsdf\n"
 				+ "ELSE IF A[606].Value > 3 THEN \"blasd\" " + " ELSE IF A[8184].Values>3 THEN " + "ELSE \"ooooo\"  ";
 
 		System.out.println(checkExpression(expr, 0, 0));
@@ -137,8 +137,8 @@ public class Test {
 		functions.add(new Function("Description", "ExpressionResultLiteral", "Sku", "DigitalContentItem"));
 		functions.add(new Function("GroupName", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("Header", "ExpressionResultLiteral", "SpecLine"));
-		functions.add(new Function("Invariant", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("InvariantUnit", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Invariant", "ExpressionResultLiteral", "PdmAttribute"));
+		functions.add(new Function("InvariantUnit", "ExpressionResultLiteral", "PdmAttribute"));
 		functions.add(new Function("ItemName", "ExpressionResultLiteral", "Sku"));
 		functions.add(new Function("Key", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("Manufacturer", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
@@ -148,10 +148,10 @@ public class Test {
 		functions.add(new Function("PartNumber", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
 		functions.add(new Function("ProductLine", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
 		functions.add(new Function("ProductType", "ExpressionResultLiteral", "Sku"));
-		functions.add(new Function("Unit", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("UnitUSM", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("Value", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute", "Gtin"));
-		functions.add(new Function("ValueUSM", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Unit", "ExpressionResultLiteral", "PdmAttribute"));
+		functions.add(new Function("UnitUSM", "ExpressionResultLiteral", "PdmAttribute"));
+		functions.add(new Function("Value", "ExpressionResultLiteral", "PdmAttribute", "Gtin"));
+		functions.add(new Function("ValueUSM", "ExpressionResultLiteral", "PdmAttribute"));
 		functions.add(new Function("XmlContent", "ExpressionResultLiteral", "DigitalContentItem"));
 		functions.add(new Function("ListPaths()", "ExpressionResultLiteral", "ProductCategories"));
 		functions.add(new Function("ListUSM()", "ExpressionResultLiteral", "PdmAttributeSet"));
@@ -188,6 +188,7 @@ public class Test {
 		functions.add(new Function("Year", "ExpressionResultNumeric", "DateTime"));
 		functions.add(new Function("Month", "ExpressionResultNumeric", "DateTime"));
 		functions.add(new Function("Day", "ExpressionResultNumeric", "DateTime"));
+
 
 
 	}
@@ -496,7 +497,7 @@ public class Test {
 
 				} else {
 					if (!isFunctionMemberOfValid(functns[i], previousType)) {
-						return "Function '" + functns[i] + "' can't be invoked on '" + previousType + "'";
+						return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'";
 					}
 
 					previousType = getFunctionReturnType(functns[i], previousType);
