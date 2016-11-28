@@ -41,8 +41,8 @@ public class Test {
 		functions.add(new Function("IsDescendantOf()", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("LaunchDate", "DateTime", "Sku"));
 		functions.add(new Function("GetDateTime()", "DateTimeOffset", "SystemObject"));
-		functions.add(new Function("Count", "Int32", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "PdmMultivalueAttribute"));
-		functions.add(new Function("Total", "Int32", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Count", "ExpressionResultNumeric", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "PdmMultivalueAttribute"));
+		functions.add(new Function("Total", "ExpressionResultNumeric", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("BestImage", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("BoxContents", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("KeySellingPoints", "DigitalContentItem", "DigitalContent"));
@@ -76,7 +76,7 @@ public class Test {
 		functions.add(new Function("Flatten()", "ExpressionResultLiteral", "ExpressionResultList"));
 		functions.add(new Function("IfLike()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
 		functions.add(new Function("IfLongerThan()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("Pluralize()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "Int32"));
+		functions.add(new Function("Pluralize()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
 		functions.add(new Function("Postfix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
 		functions.add(new Function("Prefix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
 		functions.add(new Function("RegexReplace()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
@@ -110,13 +110,13 @@ public class Test {
 		functions.add(new Function("GetLines()", "ExpressionResultList", "Specs"));
 		functions.add(new Function("GetAncestry()", "IEnumerable`1", "AlternativeCategory"));
 		functions.add(new Function("GetDescendants()", "IEnumerable`1", "AlternativeCategory"));
-		functions.add(new Function("CategoryKey", "Int32", "RelatedProduct"));
-		functions.add(new Function("Length", "Int32", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "ProductPackage"));
-		functions.add(new Function("LineCount", "Int32", "Specs"));
-		functions.add(new Function("NonOemAccessories", "Int32", "Sku"));
-		functions.add(new Function("Order", "Int32", "SpecLine"));
-		functions.add(new Function("PackQuantity", "Int32", "Sku", "RelatedProduct"));
-		functions.add(new Function("ProductId", "Int32", "Sku", "RelatedProduct"));
+		functions.add(new Function("CategoryKey", "ExpressionResultNumeric", "RelatedProduct"));
+		functions.add(new Function("Length", "ExpressionResultNumeric", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "ProductPackage"));
+		functions.add(new Function("LineCount", "ExpressionResultNumeric", "Specs"));
+		functions.add(new Function("NonOemAccessories", "ExpressionResultNumeric", "Sku"));
+		functions.add(new Function("Order", "ExpressionResultNumeric", "SpecLine"));
+		functions.add(new Function("PackQuantity", "ExpressionResultNumeric", "Sku", "RelatedProduct"));
+		functions.add(new Function("ProductId", "ExpressionResultNumeric", "Sku", "RelatedProduct"));
 		functions.add(new Function("AltCats", "List`1", "ProductCategories"));
 		functions.add(new Function("BestImages", "List`1", "DigitalContent"));
 		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
@@ -176,17 +176,18 @@ public class Test {
 		functions.add(new Function("Data[\"\"]", "ExpressionResultLiteral", "RelatedProduct"));
 		functions.add(new Function("Gtin", "Gtin", "RelatedProduct"));
 		functions.add(new Function("Format", "ExpressionResultLiteral", "Gtin"));
-		functions.add(new Function("HasValue", "ExpressionResultLiteral", "Int32"));
-		functions.add(new Function("Height", "Int32", "ProductPackage"));
-		functions.add(new Function("Width", "Int32", "ProductPackage"));
-		functions.add(new Function("Weight", "Int32", "ProductPackage"));
+		functions.add(new Function("HasValue", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("Height", "ExpressionResultNumeric", "ProductPackage"));
+		functions.add(new Function("Width", "ExpressionResultNumeric", "ProductPackage"));
+		functions.add(new Function("Weight", "ExpressionResultNumeric", "ProductPackage"));
 		functions.add(new Function("Package", "ProductPackage", "RelatedProduct"));
 		functions.add(new Function("IsBiggerThan()", "ExpressionResultLiteral", "ProductPackage"));
 		functions.add(new Function("BulletFeatures[]", "ExpressionResultLiteral", "TemplexGenerator"));
 		functions.add(new Function("Ksp[]", "ExpressionResultLiteral", "DigitalContent"));
 		functions.add(new Function("\"\"", "You can invoke nothing on it"));
-
-
+		functions.add(new Function("Year", "ExpressionResultNumeric", "DateTime"));
+		functions.add(new Function("Month", "ExpressionResultNumeric", "DateTime"));
+		functions.add(new Function("Day", "ExpressionResultNumeric", "DateTime"));
 
 
 	}
