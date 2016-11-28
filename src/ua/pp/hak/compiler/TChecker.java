@@ -19,7 +19,7 @@ public class TChecker {
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
-	static HashMap<Integer, String> hm = StAXParser.parse();
+	static HashMap<Integer, String> attibutes = StAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	final String TYPE_SIMPLE = "Simple";
@@ -38,7 +38,7 @@ public class TChecker {
 	}
 
 	String getAttributeType(int attr) {
-		return hm.get(attr);
+		return attibutes.get(attr);
 	}
 
 	public static void check(Notepad npd) {

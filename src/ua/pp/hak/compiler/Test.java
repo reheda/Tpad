@@ -2,33 +2,47 @@ package ua.pp.hak.compiler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Test {
-	final String TYPE_SIMPLE = "Simple";
-	final String TYPE_MULTI_VALUED = "Multi-valued";
-	final String TYPE_SIMPLE_NUMERIC = "Simple numeric";
-	final String TYPE_REPEATING = "Repeating";
-	final String TYPE_REPEATING_NUMERIC = "Repeating numeric";
-	final String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
+
+	static HashMap<Integer, String> attibutes = StAXParser.parse();
+
+	static String getAttributeType(int attr) {
+		return attibutes.get(attr);
+	}
+
+	final static String TYPE_SIMPLE = "Simple";
+	final static String TYPE_MULTI_VALUED = "Multi-valued";
+	final static String TYPE_SIMPLE_NUMERIC = "Simple numeric";
+	final static String TYPE_REPEATING = "Repeating";
+	final static String TYPE_REPEATING_NUMERIC = "Repeating numeric";
+	final static String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
 
 	private static ArrayList<Function> functions;
+
+	private static String NEW_LINE = "\n";
+
+	public static void main(String[] args) {
+		String expr = "  IF A[335].Values LIKE \"%in%\"  AND CAT.Main.Key>=1 --asdasd\n OR CAT.Main.Key>1 THEN \"asda else sd\" --- sdfsdf\n"
+				+ "ELSE IF A[606].Value > 3 THEN \"blasd\" " + " ELSE IF A[8184].Values>3 THEN " + "ELSE \"ooooo\"  ";
+
+		System.out.println(checkExpression(expr, 0, 0));
+	}
 
 	static void initFunctions() {
 		functions = new ArrayList<>();
 		functions.add(new Function("Main", "AlternativeCategory", "ProductCategories"));
-		functions.add(new Function("HasText", "Boolean", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("IsEmpty", "Boolean", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("IsDescendantOf()", "Boolean", "AlternativeCategory"));
+		functions.add(new Function("HasText", "ExpressionResultLiteral", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
+		functions.add(new Function("IsEmpty", "ExpressionResultLiteral", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
+		functions.add(new Function("IsDescendantOf()", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("LaunchDate", "DateTime", "Sku"));
 		functions.add(new Function("GetDateTime()", "DateTimeOffset", "SystemObject"));
-		functions.add(new Function("Count", "Decimal", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric", "PdmMultivalueAttribute"));
-		functions.add(new Function("Total", "Decimal", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Count", "Int32", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "PdmMultivalueAttribute"));
+		functions.add(new Function("Total", "Int32", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("BestImage", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("BoxContents", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("KeySellingPoints", "DigitalContentItem", "DigitalContent"));
@@ -41,89 +55,63 @@ public class Test {
 		functions.add(new Function("Thumbnail", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("UserManual", "DigitalContentItem", "DigitalContent"));
 		functions.add(new Function("Distinct", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("Min()", "ExpressionResult", "ExpressionResultList"));
+		functions.add(new Function("Min()", "ExpressionResultLiteral", "ExpressionResultList"));
 		functions.add(new Function("MinMax()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("Max()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("Last()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("FlattenWithAnd()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("HtmlEncode()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("First()", "ExpressionResult", "ExpressionResultList"));
+		functions.add(new Function("Max()", "ExpressionResultLiteral", "ExpressionResultList"));
+		functions.add(new Function("Last()", "ExpressionResultLiteral", "ExpressionResultList"));
+		functions.add(new Function("FlattenWithAnd()", "ExpressionResultLiteral", "ExpressionResultList"));
+		functions.add(new Function("HtmlEncode()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("First()", "ExpressionResultLiteral", "ExpressionResultList"));
 		functions.add(new Function("DiscardNulls()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("ExtractDecimals()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("ToLower()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("ToLowerFirstChar()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("ToTitleCase()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("ToUpper()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("ToUpperFirstChar()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("Erase()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("EraseTextSurroundedBy()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("GetLine()", "ExpressionResult", "Specs"));
-		functions.add(new Function("GetLineBody()", "ExpressionResult", "Specs"));
-		functions.add(new Function("Flatten()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("IfLike()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("IfLongerThan()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("Pluralize()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("Postfix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("Prefix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("RegexReplace()", "ExpressionResult", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("Replace()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("Shorten()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
-		functions.add(new Function("Split()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
+		functions.add(new Function("ExtractDecimals()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("ToLower()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("ToLowerFirstChar()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("ToTitleCase()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("ToUpper()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("ToUpperFirstChar()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("Erase()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("EraseTextSurroundedBy()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("GetLine()", "ExpressionResultLiteral", "Specs"));
+		functions.add(new Function("GetLineBody()", "ExpressionResultLiteral", "Specs"));
+		functions.add(new Function("Flatten()", "ExpressionResultLiteral", "ExpressionResultList"));
+		functions.add(new Function("IfLike()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("IfLongerThan()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("Pluralize()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "Int32"));
+		functions.add(new Function("Postfix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
+		functions.add(new Function("Prefix()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
+		functions.add(new Function("RegexReplace()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("Replace()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(new Function("Shorten()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "String"));
+		functions.add(new Function("Split()", "ExpressionResultList", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
 		functions.add(new Function("UseSeparators()", "ExpressionResult", "ExpressionResultList"));
-		functions.add(new Function("InvariantValues", "ExpressionResultList", "PdmAttributeSet",
-				"PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("Values", "ExpressionResultList", "PdmAttributeSet", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
-		functions.add(new Function("ValuesAndUnits", "ExpressionResultList", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
-		functions.add(new Function("ValuesAndUnitsUSM", "ExpressionResultList", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
-		functions.add(new Function("ValuesUSM", "ExpressionResultList", "PdmAttributeSet", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
+		functions.add(new Function("InvariantValues", "ExpressionResultList", "PdmAttributeSet", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Values", "ExpressionResultList", "PdmAttributeSet", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("ValuesAndUnits", "ExpressionResultList", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("ValuesAndUnitsUSM", "ExpressionResultList", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("ValuesUSM", "ExpressionResultList", "PdmAttributeSet", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("Format()", "ExpressionResultList", "ExpressionResultList"));
 		functions.add(new Function("Skip()", "ExpressionResultList", "ExpressionResultList"));
 		functions.add(new Function("Take()", "ExpressionResultList", "ExpressionResultList"));
-		functions.add(new Function("Where()", "ExpressionResultList", "ExpressionResultList", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
-		functions.add(new Function("WhereNot()", "ExpressionResultList", "ExpressionResultList",
-				"PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("BulletFeatures", "IEnumerable`1", "TemplexGenerator"));
+		functions.add(new Function("Where()", "ExpressionResultList", "ExpressionResultList", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("WhereNot()", "ExpressionResultList", "ExpressionResultList", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("BulletFeatures", "ExpressionResultList", "TemplexGenerator"));
 		functions.add(new Function("CategoryCodes", "IEnumerable`1", "RelatedProductList"));
 		functions.add(new Function("CategoryKeys", "IEnumerable`1", "RelatedProductList"));
-		functions.add(new Function("Colors", "IEnumerable`1", "Sku"));
+		functions.add(new Function("Colors", "ExpressionResultList", "Sku"));
 		functions.add(new Function("CustomerPns", "IEnumerable`1", "RelatedProductList"));
-		functions.add(new Function("FancyColors", "IEnumerable`1", "Sku"));
-		functions.add(new Function("InvariantColors", "IEnumerable`1", "Sku"));
-		functions.add(new Function("Keywords", "IEnumerable`1", "Sku"));
+		functions.add(new Function("FancyColors", "ExpressionResultList", "Sku"));
+		functions.add(new Function("InvariantColors", "ExpressionResultList", "Sku"));
+		functions.add(new Function("Keywords", "ExpressionResultList", "Sku"));
 		functions.add(new Function("ManufacturerNames", "IEnumerable`1", "RelatedProductList"));
 		functions.add(new Function("ModelNames", "IEnumerable`1", "RelatedProductList"));
 		functions.add(new Function("ProductIds", "IEnumerable`1", "RelatedProductList"));
 		functions.add(new Function("ProductLineNames", "IEnumerable`1", "RelatedProductList"));
 		functions.add(new Function("ProductNames", "IEnumerable`1", "RelatedProductList"));
-		functions.add(new Function("GetLines()", "IEnumerable`1", "Specs"));
+		functions.add(new Function("GetLines()", "ExpressionResultList", "Specs"));
 		functions.add(new Function("GetAncestry()", "IEnumerable`1", "AlternativeCategory"));
 		functions.add(new Function("GetDescendants()", "IEnumerable`1", "AlternativeCategory"));
 		functions.add(new Function("CategoryKey", "Int32", "RelatedProduct"));
-		functions.add(new Function("Length", "Int32", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
+		functions.add(new Function("Length", "Int32", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "ProductPackage"));
 		functions.add(new Function("LineCount", "Int32", "Specs"));
 		functions.add(new Function("NonOemAccessories", "Int32", "Sku"));
 		functions.add(new Function("Order", "Int32", "SpecLine"));
@@ -131,10 +119,10 @@ public class Test {
 		functions.add(new Function("ProductId", "Int32", "Sku", "RelatedProduct"));
 		functions.add(new Function("AltCats", "List`1", "ProductCategories"));
 		functions.add(new Function("BestImages", "List`1", "DigitalContent"));
-		functions.add(new Function("Round()", "Nullable`1", "ExpressionResultNumeric"));
-		functions.add(new Function("AtLeast()", "Nullable`1", "ExpressionResultNumeric"));
-		functions.add(new Function("AtMost()", "Nullable`1", "ExpressionResultNumeric"));
-		functions.add(new Function("MultiplyBy()", "Nullable`1", "ExpressionResultNumeric"));
+		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
+		functions.add(new Function("AtLeast()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
+		functions.add(new Function("AtMost()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
+		functions.add(new Function("MultiplyBy()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
 		functions.add(new Function("Match()", "PdmAttributeSet", "PdmRepeatingAttribute"));
 		functions.add(new Function("WhereUnit()", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("WhereUnitOrValue()", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
@@ -142,46 +130,37 @@ public class Test {
 		functions.add(new Function("WhereManufacturer()", "RelatedProductList", "RelatedProductList"));
 		functions.add(new Function("WhereModelName()", "RelatedProductList", "RelatedProductList"));
 		functions.add(new Function("WhereProductLine()", "RelatedProductList", "RelatedProductList"));
-		functions.add(new Function("Body", "String", "SpecLine"));
-		functions.add(new Function("Brand", "String", "Sku", "RelatedProduct"));
-		functions.add(
-				new Function("CategoryCode", "String", "ProductCategories", "RelatedProduct", "RelatedProductList"));
-		functions.add(new Function("CustomerPn", "String", "RelatedProduct", "RelatedProductList"));
-		functions.add(new Function("Description", "String", "Sku", "DigitalContentItem"));
-		functions.add(
-				new Function("GroupName", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("Header", "String", "SpecLine"));
-		functions.add(
-				new Function("Invariant", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("InvariantUnit", "String", "PdmAttribute", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute"));
-		functions.add(new Function("ItemName", "String", "Sku"));
-		functions.add(new Function("Key", "String", "AlternativeCategory"));
-		functions.add(new Function("Manufacturer", "String", "Sku", "RelatedProduct"));
-		functions.add(new Function("MimeType", "String", "DigitalContentItem"));
-		functions.add(new Function("ModelName", "String", "Sku", "RelatedProduct"));
-		functions.add(new Function("Name", "String", "Sku", "PdmAttribute", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute", "SpecSection"));
-		functions.add(new Function("PartNumber", "String", "Sku", "RelatedProduct"));
-		functions.add(new Function("ProductLine", "String", "Sku", "RelatedProduct"));
-		functions.add(new Function("ProductType", "String", "Sku"));
-		functions
-				.add(new Function("Unit", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(
-				new Function("UnitUSM", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(
-				new Function("Value", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(
-				new Function("ValueUSM", "String", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
-		functions.add(new Function("XmlContent", "String", "DigitalContentItem"));
-		functions.add(new Function("ListPaths()", "String", "ProductCategories"));
-		functions.add(new Function("ListUSM()", "String", "PdmAttributeSet"));
-		functions.add(new Function("GetFullColorDescription()", "String", "TemplexGenerator"));
-		functions.add(new Function("ToHtml()", "String", "DigitalContentItem"));
-		functions.add(new Function("ToPlainText()", "String", "DigitalContentItem"));
-		functions.add(new Function("ToText()", "String", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
+		functions.add(new Function("Body", "ExpressionResultLiteral", "SpecLine"));
+		functions.add(new Function("Brand", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
+		functions.add(new Function("CategoryCode", "ExpressionResultLiteral", "ProductCategories", "RelatedProduct", "RelatedProductList"));
+		functions.add(new Function("CustomerPn", "ExpressionResultLiteral", "RelatedProduct", "RelatedProductList"));
+		functions.add(new Function("Description", "ExpressionResultLiteral", "Sku", "DigitalContentItem"));
+		functions.add(new Function("GroupName", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Header", "ExpressionResultLiteral", "SpecLine"));
+		functions.add(new Function("Invariant", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("InvariantUnit", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("ItemName", "ExpressionResultLiteral", "Sku"));
+		functions.add(new Function("Key", "ExpressionResultLiteral", "AlternativeCategory"));
+		functions.add(new Function("Manufacturer", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
+		functions.add(new Function("MimeType", "ExpressionResultLiteral", "DigitalContentItem"));
+		functions.add(new Function("ModelName", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
+		functions.add(new Function("Name", "ExpressionResultLiteral", "Sku", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute", "SpecSection"));
+		functions.add(new Function("PartNumber", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
+		functions.add(new Function("ProductLine", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
+		functions.add(new Function("ProductType", "ExpressionResultLiteral", "Sku"));
+		functions.add(new Function("Unit", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("UnitUSM", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("Value", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute", "Gtin"));
+		functions.add(new Function("ValueUSM", "ExpressionResultLiteral", "PdmAttribute", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
+		functions.add(new Function("XmlContent", "ExpressionResultLiteral", "DigitalContentItem"));
+		functions.add(new Function("ListPaths()", "ExpressionResultLiteral", "ProductCategories"));
+		functions.add(new Function("ListUSM()", "ExpressionResultLiteral", "PdmAttributeSet"));
+		functions.add(new Function("GetFullColorDescription()", "ExpressionResultLiteral", "TemplexGenerator"));
+		functions.add(new Function("ToHtml()", "ExpressionResultLiteral", "DigitalContentItem"));
+		functions.add(new Function("ToPlainText()", "ExpressionResultLiteral", "DigitalContentItem"));
+		functions.add(new Function("ToText()", "ExpressionResultLiteral", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric", "DateTimeOffset"));
 		functions.add(new Function("Url", "Uri", "DigitalContentItem"));
+		functions.add(new Function("CompatibleProducts", "ExpressionResultList", "Specs"));
 		functions.add(new Function("CAT", "ProductCategories"));
 		functions.add(new Function("SKU", "Sku"));
 		functions.add(new Function("Request", "RelatedProduct"));
@@ -191,58 +170,25 @@ public class Test {
 		functions.add(new Function("DC", "DigitalContent"));
 		functions.add(new Function("Generator", "TemplexGenerator"));
 		functions.add(new Function("ES", "Specs"));
+		functions.add(new Function("COALESCE()", "You can invoke nothing on it"));
+		functions.add(new Function("NOT NULL", "You can invoke nothing on it"));
+		functions.add(new Function("NULL", "You can invoke nothing on it"));
+		functions.add(new Function("Data[\"\"]", "ExpressionResultLiteral", "RelatedProduct"));
+		functions.add(new Function("Gtin", "Gtin", "RelatedProduct"));
+		functions.add(new Function("Format", "ExpressionResultLiteral", "Gtin"));
+		functions.add(new Function("HasValue", "ExpressionResultLiteral", "Int32"));
+		functions.add(new Function("Height", "Int32", "ProductPackage"));
+		functions.add(new Function("Width", "Int32", "ProductPackage"));
+		functions.add(new Function("Weight", "Int32", "ProductPackage"));
+		functions.add(new Function("Package", "ProductPackage", "RelatedProduct"));
+		functions.add(new Function("IsBiggerThan()", "ExpressionResultLiteral", "ProductPackage"));
+		functions.add(new Function("BulletFeatures[]", "ExpressionResultLiteral", "TemplexGenerator"));
+		functions.add(new Function("Ksp[]", "ExpressionResultLiteral", "DigitalContent"));
+		functions.add(new Function("\"\"", "You can invoke nothing on it"));
 
-	}
 
-	// private final static String[] functions = { "AltCats", "BestImage",
-	// "BestImages", "Body", "BoxContents", "Brand",
-	// "BulletFeatures", "CategoryCode", "CategoryCodes", "CategoryKey",
-	// "CategoryKeys", "CategoryName", "Colors",
-	// "CompatibleProducts", "Count", "CustomerPn", "CustomerPns",
-	// "Description", "Distinct", "FancyColors",
-	// "GroupName", "HasText", "Header", "Invariant", "InvariantColors",
-	// "InvariantUnit", "InvariantValues",
-	// "IsEmpty", "ItemName", "Key", "KeySellingPoints", "Keywords", "Ksp",
-	// "LaunchDate", "Length", "LineCount",
-	// "Main", "Manufacturer", "ManufacturerNames", "MarketingText", "MimeType",
-	// "ModelName", "ModelNames", "Msds",
-	// "Name", "NonOemAccessories", "Order", "PackQuantity", "PartNumber",
-	// "ProductFeatures", "ProductId",
-	// "ProductIds", "ProductLine", "ProductLineNames", "ProductNames",
-	// "ProductSheet", "ProductType",
-	// "QuickStartGuide", "Thumbnail", "Total", "Unit", "UnitUSM", "Url",
-	// "UserManual", "Value", "Values",
-	// "ValuesAndUnits", "ValuesAndUnitsUSM", "ValuesUSM", "ValueUSM",
-	// "XmlContent", "AND", "CASE", "CAT", "DC",
-	// "ELSE", "END", "IF", "IN", "IS", "LIKE", "MS", "ES", "NOT", "NULL", "OR",
-	// "SKU", "THEN", "WHEN", "Round()",
-	// "Min()", "MinMax()", "Match()", "Max()", "ListPaths()", "ListUSM()",
-	// "Last()", "FlattenWithAnd()",
-	// "HtmlEncode()", "GetLines()", "GetPath()", "First()", "DiscardNulls()",
-	// "ExtractDecimals()",
-	// "GetAncestry()", "GetDateTime()", "GetDescendants()",
-	// "GetFullColorDescription()", "ToHtml()", "ToLower()",
-	// "ToLowerFirstChar()", "ToPlainText()", "ToTitleCase()", "ToUpper()",
-	// "ToUpperFirstChar()", "COALESCE()",
-	// "AtLeast()", "AtMost()", "Erase()", "EraseTextSurroundedBy()",
-	// "Format()", "GetLine()", "GetLineBody()",
-	// "Flatten()", "IfLike()", "IfLongerThan()", "IsDescendantOf()", "Match()",
-	// "Match()", "Pick()",
-	// "Pluralize()", "Postfix()", "Prefix()", "RegexReplace()", "Replace()",
-	// "Shorten()", "Shorten()", "Skip()",
-	// "Split()", "Split()", "MultiplyBy()", "Take()", "ToText()", "Where()",
-	// "Where()", "WhereCategory()",
-	// "WhereManufacturer()", "WhereModelName()", "WhereNot()", "WhereNot()",
-	// "WhereProductLine()", "WhereUnit()",
-	// "WhereUnitOrValue()", "UseSeparators()", "DECODE()" };
 
-	private static String NEW_LINE = "\n";
 
-	public static void main(String[] args) {
-		String expr = "  IF SKU.Brand.Prefix(\"bla\") --asdasd\n IS NOT NULL AND a>=1 --asdasd\n OR a>1 THEN \"asda else sd\" --- sdfsdf\n"
-				+ "ELSE IF A[1].Value(123) > 3 THEN \"blasd\" " + " ELSE IF b>3 THEN " + "ELSE \"ooooo\"  ";
-
-		System.out.println(checkExpression(expr, 0, 0));
 	}
 
 	private static String checkExpression(String expr, int p0, int p1) {
@@ -285,8 +231,9 @@ public class Test {
 
 		// clean expression to make it parsable
 		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll(" \\. ", ".")
-				.replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?", "]").replaceAll(" ?\\( ?", "(")
-				.replaceAll(" ?\\) ?\\.", ").").replaceAll("(?i)ELSE IF", "ELSEIF");
+				.replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].").replaceAll(" ?\\( ?", "(")
+				.replaceAll(" ?\\) ?\\.", ").").replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]")
+				.replaceAll("Ksp\\[\\d+\\]", "Ksp[]").replaceAll("(?i)ELSE IF", "ELSEIF");
 
 		System.out.println(exprCleaned);
 
@@ -420,6 +367,7 @@ public class Test {
 			return errors.toString();
 		}
 
+		// check conditions
 		String regex = "IF (.*?) THEN ";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(exprCleaned);
@@ -451,26 +399,22 @@ public class Test {
 
 		String structure = NEW_LINE + NEW_LINE + "Valid condition:" + NEW_LINE + "value1 operator value2";
 
-		String[] temp = condition.split(" AND ");
 		List<String> conditions = Arrays.asList(condition.split(" AND | OR "));
-		// for (int i = 0; i < temp.length; i++) {
-		// for (String str : temp[i].split(" OR ")) {
-		// conditions.add(str);
-		// }
-		// }
 
 		for (String con : conditions) {
 			int operatorsQty = con.length() - con.replaceAll(">=", "1").replaceAll("<=", "1").replaceAll("<", "")
 					.replaceAll(">", "").replaceAll("=", "").replaceAll(" LIKE ", " LIK ").replaceAll(" IS ", " I ")
-					.replaceAll(" IN ", " I ").length();
+					.replaceAll(" IN ", " I ").replaceAll("HasText", "HasTex").replaceAll("IsEmpty", "IsEmpt")
+					.replaceAll("IsDescendantOf\\(\\)(?!\\.)", "IsDescendantOf(").replaceAll("HasValue", "HasValu")
+					.replaceAll("(?!\\.)IsBiggerThan\\(\\)(?!\\.)", "IsBiggerThan(").length();
 			if (operatorsQty > 1) {
-				error = "Condition have to contains only 1 operator";
+				error = "Condition '"+ con +"' have to contains only 1 operator";
 				errors.append(error);
 				errors.append(structure);
 
 				return errors.toString();
 			} else if (operatorsQty == 0) {
-				error = "Condition have to contains operator";
+				error = "Condition '"+ con +"' have to contains operator";
 				errors.append(error);
 				errors.append(structure);
 
@@ -484,12 +428,17 @@ public class Test {
 
 				return errors.toString();
 			}
-			System.out.println(con.split("IS")[0]);
-			error = checkValue(con.split("IS")[0]);
-			if (error != null) {
-				errors.append(error);
 
-				return errors.toString();
+			// check values
+			String[] values = con.split(">=|<=|>|<|=|LIKE|IS|IN");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+
+					return errors.toString();
+				}
+
 			}
 
 		}
@@ -507,17 +456,64 @@ public class Test {
 
 		for (int i = 0; i < functns.length; i++) {
 			// check if function exists
-			if (!isFunction(functns[i]) && !functns[i].matches("A\\[\\d+\\]")) {
+			if (!isFunction(functns[i]) && !isPdm(functns[i]) && !isNumber(functns[i])) {
 				return "Function '" + functns[i] + "' doesn't exist";
 			}
-			if (!isFunctionMemberOfValid(functns[i], previousType)) {
-				return "Function '" + functns[i] + "' can't be called on " + previousType;
+
+			// if decimal do nothing
+			if (!isNumber(functns[i])) {
+
+				// check if pdm attribute or not
+				if (isPdm(functns[i])) {
+					String attrType = getAttributeType(Integer.parseInt(functns[i].replaceAll("[^0-9]", "")));
+					if (attrType != null) {
+						switch (attrType) {
+						case TYPE_SIMPLE:
+							previousType = "PdmAttribute";
+							break;
+						case TYPE_SIMPLE_NUMERIC:
+							previousType = "PdmAttribute";
+							break;
+						case TYPE_MULTI_VALUED:
+							previousType = "PdmMultivalueAttribute";
+							break;
+						case TYPE_MULTI_VALUED_NUMERIC:
+							previousType = "PdmMultivalueAttribute";
+							break;
+						case TYPE_REPEATING:
+							previousType = "PdmRepeatingAttribute";
+							break;
+						case TYPE_REPEATING_NUMERIC:
+							previousType = "PdmRepeatingAttribute";
+							break;
+						default:
+							break;
+						}
+					} else {
+						return "Attribute '" + functns[i] + "' doesn't exist";
+					}
+
+				} else {
+					if (!isFunctionMemberOfValid(functns[i], previousType)) {
+						return "Function '" + functns[i] + "' can't be invoked on '" + previousType + "'";
+					}
+
+					previousType = getFunctionReturnType(functns[i], previousType);
+				}
+
 			}
-			previousType = getFunctionReturnType(functns[i]);
 
 		}
 
 		return null;
+	}
+
+	private static boolean isNumber(String functionName) {
+		return functionName.matches("\\d+");
+	}
+
+	private static boolean isPdm(String functionName) {
+		return functionName.matches("A\\[\\d+\\]");
 	}
 
 	private static boolean isFunction(String functionName) {
@@ -531,10 +527,14 @@ public class Test {
 		return false;
 	}
 
-	private static String getFunctionReturnType(String functionName) {
+	private static String getFunctionReturnType(String functionName, String previousType) {
 		for (Function function : functions) {
 			if (function.getName().equals(functionName)) {
-				return function.getReturnType();
+				if (previousType != null && "ExpressionResult".equals(function.getReturnType())) {
+					return previousType;
+				} else {
+					return function.getReturnType();
+				}
 			}
 		}
 
