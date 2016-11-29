@@ -1,0 +1,209 @@
+GetDateTime()
+Parameters
+[Double offset]
+
+GetFullColorDescription()
+Parameters
+[String separator]
+
+Erase("value")
+Parameters
+String value, [Boolean ignoreCase], [String literalFormat]
+
+EraseTextSurroundedBy("surroundingCharacters")
+Parameters
+String surroundingCharacters
+
+ExtractDecimals()
+Parameters
+[Nullable`1 d]
+
+.Flatten()
+Parameters
+[String separator]
+
+FlattenWithAnd()
+Parameters
+[Int32 maxValues], [String omissionIndicator]
+
+Format("literalFormat")
+Parameters
+String literalFormat
+
+IfLike("pattern", "replacement")
+Parameters
+String pattern, String replacement
+
+IfLongerThan(6, "replacementText")
+Parameters
+Int32 length, String replacementText
+
+Postfix("suffix")
+Parameters
+String suffix
+
+Prefix("prefix")
+Parameters
+String prefix
+
+RegexReplace("pattern", "substitution")
+Parameters
+String pattern, String substitution
+
+Replace("oldValue", "newValue")
+Parameters
+String oldValue, String newValue, [String literalFormat], [StringComparison stringComparison]
+
+Shorten(3)
+Parameters
+Int32 length, [String omissionIndicator], [String literalFormat]
+
+Skip(7)
+Parameters
+Int32 count
+
+Split("separator1", "separator2", ...)
+Parameters
+String[] separator
+
+Take(7)
+Parameters
+Int32 count
+
+ToLower()
+Parameters
+[Boolean preserveAcronyms]
+
+ToText("literalFormat")
+Parameters
+String literalFormat
+
+ToTitleCase()
+Parameters
+[Int32 maxLength]
+
+UseSeparators("separators1", "separators2", ...)
+Parameters
+String[] separators
+
+Where("pattern1", "pattern2", ...)
+Parameters
+String[] pattern
+
+WhereNot("pattern1", "pattern2", ...)
+Parameters
+String[] pattern
+
+AtLeast(minimum)
+Parameters
+Decimal minimum
+
+AtMost(maximum)
+Parameters
+Decimal maximum
+
+MultiplyBy(factor)
+Parameters
+Decimal factor
+
+ListUSM()
+Parameters
+[String innerSeparator], [String outerSeparator]
+
+Match(5, 5, ...)
+Parameters
+[Int32[] id]
+
+WhereUnit("unitFilter1", "unitFilter2", ...)
+Parameters
+String[] unitFilter
+
+WhereUnitOrValue("unitOrValueFilter1", "unitOrValueFilter2", ...)
+Parameters
+String[] unitOrValueFilter
+
+GetAncestry()
+Parameters
+[Boolean includeSelf]
+
+GetDescendants()
+Parameters
+[Boolean includeSelf]
+
+IsDescendantOf("categoryKey")
+Parameters
+String categoryKey
+
+ListPaths()
+Parameters
+[String separator]
+
+WhereCategory("codeOrKey1", "codeOrKey2", ...)
+Parameters
+String[] codeOrKey
+
+WhereManufacturer("mfFilter1", "mfFilter2", ...)
+Parameters
+String[] mfFilter
+
+WhereModelName("modelFilter1", "modelFilter2", ...)
+Parameters
+String[] modelFilter
+
+WhereProductLine("plFilter1", "plFilter2", ...)
+Parameters
+String[] plFilter
+
+GetLine(4)
+Parameters
+Int32 i
+
+GetLineBody(3)
+Parameters
+Int32 i
+
+
+ToHtml()
+no
+
+ToPlainText()
+no
+
+DiscardNulls()
+no
+
+First()
+no
+
+HtmlEncode()
+no
+
+Last()
+no
+
+Max()
+no
+
+Min()
+no
+
+MinMax()
+no
+
+Pluralize()
+no
+
+ToLowerFirstChar()
+no
+
+ToUpper()
+no
+
+ToUpperFirstChar()
+no
+
+Round()
+no
+
+GetLines()
+no
