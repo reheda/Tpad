@@ -28,7 +28,7 @@ public class Test {
 	private static String NEW_LINE = "\n";
 
 	public static void main(String[] args) {
-		String expr = "IF   $13s$ IS NOT NULL OR    COALESCE(A[605].Where(\"tata\").Values.Flatten(), A[605].Values.Flatten()) LIKE A[605].Where(\"blabla\").Values			THEN \"bla\"";
+		String expr = "IF Request.Package.HasText.Replace() > 2 THEN 3";
 
 		System.out.println(checkExpression(expr));
 	}
@@ -427,15 +427,16 @@ public class Test {
 		}
 
 		String contitonCleaned = condition;
+
 		// erase content surrounded by brackets
 		if (contitonCleaned.toUpperCase().contains(" IN(")) {
 			contitonCleaned = contitonCleaned.substring(0, contitonCleaned.indexOf(" IN(")) + " IN()";
 		}
+
 		if (contitonCleaned.toUpperCase().contains("COALESCE(")) {
 			int point = getCoalesceEndIndex(contitonCleaned);
 			contitonCleaned = contitonCleaned.substring(0, contitonCleaned.indexOf("COALESCE(") + 9)
 					+ contitonCleaned.substring(point);
-
 		}
 
 		contitonCleaned = contitonCleaned.replaceAll("\\(.*?\\)", "()");
@@ -444,7 +445,6 @@ public class Test {
 
 		StringBuilder errors = new StringBuilder();
 		String error = null;
-
 		String structure = NEW_LINE + NEW_LINE + "Valid condition:" + NEW_LINE + "value1 operator value2";
 
 		List<String> conditions = Arrays.asList(contitonCleaned.split("(?i) AND | OR "));
@@ -453,9 +453,10 @@ public class Test {
 
 			int operatorsQty = con.length() - con.replaceAll(">=", "1").replaceAll("<=", "1").replaceAll("<", "")
 					.replaceAll(">", "").replaceAll("=", "").replaceAll("(?i) LIKE ", " LIK ")
-					.replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN").replaceAll("HasText", "HasTex")
-					.replaceAll("IsEmpty", "IsEmpt").replaceAll("IsDescendantOf\\(\\)(?!\\.)", "IsDescendantOf(")
-					.replaceAll("HasValue", "HasValu").replaceAll("(?!\\.)IsBiggerThan\\(\\)(?!\\.)", "IsBiggerThan(")
+					.replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
+					.replaceAll("HasText(?!\\.)", "HasTex").replaceAll("IsEmpty(?!\\.)", "IsEmpt")
+					.replaceAll("IsDescendantOf\\(\\)(?!\\.)", "IsDescendantOf(")
+					.replaceAll("HasValue(?!\\.)", "HasValu").replaceAll("IsBiggerThan\\(\\)(?!\\.)", "IsBiggerThan(")
 					.length();
 
 			if (operatorsQty > 1) {
