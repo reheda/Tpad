@@ -31,6 +31,7 @@ public class Test {
 		String expr = "IF Request.Package.HasText.Replace() > 2 THEN 3";
 
 		System.out.println(checkExpression(expr));
+		
 	}
 
 	static void initFunctions() {
@@ -428,19 +429,6 @@ public class Test {
 
 		String contitonCleaned = condition;
 
-		// erase content surrounded by brackets
-		if (contitonCleaned.toUpperCase().contains(" IN(")) {
-			contitonCleaned = contitonCleaned.substring(0, contitonCleaned.indexOf(" IN(")) + " IN()";
-		}
-
-		if (contitonCleaned.toUpperCase().contains("COALESCE(")) {
-			int point = getCoalesceEndIndex(contitonCleaned);
-			contitonCleaned = contitonCleaned.substring(0, contitonCleaned.indexOf("COALESCE(") + 9)
-					+ contitonCleaned.substring(point);
-		}
-
-		contitonCleaned = contitonCleaned.replaceAll("\\(.*?\\)", "()");
-
 		System.out.println(contitonCleaned);
 
 		StringBuilder errors = new StringBuilder();
@@ -451,8 +439,22 @@ public class Test {
 
 		for (String con : conditions) {
 
-			int operatorsQty = con.length() - con.replaceAll(">=", "1").replaceAll("<=", "1").replaceAll("<", "")
-					.replaceAll(">", "").replaceAll("=", "").replaceAll("(?i) LIKE ", " LIK ")
+			String conCleaned = con;
+
+			// erase content surrounded by brackets
+			if (conCleaned.toUpperCase().contains(" IN(")) {
+				conCleaned = conCleaned.substring(0, conCleaned.indexOf(" IN(")) + " IN()";
+			}
+
+			if (conCleaned.toUpperCase().contains("COALESCE(")) {
+				int point = getCoalesceEndIndex(conCleaned);
+				conCleaned = conCleaned.substring(0, conCleaned.indexOf("COALESCE(") + 9) + conCleaned.substring(point);
+			}
+
+			conCleaned = conCleaned.replaceAll("\\(.*?\\)", "()");
+
+			int operatorsQty = conCleaned.length() - conCleaned.replaceAll(">=", "1").replaceAll("<=", "1")
+					.replaceAll("<", "").replaceAll(">", "").replaceAll("=", "").replaceAll("(?i) LIKE ", " LIK ")
 					.replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
 					.replaceAll("HasText(?!\\.)", "HasTex").replaceAll("IsEmpty(?!\\.)", "IsEmpt")
 					.replaceAll("IsDescendantOf\\(\\)(?!\\.)", "IsDescendantOf(")
@@ -460,20 +462,20 @@ public class Test {
 					.length();
 
 			if (operatorsQty > 1) {
-				error = "Condition '" + con + "' have to contains only 1 operator";
+				error = "Condition '" + conCleaned + "' have to contains only 1 operator";
 				errors.append(error);
 				errors.append(structure);
 
 				return errors.toString();
 			} else if (operatorsQty == 0) {
-				error = "Condition '" + con + "' have to contains operator";
+				error = "Condition '" + conCleaned + "' have to contains operator";
 				errors.append(error);
 				errors.append(structure);
 
 				return errors.toString();
 			}
 
-			int underScroreCount = con.length() - con.replaceAll("_", "").length();
+			int underScroreCount = conCleaned.length() - conCleaned.replaceAll("_", "").length();
 			if (underScroreCount > 0) {
 				error = "Condition DON'T have to contains underscore";
 				errors.append(error);
@@ -482,12 +484,13 @@ public class Test {
 			}
 
 			// check values
-			if (con.toUpperCase().contains(" IS ")) {
-				String[] values = con.split("(?i) IS ");
+			if (conCleaned.toUpperCase().contains(" IS ")) {
+				String[] values = conCleaned.split("(?i) IS ");
 				if (values.length == 2) {
 
-					if (!values[1].trim().matches("(?i)NOT NULL") && !values[1].trim().matches("(?i)NULL")) {
-						return "You shouldn't check for '" + values[1] + "'. Expected check for NULL";
+					String rightPart = values[1].trim();
+					if (!rightPart.matches("(?i)NOT NULL") && !rightPart.matches("(?i)NULL")) {
+						return "You shouldn't check for '" + rightPart + "'. Expected check for NULL";
 					}
 
 					error = checkValue(values[0]);
@@ -503,7 +506,7 @@ public class Test {
 
 			} else {
 
-				String[] values = con.split("(?i)>=|<=|>|<|=| LIKE | IN\\(\\)");
+				String[] values = conCleaned.split("(?i)>=|<=|>|<|=| LIKE | IN\\(\\)");
 				for (int i = 0; i < values.length; i++) {
 					error = checkValue(values[i]);
 					if (error != null) {
@@ -586,8 +589,8 @@ public class Test {
 		return null;
 	}
 
-	private static boolean isNumber(String functionName) {
-		return functionName.matches("\\d+");
+	private static boolean isNumber(String str) {
+		return str.matches("\\d+");
 	}
 
 	private static boolean isReference(String functionName) {
@@ -652,9 +655,48 @@ public class Test {
 		return false;
 	}
 
-	private static String isParametersValid(String functionName) {
+	private static boolean isParametersValid(String functionName, String parameters) {
+		// Replace("before", "after")
+		// functionName = Replace
+		// parameters = "\"before\", \"after\""
 
-		return null;
+		String[] params = parameters.split(", |,");
+
+		int paramsQty = params.length;
+
+		for (int i = 0; i < params.length; i++) {
+			// check if text
+			boolean isString = params[i].matches("\".*\"");
+			// check if number
+			boolean isDouble = params[i].matches("\\d+\\.\\d+");
+			boolean isInteger = params[i].matches("\\d+");
+			// check if function
+			boolean isFunction = params[i].matches(".*\\.\\w+");
+			// check if boolean
+			boolean isBoolean = params[i].matches("true|false");
+			// check if StringComparison
+			boolean isStringComparison = params[i].matches(
+					"CurrentCulture|CurrentCultureIgnoreCase|InvariantCulture|InvariantCultureIgnoreCase|Ordinal|OrdinalIgnoreCase");
+
+			if (isString) {
+
+			} else if (isBoolean) {
+
+			} else if (isStringComparison) {
+
+			} else if (isDouble) {
+
+			} else if (isInteger) {
+
+			} else if (isFunction) {
+
+			} else {
+
+			}
+
+		}
+
+		return false;
 	}
 
 	private static boolean isParenthesisMatch(String str) {
