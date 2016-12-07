@@ -24,14 +24,75 @@ public class Test {
 	final static String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
 
 	private static ArrayList<Function> functions;
+	private static ArrayList<FunctionWithParameters> functionsWithParams;
 
 	private static String NEW_LINE = "\n";
 
 	public static void main(String[] args) {
-		String expr = "IF Request.Package.HasText.Replace() > 2 THEN 3";
+		// String expr = "IF Request.Package.HasText.Replace() > 2 THEN 3";
+		String expr = "IF Request.Package.IsBiggerThan(20    ,   15,15   ,0).ToText(\"asdasd\").Replace(\"True\",\"Yes\").Replace(\"False\",\"No\") IS NOT NULL THEN 3";
 
 		System.out.println(checkExpression(expr));
-		
+
+	}
+
+	static void initFunctionsWithParams() {
+		final int MAX_LIMIT = 1000;
+		functionsWithParams = new ArrayList<>();
+		functionsWithParams.add(new FunctionWithParameters("GetAncestry()", 0, 1, "Boolean"));
+		functionsWithParams.add(new FunctionWithParameters("GetDescendants()", 0, 1, "Boolean"));
+		functionsWithParams.add(new FunctionWithParameters("ToLower()", 0, 1, "Boolean"));
+		functionsWithParams.add(new FunctionWithParameters("ExtractDecimals()", 0, 1, "Double"));
+		functionsWithParams.add(new FunctionWithParameters("GetDateTime()", 0, 1, "Double"));
+		functionsWithParams.add(new FunctionWithParameters("AtLeast()", 1, 1, "Double"));
+		functionsWithParams.add(new FunctionWithParameters("AtMost()", 1, 1, "Double"));
+		functionsWithParams.add(new FunctionWithParameters("MultiplyBy()", 1, 1, "Double"));
+		functionsWithParams.add(new FunctionWithParameters("ToTitleCase()", 0, 1, "Int32"));
+		functionsWithParams.add(new FunctionWithParameters("GetLine()", 1, 1, "Int32"));
+		functionsWithParams.add(new FunctionWithParameters("GetLineBody()", 1, 1, "Int32"));
+		functionsWithParams.add(new FunctionWithParameters("Skip()", 1, 1, "Int32"));
+		functionsWithParams.add(new FunctionWithParameters("Take()", 1, 1, "Int32"));
+		functionsWithParams.add(new FunctionWithParameters("Flatten()", 0, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("GetFullColorDescription()", 0, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("ListPaths()", 0, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("EraseTextSurroundedBy()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("Format()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("IsDescendantOf()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("Postfix()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("Prefix()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("ToText()", 1, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("Match()", 0, MAX_LIMIT, "Int32[]"));
+		functionsWithParams.add(new FunctionWithParameters("Split()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("UseSeparators()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("Where()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereNot()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereUnit()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereUnitOrValue()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereCategory()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereManufacturer()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereModelName()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("WhereProductLine()", 1, MAX_LIMIT, "String[]"));
+
+		functionsWithParams.add(new FunctionWithParameters("IfLike()", 2, 2, "String", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("IfLongerThan()", 2, 2, "Int32", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("FlattenWithAnd()", 0, 2, "Int32", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("RegexReplace()", 2, 2, "String", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("ListUSM()", 0, 2, "String", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("Erase()", 1, 3, "String", "Boolean", "String"));
+
+		functionsWithParams.add(new FunctionWithParameters("Shorten()", 1, 3, "Int32", "String", "String"));
+
+		functionsWithParams
+				.add(new FunctionWithParameters("Replace()", 2, 4, "String", "String", "String", "StringComparison"));
+
+		functionsWithParams
+				.add(new FunctionWithParameters("IsBiggerThan()", 4, 4, "Double", "Double", "Double", "Double"));
+
 	}
 
 	static void initFunctions() {
@@ -228,6 +289,7 @@ public class Test {
 
 	private static String checkExpression(String expr) {
 		initFunctions();
+		initFunctionsWithParams();
 		String exprCleaned = null;
 		StringBuilder errors = new StringBuilder();
 		String error = null;
@@ -500,6 +562,21 @@ public class Test {
 						return errors.toString();
 					}
 
+					// check parameters
+					String regex = "\\.(\\w+) ?\\((.*?)\\)";
+					Pattern p = Pattern.compile(regex);
+					Matcher m = p.matcher(con);
+					while (m.find()) {
+						String functionName = m.group(1) + "()";
+						String parameters = m.group(2);
+						error = checkParameters(functionName, parameters);
+						if (error != null) {
+							errors.append(error);
+
+							return errors.toString();
+						}
+					}
+
 				} else {
 					System.err.println("Please report this expression!");
 				}
@@ -516,6 +593,22 @@ public class Test {
 					}
 
 				}
+
+				// check parameters
+				String regex = "\\.(\\w+) ?\\((.*?)\\)";
+				Pattern p = Pattern.compile(regex);
+				Matcher m = p.matcher(con);
+				while (m.find()) {
+					String functionName = m.group(1) + "()";
+					String parameters = m.group(2);
+					error = checkParameters(functionName, parameters);
+					if (error != null) {
+						errors.append(error);
+
+						return errors.toString();
+					}
+				}
+
 			}
 
 		}
@@ -655,7 +748,7 @@ public class Test {
 		return false;
 	}
 
-	private static boolean isParametersValid(String functionName, String parameters) {
+	private static String checkParameters(String functionName, String parameters) {
 		// Replace("before", "after")
 		// functionName = Replace
 		// parameters = "\"before\", \"after\""
@@ -664,39 +757,29 @@ public class Test {
 
 		int paramsQty = params.length;
 
-		for (int i = 0; i < params.length; i++) {
-			// check if text
-			boolean isString = params[i].matches("\".*\"");
-			// check if number
-			boolean isDouble = params[i].matches("\\d+\\.\\d+");
-			boolean isInteger = params[i].matches("\\d+");
-			// check if function
-			boolean isFunction = params[i].matches(".*\\.\\w+");
-			// check if boolean
-			boolean isBoolean = params[i].matches("true|false");
-			// check if StringComparison
-			boolean isStringComparison = params[i].matches(
-					"CurrentCulture|CurrentCultureIgnoreCase|InvariantCulture|InvariantCultureIgnoreCase|Ordinal|OrdinalIgnoreCase");
+		for (FunctionWithParameters func : functionsWithParams) {
 
-			if (isString) {
+			if (func.getName().equals(functionName)) {
 
-			} else if (isBoolean) {
+				if (func.isParamsQtyValid(paramsQty)) {
 
-			} else if (isStringComparison) {
+					for (int i = 0; i < params.length; i++) {
+						if (!func.isTypeValid(params[i].trim(), i)) {
 
-			} else if (isDouble) {
+							return "Incorrect type. '" + params[i].trim() + "' shouldn't be on position #" + (i + 1);
+						}
+					}
 
-			} else if (isInteger) {
+					// if all parameters are valid
+					return null;
 
-			} else if (isFunction) {
-
-			} else {
-
+				} else {
+					return "'" + functionName + "' shouldn't have '" + paramsQty + "' parameters";
+				}
 			}
-
 		}
 
-		return false;
+		return "'" + functionName + "' shouldn't have parameters";
 	}
 
 	private static boolean isParenthesisMatch(String str) {
