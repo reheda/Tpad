@@ -30,7 +30,78 @@ public class Test {
 
 	public static void main(String[] args) {
 		// String expr = "IF Request.Package.HasText.Replace() > 2 THEN 3";
-		String expr = "IF Request.Package.IsBiggerThan(20    ,   15,15   ,0).ToText(\"asdasd\").Replace(\"True\",\"Yes\").Replace(\"False\",\"No\") IS NOT NULL THEN 3";
+		// String expr = "IF Request.Package.IsBiggerThan(20 , 15,15
+		// ,0).ToText(\"asdasd\").Replace(\"True\",\"Yes\").Replace(\"False\",\"No\")
+		// IS NOT NULL THEN 3";
+		String expr = "--1 Compatibility\n" + "--2 Use\n" + "--4 Controls/settings/speeds\n"
+				+ "--4089 Compatibility (Product Type) \n" + "--4090 Compatibility (Camcorder Model) \n"
+				+ "--4091 Compatibility (Camera Model) \n" + "IF A[4089].Values IS NOT NULL\n"
+				+ "AND A[4090].Values IS NOT NULL\n" + "AND A[4091].Values IS NOT NULL \n"
+				+ "THEN \"<b>Compatible with \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
+				+ "\"</b><br>Including \"_A[4091].Values.HtmlEncode().FlattenWithAnd(3).Replace(\", and more\",\" and other\").Postfix(\" cameras. Also compatible with \")\n"
+				+ "_A[4090].Values.FlattenWithAnd(3).Replace(\", and more\",\" and other\").Postfix(\" camcorders.\")\n"
+				+ "\n" + "ELSE IF A[4089].Values IS NOT NULL\n" + "AND A[4090].Values IS NOT NULL      \n"
+				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
+				+ "\"</b><br>Including \"_A[4090].Values.FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n" + "\n"
+				+ "ELSE IF A[4089].Values IS NOT NULL\n" + "AND A[4091].Values IS NOT NULL \n"
+				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
+				+ "\"</b><br>Including \"_A[4091].Values.FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n" + "\n"
+				+ "ELSE IF A[4089].Values IS NOT NULL \n" + "AND MS.CompatibleProducts.Where(\"%, %\") IS NOT NULL \n"
+				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
+				+ "\"</b><br>Including \"_MS.CompatibleProducts.Where(\"%,%\").Flatten(\", \").Split(\", \").Distinct.FlattenWithAnd(3).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode().Postfix(\".\")\n"
+				+ "ELSE IF A[4089].Values IS NOT NULL \n" + "AND MS.CompatibleProducts IS NOT NULL \n"
+				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
+				+ "\"</b><br>Including \"_MS.CompatibleProducts.Distinct.Flatten(\", \").Split(\", \").FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n"
+				+ "\n" + "ELSE IF A[4089].Values IS NOT NULL \n" + "THEN \"<b>Compatible with select \"_\n"
+				+ "A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true).HtmlEncode()_\n"
+				+ "\"</b><br>For wide-ranging use.\" \n" + "\n" + "ELSE IF A[4091].Values.Count <= 3  \n"
+				+ "THEN \"<b>Compatible with select \"_A[4091].Values.FlattenWithAnd().HtmlEncode()\n"
+				+ "_\" cameras</b><br>For use with your existing model.\" \n" + "\n" + "ELSE IF A[4091].Values > 3 \n"
+				+ "THEN \"<b>Compatible with a wide variety of cameras</b><br>Including \"_A[4091].Values.FlattenWithAnd().HtmlEncode().Postfix(\".\")\n"
+				+ "\n" + "ELSE IF MS.CompatibleProducts.Length > 50\n" + "AND MS.CompatibleProducts.Count > 2\n"
+				+ "THEN \"<b>Compatible with \"_\n"
+				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").Take(1).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode()_\n"
+				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").Skip(1).Take(1).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode().Prefix(\", \")\n"
+				+ "_\", and more</b><br>For wide-ranging use.\" \n" + "\n"
+				+ "ELSE IF MS.CompatibleProducts IS NOT NULL\n" + "THEN \"<b>Compatible with \"_\n"
+				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").FlattenWithAnd(3).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode()\n"
+				+ "_\"</b><br>For wide-ranging use.\" \n" + "\n"
+				+ "ELSE \"<b>Compatible with most cameras</b><br>For wide-ranging use.\";\n" + "\n"
+				+ "--3 Material and/or appearance\n" + "IF A[4133].Value LIKE \"%, %\" \n"
+				+ "THEN \"<b>\"_A[4133].Value.Split(\", \").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
+				+ "_\" materials</b><br>Offer comfort and durability.\" \n" + "ELSE IF A[4133].Value LIKE \"% / %\" \n"
+				+ "THEN \"<b>\"_A[4133].Value.Split(\" / \").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
+				+ "_\" materials</b><br>Offer comfort and durability.\" \n" + "ELSE IF A[4133].Value IS NOT NULL \n"
+				+ "THEN \"<b>\"_A[4133].Value.ToUpperFirstChar()\n"
+				+ "_\" material</b><br>Offers comfort and durability.\";\n" + "\n" + "--4 Controls/settings/speeds\n"
+				+ "IF A[10420].Value LIKE \"yes\" \n"
+				+ "THEN \"<b>Quick-reliase design</b><br>Allows you to easily detach the strap when needed.\" \n"
+				+ "ELSE IF A[4092].Values.Where(\"%quick%release%system%\") IS NOT NULL \n"
+				+ "THEN \"<b>Quick-release system</b><br>Enables fast, easy disconnection.\" \n"
+				+ "ELSE IF A[4092].Values.Where(\"%quick%release%\") IS NOT NULL \n"
+				+ "THEN \"<b>\"_A[4092].Values.Where(\"%quick%release%\").ToLower(true).Flatten().ToUpperFirstChar()\n"
+				+ "_\"</b><br>Enable\"_A[4092].Values.Where(\"%quick%release%bucle\").Count.IfLike(\"1\",\"\").IsEmpty.ToLower().IfLike(\"true\",\"s\").IfLike(\"false\",\"\")\n"
+				+ "_\" fast, easy disconnection.\";\n" + "\n" + "--5 Other features\n" + "\n"
+				+ "IF A[4092].Values.Where(\"%tripod%mountable%\") IS NOT NULL \n"
+				+ "THEN \"<b>Tripod-mountable</b><br>For flexible shooting options.\";\n" + "\n" + "--washable\n"
+				+ "IF A[4092].Values.Where(\"%washable%\") IS NOT NULL \n"
+				+ "THEN \"<b>Washable</b><br>Lets you easily clean the strap.\";\n" + "\n" + "--protection\n"
+				+ "IF A[5810].Values.Where(\"%water%\") IS NOT NULL OR A[4618].Value LIKE \"yes\" \n"
+				+ "THEN \"<b>Water-resistant design</b><br>For use in fresh or salt water.\";\n" + "\n"
+				+ "--6 Adjustability\n" + "--adjustable length\n"
+				+ "IF A[10422].ValueUSM IS NOT NULL AND A[10423].ValueUSM IS NOT NULL \n"
+				+ "THEN \"<b>Adjustable length</b><br>Lets you select lengths from \"_A[10423].ValueUSM_\" \"_A[10423].UnitUSM.HtmlEncode()_\" to \" \n"
+				+ "_A[10422].ValueUSM_\" \"_A[10422].UnitUSM.HtmlEncode()_\" to accommodate your needs.\" \n"
+				+ "ELSE IF A[4092].Values.Where(\"%adjustable%length%\") IS NOT NULL \n"
+				+ "THEN \"<b>Adjustable length</b><br>Lets you move the strap for a precise fit.\" \n"
+				+ "ELSE IF A[4092].Values.Where(\"%adjustable%\").Count = 1 \n"
+				+ "AND A[4092].Values.Where(\"%adjustable%straps%\") IS NOT NULL \n"
+				+ "THEN \"<b>Adjustable straps</b><br>Let you move the straps for a precise fit.\" \n"
+				+ "ELSE IF A[4092].Values.Where(\"%adjustable%\") IS NOT NULL\n"
+				+ "THEN \"<b>\"_A[4092].Values.Where(\"%adjustable%\").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
+				+ "_\"</b><br>To allow a customized fit.\";\n" + "\n" + "--attachment method\n"
+				+ "IF A[10416].Value IS NOT NULL \n"
+				+ "THEN \"<b>\"_A[10416].Value_\" attachment method</b><br>Enables secure transport.\"\n;";
 
 		System.out.println(checkExpression(expr));
 
@@ -322,18 +393,24 @@ public class Test {
 
 		System.out.println(exprCleaned);
 
-		// check if expression is returnValue or ifThenElseStatement
-		if (exprCleaned.toUpperCase().contains(" IF ") || exprCleaned.contains(" THEN ")
-				|| exprCleaned.contains(" ELSEIF ") || exprCleaned.contains(" ELSE ")) {
+		// split by semicolon
+		String[] statements = exprCleaned.split(";");
 
-			// if its ifThenElseStatement
-			error = checkIfThenElseStatement(exprCleaned);
-			errors.append(error);
+		for (int i = 0; i < statements.length; i++) {
+			// check if expression is returnValue or ifThenElseStatement
+			if (statements[i].toUpperCase().contains(" IF ") || statements[i].contains(" THEN ")
+					|| statements[i].contains(" ELSEIF ") || statements[i].contains(" ELSE ")) {
 
-			return errors.toString();
+				// if its ifThenElseStatement
+				error = checkIfThenElseStatement(statements[i]);
+				if (error!=null){
+					errors.append(error);
+					return errors.toString();
+				}
 
-		} else {
-			System.out.println("not implemented");
+			} else {
+				System.out.println("not implemented");
+			}
 		}
 
 		return null;
@@ -363,8 +440,8 @@ public class Test {
 
 	private static String checkThenStatementQuantity(String str) {
 		int ifCounter = str.length() - str.replaceAll("(?i)^IF ", "I ").replaceAll("(?i) IF ", " I ").length();
-		int elseIfCounter = str.length() - str.replaceAll("(?i) ELSEIF ", " ELSEI ").length();
-		int thenCounter = str.length() - str.replaceAll("(?i) THEN ", " THE ").length();
+		int elseIfCounter = str.length() - str.replaceAll("(?i)ELSEIF ", "ELSEI ").length();
+		int thenCounter = str.length() - str.replaceAll("(?i)THEN ", "THE ").length();
 
 		if (thenCounter != elseIfCounter + ifCounter) {
 			return "You are using THEN statement " + thenCounter + " times, but have to use "
@@ -453,12 +530,28 @@ public class Test {
 		}
 
 		// check conditions
-		String regex = "(?i)IF (.*?) THEN ";
+		{
+			String regex = "(?i)IF (.*?) THEN ";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(exprCleaned);
+			while (m.find()) {
+				String condition = m.group(1);
+				error = checkCondition(condition);
+				if (error != null) {
+					errors.append(error);
+
+					return errors.toString();
+				}
+			}
+		}
+
+		// check return values
+		String regex = "(?i)(?: THEN | ELSE )(.*)";
 		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(exprCleaned);
+		Matcher m = p.matcher(exprCleaned.replaceAll(" ELSEIF ", "\n ELSEIF ").replaceAll(" ELSE ", "\n ELSE "));
 		while (m.find()) {
-			String condition = m.group(1);
-			error = checkCondition(condition);
+			String returnValue = m.group(1);
+			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
 
@@ -491,8 +584,6 @@ public class Test {
 
 		String contitonCleaned = condition;
 
-		System.out.println(contitonCleaned);
-
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 		String structure = NEW_LINE + NEW_LINE + "Valid condition:" + NEW_LINE + "value1 operator value2";
@@ -503,14 +594,20 @@ public class Test {
 
 			String conCleaned = con;
 
+			final String COALESCE_TEXT = "COALESCE(";
+			final String IN_TEXT = " IN(";
+
 			// erase content surrounded by brackets
-			if (conCleaned.toUpperCase().contains(" IN(")) {
-				conCleaned = conCleaned.substring(0, conCleaned.indexOf(" IN(")) + " IN()";
+			if (conCleaned.toUpperCase().contains(IN_TEXT)) {
+				int point = getLastBracketIndex(conCleaned, conCleaned.indexOf(IN_TEXT));
+				conCleaned = conCleaned.substring(0, conCleaned.indexOf(IN_TEXT) + IN_TEXT.length())
+						+ conCleaned.substring(point);
 			}
 
-			if (conCleaned.toUpperCase().contains("COALESCE(")) {
-				int point = getCoalesceEndIndex(conCleaned);
-				conCleaned = conCleaned.substring(0, conCleaned.indexOf("COALESCE(") + 9) + conCleaned.substring(point);
+			if (conCleaned.toUpperCase().contains(COALESCE_TEXT)) {
+				int point = getLastBracketIndex(conCleaned, conCleaned.indexOf(COALESCE_TEXT));
+				conCleaned = conCleaned.substring(0, conCleaned.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length())
+						+ conCleaned.substring(point);
 			}
 
 			conCleaned = conCleaned.replaceAll("\\(.*?\\)", "()");
@@ -550,31 +647,24 @@ public class Test {
 				String[] values = conCleaned.split("(?i) IS ");
 				if (values.length == 2) {
 
+					// check right part
 					String rightPart = values[1].trim();
 					if (!rightPart.matches("(?i)NOT NULL") && !rightPart.matches("(?i)NULL")) {
 						return "You shouldn't check for '" + rightPart + "'. Expected check for NULL";
 					}
 
+					// check left part
 					error = checkValue(values[0]);
 					if (error != null) {
 						errors.append(error);
-
 						return errors.toString();
 					}
 
 					// check parameters
-					String regex = "\\.(\\w+) ?\\((.*?)\\)";
-					Pattern p = Pattern.compile(regex);
-					Matcher m = p.matcher(con);
-					while (m.find()) {
-						String functionName = m.group(1) + "()";
-						String parameters = m.group(2);
-						error = checkParameters(functionName, parameters);
-						if (error != null) {
-							errors.append(error);
-
-							return errors.toString();
-						}
+					error = chechParametersInCondition(con);
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
 					}
 
 				} else {
@@ -583,30 +673,22 @@ public class Test {
 
 			} else {
 
+				// check values
 				String[] values = conCleaned.split("(?i)>=|<=|>|<|=| LIKE | IN\\(\\)");
 				for (int i = 0; i < values.length; i++) {
 					error = checkValue(values[i]);
 					if (error != null) {
 						errors.append(error);
-
 						return errors.toString();
 					}
 
 				}
 
 				// check parameters
-				String regex = "\\.(\\w+) ?\\((.*?)\\)";
-				Pattern p = Pattern.compile(regex);
-				Matcher m = p.matcher(con);
-				while (m.find()) {
-					String functionName = m.group(1) + "()";
-					String parameters = m.group(2);
-					error = checkParameters(functionName, parameters);
-					if (error != null) {
-						errors.append(error);
-
-						return errors.toString();
-					}
+				error = chechParametersInCondition(con);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
 				}
 
 			}
@@ -748,6 +830,92 @@ public class Test {
 		return false;
 	}
 
+	private static String chechParametersInCondition(String condition) {
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+
+		String conCleaned = condition;
+
+		String regex = "\\.(\\w+) ?\\((.*?)\\)";
+		Pattern p = Pattern.compile(regex);
+
+		final String COALESCE_TEXT = "COALESCE(";
+		final String IN_TEXT = " IN(";
+
+		if (condition.contains(COALESCE_TEXT)) {
+			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
+			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(), point);
+
+			// check values and parameters
+			String[] values = conCleaned.split(", |,");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+				Matcher m = p.matcher(values[i]);
+				while (m.find()) {
+					String functionName = m.group(1) + "()";
+					String parameters = m.group(2);
+					error = checkParameters(functionName, parameters);
+					if (error != null) {
+						errors.append(error);
+
+						return errors.toString();
+					}
+				}
+
+			}
+		}
+
+		if (condition.contains(IN_TEXT)) {
+			int point = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
+			conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), point);
+
+			// check values and parameters
+			String[] values = conCleaned.split(", |,");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+				Matcher m = p.matcher(values[i]);
+				while (m.find()) {
+					String functionName = m.group(1) + "()";
+					String parameters = m.group(2);
+					error = checkParameters(functionName, parameters);
+					if (error != null) {
+						errors.append(error);
+
+						return errors.toString();
+					}
+				}
+
+			}
+		}
+
+		if (!condition.contains(COALESCE_TEXT) && !condition.contains(IN_TEXT)) {
+
+			Matcher m = p.matcher(condition);
+			while (m.find()) {
+				String functionName = m.group(1) + "()";
+				String parameters = m.group(2);
+				error = checkParameters(functionName, parameters);
+				if (error != null) {
+					errors.append(error);
+
+					return errors.toString();
+				}
+			}
+
+		}
+		return null;
+	}
+
 	private static String checkParameters(String functionName, String parameters) {
 		// Replace("before", "after")
 		// functionName = Replace
@@ -764,9 +932,9 @@ public class Test {
 				if (func.isParamsQtyValid(paramsQty)) {
 
 					for (int i = 0; i < params.length; i++) {
-						if (!func.isTypeValid(params[i].trim(), i)) {
-
-							return "Incorrect type. '" + params[i].trim() + "' shouldn't be on position #" + (i + 1);
+						if (!params[i].isEmpty() && !func.isTypeValid(params[i].trim(), i)) {
+							return "Function '" + func.getName() + "' has incorrect type. '" + params[i].trim()
+									+ "' shouldn't be on position #" + (i + 1);
 						}
 					}
 
@@ -779,7 +947,11 @@ public class Test {
 			}
 		}
 
-		return "'" + functionName + "' shouldn't have parameters";
+		if (!parameters.isEmpty()) {
+			return "'" + functionName + "' shouldn't have parameters";
+		}
+
+		return null;
 	}
 
 	private static boolean isParenthesisMatch(String str) {
@@ -812,12 +984,16 @@ public class Test {
 		return stack.empty();
 	}
 
-	private static int getCoalesceEndIndex(String str) {
+	private static int getLastBracketIndex(String str, int startIndex) {
+
+		if (startIndex < 0) {
+			return 0;
+		}
 
 		Stack<Character> stack = new Stack<Character>();
 
 		char c;
-		for (int i = 0; i < str.length(); i++) {
+		for (int i = startIndex; i < str.length(); i++) {
 
 			c = str.charAt(i);
 
@@ -836,5 +1012,34 @@ public class Test {
 		}
 
 		return 0;
+	}
+
+	private static String checkReturnValue(String returnValue) {
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+
+		final String COALESCE_TEXT = "COALESCE(";
+
+		if (!returnValue.contains(COALESCE_TEXT)) {
+			// check values
+			String[] values = returnValue.replaceAll("\\(.*?\\)", "()").split(" _ | _|_ |_");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+			}
+		}
+
+		// check parameters
+		error = chechParametersInCondition(returnValue);
+		if (error != null) {
+			errors.append(error);
+			return errors.toString();
+		}
+
+		return null;
 	}
 }
