@@ -2,7 +2,6 @@ package ua.pp.hak.compiler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -10,10 +9,15 @@ import java.util.regex.Pattern;
 
 public class Test {
 
-	static HashMap<Integer, String> attibutes = StAXParser.parse();
+	static List<Attribute> attibutes = StAXParser.parse();
 
 	static String getAttributeType(int attr) {
-		return attibutes.get(attr);
+		for (Attribute attribute : attibutes) {
+			if (attribute.getId() == attr) {
+				return attribute.getType();
+			}
+		}
+		return null;
 	}
 
 	final static String TYPE_SIMPLE = "Simple";
@@ -99,7 +103,7 @@ public class Test {
 				+ "THEN \"<b>Adjustable straps</b><br>Let you move the straps for a precise fit.\" \n"
 				+ "ELSE IF A[4092].Values.Where(\"%adjustable%\") IS NOT NULL\n"
 				+ "THEN \"<b>\"_A[4092].Values.Where(\"%adjustable%\").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
-				+ "_\"</b><br>To allow a customized fit.\";\n" + "\n" + "--attachment method\n"
+				+ "_\"</b><br>To allow a customized fit.\";aaaaa\n" + "\n" + "--attachment method\n"
 				+ "IF A[10416].Value IS NOT NULL \n"
 				+ "THEN \"<b>\"_A[10416].Value_\" attachment method</b><br>Enables secure transport.\"\n;";
 
@@ -524,6 +528,7 @@ public class Test {
 				.matches("(?i)^ ?IF .*? THEN .*?( ELSEIF .*? THEN .*?)*?( ELSE .*?)?");
 
 		if (!isIfThenElseStatementValid) {
+			errors.append("Invalid IF THEN ELSE statements.");
 			errors.append(structure);
 
 			return errors.toString();

@@ -2,7 +2,7 @@ package ua.pp.hak.compiler;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -19,7 +19,7 @@ public class TChecker {
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
-	static HashMap<Integer, String> attibutes = StAXParser.parse();
+	static List<Attribute> attibutes = StAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	final String TYPE_SIMPLE = "Simple";
@@ -38,7 +38,12 @@ public class TChecker {
 	}
 
 	String getAttributeType(int attr) {
-		return attibutes.get(attr);
+		for (Attribute attribute : attibutes) {
+			if (attribute.getId() == attr) {
+				return attribute.getType();
+			}
+		}
+		return null;
 	}
 
 	public static void check(Notepad npd) {
@@ -173,29 +178,21 @@ public class TChecker {
 	}
 
 	static String checkExpression(String expr, int p0, int p1) {
-	
-		//check comments
-		//erase comments
-		//check quotes
-		//erase values surrounded by quotes
-		String exprCleaned = expr
-		.replaceAll("\\n+", "\\s")
-		.replaceAll("\\s+", "\\s")
-		.replaceAll(" \\. ", ".")
-		.replaceAll(" ?\\[ ", "[")
-		.replaceAll(" ?\\] ", "]")
-		.replaceAll(" ?\\( ", "(")
-		.replaceAll(" ?\\) ", ")")
-		.replaceAll("else if", "elseif");
-		
-		
-		//count "else" words. qty should be 1 or 0 
-		//count "if" words. qty should be 1 or 0
-		//check "then" words. should be same quantity as qty("elseif") -1
-		
+
+		// check comments
+		// erase comments
+		// check quotes
+		// erase values surrounded by quotes
+		String exprCleaned = expr.replaceAll("\\n+", "\\s").replaceAll("\\s+", "\\s").replaceAll(" \\. ", ".")
+				.replaceAll(" ?\\[ ", "[").replaceAll(" ?\\] ", "]").replaceAll(" ?\\( ", "(").replaceAll(" ?\\) ", ")")
+				.replaceAll("else if", "elseif");
+
+		// count "else" words. qty should be 1 or 0
+		// count "if" words. qty should be 1 or 0
+		// check "then" words. should be same quantity as qty("elseif") -1
+
 		exprCleaned.matches("^if .* then .*( elseif .* then .*)* (else .*)?");
-		
-		
+
 		return null;
 	}
 

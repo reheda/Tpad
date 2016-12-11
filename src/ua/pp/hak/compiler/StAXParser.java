@@ -2,35 +2,40 @@ package ua.pp.hak.compiler;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 public class StAXParser {
 
-	public static HashMap<Integer, String> parse() {
+	public static List<Attribute> parse() {
 		boolean isValid = XSDValidator.validateXMLSchema("dbSchema.xsd", "db.xml");
 		if (!isValid) {
 			System.err.println("XML file is not valid against XSD Schema");
 			return null;
 		}
 
-		HashMap<Integer, String> hm = new HashMap<>();
+		List<Attribute> list = new ArrayList<>();
 
 		boolean bId = false;
 		boolean bType = false;
+		boolean bName = false;
 		try {
 			XMLInputFactory factory = XMLInputFactory.newInstance();
 			XMLEventReader eventReader = factory.createXMLEventReader(new FileReader("db.xml"));
 
-			Integer id = null;
+			int id = 0;
 			String type = null;
+			String name = null;
+
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
 				switch (event.getEventType()) {
@@ -41,6 +46,8 @@ public class StAXParser {
 						bId = true;
 					} else if (qName.equalsIgnoreCase("type")) {
 						bType = true;
+					} else if (qName.equalsIgnoreCase("name")) {
+						bName = true;
 					}
 					break;
 				case XMLStreamConstants.CHARACTERS:
@@ -53,9 +60,16 @@ public class StAXParser {
 						type = characters.getData();
 						bType = false;
 					}
+					if (bName) {
+						name = characters.getData().replace("///", "&");
+						bName = false;
+					}
 					break;
 				case XMLStreamConstants.END_ELEMENT:
-					hm.put(id, type);
+					EndElement endElement = event.asEndElement();
+                    if(endElement.getName().getLocalPart().equalsIgnoreCase("attribute")){
+                       list.add(new Attribute(id, type, name));
+                    }
 					break;
 				}
 			}
@@ -65,13 +79,13 @@ public class StAXParser {
 			e.printStackTrace();
 		}
 
-		return hm;
+		return list;
 	}
 
 	public static void main(String[] args) {
-		HashMap<Integer, String> hm = parse();
-		for (Integer key : hm.keySet()) {
-			System.out.printf("id: %d,\t\t type: %s%n", key, hm.get(key));
+		List<Attribute> list = parse();
+		for (Attribute attr : list) {
+			System.out.printf("id=%d, type='%s', name='%s'%n", attr.getId(), attr.getType(), attr.getName());
 		}
 	}
 }
