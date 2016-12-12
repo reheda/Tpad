@@ -37,75 +37,10 @@ public class Test {
 		// String expr = "IF Request.Package.IsBiggerThan(20 , 15,15
 		// ,0).ToText(\"asdasd\").Replace(\"True\",\"Yes\").Replace(\"False\",\"No\")
 		// IS NOT NULL THEN 3";
-		String expr = "--1 Compatibility\n" + "--2 Use\n" + "--4 Controls/settings/speeds\n"
-				+ "--4089 Compatibility (Product Type) \n" + "--4090 Compatibility (Camcorder Model) \n"
-				+ "--4091 Compatibility (Camera Model) \n" + "IF A[4089].Values IS NOT NULL\n"
-				+ "AND A[4090].Values IS NOT NULL\n" + "AND A[4091].Values IS NOT NULL \n"
-				+ "THEN \"<b>Compatible with \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
-				+ "\"</b><br>Including \"_A[4091].Values.HtmlEncode().FlattenWithAnd(3).Replace(\", and more\",\" and other\").Postfix(\" cameras. Also compatible with \")\n"
-				+ "_A[4090].Values.FlattenWithAnd(3).Replace(\", and more\",\" and other\").Postfix(\" camcorders.\")\n"
-				+ "\n" + "ELSE IF A[4089].Values IS NOT NULL\n" + "AND A[4090].Values IS NOT NULL      \n"
-				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
-				+ "\"</b><br>Including \"_A[4090].Values.FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n" + "\n"
-				+ "ELSE IF A[4089].Values IS NOT NULL\n" + "AND A[4091].Values IS NOT NULL \n"
-				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
-				+ "\"</b><br>Including \"_A[4091].Values.FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n" + "\n"
-				+ "ELSE IF A[4089].Values IS NOT NULL \n" + "AND MS.CompatibleProducts.Where(\"%, %\") IS NOT NULL \n"
-				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
-				+ "\"</b><br>Including \"_MS.CompatibleProducts.Where(\"%,%\").Flatten(\", \").Split(\", \").Distinct.FlattenWithAnd(3).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode().Postfix(\".\")\n"
-				+ "ELSE IF A[4089].Values IS NOT NULL \n" + "AND MS.CompatibleProducts IS NOT NULL \n"
-				+ "THEN \"<b>Compatible with select \"_A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true)_\n"
-				+ "\"</b><br>Including \"_MS.CompatibleProducts.Distinct.Flatten(\", \").Split(\", \").FlattenWithAnd(3).HtmlEncode().Postfix(\".\")\n"
-				+ "\n" + "ELSE IF A[4089].Values IS NOT NULL \n" + "THEN \"<b>Compatible with select \"_\n"
-				+ "A[4089].Values.Pluralize().FlattenWithAnd().ToLower(true).HtmlEncode()_\n"
-				+ "\"</b><br>For wide-ranging use.\" \n" + "\n" + "ELSE IF A[4091].Values.Count <= 3  \n"
-				+ "THEN \"<b>Compatible with select \"_A[4091].Values.FlattenWithAnd().HtmlEncode()\n"
-				+ "_\" cameras</b><br>For use with your existing model.\" \n" + "\n" + "ELSE IF A[4091].Values > 3 \n"
-				+ "THEN \"<b>Compatible with a wide variety of cameras</b><br>Including \"_A[4091].Values.FlattenWithAnd().HtmlEncode().Postfix(\".\")\n"
-				+ "\n" + "ELSE IF MS.CompatibleProducts.Length > 50\n" + "AND MS.CompatibleProducts.Count > 2\n"
-				+ "THEN \"<b>Compatible with \"_\n"
-				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").Take(1).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode()_\n"
-				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").Skip(1).Take(1).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode().Prefix(\", \")\n"
-				+ "_\", and more</b><br>For wide-ranging use.\" \n" + "\n"
-				+ "ELSE IF MS.CompatibleProducts IS NOT NULL\n" + "THEN \"<b>Compatible with \"_\n"
-				+ "MS.CompatibleProducts.Flatten(\", \").Split(\", \").FlattenWithAnd(3).Replace(\"(Alpha\", \"Alpha\").Replace(\"±\", \"+/-\").HtmlEncode()\n"
-				+ "_\"</b><br>For wide-ranging use.\" \n" + "\n"
-				+ "ELSE \"<b>Compatible with most cameras</b><br>For wide-ranging use.\";\n" + "\n"
-				+ "--3 Material and/or appearance\n" + "IF A[4133].Value LIKE \"%, %\" \n"
-				+ "THEN \"<b>\"_A[4133].Value.Split(\", \").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
-				+ "_\" materials</b><br>Offer comfort and durability.\" \n" + "ELSE IF A[4133].Value LIKE \"% / %\" \n"
-				+ "THEN \"<b>\"_A[4133].Value.Split(\" / \").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
-				+ "_\" materials</b><br>Offer comfort and durability.\" \n" + "ELSE IF A[4133].Value IS NOT NULL \n"
-				+ "THEN \"<b>\"_A[4133].Value.ToUpperFirstChar()\n"
-				+ "_\" material</b><br>Offers comfort and durability.\";\n" + "\n" + "--4 Controls/settings/speeds\n"
-				+ "IF A[10420].Value LIKE \"yes\" \n"
-				+ "THEN \"<b>Quick-reliase design</b><br>Allows you to easily detach the strap when needed.\" \n"
-				+ "ELSE IF A[4092].Values.Where(\"%quick%release%system%\") IS NOT NULL \n"
-				+ "THEN \"<b>Quick-release system</b><br>Enables fast, easy disconnection.\" \n"
-				+ "ELSE IF A[4092].Values.Where(\"%quick%release%\") IS NOT NULL \n"
-				+ "THEN \"<b>\"_A[4092].Values.Where(\"%quick%release%\").ToLower(true).Flatten().ToUpperFirstChar()\n"
-				+ "_\"</b><br>Enable\"_A[4092].Values.Where(\"%quick%release%bucle\").Count.IfLike(\"1\",\"\").IsEmpty.ToLower().IfLike(\"true\",\"s\").IfLike(\"false\",\"\")\n"
-				+ "_\" fast, easy disconnection.\";\n" + "\n" + "--5 Other features\n" + "\n"
-				+ "IF A[4092].Values.Where(\"%tripod%mountable%\") IS NOT NULL \n"
-				+ "THEN \"<b>Tripod-mountable</b><br>For flexible shooting options.\";\n" + "\n" + "--washable\n"
-				+ "IF A[4092].Values.Where(\"%washable%\") IS NOT NULL \n"
-				+ "THEN \"<b>Washable</b><br>Lets you easily clean the strap.\";\n" + "\n" + "--protection\n"
-				+ "IF A[5810].Values.Where(\"%water%\") IS NOT NULL OR A[4618].Value LIKE \"yes\" \n"
-				+ "THEN \"<b>Water-resistant design</b><br>For use in fresh or salt water.\";\n" + "\n"
-				+ "--6 Adjustability\n" + "--adjustable length\n"
-				+ "IF A[10422].ValueUSM IS NOT NULL AND A[10423].ValueUSM IS NOT NULL \n"
-				+ "THEN \"<b>Adjustable length</b><br>Lets you select lengths from \"_A[10423].ValueUSM_\" \"_A[10423].UnitUSM.HtmlEncode()_\" to \" \n"
-				+ "_A[10422].ValueUSM_\" \"_A[10422].UnitUSM.HtmlEncode()_\" to accommodate your needs.\" \n"
-				+ "ELSE IF A[4092].Values.Where(\"%adjustable%length%\") IS NOT NULL \n"
-				+ "THEN \"<b>Adjustable length</b><br>Lets you move the strap for a precise fit.\" \n"
-				+ "ELSE IF A[4092].Values.Where(\"%adjustable%\").Count = 1 \n"
-				+ "AND A[4092].Values.Where(\"%adjustable%straps%\") IS NOT NULL \n"
-				+ "THEN \"<b>Adjustable straps</b><br>Let you move the straps for a precise fit.\" \n"
-				+ "ELSE IF A[4092].Values.Where(\"%adjustable%\") IS NOT NULL\n"
-				+ "THEN \"<b>\"_A[4092].Values.Where(\"%adjustable%\").ToLower(true).FlattenWithAnd().ToUpperFirstChar()\n"
-				+ "_\"</b><br>To allow a customized fit.\";aaaaa\n" + "\n" + "--attachment method\n"
-				+ "IF A[10416].Value IS NOT NULL \n"
-				+ "THEN \"<b>\"_A[10416].Value_\" attachment method</b><br>Enables secure transport.\"\n;";
+		String expr = "CASE A[5784].Value\n"+
+				  "WHEN A[601].Value THEN A[601].Value\n"+
+				   "ELSE A[601].Value\n"+
+				"END;";
 
 		System.out.println(checkExpression(expr));
 
@@ -402,18 +337,30 @@ public class Test {
 
 		for (int i = 0; i < statements.length; i++) {
 			// check if expression is returnValue or ifThenElseStatement
-			if (statements[i].toUpperCase().contains(" IF ") || statements[i].contains(" THEN ")
-					|| statements[i].contains(" ELSEIF ") || statements[i].contains(" ELSE ")) {
+			if (statements[i].toUpperCase().contains("IF ") || statements[i].contains(" ELSEIF ")) {
 
 				// if its ifThenElseStatement
 				error = checkIfThenElseStatement(statements[i]);
-				if (error!=null){
+				if (error != null) {
 					errors.append(error);
 					return errors.toString();
 				}
-
+			} else if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
+					|| statements[i].toUpperCase().contains("END")) {
+				
+				error = checkCaseStatement(statements[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+				
 			} else {
-				System.out.println("not implemented");
+				error = checkReturnValue(statements[i]);
+				if (error != null) {
+					errors.append(error);
+
+					return errors.toString();
+				}
 			}
 		}
 
@@ -1045,6 +992,42 @@ public class Test {
 			return errors.toString();
 		}
 
+		return null;
+	}
+	
+	private static String checkCaseStatement(String caseStatement){
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+		String structure = NEW_LINE + NEW_LINE + "Valid structure:" + NEW_LINE + "CASE value"
+				+ NEW_LINE + "[ WHEN value THEN returnValue ]" + NEW_LINE + "[ ELSE returnValue ]"+ NEW_LINE + "END";
+		
+		boolean isCaseStatementValid = caseStatement
+				.matches("(?i)^ ?CASE .*?( WHEN .*? THEN .*?)+?( ELSE .*?)? END");
+
+		if (!isCaseStatementValid) {
+			errors.append("Invalid CASE statements. ");
+			errors.append(structure);
+
+			return errors.toString();
+		}
+		
+
+
+		// check values
+		String regex = "(?i)(?:CASE | WHEN | THEN | ELSE )(.*)";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(caseStatement.replaceAll(" WHEN ", "\n WHEN ").replaceAll(" THEN ", "\n THEN ").replaceAll(" ELSE ", "\n ELSE ").replaceAll(" END", "\nEND"));
+		while (m.find()) {
+			String returnValue = m.group(1);
+			error = checkReturnValue(returnValue);
+			if (error != null) {
+				errors.append(error);
+
+				return errors.toString();
+			}
+		}
+
+	
 		return null;
 	}
 }

@@ -37,7 +37,11 @@ public class FunctionWithParameters {
 	}
 
 	public boolean isTypeValid(String parameter, int index) {
-
+		
+		if ( parameterTypes[0].contains("[]")){
+			index = 0;
+		}
+		
 		if (index < 0 || index > parameterTypes.length - 1) {
 			return false;
 		}
