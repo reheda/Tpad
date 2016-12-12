@@ -3,6 +3,7 @@ package ua.pp.hak.update;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 public class Updater {
@@ -39,7 +40,7 @@ public class Updater {
 		return buffer.toString();
 	}
 
-	public static void main(String[] args) {
+	public static void start(int currentVersion) {
 		// change look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -47,8 +48,10 @@ public class Updater {
 			e.printStackTrace();
 		}
 		try {
-			if (Integer.parseInt(Updater.getLatestVersion()) > 0) {
+			if (Integer.parseInt(Updater.getLatestVersion()) > currentVersion) {
 				new UpdateInfo(Updater.getWhatsNew());
+			} else {
+				JOptionPane.showMessageDialog(null, "No update is available", "Update", JOptionPane.INFORMATION_MESSAGE);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

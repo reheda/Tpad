@@ -43,6 +43,7 @@ public interface MenuConstants {
 
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";
 	final String helpHelpTopic = "Help Topic";
+	final String helpCheckUpdates= "Check for Updates...";
 	final String helpAboutNotepad = "About Notepad";
 
 	final String quickReferenceText = "<html><body style=\"font-family:Segoe UI; font-size:9px\">" + "<div>"

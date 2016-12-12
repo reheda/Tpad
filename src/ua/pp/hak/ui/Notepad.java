@@ -74,6 +74,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
 import ua.pp.hak.compiler.TChecker;
+import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 
@@ -702,6 +703,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpCheckUpdates)){
+			Updater.start(0);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
@@ -914,6 +919,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 
 		helpMenu.addSeparator();
+		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
 		createMenuItem(helpAboutNotepad, KeyEvent.VK_A, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 

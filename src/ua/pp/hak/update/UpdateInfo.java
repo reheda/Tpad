@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -21,7 +22,7 @@ public class UpdateInfo extends JFrame {
 	private JButton cancel;
 	private JPanel pan1;
 	private JPanel pan2;
-	
+
 	public UpdateInfo(String info) {
 		initComponents();
 		infoPane.setText(info);
@@ -31,7 +32,7 @@ public class UpdateInfo extends JFrame {
 
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.setTitle("New Update Found");
-
+		this.setIconImage(new ImageIcon(this.getClass().getResource("/images/templex-big.png")).getImage());
 		pan1 = new JPanel();
 		pan1.setLayout(new BorderLayout());
 
@@ -41,7 +42,8 @@ public class UpdateInfo extends JFrame {
 		infoPane = new JEditorPane();
 		infoPane.setEditable(false);
 		Font font = new Font("Consolas", Font.PLAIN, 14);
-		infoPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); //remove this when you have html formatted text
+		// remove this when you have html formatted text
+		infoPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		infoPane.setFont(font);
 		infoPane.setContentType("text/html");
 
@@ -75,9 +77,11 @@ public class UpdateInfo extends JFrame {
 	}
 
 	private void update() {
-		String[] run = { "java", "-jar", "updater/update.jar" };
+		// String[] cmdarray = { "java", "-jar", "updater/update.jar",
+		// "-update"};
+		String[] cmdarray = { "updater/update.exe", "-update" };
 		try {
-			Runtime.getRuntime().exec(run);
+			Runtime.getRuntime().exec(cmdarray);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
