@@ -43,6 +43,10 @@ public class TChecker {
 		highlighterTags.clear();
 		taExpr.repaint();
 	}
+	
+	public static List<Attribute> getAttributes(){
+			return attibutes;
+	}
 
 	private static String getAttributeType(int attr) {
 		for (Attribute attribute : attibutes) {
@@ -80,7 +84,8 @@ public class TChecker {
 			taExprRes.setText("Expression is valid!");
 		} else {
 			color = red;
-			taExprRes.setText("Errors: \n" + sbErrors.toString());
+			// taExprRes.setText("Error! \n" + sbErrors.toString());
+			taExprRes.setText(sbErrors.toString());
 		}
 
 		// set color of the expression result's text area
@@ -89,12 +94,14 @@ public class TChecker {
 
 	}
 
-	static boolean isQuotesValid(String textExpr) {
+	private static String checkQuotes(String expr) {
+
+		StringBuilder errors = null;
 		int charsBeforeTheCurrentLine = 0;
-		if (!matchQuotes(textExpr)) {
+		if (!matchQuotes(expr)) {
 			SquigglePainter red = new SquigglePainter(Color.RED);
 			int p0 = 0, p1 = 0;
-			String[] lines = textExpr.split("\\n");
+			String[] lines = expr.split("\\n");
 			for (int i = 0; i < lines.length; i++) {
 				String line = lines[i];
 				if (!matchQuotes(line)) {
@@ -107,14 +114,24 @@ public class TChecker {
 					} catch (BadLocationException e) {
 						e.printStackTrace();
 					}
+					if (errors == null) {
+						errors = new StringBuilder("Lines: ");
+						errors.append(i + 1);
+					} else {
+						errors.append(",").append(i + 1);
+					}
 				}
 				charsBeforeTheCurrentLine += line.length() + 1;
 			}
 
-			return false;
+			if (errors != null) {
+				String error = "Quote is not closed";
+				errors.append(". ").append(error);
+				return errors.toString();
+			}
 		}
 
-		return true;
+		return null;
 	}
 
 	/**
@@ -133,56 +150,70 @@ public class TChecker {
 		return false;
 	}
 
-	static boolean isCommentsValid(String textExpr) {
-		int charsBeforeTheCurrentLine = 0;
+	static String checkComments(String textExpr) {
+		StringBuilder errors = null;
 		boolean isValid = true;
-		SquigglePainter red = new SquigglePainter(Color.RED);
+		int charsBeforeTheCurrentLine = 0;
+		SquigglePainter redPainter = new SquigglePainter(Color.RED);
 		int p0 = 0, p1 = 0;
 		String[] lines = textExpr.split("\\n");
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
 			if (line.contains("--") && line.contains("\"") && line.indexOf("--") < line.lastIndexOf("\"")) {
 				isValid = false;
-				p0 = line.indexOf("\"");
+				p0 = line.lastIndexOf("\"");
 				p1 = line.length();
 				try {
 					highlighterTags.add(taExpr.getHighlighter().addHighlight(charsBeforeTheCurrentLine + p0,
-							charsBeforeTheCurrentLine + p1, red));
+							charsBeforeTheCurrentLine + p1, redPainter));
 					taExpr.repaint();
 				} catch (BadLocationException e) {
 					e.printStackTrace();
+				}
+
+				if (errors == null) {
+					errors = new StringBuilder("Lines: ");
+					errors.append(i + 1);
+				} else {
+					errors.append(",").append(i + 1);
 				}
 			}
 			charsBeforeTheCurrentLine += line.length() + 1;
 		}
 
-		return isValid;
+		if (!isValid) {
+			String error = "Comment can't contains quote";
+			errors.append(". ").append(error);
+			return errors.toString();
+		}
+		return null;
 	}
 
-	// static String checkTemplateExpresion(String textExpr) {
+	private static String checkTemplateExpresion(String textExpr) {
 
-	// // split by semicolon
-	// String delimiter = ";";
-	// String[] expressions = textExpr.split(delimiter);
-	// int charsBefore = 0;
-	// int p0 = 0, p1 = 0;
-	// StringBuilder errors = new StringBuilder();
-	// for (int i = 0; i < expressions.length; i++) {
-	// int exprLength = expressions[i].length();
+		// split by semicolon
+		String delimiter = ";";
+		String[] expressions = textExpr.split(delimiter);
+		int charsBefore = 0;
+		int p0 = 0, p1 = 0;
+		StringBuilder errors = new StringBuilder();
+		for (int i = 0; i < expressions.length; i++) {
+			int exprLength = expressions[i].length();
 
-	// String error = checkExpression(expressions[i], charsBefore + p0,
-	// charsBefore + p1);
-	// if (error != null) {
-	// errors.append(error).append(NEW_LINE);
-	// }
+			String error = null;
+			// error = checkExpression(expressions[i], charsBefore + p0,
+			// charsBefore + p1);
+			if (error != null) {
+				errors.append(error).append(NEW_LINE);
+			}
 
-	// charsBefore += exprLength + delimiter.length();
-	// }
+			charsBefore += exprLength + delimiter.length();
+		}
 
-	// return errors.toString();
-	// }
+		return errors.toString();
+	}
 
-	static void initFunctionsWithParams() {
+	private static void initFunctionsWithParams() {
 		final int MAX_LIMIT = 1000;
 		functionsWithParams = new ArrayList<>();
 		functionsWithParams.add(new FunctionWithParameters("GetAncestry()", 0, 1, "Boolean"));
@@ -221,28 +252,20 @@ public class TChecker {
 		functionsWithParams.add(new FunctionWithParameters("WhereProductLine()", 1, MAX_LIMIT, "String[]"));
 
 		functionsWithParams.add(new FunctionWithParameters("IfLike()", 2, 2, "String", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("IfLongerThan()", 2, 2, "Int32", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("FlattenWithAnd()", 0, 2, "Int32", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("RegexReplace()", 2, 2, "String", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("ListUSM()", 0, 2, "String", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("Erase()", 1, 3, "String", "Boolean", "String"));
-
 		functionsWithParams.add(new FunctionWithParameters("Shorten()", 1, 3, "Int32", "String", "String"));
-
 		functionsWithParams
 				.add(new FunctionWithParameters("Replace()", 2, 4, "String", "String", "String", "StringComparison"));
-
 		functionsWithParams
 				.add(new FunctionWithParameters("IsBiggerThan()", 4, 4, "Double", "Double", "Double", "Double"));
 
 	}
 
-	static void initFunctions() {
+	private static void initFunctions() {
 		functions = new ArrayList<>();
 		functions.add(new Function("Main", "AlternativeCategory", "ProductCategories"));
 		functions.add(new Function("HasText", "ExpressionResultLiteral", "ExpressionResultList",
@@ -438,13 +461,23 @@ public class TChecker {
 	}
 
 	private static String checkExpression(String expr) {
-		initFunctions();
-		initFunctionsWithParams();
-		String exprCleaned = null;
 		StringBuilder errors = new StringBuilder();
 		String error = null;
+		String exprCleaned = null;
+
+		if (expr.trim().isEmpty()) {
+			error = "Expression is empty";
+			errors.append(error);
+
+			return errors.toString();
+		}
+
+		initFunctions();
+		initFunctionsWithParams();
+
 		// check comments
-		if (!isCommentsValid(expr)) {
+		error = checkComments(expr);
+		if (error != null) {
 			error = "Comment can't contains quote";
 			errors.append(error);
 
@@ -455,8 +488,8 @@ public class TChecker {
 		exprCleaned = expr.replaceAll("--.*", "");
 
 		// check quotes
-		if (!matchQuotes(expr)) {
-			error = "Quote is not closed";
+		error = checkQuotes(expr);
+		if (error != null) {
 			errors.append(error);
 
 			return errors.toString();
@@ -470,22 +503,14 @@ public class TChecker {
 				.replaceAll(" ?\\. ?", ".").replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].")
 				.replaceAll(" ?\\( ?", "(").replaceAll(" ?\\) ?\\.", ").");
 
-		System.out.println(exprCleaned);
+		// System.out.println(exprCleaned);
 
 		// split by semicolon
-		String[] statements = exprCleaned.split(";");
+		String[] statements = exprCleaned.split(" ?; ?|;");
 
 		for (int i = 0; i < statements.length; i++) {
 			// check if expression is returnValue or ifThenElseStatement
-			if (statements[i].toUpperCase().contains("IF ") || statements[i].contains(" ELSEIF ")) {
-
-				// if its ifThenElseStatement
-				error = checkIfThenElseStatement(statements[i]);
-				if (error != null) {
-					errors.append(error);
-					return errors.toString();
-				}
-			} else if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
+			if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
 					|| statements[i].toUpperCase().contains("END")) {
 
 				error = checkCaseStatement(statements[i]);
@@ -494,6 +519,18 @@ public class TChecker {
 					return errors.toString();
 				}
 
+			} else if (statements[i].toUpperCase().contains("IF ") || statements[i].contains(" ELSEIF ")
+					|| statements[i].contains(" THEN ") || statements[i].contains(">") || statements[i].contains("<")
+					|| statements[i].contains("=") || statements[i].contains(" IS ") || statements[i].contains(" AND ")
+					|| statements[i].contains(" OR ") || statements[i].contains(" LIKE ")
+					|| statements[i].contains(" IN(")) {
+
+				// if its ifThenElseStatement
+				error = checkIfThenElseStatement(statements[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
 			} else {
 				error = checkReturnValue(statements[i]);
 				if (error != null) {
@@ -557,8 +594,8 @@ public class TChecker {
 
 		StringBuilder errors = new StringBuilder();
 		String error = null;
-		String structure = NEW_LINE + NEW_LINE + "Valid structure:" + NEW_LINE + "IF statement THEN returnValue"
-				+ NEW_LINE + "[ ELSE IF statement THEN returnValue ]" + NEW_LINE + "[ ELSE returnValue ]";
+		String structure = NEW_LINE + NEW_LINE + "Valid structure:" + NEW_LINE + "IF condition THEN returnValue"
+				+ NEW_LINE + "[ ELSE IF condition THEN returnValue ]" + NEW_LINE + "[ ELSE returnValue ]";
 
 		// count "if" words. qty should be 1 or 0
 		error = checkIfStatementQuantity(exprCleaned);
@@ -732,7 +769,7 @@ public class TChecker {
 					}
 
 					// check parameters
-					error = checkParametersInCondition(con);
+					error = checkParametersInCondition(con.split("(?i) IS ")[0]);
 					if (error != null) {
 						errors.append(error);
 						return errors.toString();
@@ -745,21 +782,27 @@ public class TChecker {
 			} else {
 
 				// check values
-				String[] values = conCleaned.split("(?i)>=|<=|>|<|=| NOT LIKE | LIKE | IN\\(\\)");
+				{
+					String[] values = conCleaned.split("(?i)>=|<=|>|<|=| NOT LIKE | LIKE | IN\\(\\)");
+					for (int i = 0; i < values.length; i++) {
+						error = checkValue(values[i]);
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+
+					}
+				}
+
+				// check parameters
+				String[] values = con.split("(?i)>=|<=|>|<|=| NOT LIKE | LIKE ");
 				for (int i = 0; i < values.length; i++) {
-					error = checkValue(values[i]);
+					error = checkParametersInCondition(values[i]);
 					if (error != null) {
 						errors.append(error);
 						return errors.toString();
 					}
 
-				}
-
-				// check parameters
-				error = checkParametersInCondition(con);
-				if (error != null) {
-					errors.append(error);
-					return errors.toString();
 				}
 
 			}
@@ -771,6 +814,11 @@ public class TChecker {
 
 	private static String checkValue(String value) {
 		// add variant if check value is just string surrounded by quotes
+
+		// value cant finished with "." or ". "
+		if (value.matches(".*\\. ?$")) {
+			return "Value shouldn't be finished with DOT";
+		}
 
 		String valueCleaned = value.trim();
 		valueCleaned = valueCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]")
@@ -787,8 +835,12 @@ public class TChecker {
 			}
 
 			// if decimal or reference do nothing
-			if (!isNumber(functns[i]) && !isReference(functns[i])) {
+			if (isNumber(functns[i]) || isReference(functns[i])) {
+				if (previousType != null) {
+					return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'";
+				}
 
+			} else {
 				// check if pdm attribute or not
 				if (isPdm(functns[i])) {
 					int attr = Integer.parseInt(functns[i].replaceAll("[^0-9]", ""));
@@ -820,7 +872,16 @@ public class TChecker {
 						return "Attribute '" + functns[i] + "' doesn't exist";
 					}
 
+					if (!value.contains(".")) {
+						return "DOT expected";
+					}
+
 				} else {
+					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i]) && !value.contains(".")) {
+						System.out.println("'" + functns[i] + "'");
+						return "DOT expected";
+					}
+
 					if (!isFunctionMemberOfValid(functns[i], previousType)) {
 						return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'";
 					}
@@ -833,6 +894,10 @@ public class TChecker {
 		}
 
 		return null;
+	}
+
+	private static boolean isString(String str) {
+		return str.matches("\".*\"");
 	}
 
 	private static boolean isNumber(String str) {
@@ -923,14 +988,113 @@ public class TChecker {
 		final String COALESCE_TEXT = "COALESCE(";
 		final String IN_TEXT = " IN(";
 
-		if (condition.contains(COALESCE_TEXT)) {
+		if (condition.contains(COALESCE_TEXT) && condition.contains(IN_TEXT)) {
+			int pointCoalesce = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
+			int pointIn = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
+
+			{
+				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
+						+ condition.substring(pointCoalesce + 1, condition.indexOf(IN_TEXT))
+						+ condition.substring(pointIn + 1);
+				if (!allExceptFunc.trim().isEmpty()) {
+					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					for (int i = 0; i < values.length; i++) {
+						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
+								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+
+					}
+				}
+			}
+
+			{
+				// check coalesce
+				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(),
+						pointCoalesce);
+
+				// check values and parameters
+				String[] values = conCleaned.split(", |,");
+				for (int i = 0; i < values.length; i++) {
+					error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
+							.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
+					}
+
+					Matcher m = p.matcher(values[i]);
+					while (m.find()) {
+						String functionName = m.group(1) + "()";
+						String parameters = m.group(2);
+						error = checkParameters(functionName, parameters);
+						if (error != null) {
+							errors.append(error);
+
+							return errors.toString();
+						}
+					}
+
+				}
+			}
+
+			{
+				// check in
+				conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), pointIn);
+
+				// check values and parameters
+				String[] values = conCleaned.split(", |,");
+				for (int i = 0; i < values.length; i++) {
+					error = checkValue(values[i]);
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
+					}
+
+					Matcher m = p.matcher(values[i]);
+					while (m.find()) {
+						String functionName = m.group(1) + "()";
+						String parameters = m.group(2);
+						error = checkParameters(functionName, parameters);
+						if (error != null) {
+							errors.append(error);
+
+							return errors.toString();
+						}
+					}
+
+				}
+			}
+
+		} else if (condition.contains(COALESCE_TEXT)) {
 			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
+
+			{
+				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
+						+ condition.substring(point + 1);
+				if (!allExceptFunc.trim().isEmpty()) {
+					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					for (int i = 0; i < values.length; i++) {
+						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
+								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+
+					}
+				}
+			}
+
 			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(), point);
 
 			// check values and parameters
 			String[] values = conCleaned.split(", |,");
 			for (int i = 0; i < values.length; i++) {
-				error = checkValue(values[i]);
+				error = checkValue(
+						values[i].replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 				if (error != null) {
 					errors.append(error);
 					return errors.toString();
@@ -949,10 +1113,28 @@ public class TChecker {
 				}
 
 			}
-		}
 
-		if (condition.contains(IN_TEXT)) {
+		} else if (condition.contains(IN_TEXT)) {
 			int point = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
+
+			{
+				String allExceptFunc = condition.substring(0, condition.indexOf(IN_TEXT))
+						+ condition.substring(point + 1);
+				if (!allExceptFunc.trim().isEmpty()) {
+					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					for (int i = 0; i < values.length; i++) {
+						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
+								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+
+					}
+				}
+
+			}
+
 			conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), point);
 
 			// check values and parameters
@@ -1099,6 +1281,11 @@ public class TChecker {
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 
+		// value cant finished with "_" or "_ "
+		if (returnValue.matches(".*_ ?$")) {
+			return "Value shouldn't be finished with UNDERSCORE";
+		}
+
 		final String COALESCE_TEXT = "COALESCE(";
 
 		if (!returnValue.contains(COALESCE_TEXT)) {
@@ -1108,7 +1295,7 @@ public class TChecker {
 			// PdmMultivalueAttribute instead of PdmAttributeSet
 			String returnValueCleaned = returnValue.replaceAll("(?<!Match)\\(.*?\\)", "()")
 					.replaceAll("Match\\(.*?,.*?\\)", "Match()");
-			String[] values = returnValueCleaned.split(" _ | _|_ |_");
+			String[] values = returnValueCleaned.split(" ?_ ?");
 			for (int i = 0; i < values.length; i++) {
 				error = checkValue(values[i]);
 				if (error != null) {
@@ -1145,12 +1332,23 @@ public class TChecker {
 		}
 
 		// check values
-		String regex = "(?i)(?:CASE | WHEN | THEN | ELSE )(.*)";
+		String regex = "(?i)(CASE | WHEN | THEN | ELSE )(.*)";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(caseStatement.replaceAll(" WHEN ", "\n WHEN ").replaceAll(" THEN ", "\n THEN ")
 				.replaceAll(" ELSE ", "\n ELSE ").replaceAll(" END", "\nEND"));
 		while (m.find()) {
-			String returnValue = m.group(1);
+
+			String returnValue = m.group(2);
+
+			{
+				// CASE can't contains UNDERSCORE
+				String stmnt = m.group(1);
+				if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
+					return "CASE condition shouldn't contains UNDERSCORE";
+				}
+
+			}
+
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);

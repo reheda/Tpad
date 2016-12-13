@@ -34,7 +34,7 @@ public interface MenuConstants {
 	final String formatFont = "Font...";
 	final String formatForeground = "Set Text color...";
 	final String formatBackground = "Set Pad color...";
-	
+
 	final String viewParserPanel = "Parser Panel";
 	final String viewStatusBar = "Status Bar";
 	final String viewZoomIn = "Zoom In";
@@ -42,10 +42,11 @@ public interface MenuConstants {
 	final String viewZoomDefault = "Zoom Default";
 
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";
+	final String helpAttributeInfo = "Attribute Info";
 	final String helpHelpTopic = "Help Topic";
-	final String helpCheckUpdates= "Check for Updates...";
+	final String helpCheckUpdates = "Check for Updates...";
 	final String helpAboutNotepad = "About Notepad";
-
+	
 	final String quickReferenceText = "<html><body style=\"font-family:Segoe UI; font-size:9px\">" + "<div>"
 			+ "<big><b>Quick reference</b></big> [<a href=\"http://templex.cnetcontent.com/Reference\">click to see the full reference</a>]"
 			+ "<hr />" + "<div style=\"zoom: 83%;border-left: 6px solid red;background-color: white;\">"
@@ -82,42 +83,6 @@ public interface MenuConstants {
 			+ "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<br><br>"
 			+ "Your comments as well as bug reports are very welcome at:<br><span style=\"background-color:#ffffcc;font-size:11px;\"><b><a href='mailto:valerii.reheda@gmail.com' style='color: black; text-decoration: none;'>valerii.reheda@gmail.com</a></b></span>"
 			+ "</body></html>";
-	final String shortcutsText = "<html><head><style>" + "span.keyboard {" + "    background: #3d3c40;"
-			+ "    font-weight: 700;" + "    padding: 2px .35rem;" + "    font-size: .8rem;" + "    margin: 0 2px;"
-			+ "    border-radius: .25rem;" + "    color: #ffffff;" + "    border-bottom: 2px solid #9e9ea6;"
-			+ "    box-shadow: 0 1px 2px rgba(0,0,0,.5);" + "    text-shadow: none;" + "}" + "table {"
-			+ "    border-collapse: collapse;" + "}" + "th, td {" + "    text-align: left;"
-			+ "    border-bottom: 1px solid #dddddd;" + "}" + "td.r {" + "    text-align: left;"
-			+ "    border-bottom: 1px solid #dddddd;" + "    border-right: 1px solid #E03134;" + "}"
-			+ "tr:hover{background-color:#f5f5f5}" + "</style></head>"
-			+ "<body style=\"font-family:Segoe UI; font-size:9px\">"
-			+ "<div style=\"background-color: white; padding:5px;\">" + "<table width='682'>" + "<tbody>"
-			+ "<tr style='background-color: #E03134; color: white; font-weight: bold;'>" + "<td width='203'>Action</td>"
-			+ "<td width='131'>Shortcuts</td>" + "<td width='203'>Action</td>" + "<td width='131'>Shortcuts</td>"
-			+ "</tr>" + "<tr>" + "<td>Copy Lines</td>" + "<td class='r'>Ctrl+Alt+Down</td>" + "<td>Next Word</td>"
-			+ "<td>Ctrl+Right</td>" + "</tr>" + "<tr>" + "<td>Delete Line</td>" + "<td class='r'>Ctrl+D</td>"
-			+ "<td>Previous Word</td>" + "<td>Ctrl+Left</td>" + "</tr>" + "<tr>" + "<td>Delete Next Word</td>"
-			+ "<td class='r'>Ctrl+Delete</td>" + "<td>Reset Command</td>" + "<td>Ctrl+0</td>" + "</tr>" + "<tr>"
-			+ "<td>Delete Previous Word</td>" + "<td class='r'>Ctrl+Backspace</td>" + "<td>Scroll Line Down</td>"
-			+ "<td>Ctrl+Down</td>" + "</tr>" + "<tr>" + "<td>Delete to End of Line</td>"
-			+ "<td class='r'>Ctrl+Shift+Delete</td>" + "<td>Scroll Line Up</td>" + "<td>Ctrl+Up</td>" + "</tr>" + "<tr>"
-			+ "<td>Duplicate Lines</td>" + "<td class='r'>Ctrl+Alt+Up</td>" + "<td>Select Line End</td>"
-			+ "<td>Shift+End</td>" + "</tr>" + "<tr>" + "<td>Expand</td>" + "<td class='r'>Ctrl+Numpad_Add</td>"
-			+ "<td>Select Line Start</td>" + "<td>Shift+Home</td>" + "</tr>" + "<tr>" + "<td>Find Next</td>"
-			+ "<td class='r'>Ctrl+K</td>" + "<td>Select Next Word</td>" + "<td>Ctrl+Shift+Right</td>" + "</tr>" + "<tr>"
-			+ "<td>Find Previous</td>" + "<td class='r'>Ctrl+Shift+K</td>" + "<td>Select Previous Word</td>"
-			+ "<td>Ctrl+Shift+Left</td>" + "</tr>" + "<tr>" + "<td>Go to Line</td>" + "<td class='r'>Ctrl+G</td>"
-			+ "<td>Text End</td>" + "<td>Ctrl+End</td>" + "</tr>" + "<tr>" + "<td>Incremental Find Reverse</td>"
-			+ "<td class='r'>Ctrl+Shift+J</td>" + "<td>Text Start</td>" + "<td>Ctrl+Home</td>" + "</tr>" + "<tr>"
-			+ "<td>Insert Line Above Current Line</td>" + "<td class='r'>Ctrl+Shift+Enter</td>"
-			+ "<td>To Lower Case</td>" + "<td>Ctrl+Shift+Y</td>" + "</tr>" + "<tr>"
-			+ "<td>Insert Line Below Current Line</td>" + "<td class='r'>Shift+Enter</td>" + "<td>To Upper Case</td>"
-			+ "<td>Ctrl+Shift+X</td>" + "</tr>" + "<tr>" + "<td>Join Lines</td>" + "<td class='r'>Ctrl+J</td>"
-			+ "<td>Toggle Overwrite</td>" + "<td>Insert</td>" + "</tr>" + "<tr>" + "<td>Line End</td>"
-			+ "<td class='r'>End</td>" + "<td>Word Completion</td>" + "<td>Alt+/</td>" + "</tr>" + "<tr>"
-			+ "<td>Line Start</td>" + "<td class='r'>Home</td>" + "<td>zoomIn</td>" + "<td>Ctrl+=</td>" + "</tr>"
-			+ "<tr>" + "<td>Move Lines Down</td>" + "<td class='r'>Alt+Down</td>" + "<td>zoomOut</td>"
-			+ "<td>Ctrl+-</td>" + "</tr>" + "<tr>" + "<td>Move Lines Up</td>" + "<td class='r'>Alt+Up</td>"
-			+ "<td>&nbsp;</td>" + "<td>&nbsp;</td>" + "</tr>" + "</tbody>" + "</table>" + "</div>" + "</body></html>";
+	final String shortcutsText = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } </style> </head> <body> <div> <table width='682'> <tbody><tr class='header'><td width='203'>Action</td><td width='131'>Shortcuts</td><td width='203'>Action</td><td width='131'>Shortcuts</td></tr><tr><td>Clipboard History</td><td class='right'>Ctrl+Shift+V</td><td>Select Backward</td><td>Shift+LEFT</td></tr><tr><td>Copy</td><td class='right'>Ctrl+C or Ctrl+INSERT</td><td>Select Down</td><td>Shift+DOWN</td></tr><tr><td>Copy Line Down</td><td class='right'>Ctrl+Alt+DOWN</td><td>Select Forward</td><td>Shift+RIGHT</td></tr><tr><td>Copy Line Up</td><td class='right'>Ctrl+Alt+UP</td><td>Select Line End</td><td>Shift+END</td></tr><tr><td>Cut</td><td class='right'>Ctrl+X</td><td>Select Line Start</td><td>Shift+HOME</td></tr><tr><td>Delete Line</td><td class='right'>Ctrl+D</td><td>Select Next Word</td><td>Ctrl+Shift+RIGHT</td></tr><tr><td>Delete Previous Char</td><td class='right'>Shift+BACK_SPACE</td><td>Select Page Down</td><td>Shift+PAGE_DOWN</td></tr><tr><td>Delete Previous Word</td><td class='right'>Ctrl+BACK_SPACE</td><td>Select Page Left</td><td>Ctrl+Shift+PAGE_UP</td></tr><tr><td>Delete to End of Line</td><td class='right'>Ctrl+DELETE</td><td>Select Page Right</td><td>Ctrl+Shift+PAGE_DOWN</td></tr><tr><td>Find Next</td><td class='right'>Ctrl+K</td><td>Select Page Up</td><td>Shift+PAGE_UP</td></tr><tr><td>Find Previous</td><td class='right'>Ctrl+Shift+K</td><td>Select Previous Word</td><td>Ctrl+Shift+LEFT</td></tr><tr><td>Insert Break</td><td class='right'>ENTER or Shift+ENTER</td><td>Select Text End</td><td>Ctrl+Shift+END</td></tr><tr><td>Join Lines</td><td class='right'>Ctrl+J</td><td>Select Text Start</td><td>Ctrl+Shift+HOME</td></tr><tr><td>Line End</td><td class='right'>END</td><td>Select Up</td><td>Shift+UP</td></tr><tr><td>Line Start</td><td class='right'>HOME</td><td>Text End</td><td>Ctrl+END</td></tr><tr><td>Move Line Down</td><td class='right'>Alt+DOWN</td><td>Text Start</td><td>Ctrl+HOME</td></tr><tr><td>Move Line Up</td><td class='right'>Alt+UP</td><td>To Lower Case</td><td>Ctrl+Shift+Y</td></tr><tr><td>Next Word</td><td class='right'>Ctrl+RIGHT</td><td>To Upper Case</td><td>Ctrl+Shift+X</td></tr><tr><td>Paste</td><td class='right'>Ctrl+V or Shift+INSERT</td><td>Toggle Overwrite</td><td>INSERT</td></tr><tr><td>Previous Word</td><td class='right'>Ctrl+LEFT</td><td>Undo</td><td>Ctrl+Z</td></tr><tr><td>Redo</td><td class='right'>Ctrl+Y</td><td>Word Completion</td><td>Ctrl+Space</td></tr><tr><td>Scroll Down</td><td class='right'>Ctrl+DOWN</td><td>Zoom Default</td><td>Ctrl+0</td></tr><tr><td>Scroll Up</td><td class='right'>Ctrl+UP</td><td>Zoom In</td><td>Ctrl+=</td></tr><tr><td>Select All</td><td class='right'>Ctrl+A</td><td>Zoom Out</td><td>Ctrl+-</td></tr> </tbody> </table> </div> </body></html>";
 
 }

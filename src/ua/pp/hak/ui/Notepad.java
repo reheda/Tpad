@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -73,6 +74,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
+import ua.pp.hak.compiler.Attribute;
+import ua.pp.hak.compiler.StAXParser;
 import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
@@ -531,6 +534,56 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 	}
 
+	void showInfoAboutAttribute() {
+		boolean inputAccepted = false;
+		while (!inputAccepted) {
+			try {
+				String tempStr = JOptionPane.showInputDialog(frame, "Enter Attribute ID:", "Attribute",
+						JOptionPane.PLAIN_MESSAGE);
+				if (tempStr == null) {
+					return;
+				}
+				int attrId = Integer.parseInt(tempStr);
+				List<Attribute> attibutes = TChecker.getAttributes();
+				for (Attribute attr : attibutes) {
+					if (attr.getId() == attrId) {
+						String name = attr.getName();
+						String type = attr.getType();
+						String comment = "-- " + attrId + " // " + name.replace("\"", "''") ;
+
+						String text = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } </style> </head> <body> <div> <table width='500'> "
+								+ "<tbody><tr class='header'><td width='90'>Parameter</td><td>Value</td></tr>"
+								+ "<tr><td class='right'>ID</td><td>" + attrId + "</td></tr>"
+								+ "<tr><td class='right'>Name</td><td>" + name + "</td></tr>"
+								+ "<tr><td class='right'>Type</td><td>" + type + "</td></tr> "
+								+ "</tbody> </table> </div><br />  "
+								+ "<div> <table width='500'> <tbody><tr class='header'><td width='90'>For Comments</td></tr>"
+								+ "<tr><td>" + comment + "</td></tr>"
+								+ "</tbody> </table> </div> </body></html>";
+						JTextPane textPane = new JTextPane();
+						textPane.setContentType("text/html");
+						textPane.setBackground(null);
+						textPane.setOpaque(false);
+						textPane.setBorder(null);
+						textPane.setText(text);
+						textPane.setEditable(false);
+						JOptionPane.showMessageDialog(frame, textPane, "Attribute info",
+								JOptionPane.PLAIN_MESSAGE);
+						return;
+					}
+				}
+
+				JOptionPane.showMessageDialog(frame, "Attribute doesn't exist", "Attribute info",
+						JOptionPane.INFORMATION_MESSAGE);
+
+			} catch (Exception e) {
+
+				JOptionPane.showMessageDialog(frame, "Only integer is accepted!", "Attribute info",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
 	///////////////////////////////////
 	public void actionPerformed(ActionEvent ev) {
 		String cmdText = ev.getActionCommand();
@@ -677,6 +730,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpAttributeInfo)) {
+			showInfoAboutAttribute();
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpAboutNotepad) || evObj == aboutButton) {
 			JTextPane textPane = new JTextPane();
 			textPane.setContentType("text/html");
@@ -703,7 +760,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpCheckUpdates)){
+		else if (cmdText.equals(helpCheckUpdates)) {
 			Updater.start(0);
 		}
 		////////////////////////////////////
@@ -737,7 +794,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 		else if (evObj == checkButton) {
 			TChecker.check(this);
-			if (!parserPanelItem.isSelected()){
+			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
 		}
@@ -916,6 +973,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 
 		helpMenu.addSeparator();
@@ -966,7 +1024,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		newButton = createButton("/images/new.png", fileNew, false, this);
 		openButton = createButton("/images/open.png", fileOpen, false, this);
 		saveButton = createButton("/images/save.png", fileSave, false, this);
-		
+
 		checkButton = createButton("/images/check.png", "Check", false, this);
 		parseButton = createButton("/images/parse.png", "Parse", false, this);
 		undoButton = createButton("/images/undo.png", editUndo, false, undoAction);
