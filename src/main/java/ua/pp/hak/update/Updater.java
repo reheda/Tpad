@@ -6,8 +6,12 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-public class Updater {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+public class Updater {
+	final static Logger logger = LogManager.getLogger(Updater.class);
+	
 	private final static String versionURL = "http://tpad.hak.pp.ua/version.html";
 
 	private final static String historyURL = "http://tpad.hak.pp.ua/history.html";
@@ -45,7 +49,7 @@ public class Updater {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		try {
 			if (Integer.parseInt(Updater.getLatestVersion()) > currentVersion) {
@@ -54,7 +58,7 @@ public class Updater {
 				JOptionPane.showMessageDialog(null, "No update is available", "Update", JOptionPane.INFORMATION_MESSAGE);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}
 	}
 

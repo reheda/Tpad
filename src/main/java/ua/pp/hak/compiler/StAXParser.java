@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.InputSource;
 
 import com.siemens.ct.exi.EXIFactory;
@@ -37,17 +41,19 @@ import com.siemens.ct.exi.helpers.DefaultEXIFactory;
 public class StAXParser {
 
 	static final boolean USE_SCHEMA = true;
+	final static Logger logger = LogManager.getLogger(StAXParser.class);
 
 	public static List<Attribute> parse() {
 		List<Attribute> list = new ArrayList<>();
 		try {
-			String dbPath = getJarOrNotPath("/db.xml.exi");
-			File exi = new File(dbPath);
-			File xmlOut = new File(dbPath + (USE_SCHEMA ? "schema" : "schemaless") + ".xml");
+			String xmlLocation = getJarOrNotPath("/db.xml.exi");
+			String schemaLocation = getJarOrNotPath("/dbSchema.xsd");
+			File exi = new File(xmlLocation);
+			File xmlOut = new File(xmlLocation + (USE_SCHEMA ? "schema" : "schemaless") + ".xml");
 
 			// settings
 			EXIFactory exiFactory = DefaultEXIFactory.newInstance();
-			exiFactory.setGrammars(GrammarFactory.newInstance().createGrammars(getJarOrNotPath("/dbSchema.xsd")));
+			exiFactory.setGrammars(GrammarFactory.newInstance().createGrammars(schemaLocation));
 
 			// decode
 			FileOutputStream xmlOuts = new FileOutputStream(xmlOut);
@@ -57,6 +63,12 @@ public class StAXParser {
 			exiSource.setInputSource(exiIs);
 			exiSource.setXMLReader(exiSource.getXMLReader());
 			TransformerFactory.newInstance().newTransformer().transform(exiSource, new StreamResult(xmlOuts));
+
+			boolean isValid = XSDValidator.validateXMLSchema(new File(schemaLocation), xmlOut);
+			if (!isValid) {
+				System.err.println("XML file is not valid against XSD Schema");
+				return null;
+			}
 
 			boolean bId = false;
 			boolean bType = false;
@@ -107,23 +119,23 @@ public class StAXParser {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (XMLStreamException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (EXIException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (TransformerFactoryConfigurationError e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		return list;
 	}
 
-	public static List<Attribute> parse2() {
+	private static List<Attribute> parseWithoutExi() {
 		String schemaLocation = getJarOrNotPath("/dbSchema.xsd");
 		String xmlLocation = getJarOrNotPath("/db.xml");
 		boolean isValid = XSDValidator.validateXMLSchema(schemaLocation, xmlLocation);
@@ -183,9 +195,9 @@ public class StAXParser {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (XMLStreamException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		return list;
@@ -219,7 +231,13 @@ public class StAXParser {
 			}
 		} else {
 			// this will probably work in your IDE, but not from a JAR
-			file = new File(res.getFile());
+			String filePath;
+			try {
+				filePath = URLDecoder.decode(res.getFile(), "UTF-8");
+				file = new File(filePath);
+			} catch (UnsupportedEncodingException e) {
+				logger.error(e.getMessage());
+			}
 		}
 
 		if (file != null && !file.exists()) {

@@ -1,5 +1,7 @@
 package ua.pp.hak.ui;
 
+import ua.pp.hak.Runner;
+
 public interface Constants {
 	final String applicationName = "Tpad";
 	final String defaultFileName = "Untitled";
@@ -57,7 +59,7 @@ public interface Constants {
 			+ "</div>" + "</body></html>";
 
 	final String aboutText = "<html><body style=\"font-family:Segoe UI; font-size:9px\"><big><b>Tpad</b><i> beta</i></big><br>"
-			+ "v 1.0.0." + Notepad.build + " <hr>"
+			+ "v " + Notepad.class.getPackage().getImplementationVersion() + " <hr>"
 			+ "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<br>"
 			+ "\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<br>"
 			+ "LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR<br>"

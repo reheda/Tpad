@@ -14,12 +14,16 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import ua.pp.hak.ui.Notepad;
 import ua.pp.hak.ui.SquigglePainter;
 
 public class TChecker {
+	final static Logger logger = LogManager.getLogger(TChecker.class);
+	
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
@@ -197,7 +201,7 @@ public class TChecker {
 								charsBeforeTheCurrentLine + p1, red));
 						taExpr.repaint();
 					} catch (BadLocationException e) {
-						e.printStackTrace();
+						logger.error(e.getMessage());
 					}
 					if (errors == null) {
 						errors = new StringBuilder("Lines: ");
@@ -253,7 +257,7 @@ public class TChecker {
 							charsBeforeTheCurrentLine + p1, redPainter));
 					taExpr.repaint();
 				} catch (BadLocationException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 
 				if (errors == null) {
@@ -778,7 +782,7 @@ public class TChecker {
 					}
 
 				} else {
-					System.err.println("Please report this expression!");
+					logger.error("Please report this expression!");
 				}
 
 			} else {
@@ -881,7 +885,6 @@ public class TChecker {
 
 				} else {
 					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i]) && !value.contains(".")) {
-						System.out.println("'" + functns[i] + "'");
 						return "DOT expected"  + NEW_LINE + NEW_LINE + "//" + value;
 					}
 

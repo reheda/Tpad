@@ -14,7 +14,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class UpdateInfo extends JFrame {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import ua.pp.hak.ui.Constants;
+import ua.pp.hak.ui.Notepad;
+
+public class UpdateInfo extends JFrame implements Constants {
+	final static Logger logger = LogManager.getLogger(UpdateInfo.class);
 
 	private static final long serialVersionUID = -9197099692400348955L;
 	private JEditorPane infoPane;
@@ -34,7 +41,7 @@ public class UpdateInfo extends JFrame {
 
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.setTitle("New Update Found");
-		this.setIconImage(new ImageIcon(this.getClass().getResource("/images/templex-big.png")).getImage());
+		this.setIconImage(new ImageIcon(this.getClass().getResource(imgTemplexBigLocation)).getImage());
 		pan1 = new JPanel();
 		pan1.setLayout(new BorderLayout());
 
@@ -54,11 +61,13 @@ public class UpdateInfo extends JFrame {
 
 		ok = new JButton("Update");
 		ok.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
-				int answer = JOptionPane.showConfirmDialog(frame, "Tpad is opened.\nUpdater will close it in order to process the update.\nContinue?", "Update",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-				
-				if (answer == JOptionPane.YES_OPTION){
+				int answer = JOptionPane.showConfirmDialog(frame,
+						"Tpad is opened.\nUpdater will close it in order to process the update.\nContinue?", "Update",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+				if (answer == JOptionPane.YES_OPTION) {
 					update();
 				}
 			}
@@ -85,12 +94,14 @@ public class UpdateInfo extends JFrame {
 	private void update() {
 		// String[] cmdarray = { "java", "-jar", "updater/update.jar",
 		// "-update"};
-		String[] cmdarray = { "updater/update.exe", "-update" };
+		String[] cmdarray = { "updater/update.exe", "-update", "JobsParser.exe" };
 		try {
+			logger.info("Start updating...");
 			Runtime.getRuntime().exec(cmdarray);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}
+		logger.info("Stop working...");
 		System.exit(0);
 
 	}

@@ -14,11 +14,17 @@ import java.io.Writer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ua.pp.hak.ui.Constants;
 import ua.pp.hak.ui.MyFileFilter;
 import ua.pp.hak.ui.Notepad;
+import ua.pp.hak.update.UpdateInfo;
 
 public class FileOperation implements Constants {
+	final static Logger logger = LogManager.getLogger(FileOperation.class);
+	
 	Notepad npd;
 
 	public boolean saved;
@@ -73,14 +79,14 @@ public class FileOperation implements Constants {
 											// changed due
 			// to incorrect saving of new line
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			logger.error(ioe.getMessage());
 			updateStatus(temp, false);
 			return false;
 		} finally {
 			try {
 				fout.close();
 			} catch (IOException excp) {
-				excp.printStackTrace();
+				logger.error(excp.getMessage());
 			}
 		}
 		updateStatus(temp, true);
@@ -136,7 +142,7 @@ public class FileOperation implements Constants {
 			}
 
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			logger.error(ioe.getMessage());
 			updateStatus(temp, false);
 			return false;
 		} finally {
@@ -144,7 +150,7 @@ public class FileOperation implements Constants {
 				din.close();
 				fin.close();
 			} catch (IOException excp) {
-				excp.printStackTrace();
+				logger.error(excp.getMessage());
 			}
 		}
 		updateStatus(temp, true);

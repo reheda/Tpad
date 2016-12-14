@@ -4,11 +4,10 @@ import java.util.HashMap;
 
 public class Legacy {
 	private static HashMap<String, String> legacy;
-	
+
 	static {
 		initLegacy();
 	}
-	
 
 	public static String getLecagyName(String legacyCode) {
 		return legacy.get(legacyCode);

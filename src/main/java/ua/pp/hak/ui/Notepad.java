@@ -68,6 +68,8 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -82,7 +84,8 @@ import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Legacy;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
-
+	final static Logger logger = LogManager.getLogger(Notepad.class);
+	
 	private JFrame frame;
 	private RSyntaxTextArea taExpr;
 
@@ -150,7 +153,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		// build
@@ -158,8 +161,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			Date tmpDate = new Date(Notepad.class.getResource("Notepad.class").openConnection().getLastModified());
 			build = new SimpleDateFormat("yyMMdd").format(tmpDate);
 		} catch (Exception e) {
-			System.out.println("can't find Notepad.class");
-			e.printStackTrace();
+			logger.error("can't find Notepad.class");
+			logger.error(e.getMessage());
 		}
 
 		// ------- disable ctrl+H in textAreas and textFields
@@ -494,8 +497,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		/////////
 		WindowListener frameClose = new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
-				if (fileHandler.confirmSave())
+				if (fileHandler.confirmSave()){
+					logger.info("Stop working...");
 					System.exit(0);
+				}
 			}
 		};
 		frame.addWindowListener(frameClose);
@@ -524,7 +529,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 			taExpr.setCaretPosition(taExpr.getLineStartOffset(lineNumber - 1));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -573,7 +578,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				JOptionPane.showMessageDialog(frame, "Only integer is accepted!", helpAttributeInfo,
 						JOptionPane.ERROR_MESSAGE);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 		}
 	}
@@ -611,7 +616,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -633,8 +638,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			fileHandler.saveAsFile();
 		////////////////////////////////////
 		else if (cmdText.equals(fileExit)) {
-			if (fileHandler.confirmSave())
+			if (fileHandler.confirmSave()){
+				logger.info("Stop working...");				
 				System.exit(0);
+			}
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(filePrint))
@@ -810,7 +817,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		textPane.addHyperlinkListener(new HyperlinkListener() {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-					System.out.println(e.getURL());
+					logger.info(e.getURL());
 					try {
 						Desktop.getDesktop().mail(new URI(e.getURL() + ""));
 					} catch (IOException e1) {
@@ -836,7 +843,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		textPane.addHyperlinkListener(new HyperlinkListener() {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-					System.out.println(e.getURL());
+					logger.info(e.getURL());
 					try {
 						// Desktop.getDesktop().mail(new URI(e.getURL() +
 						// ""));
