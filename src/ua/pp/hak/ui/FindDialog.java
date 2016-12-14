@@ -294,7 +294,7 @@ public class FindDialog extends JPanel implements ActionListener {
 			dialog.setSize(450, 200);
 			dialog.setTitle("Replace");
 		}
-		dialog.setLocationRelativeTo(ta);
+		dialog.setLocationRelativeTo(parent);
 		dialog.setVisible(true);
 
 		// System.out.println(dialog.getWidth()+" "+dialog.getHeight());

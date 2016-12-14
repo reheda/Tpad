@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -22,6 +23,7 @@ public class UpdateInfo extends JFrame {
 	private JButton cancel;
 	private JPanel pan1;
 	private JPanel pan2;
+	private JFrame frame = this;
 
 	public UpdateInfo(String info) {
 		initComponents();
@@ -52,9 +54,13 @@ public class UpdateInfo extends JFrame {
 
 		ok = new JButton("Update");
 		ok.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
-				update();
+				int answer = JOptionPane.showConfirmDialog(frame, "Tpad is opened.\nUpdater will close it in order to process the update.\nContinue?", "Update",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+				
+				if (answer == JOptionPane.YES_OPTION){
+					update();
+				}
 			}
 		});
 

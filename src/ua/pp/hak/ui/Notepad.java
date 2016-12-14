@@ -75,11 +75,11 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
 import ua.pp.hak.compiler.Attribute;
-import ua.pp.hak.compiler.StAXParser;
 import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
+import ua.pp.hak.util.Legacy;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 
@@ -93,7 +93,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JToolBar toolBar;
 	static String build = "x";
 
-	int lastSearchIndex;
 	private Font font = new Font("Consolas", Font.PLAIN, 14);
 	private FileOperation fileHandler;
 	private FindDialog findReplaceDialog = null;
@@ -146,7 +145,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	Notepad() {
 		frame = new JFrame(defaultFileName + " - " + applicationName);
 		// change icon of the app
-		frame.setIconImage(new ImageIcon(frame.getClass().getResource("/images/templex-big.png")).getImage());
+		frame.setIconImage(new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)).getImage());
 		// change look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -269,7 +268,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExpr.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.CTRL_DOWN_MASK), "ctrlZero");
 		taExpr.getActionMap().put("ctrlZero", ctrlZero);
 
-		// -----
 		// create Expression result view
 		taExprRes = new JTextArea();
 		spExprRes = new JScrollPane(taExprRes);
@@ -281,12 +279,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExprRes.setBackground(null);
 		taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, new Color(0, 188, 57)),
 				new EmptyBorder(2, 5, 2, 0))); // green
-		taExprRes.setText(
-				"Microsoft Bluetooth Mobile Mouse 3600 - Mouse - Bluetooth 4.0 - Dark red\nOutputProcessors=RemarkProcessor+LegacyProductsToTableProcessor+L");
+		taExprRes.setText(defaultExpressionResult);
 		taExprRes.setText(taExprRes.getText().replaceAll("\n", "//\n"));
 		taExprRes.setLineWrap(true);
 
-		// -----
 		statusBar = new JLabel("Line 1, Column 1  ", JLabel.LEFT);
 		statusBar.setBorder(new CompoundBorder(statusBar.getBorder(), new EmptyBorder(2, 6, 2, 5)));
 		// painter = new LinePainter(ta, new Color(255,255,210));
@@ -297,7 +293,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		JTextField tfSKU = new JTextField(20);
 		tfSKU.setMaximumSize(new Dimension(4000, 20));
 		tfSKU.setFont(font.deriveFont(12f));
-		tfSKU.setText("12345679");
+		tfSKU.setText(defaultSKU);
 
 		tfSKU.setBorder(new CompoundBorder(tfSKU.getBorder(), new EmptyBorder(2, 2, 2, 2)));
 		JLabel lblExprRes = new JLabel(txtExprRes);
@@ -308,8 +304,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taParameters.setLineWrap(true);
 		taParameters.setFont(font.deriveFont(12f));
 		taParameters.setBorder(new EmptyBorder(3, 3, 3, 3));
-		taParameters.setText(
-				"AlternativeCategoryVersion=16, Evaluate=false, Locale=en-US, ResultSeparator=<>, Verbatim=false, LegacyValues=false");
+		taParameters.setText(defaultParameters);
 		JScrollPane spParameters = new JScrollPane(taParameters);
 		spParameters.setBorder(BorderFactory.createLineBorder(new Color(171, 173, 179))); // grey
 		spParameters.setPreferredSize(new Dimension(400, 50));
@@ -372,7 +367,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		frame.setLocation(100, 50);
 		frame.setMinimumSize(new Dimension(600, 450));
 		frame.setLocationRelativeTo(null);
-		// f.setLocation(150, 50);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -512,7 +506,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	////////////////////////////////////
-	void goTo() {
+	private void goTo() {
 		int lineNumber = 0;
 		try {
 			lineNumber = taExpr.getLineOfOffset(taExpr.getCaretPosition()) + 1;
@@ -534,11 +528,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 	}
 
-	void showInfoAboutAttribute() {
+	private void showAttributeInfo() {
 		boolean inputAccepted = false;
 		while (!inputAccepted) {
 			try {
-				String tempStr = JOptionPane.showInputDialog(frame, "Enter Attribute ID:", "Attribute",
+				String tempStr = JOptionPane.showInputDialog(frame, "Enter Attribute ID:", helpAttributeInfo,
 						JOptionPane.PLAIN_MESSAGE);
 				if (tempStr == null) {
 					return;
@@ -549,7 +543,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					if (attr.getId() == attrId) {
 						String name = attr.getName();
 						String type = attr.getType();
-						String comment = "-- " + attrId + " // " + name.replace("\"", "''") ;
+						String comment = "-- " + attrId + " // " + name.replace("\"", "''");
 
 						String text = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } </style> </head> <body> <div> <table width='500'> "
 								+ "<tbody><tr class='header'><td width='90'>Parameter</td><td>Value</td></tr>"
@@ -558,8 +552,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 								+ "<tr><td class='right'>Type</td><td>" + type + "</td></tr> "
 								+ "</tbody> </table> </div><br />  "
 								+ "<div> <table width='500'> <tbody><tr class='header'><td width='90'>For Comments</td></tr>"
-								+ "<tr><td>" + comment + "</td></tr>"
-								+ "</tbody> </table> </div> </body></html>";
+								+ "<tr><td>" + comment + "</td></tr>" + "</tbody> </table> </div> </body></html>";
 						JTextPane textPane = new JTextPane();
 						textPane.setContentType("text/html");
 						textPane.setBackground(null);
@@ -567,21 +560,60 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 						textPane.setBorder(null);
 						textPane.setText(text);
 						textPane.setEditable(false);
-						JOptionPane.showMessageDialog(frame, textPane, "Attribute info",
-								JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(frame, textPane, helpAttributeInfo, JOptionPane.PLAIN_MESSAGE);
 						return;
 					}
 				}
 
-				JOptionPane.showMessageDialog(frame, "Attribute doesn't exist", "Attribute info",
+				JOptionPane.showMessageDialog(frame, "Can't find attribute '" + attrId + "'", helpAttributeInfo,
 						JOptionPane.INFORMATION_MESSAGE);
 
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 
-				JOptionPane.showMessageDialog(frame, "Only integer is accepted!", "Attribute info",
+				JOptionPane.showMessageDialog(frame, "Only integer is accepted!", helpAttributeInfo,
 						JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+	}
+
+	void showLegacyInfo() {
+		try {
+			String legacyCode = JOptionPane.showInputDialog(frame, "Enter Legacy Code:", helpLegacyInfo,
+					JOptionPane.PLAIN_MESSAGE);
+			if (legacyCode == null) {
+				return;
+			}
+
+			legacyCode = legacyCode.toUpperCase();
+			String legacyName = Legacy.getLecagyName(legacyCode);
+
+			if (legacyName == null) {
+				JOptionPane.showMessageDialog(frame, "Can't find legacy '" + legacyCode + "'", helpLegacyInfo,
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+
+				String text = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } </style> </head> <body> <div> <table width='500'> "
+						+ "<tbody><tr class='header'><td width='90'>Parameter</td><td>Value</td></tr>"
+						+ "<tr><td class='right'>Code</td><td>" + legacyCode + "</td></tr>"
+						+ "<tr><td class='right'>Name</td><td>" + legacyName + "</td></tr>"
+						+ "</tbody> </table> </div> </body></html>";
+				JTextPane textPane = new JTextPane();
+				textPane.setContentType("text/html");
+				textPane.setBackground(null);
+				textPane.setOpaque(false);
+				textPane.setBorder(null);
+				textPane.setText(text);
+				textPane.setEditable(false);
+				JOptionPane.showMessageDialog(frame, textPane, helpLegacyInfo, JOptionPane.PLAIN_MESSAGE);
+				return;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	///////////////////////////////////
@@ -719,45 +751,19 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpKeyboardShortcuts) || evObj == shortcutsButton) {
-			JTextPane textPane = new JTextPane();
-			textPane.setContentType("text/html");
-			textPane.setBackground(null);
-			textPane.setOpaque(false);
-			textPane.setBorder(null);
-			textPane.setText(shortcutsText);
-			textPane.setEditable(false);
-			JOptionPane.showMessageDialog(frame, textPane, "Keyboard Shortcuts", JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
+			showKeyboardShortcuts();
+		}
+		////////////////////////////////////
+		else if (cmdText.equals(helpLegacyInfo)) {
+			showLegacyInfo();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpAttributeInfo)) {
-			showInfoAboutAttribute();
+			showAttributeInfo();
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpAboutNotepad) || evObj == aboutButton) {
-			JTextPane textPane = new JTextPane();
-			textPane.setContentType("text/html");
-			textPane.setBackground(null);
-			textPane.setOpaque(false);
-			textPane.setBorder(null);
-			textPane.setText(aboutText);
-			textPane.setEditable(false);
-			textPane.addHyperlinkListener(new HyperlinkListener() {
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						System.out.println(e.getURL());
-						try {
-							Desktop.getDesktop().mail(new URI(e.getURL() + ""));
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						} catch (URISyntaxException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			});
-			JOptionPane.showMessageDialog(frame, textPane, "About", JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
+		else if (cmdText.equals(helpAbout) || evObj == aboutButton) {
+			showAbout();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpCheckUpdates)) {
@@ -765,31 +771,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
-			JTextPane textPane = new JTextPane();
-			textPane.setContentType("text/html");
-			textPane.setBackground(null);
-			textPane.setOpaque(false);
-			textPane.setBorder(null);
-			textPane.setText(quickReferenceText);
-			textPane.setEditable(false);
-			textPane.addHyperlinkListener(new HyperlinkListener() {
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-						System.out.println(e.getURL());
-						try {
-							// Desktop.getDesktop().mail(new URI(e.getURL() +
-							// ""));
-							Desktop.getDesktop().browse(e.getURL().toURI());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						} catch (URISyntaxException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			});
-			JOptionPane.showMessageDialog(frame, textPane, "Help topic", JOptionPane.INFORMATION_MESSAGE,
-					new ImageIcon(frame.getClass().getResource("/images/templex-big.png")));
+			showHelpTopic();
 		}
 		////////////////////////////////////
 		else if (evObj == checkButton) {
@@ -804,6 +786,72 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 	// action Performed
 	////////////////////////////////////
+
+	private void showKeyboardShortcuts() {
+		JTextPane textPane = new JTextPane();
+		textPane.setContentType("text/html");
+		textPane.setBackground(null);
+		textPane.setOpaque(false);
+		textPane.setBorder(null);
+		textPane.setText(shortcutsText);
+		textPane.setEditable(false);
+		JOptionPane.showMessageDialog(frame, textPane, helpKeyboardShortcuts, JOptionPane.INFORMATION_MESSAGE,
+				new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)));
+	}
+
+	private void showAbout() {
+		JTextPane textPane = new JTextPane();
+		textPane.setContentType("text/html");
+		textPane.setBackground(null);
+		textPane.setOpaque(false);
+		textPane.setBorder(null);
+		textPane.setText(aboutText);
+		textPane.setEditable(false);
+		textPane.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					System.out.println(e.getURL());
+					try {
+						Desktop.getDesktop().mail(new URI(e.getURL() + ""));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		JOptionPane.showMessageDialog(frame, textPane, helpAbout, JOptionPane.INFORMATION_MESSAGE,
+				new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)));
+	}
+
+	private void showHelpTopic() {
+		JTextPane textPane = new JTextPane();
+		textPane.setContentType("text/html");
+		textPane.setBackground(null);
+		textPane.setOpaque(false);
+		textPane.setBorder(null);
+		textPane.setText(quickReferenceText);
+		textPane.setEditable(false);
+		textPane.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					System.out.println(e.getURL());
+					try {
+						// Desktop.getDesktop().mail(new URI(e.getURL() +
+						// ""));
+						Desktop.getDesktop().browse(e.getURL().toURI());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		JOptionPane.showMessageDialog(frame, textPane, helpHelpTopic, JOptionPane.INFORMATION_MESSAGE,
+				new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)));
+	}
 
 	void showBackgroundColorDialog() {
 		if (bcolorChooser == null)
@@ -973,12 +1021,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 
 		helpMenu.addSeparator();
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
-		createMenuItem(helpAboutNotepad, KeyEvent.VK_A, helpMenu, this)
+		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
 		MenuListener editMenuListener = new MenuListener() {
@@ -1021,34 +1070,35 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	private void createToolBar() {
-		newButton = createButton("/images/new.png", fileNew, false, this);
-		openButton = createButton("/images/open.png", fileOpen, false, this);
-		saveButton = createButton("/images/save.png", fileSave, false, this);
+		newButton = createButton(imgNewLocation, fileNew, false, this);
+		openButton = createButton(imgOpenLocation, fileOpen, false, this);
+		saveButton = createButton(imgSaveLocation, fileSave, false, this);
 
-		checkButton = createButton("/images/check.png", "Check", false, this);
-		parseButton = createButton("/images/parse.png", "Parse", false, this);
-		undoButton = createButton("/images/undo.png", editUndo, false, undoAction);
+		checkButton = createButton(imgCheckLocation, "Check", false, this);
+		parseButton = createButton(imgParseLocation, "Parse", false, this);
+		undoButton = createButton(imgUndoLocation, editUndo, false, undoAction);
 		undoButton.setEnabled(true);
-		redoButton = createButton("/images/redo.png", editRedo, false, redoAction);
+		redoButton = createButton(imgRedoLocation, editRedo, false, redoAction);
 		redoButton.setEnabled(true);
-		copyButton = createButton("/images/copy.png", editCopy, false, this);
+		copyButton = createButton(imgCopyLocation, editCopy, false, this);
 		copyButton.setEnabled(false);
-		cutButton = createButton("/images/cut.png", editCut, false, this);
+		cutButton = createButton(imgCutLocation, editCut, false, this);
 		cutButton.setEnabled(false);
-		pasteButton = createButton("/images/paste.png", editPaste, false, this);
-		findButton = createButton("/images/find.png", editFind, false, this);
+		pasteButton = createButton(imgPasteLocation, editPaste, false, this);
+		findButton = createButton(imgFindLocation, editFind, false, this);
 		findButton.setEnabled(false);
-		replaceButton = createButton("/images/replace.png", editReplace, false, this);
+		replaceButton = createButton(imgReplaceLocation, editReplace, false, this);
 		replaceButton.setEnabled(false);
-		zoomInButton = createButton("/images/zoom-in.png", "Zoom In (Ctrl + Mouse Wheel Up)", false, this);
-		zoomOutButton = createButton("/images/zoom-out.png", "Zoom Out (Ctrl + Mouse Wheel Down)", false, this);
-		zoomDefaultButton = createButton("/images/zoom-default.png", "Zoom Default (Ctrl + 0)", false, this);
-		fontButton = createButton("/images/font.png", formatFont, false, this);
-		wrapButton = createButton("/images/wrap.png", formatWordWrap, false, this);
+		zoomInButton = createButton(imgZoomInLocation, "Zoom In (Ctrl + Mouse Wheel Up)", false, this);
+		zoomOutButton = createButton(imgZoomOutLocation, "Zoom Out (Ctrl + Mouse Wheel Down)", false, this);
+		zoomDefaultButton = createButton(imgZoomDefaultLocation, "Zoom Default (Ctrl + 0)", false, this);
+		fontButton = createButton(imgFontLocation, formatFont, false, this);
+		wrapButton = createButton(imgWrapLocation, formatWordWrap, false, this);
 		wrapButton.setSelected(true);
-		helpButton = createButton("/images/help.png", helpHelpTopic, false, this);
-		aboutButton = createButton("/images/info.png", helpAboutNotepad, false, this);
-		shortcutsButton = createButton("/images/keyboard.png", helpKeyboardShortcuts, false, this);
+		helpButton = createButton(imgHelpLocation, helpHelpTopic, false, this);
+		aboutButton = createButton(imgInfoLocation, helpAbout, false, this);
+		shortcutsButton = createButton(imgKeyboardLocation, helpKeyboardShortcuts, false, this);
+
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		toolBar.add(newButton);

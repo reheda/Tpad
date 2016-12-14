@@ -43,9 +43,9 @@ public class TChecker {
 		highlighterTags.clear();
 		taExpr.repaint();
 	}
-	
-	public static List<Attribute> getAttributes(){
-			return attibutes;
+
+	public static List<Attribute> getAttributes() {
+		return attibutes;
 	}
 
 	private static String getAttributeType(int attr) {
@@ -93,6 +93,91 @@ public class TChecker {
 				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
 
 	}
+	
+	private static String checkExpression(String expr) {
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+		String exprCleaned = null;
+
+		if (expr.trim().isEmpty()) {
+			error = "Expression is empty";
+			errors.append(error);
+
+			return errors.toString();
+		}
+
+		initFunctions();
+		initFunctionsWithParams();
+
+		// check comments
+		error = checkComments(expr);
+		if (error != null) {
+			error = "Comment can't contains quote";
+			errors.append(error);
+
+			return errors.toString();
+		}
+
+		// erase comments. will erase until line feed
+		exprCleaned = expr.replaceAll("--.*", "");
+
+		// check quotes
+		error = checkQuotes(expr);
+		if (error != null) {
+			errors.append(error);
+
+			return errors.toString();
+		}
+
+		// erase text surrounded by quotes
+		exprCleaned = exprCleaned.replaceAll("\".*?\"", "\"\"");
+
+		// clean expression to make it parsable
+		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll("(?i)ELSE IF", "ELSEIF")
+				.replaceAll(" ?\\. ?", ".").replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].")
+				.replaceAll(" ?\\( ?", "(").replaceAll(" ?\\) ?\\.", ").");
+
+		// System.out.println(exprCleaned);
+
+		// split by semicolon
+		String[] statements = exprCleaned.split(" ?; ?|;");
+
+		for (int i = 0; i < statements.length; i++) {
+			// check if expression is returnValue or ifThenElseStatement
+			if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
+					|| statements[i].toUpperCase().contains("END")) {
+
+				error = checkCaseStatement(statements[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+			} else if (statements[i].toUpperCase().contains("IF ") || statements[i].contains(" ELSEIF ")
+					|| statements[i].contains(" THEN ") || statements[i].contains(">") || statements[i].contains("<")
+					|| statements[i].contains("=") || statements[i].contains(" IS ") || statements[i].contains(" AND ")
+					|| statements[i].contains(" OR ") || statements[i].contains(" LIKE ")
+					|| statements[i].contains(" IN(")) {
+
+				// if its ifThenElseStatement
+				error = checkIfThenElseStatement(statements[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+			} else {
+				error = checkReturnValue(statements[i]);
+				if (error != null) {
+					errors.append(error);
+
+					return errors.toString();
+				}
+			}
+		}
+
+		return null;
+	}
+
 
 	private static String checkQuotes(String expr) {
 
@@ -460,89 +545,6 @@ public class TChecker {
 
 	}
 
-	private static String checkExpression(String expr) {
-		StringBuilder errors = new StringBuilder();
-		String error = null;
-		String exprCleaned = null;
-
-		if (expr.trim().isEmpty()) {
-			error = "Expression is empty";
-			errors.append(error);
-
-			return errors.toString();
-		}
-
-		initFunctions();
-		initFunctionsWithParams();
-
-		// check comments
-		error = checkComments(expr);
-		if (error != null) {
-			error = "Comment can't contains quote";
-			errors.append(error);
-
-			return errors.toString();
-		}
-
-		// erase comments. will erase until line feed
-		exprCleaned = expr.replaceAll("--.*", "");
-
-		// check quotes
-		error = checkQuotes(expr);
-		if (error != null) {
-			errors.append(error);
-
-			return errors.toString();
-		}
-
-		// erase text surrounded by quotes
-		exprCleaned = exprCleaned.replaceAll("\".*?\"", "\"\"");
-
-		// clean expression to make it parsable
-		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll("(?i)ELSE IF", "ELSEIF")
-				.replaceAll(" ?\\. ?", ".").replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].")
-				.replaceAll(" ?\\( ?", "(").replaceAll(" ?\\) ?\\.", ").");
-
-		// System.out.println(exprCleaned);
-
-		// split by semicolon
-		String[] statements = exprCleaned.split(" ?; ?|;");
-
-		for (int i = 0; i < statements.length; i++) {
-			// check if expression is returnValue or ifThenElseStatement
-			if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
-					|| statements[i].toUpperCase().contains("END")) {
-
-				error = checkCaseStatement(statements[i]);
-				if (error != null) {
-					errors.append(error);
-					return errors.toString();
-				}
-
-			} else if (statements[i].toUpperCase().contains("IF ") || statements[i].contains(" ELSEIF ")
-					|| statements[i].contains(" THEN ") || statements[i].contains(">") || statements[i].contains("<")
-					|| statements[i].contains("=") || statements[i].contains(" IS ") || statements[i].contains(" AND ")
-					|| statements[i].contains(" OR ") || statements[i].contains(" LIKE ")
-					|| statements[i].contains(" IN(")) {
-
-				// if its ifThenElseStatement
-				error = checkIfThenElseStatement(statements[i]);
-				if (error != null) {
-					errors.append(error);
-					return errors.toString();
-				}
-			} else {
-				error = checkReturnValue(statements[i]);
-				if (error != null) {
-					errors.append(error);
-
-					return errors.toString();
-				}
-			}
-		}
-
-		return null;
-	}
 
 	private static String checkElseStatementQuantity(String str) {
 		String temp = str.replaceAll("(?i) ELSE ", " ELS ");
@@ -817,7 +819,7 @@ public class TChecker {
 
 		// value cant finished with "." or ". "
 		if (value.matches(".*\\. ?$")) {
-			return "Value shouldn't be finished with DOT";
+			return "Value shouldn't be finished with DOT"  + NEW_LINE + NEW_LINE + "//" + value;
 		}
 
 		String valueCleaned = value.trim();
@@ -837,7 +839,8 @@ public class TChecker {
 			// if decimal or reference do nothing
 			if (isNumber(functns[i]) || isReference(functns[i])) {
 				if (previousType != null) {
-					return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'";
+					return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'" + NEW_LINE
+							+ NEW_LINE + "//" + value;
 				}
 
 			} else {
@@ -879,11 +882,12 @@ public class TChecker {
 				} else {
 					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i]) && !value.contains(".")) {
 						System.out.println("'" + functns[i] + "'");
-						return "DOT expected";
+						return "DOT expected"  + NEW_LINE + NEW_LINE + "//" + value;
 					}
 
 					if (!isFunctionMemberOfValid(functns[i], previousType)) {
-						return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'";
+						return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'" + NEW_LINE
+								+ NEW_LINE + "//" + value;
 					}
 
 					previousType = getFunctionReturnType(functns[i], previousType);

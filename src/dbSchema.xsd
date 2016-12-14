@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://hak.pp.ua/dbSchema" xmlns:tns="http://hak.pp.ua/dbSchema"
+	elementFormDefault="qualified">
+
+
+	<xsd:element name="attributes">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="attribute" type="tns:AttributeFeature"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="AttributeFeature">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:positiveInteger" />
+			<xsd:element name="type" type="tns:TypeFeature" />
+			<xsd:element name="name" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:simpleType name="TypeFeature">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Simple" />
+			<xsd:enumeration value="Simple numeric" />
+			<xsd:enumeration value="Multi-valued" />
+			<xsd:enumeration value="Multi-valued numeric" />
+			<xsd:enumeration value="Repeating" />
+			<xsd:enumeration value="Repeating numeric" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
