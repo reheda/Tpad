@@ -8730,4 +8730,10 @@
 	<attribute> <id>9647</id> <type>Multi-valued</type> <name>Miscellaneous - Product Material</name> </attribute>
 	<attribute> <id>9650</id> <type>Simple</type> <name>Dimensions /// Weight - Adjustable Length</name> </attribute>
 	<attribute> <id>9651</id> <type>Repeating</type> <name>Dimensions /// Weight Details - Component</name> </attribute>
+	<attribute> <id>8664</id> <type>Simple</type> <name>Video Input - Camera</name> </attribute>
+	<attribute> <id>10650</id> <type>Simple numeric</type> <name>Dryer - Dryer Capacity</name> </attribute>
+	<attribute> <id>10646</id> <type>Simple numeric</type> <name>Knife Sharpeners - Sharpening Stages</name> </attribute>
+	<attribute> <id>10647</id> <type>Simple</type> <name>Knife Sharpeners - Serrated Blades</name> </attribute>
+	<attribute> <id>10648</id> <type>Simple</type> <name>Knife Sharpeners - Double Faceted Blades</name> </attribute>
+	<attribute> <id>10649</id> <type>Multi-valued</type> <name>Knife Sharpeners - Degree Edge</name> </attribute>
 </attributes>  

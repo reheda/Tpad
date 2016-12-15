@@ -23,7 +23,7 @@ import ua.pp.hak.ui.SquigglePainter;
 
 public class TChecker {
 	final static Logger logger = LogManager.getLogger(TChecker.class);
-	
+
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
@@ -76,10 +76,14 @@ public class TChecker {
 		taExprRes.setText("Processing...");
 
 		String error = null;
+		logger.info("Checking expression...");
 		error = checkExpression(textExpr);
 		if (error != null) {
+			logger.info("Expression check result: " + error);
 			sbErrors.append(error);
 			isWholeExpressionValid = false;
+		} else {
+			logger.info("Expression check result: expression is OK");
 		}
 
 		Color color = null;
@@ -90,6 +94,7 @@ public class TChecker {
 			color = red;
 			// taExprRes.setText("Error! \n" + sbErrors.toString());
 			taExprRes.setText(sbErrors.toString());
+			taExprRes.setCaretPosition(0);
 		}
 
 		// set color of the expression result's text area
@@ -97,7 +102,7 @@ public class TChecker {
 				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
 
 	}
-	
+
 	private static String checkExpression(String expr) {
 		StringBuilder errors = new StringBuilder();
 		String error = null;
@@ -144,9 +149,27 @@ public class TChecker {
 		// System.out.println(exprCleaned);
 
 		// split by semicolon
-		String[] statements = exprCleaned.split(" ?; ?|;");
+		String[] statements = exprCleaned.split(";");
 
 		for (int i = 0; i < statements.length; i++) {
+			if (statements[i].trim().isEmpty()) {
+				System.out.println(statements[i].length());
+				errors.append("There is empty statement");
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				if (statements[i].isEmpty()) {
+					errors.append("Search for \";;\"");
+				} else {
+					errors.append("Look at empty values between two semicolons.");
+					errors.append(NEW_LINE);
+					errors.append("Search for \"; Space(s) And/Or LineFeed(s) ;\"");
+				}
+				return errors.toString();
+
+			}
+
 			// check if expression is returnValue or ifThenElseStatement
 			if (statements[i].toUpperCase().contains("CASE ") || statements[i].toUpperCase().contains("WHEN")
 					|| statements[i].toUpperCase().contains("END")) {
@@ -181,7 +204,6 @@ public class TChecker {
 
 		return null;
 	}
-
 
 	private static String checkQuotes(String expr) {
 
@@ -276,30 +298,6 @@ public class TChecker {
 			return errors.toString();
 		}
 		return null;
-	}
-
-	private static String checkTemplateExpresion(String textExpr) {
-
-		// split by semicolon
-		String delimiter = ";";
-		String[] expressions = textExpr.split(delimiter);
-		int charsBefore = 0;
-		int p0 = 0, p1 = 0;
-		StringBuilder errors = new StringBuilder();
-		for (int i = 0; i < expressions.length; i++) {
-			int exprLength = expressions[i].length();
-
-			String error = null;
-			// error = checkExpression(expressions[i], charsBefore + p0,
-			// charsBefore + p1);
-			if (error != null) {
-				errors.append(error).append(NEW_LINE);
-			}
-
-			charsBefore += exprLength + delimiter.length();
-		}
-
-		return errors.toString();
 	}
 
 	private static void initFunctionsWithParams() {
@@ -549,7 +547,6 @@ public class TChecker {
 
 	}
 
-
 	private static String checkElseStatementQuantity(String str) {
 		String temp = str.replaceAll("(?i) ELSE ", " ELS ");
 		int elseCounter = str.length() - temp.length();
@@ -608,7 +605,11 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(exprCleaned);
 			return errors.toString();
 
 		}
@@ -618,7 +619,11 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -627,7 +632,11 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -637,7 +646,11 @@ public class TChecker {
 		if (!isIfThenElseStatementValid) {
 			errors.append("Invalid IF THEN ELSE statements.");
 			errors.append(structure);
-
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -651,7 +664,11 @@ public class TChecker {
 				error = checkCondition(condition);
 				if (error != null) {
 					errors.append(error);
-
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(exprCleaned);
 					return errors.toString();
 				}
 			}
@@ -666,7 +683,11 @@ public class TChecker {
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
-
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(exprCleaned);
 				return errors.toString();
 			}
 		}
@@ -685,18 +706,31 @@ public class TChecker {
 		// -if with "AND" and "OR":
 		// -split by "AND" and "OR" then do the same as without "AND" and "OR"
 
+		StringBuilder errors = new StringBuilder();
+
 		// check brackets
 		if (!matchBrackets(condition)) {
-			return "Bracket is not closed/opened";
+			errors.append("Bracket is not closed/opened");
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(condition);
+			return errors.toString();
 		}
 		// check brackets matching
 		if (!isParenthesisMatch(condition)) {
-			return "Bracket is not using prorely";
+			errors.append("Bracket is not using prorely");
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(condition);
+			return errors.toString();
 		}
 
 		String contitonCleaned = condition;
 
-		StringBuilder errors = new StringBuilder();
 		String error = null;
 		String structure = NEW_LINE + NEW_LINE + "Valid condition:" + NEW_LINE + "value1 operator value2";
 
@@ -726,7 +760,7 @@ public class TChecker {
 			// PdmMultivalueAttribute instead of PdmAttributeSet
 			conCleaned = conCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
 
-			int operatorsQty = conCleaned.length() - conCleaned.replaceAll(">=", "1").replaceAll("<=", "1")
+			int operatorsQty = conCleaned.length() - conCleaned.replaceAll("<>", "1").replaceAll(">=", "1").replaceAll("<=", "1")
 					.replaceAll("<", "").replaceAll(">", "").replaceAll("=", "").replaceAll("(?i) LIKE ", " LIK ")
 					.replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
 					.replaceAll("HasText(?!\\.)", "HasTex").replaceAll("IsEmpty(?!\\.)", "IsEmpt")
@@ -738,13 +772,33 @@ public class TChecker {
 				error = "Condition '" + conCleaned + "' have to contains only 1 operator";
 				errors.append(error);
 				errors.append(structure);
-
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(con);
+				if (!con.equals(condition)) {
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
+				}
 				return errors.toString();
 			} else if (operatorsQty == 0) {
 				error = "Condition '" + conCleaned + "' have to contains operator";
 				errors.append(error);
 				errors.append(structure);
-
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(con);
+				if (!con.equals(condition)) {
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
+				}
 				return errors.toString();
 			}
 
@@ -752,7 +806,17 @@ public class TChecker {
 			if (underScroreCount > 0) {
 				error = "Condition DON'T have to contains underscore";
 				errors.append(error);
-
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(con);
+				if (!con.equals(condition)) {
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
+				}
 				return errors.toString();
 			}
 
@@ -764,13 +828,39 @@ public class TChecker {
 					// check right part
 					String rightPart = values[1].trim();
 					if (!rightPart.matches("(?i)NOT NULL") && !rightPart.matches("(?i)NULL")) {
-						return "You shouldn't check for '" + rightPart + "'. Expected check for NULL";
+
+						errors.append("You shouldn't check for '");
+						errors.append(rightPart);
+						errors.append("'. Expected check for NULL");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(con);
+						if (!con.equals(condition)) {
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
+						}
+						return errors.toString();
 					}
 
 					// check left part
 					error = checkValue(values[0]);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(con);
+						if (!con.equals(condition)) {
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
+						}
 						return errors.toString();
 					}
 
@@ -778,6 +868,17 @@ public class TChecker {
 					error = checkParametersInCondition(con.split("(?i) IS ")[0]);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(con);
+						if (!con.equals(condition)) {
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
+						}
 						return errors.toString();
 					}
 
@@ -789,11 +890,22 @@ public class TChecker {
 
 				// check values
 				{
-					String[] values = conCleaned.split("(?i)>=|<=|>|<|=| NOT LIKE | LIKE | IN\\(\\)");
+					String[] values = conCleaned.split("(?i)<>|>=|<=|>|<|=| NOT LIKE | LIKE | IN\\(\\)");
 					for (int i = 0; i < values.length; i++) {
 						error = checkValue(values[i]);
 						if (error != null) {
 							errors.append(error);
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(con);
+							if (!con.equals(condition)) {
+								errors.append(NEW_LINE);
+								errors.append("-----");
+								errors.append(NEW_LINE);
+								errors.append(condition);
+							}
 							return errors.toString();
 						}
 
@@ -801,11 +913,22 @@ public class TChecker {
 				}
 
 				// check parameters
-				String[] values = con.split("(?i)>=|<=|>|<|=| NOT LIKE | LIKE ");
+				String[] values = con.split("(?i)<>|>=|<=|>|<|=| NOT LIKE | LIKE ");
 				for (int i = 0; i < values.length; i++) {
 					error = checkParametersInCondition(values[i]);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(con);
+						if (!con.equals(condition)) {
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
+						}
 						return errors.toString();
 					}
 
@@ -822,8 +945,16 @@ public class TChecker {
 		// add variant if check value is just string surrounded by quotes
 
 		// value cant finished with "." or ". "
+
+		StringBuilder errors = new StringBuilder();
 		if (value.matches(".*\\. ?$")) {
-			return "Value shouldn't be finished with DOT"  + NEW_LINE + NEW_LINE + "//" + value;
+			errors.append("Value shouldn't be finished with DOT");
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(value);
+			return errors.toString();
 		}
 
 		String valueCleaned = value.trim();
@@ -837,14 +968,31 @@ public class TChecker {
 		for (int i = 0; i < functns.length; i++) {
 			// check if function exists
 			if (!isFunction(functns[i]) && !isPdm(functns[i]) && !isNumber(functns[i]) && !isReference(functns[i])) {
-				return "Function '" + functns[i] + "' doesn't exist";
+				errors.append("Function '");
+				errors.append(functns[i]);
+				errors.append("' doesn't exist");
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(value);
+				return errors.toString();
 			}
 
 			// if decimal or reference do nothing
 			if (isNumber(functns[i]) || isReference(functns[i])) {
 				if (previousType != null) {
-					return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'" + NEW_LINE
-							+ NEW_LINE + "//" + value;
+					errors.append("Function '");
+					errors.append(functns[i]);
+					errors.append("' shouldn't be invoked on '");
+					errors.append(previousType);
+					errors.append("'");
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(value);
+					return errors.toString();
 				}
 
 			} else {
@@ -876,21 +1024,51 @@ public class TChecker {
 							break;
 						}
 					} else {
-						return "Attribute '" + functns[i] + "' doesn't exist";
+						errors.append("Attribute '");
+						errors.append(functns[i]);
+						errors.append("' doesn't exist");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(value);
+						return errors.toString();
 					}
 
 					if (!value.contains(".")) {
-						return "DOT expected";
+						errors.append("DOT expected");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(value);
+						return errors.toString();
 					}
 
 				} else {
-					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i]) && !value.contains(".")) {
-						return "DOT expected"  + NEW_LINE + NEW_LINE + "//" + value;
+					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i]) && !"NULL".equals(functns[i])
+							&& !value.contains(".")) {
+						errors.append("DOT expected");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(value);
+						return errors.toString();
 					}
 
 					if (!isFunctionMemberOfValid(functns[i], previousType)) {
-						return "Function '" + functns[i] + "' shouldn't be invoked on '" + previousType + "'" + NEW_LINE
-								+ NEW_LINE + "//" + value;
+						errors.append("Function '");
+						errors.append(functns[i]);
+						errors.append("' shouldn't be invoked on '");
+						errors.append(previousType);
+						errors.append("'");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(value);
+						return errors.toString();
 					}
 
 					previousType = getFunctionReturnType(functns[i], previousType);
@@ -1010,6 +1188,11 @@ public class TChecker {
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 						if (error != null) {
 							errors.append(error);
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
 							return errors.toString();
 						}
 
@@ -1029,6 +1212,11 @@ public class TChecker {
 							.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(condition);
 						return errors.toString();
 					}
 
@@ -1039,7 +1227,11 @@ public class TChecker {
 						error = checkParameters(functionName, parameters);
 						if (error != null) {
 							errors.append(error);
-
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
 							return errors.toString();
 						}
 					}
@@ -1057,6 +1249,11 @@ public class TChecker {
 					error = checkValue(values[i]);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(condition);
 						return errors.toString();
 					}
 
@@ -1067,7 +1264,11 @@ public class TChecker {
 						error = checkParameters(functionName, parameters);
 						if (error != null) {
 							errors.append(error);
-
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
 							return errors.toString();
 						}
 					}
@@ -1077,10 +1278,10 @@ public class TChecker {
 
 		} else if (condition.contains(COALESCE_TEXT)) {
 			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
-
 			{
 				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
 						+ condition.substring(point + 1);
+
 				if (!allExceptFunc.trim().isEmpty()) {
 					String[] values = allExceptFunc.split(" _ | _|_ |_");
 					for (int i = 0; i < values.length; i++) {
@@ -1088,6 +1289,11 @@ public class TChecker {
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 						if (error != null) {
 							errors.append(error);
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
 							return errors.toString();
 						}
 
@@ -1098,12 +1304,17 @@ public class TChecker {
 			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(), point);
 
 			// check values and parameters
-			String[] values = conCleaned.split(", |,");
+			String[] values = correctSplitByComma(conCleaned);
 			for (int i = 0; i < values.length; i++) {
 				error = checkValue(
 						values[i].replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 				if (error != null) {
 					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
 					return errors.toString();
 				}
 
@@ -1114,7 +1325,11 @@ public class TChecker {
 					error = checkParameters(functionName, parameters);
 					if (error != null) {
 						errors.append(error);
-
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(condition);
 						return errors.toString();
 					}
 				}
@@ -1134,6 +1349,11 @@ public class TChecker {
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
 						if (error != null) {
 							errors.append(error);
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
 							return errors.toString();
 						}
 
@@ -1145,11 +1365,16 @@ public class TChecker {
 			conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), point);
 
 			// check values and parameters
-			String[] values = conCleaned.split(", |,");
+			String[] values = correctSplitByComma(conCleaned);
 			for (int i = 0; i < values.length; i++) {
 				error = checkValue(values[i]);
 				if (error != null) {
 					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
 					return errors.toString();
 				}
 
@@ -1160,7 +1385,11 @@ public class TChecker {
 					error = checkParameters(functionName, parameters);
 					if (error != null) {
 						errors.append(error);
-
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(condition);
 						return errors.toString();
 					}
 				}
@@ -1177,7 +1406,11 @@ public class TChecker {
 				error = checkParameters(functionName, parameters);
 				if (error != null) {
 					errors.append(error);
-
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(condition);
 					return errors.toString();
 				}
 			}
@@ -1190,6 +1423,8 @@ public class TChecker {
 		// Replace("before", "after")
 		// functionName = Replace
 		// parameters = "\"before\", \"after\""
+
+		StringBuilder errors = new StringBuilder();
 		String[] params = parameters.split(", |,");
 
 		int paramsQty = params.length;
@@ -1203,8 +1438,13 @@ public class TChecker {
 					for (int i = 0; i < params.length; i++) {
 
 						if (!params[i].isEmpty() && !func.isTypeValid(params[i].trim(), i)) {
-							return "Function '" + func.getName() + "' has incorrect parameters. '" + params[i].trim()
-									+ "' shouldn't be on position #" + (i + 1);
+							errors.append("Function '");
+							errors.append(func.getName());
+							errors.append("' has incorrect parameters. '");
+							errors.append(params[i].trim());
+							errors.append("' shouldn't be on position #");
+							errors.append((i + 1));
+							return errors.toString();
 						}
 					}
 
@@ -1212,13 +1452,21 @@ public class TChecker {
 					return null;
 
 				} else {
-					return "'" + functionName + "' shouldn't have '" + paramsQty + "' parameters";
+					errors.append("'");
+					errors.append(functionName);
+					errors.append("' shouldn't have '");
+					errors.append(paramsQty);
+					errors.append("' parameters");
+					return errors.toString();
 				}
 			}
 		}
 
 		if (!parameters.isEmpty()) {
-			return "'" + functionName + "' shouldn't have parameters";
+			errors.append("'");
+			errors.append(functionName);
+			errors.append("' shouldn't have parameters");
+			return errors.toString();
 		}
 
 		return null;
@@ -1290,7 +1538,13 @@ public class TChecker {
 
 		// value cant finished with "_" or "_ "
 		if (returnValue.matches(".*_ ?$")) {
-			return "Value shouldn't be finished with UNDERSCORE";
+			errors.append("Value shouldn't be finished with UNDERSCORE");
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(returnValue);
+			return errors.toString();
 		}
 
 		final String COALESCE_TEXT = "COALESCE(";
@@ -1307,6 +1561,11 @@ public class TChecker {
 				error = checkValue(values[i]);
 				if (error != null) {
 					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(returnValue);
 					return errors.toString();
 				}
 
@@ -1317,6 +1576,7 @@ public class TChecker {
 		error = checkParametersInCondition(returnValue);
 		if (error != null) {
 			errors.append(error);
+
 			return errors.toString();
 		}
 
@@ -1334,6 +1594,11 @@ public class TChecker {
 		if (!isCaseStatementValid) {
 			errors.append("Invalid CASE statements. ");
 			errors.append(structure);
+			errors.append(NEW_LINE);
+			errors.append(NEW_LINE);
+			errors.append("-----");
+			errors.append(NEW_LINE);
+			errors.append(caseStatement);
 
 			return errors.toString();
 		}
@@ -1351,7 +1616,13 @@ public class TChecker {
 				// CASE can't contains UNDERSCORE
 				String stmnt = m.group(1);
 				if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
-					return "CASE condition shouldn't contains UNDERSCORE";
+					errors.append("CASE condition shouldn't contains UNDERSCORE");
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(caseStatement);
+					return errors.toString();
 				}
 
 			}
@@ -1359,12 +1630,53 @@ public class TChecker {
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(caseStatement);
 
 				return errors.toString();
 			}
 		}
 
 		return null;
+	}
+
+	private static String[] correctSplitByComma(String str) {
+		str = str.replaceAll(" ?, ?", ",");
+
+		List<String> list = new ArrayList<>();
+		String temp = null;
+		int start = 0;
+		int startWithOld = 0;
+		int counter = 0;
+		int point = 0;
+		while (start < str.length() && point != -1) {
+			point = str.indexOf(",", start);
+
+			if (point != -1) {
+				temp = str.substring(startWithOld, point);
+
+			} else {
+				temp = str.substring(startWithOld);
+			}
+			if (matchBrackets(temp)) {
+				list.add(temp);
+				counter = 0;
+				start = point + 1;
+				startWithOld = start;
+			} else {
+				if (counter == 0) {
+					startWithOld = start;
+				}
+				start = point + 1;
+				counter++;
+			}
+
+		}
+
+		return list.toArray(new String[list.size()]);
 	}
 
 }

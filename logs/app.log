@@ -1,4 +1,1076 @@
-2016-12-15 00:11:55,864 INFO ua.pp.hak.Runner [main] Start working...
-2016-12-15 00:12:01,941 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
-2016-12-15 00:12:18,267 INFO ua.pp.hak.Runner [main] Start working...
-2016-12-15 00:12:22,861 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 10:45:34,945 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 10:55:49,590 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:04:41,340 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:04:59,470 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:05:20,204 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:06:38,314 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:07:39,911 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:08:55,319 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:10:38,120 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:10:50,795 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:11:02,220 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:11:18,980 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:11:20,892 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:13:43,009 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:13:45,055 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:39:31,803 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:39:34,283 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 11:40:12,353 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 11:58:48,965 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:00:01,356 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:01:00,602 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:01:15,864 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:03:15,110 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:08:56,249 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:08:59,444 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:10:09,853 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:10:14,236 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:11:50,111 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:14:09,547 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:14:12,497 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 12:14:12,544 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NOT NULL
+
+-----
+IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 12:14:14,730 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 12:14:14,749 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NOT NULL
+
+-----
+IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 12:15:07,027 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 12:15:09,024 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 12:15:11,653 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 12:15:11,749 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+-----
+A[4446].Values.Where()
+-----
+A[4446].Values.Where("") IS NOT NULL
+-----
+IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 12:15:22,430 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 12:15:22,462 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+-----
+A[4446].Values.Where()
+-----
+A[4446].Values.Where("") IS NOT NULL
+-----
+IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 12:15:37,632 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 13:54:32,792 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 14:03:36,725 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:03:36,750 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Invalid IF THEN ELSE statements.
+Valid structure:
+IF condition THEN returnValue
+[ ELSE IF condition THEN returnValue ]
+[ ELSE returnValue ]
+-----
+ELSEIF A[610].Values.Where("") IS NOT NULL THEN IF A[332].Value IS NOT NULL AND A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE"" THEN A[338].Value_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[332].Value IS NOT NULL AND A[338].Value >=10000 AND A[338].Unit LIKE"" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE"" THEN A[338].Value_""_A[338].Unit_ "" ELSEIF A[338].Value >=10000 AND A[338].Unit LIKE"" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""
+2016-12-15 14:04:01,779 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:04:01,781 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: You are using THEN statement 5 times, but have to use 6 time(s)
+Valid structure:
+IF condition THEN returnValue
+[ ELSE IF condition THEN returnValue ]
+[ ELSE returnValue ]
+-----
+IF MS.CompatibleProducts.Where("") IS NOT NULL THEN ""_MS.CompatibleProducts.Distinct.FlattenWithAnd().HtmlEncode().Replace("", "") ELSEIF MS.CompatibleProducts.Where("") IS NOT NULL THEN ""_MS.CompatibleProducts.Distinct.FlattenWithAnd().HtmlEncode() ELSEIF MS.CompatibleProducts IS NOT NULL THEN ""_MS.CompatibleProducts.Distinct.FlattenWithAnd().HtmlEncode().Replace("", "") ELSEIF A[610].Values.Where("") IS NOT NULL THEN "" ELSEIF A[1505].Values.Where("") IS NOT NULL THEN "" ELSEIF A[610].Values.Where("") IS NOT NULL THEN
+2016-12-15 14:04:25,490 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:04:25,504 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[338].Unit LIKE""' have to contains operator
+Valid condition:
+value1 operator value2
+-----
+A[338].Unit LIKE""
+-----
+A[332].Value IS NOT NULL AND A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE""
+-----
+IF A[332].Value IS NOT NULL AND A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE"" THEN A[338].Value_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[332].Value IS NOT NULL AND A[338].Value >=10000 AND A[338].Unit LIKE"" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE"" THEN A[338].Value_""_A[338].Unit_ "" ELSEIF A[338].Value >=10000 AND A[338].Unit LIKE"" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""
+2016-12-15 14:05:01,471 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:05:01,479 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'MultiplyBy()' has incorrect parameters. '""' shouldn't be on position #1
+-----
+A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_""
+-----
+IF A[332].Value IS NOT NULL AND A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE "" THEN A[338].Value_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[332].Value IS NOT NULL AND A[338].Value >=10000 AND A[338].Unit LIKE "" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""_A[332].Value.Replace("","").ToLowerFirstChar()_"" ELSEIF A[338].Value <10000 AND A[338].Value > 0 AND A[338].Unit LIKE "" THEN A[338].Value_""_A[338].Unit_ "" ELSEIF A[338].Value >=10000 AND A[338].Unit LIKE "" THEN A[338].Value.ExtractDecimals().MultiplyBy("").ToText("").Replace("", "")_""_A[338].Unit_ ""
+2016-12-15 14:07:18,926 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:07:18,939 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: DOT expected
+-----
+NULL
+-----
+NULL
+-----
+IF SKU.ProductId IN(16961871,16982892) THEN NULL ELSEIF A[315].Values IS NOT NULL AND A[2685].Values.Where("").Count < 5 THEN A[315].Values.ToLower(true).FlattenWithAnd().Postfix("").Replace("","").Replace("", "").Replace("", "").Replace("", "")
+2016-12-15 14:08:47,208 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:08:53,626 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 14:10:08,585 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 14:10:11,280 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 14:10:11,329 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 14:10:13,582 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:07:38,182 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:07:44,204 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:07:44,227 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 15:07:49,101 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:07:49,102 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 15:07:52,277 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:07:52,277 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 15:08:19,848 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:09:22,458 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:09:42,193 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:09:42,276 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: 
+2016-12-15 15:10:04,749 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:10:04,768 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: 
+2016-12-15 15:10:26,894 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:10:30,360 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:10:32,951 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:10:33,036 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:10:41,186 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:10:41,208 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:10:48,066 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:10:48,077 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:11:02,545 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:02,550 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:11:07,080 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:07,082 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NOT NULL
+
+-----
+IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 15:11:31,503 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:31,511 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:11:38,638 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:38,639 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 15:11:41,622 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:41,624 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 15:11:47,478 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:47,480 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""
+
+-----
+IF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[5818].Value IS NOT NULL THEN ""_""_A[781].Value_A[781].Unit_""_A[4992].Value.Prefix("")_A[4992].Unit.Erase("").Postfix("")_"" ELSEIF A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_""
+2016-12-15 15:11:52,630 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:11:52,632 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""
+
+-----
+IF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[5818].Value IS NOT NULL THEN ""_""_A[781].Value_A[781].Unit_""_A[4992].Value.Prefix("")_A[4992].Unit.Erase("").Postfix("")_"" ELSEIF A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_""
+2016-12-15 15:17:21,539 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:17:24,623 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:17:27,283 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:17:27,325 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""
+
+-----
+IF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[5818].Value IS NOT NULL THEN ""_""_A[781].Value_A[781].Unit_""_A[4992].Value.Prefix("")_A[4992].Unit.Erase("").Postfix("")_"" ELSEIF A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_""
+2016-12-15 15:18:38,627 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:18:38,648 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:32,604 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:32,609 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:33,588 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:33,589 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:33,764 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:33,766 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:33,972 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:33,973 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:34,956 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:34,957 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:35,524 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:35,525 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:20:35,756 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:20:35,757 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:24:01,302 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:24:01,303 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+ COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) 
+2016-12-15 15:25:14,989 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:25:22,905 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:25:25,678 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:25:25,688 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:25:51,490 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:25:54,318 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:25:54,330 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:27:29,142 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:27:31,159 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:27:33,798 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:27:33,812 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:29:03,719 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:29:06,292 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:29:08,887 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:29:08,893 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:30:43,382 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:30:48,044 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:30:50,741 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:30:50,752 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:31:38,949 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:31:40,549 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:31:42,886 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:31:42,896 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:32:56,285 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:32:58,312 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:33:00,760 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:33:00,768 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:34:13,886 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:34:15,381 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:34:17,802 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:34:17,816 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:35:48,240 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:35:50,299 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:35:52,860 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:35:52,872 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:36:09,403 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:36:13,972 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:36:16,510 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:36:16,523 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:38:47,184 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:38:49,255 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:39:21,337 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:39:21,344 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:44:18,893 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:44:21,153 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:44:23,650 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:44:23,662 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Where(""' doesn't exist
+
+-----
+A[31].Values.Where(""
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:46:49,877 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:46:54,587 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:46:56,929 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:46:56,940 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Value, A[31]' doesn't exist
+
+-----
+A[5498].Value, A[31].Values.Where(), A[4446].Values.Where(), A[2920].Values.Where(), A[2337].Values.Where(), A[306].Values.Where(), A[4645].Values.Where(), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:48:01,405 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:48:03,248 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:48:05,631 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:48:05,642 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Value, A[31]' doesn't exist
+
+-----
+A[5498].Value, A[31].Values.Where(), A[4446].Values.Where(), A[2920].Values.Where(), A[2337].Values.Where(), A[306].Values.Where(), A[4645].Values.Where(), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:48:40,511 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:48:42,143 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:48:44,502 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:48:44,511 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Value, A[31]' doesn't exist
+
+-----
+A[5498].Value, A[31].Values.Where(), A[4446].Values.Where(), A[2920].Values.Where(), A[2337].Values.Where(), A[306].Values.Where(), A[4645].Values.Where(), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 15:50:07,762 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 15:50:09,404 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 15:50:11,806 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 15:50:11,814 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Value, A[31]' doesn't exist
+
+-----
+A[5498].Value, A[31].Values.Where(), A[4446].Values.Where(), A[2920].Values.Where(), A[2337].Values.Where(), A[306].Values.Where(), A[4645].Values.Where(), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 16:57:58,132 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:33:59,000 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:34:08,584 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:34:08,599 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 17:34:25,646 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:34:27,812 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:34:30,330 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:34:30,337 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 17:34:51,467 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:34:51,470 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), , A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), , A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), , A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), , A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 17:35:02,764 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:35:02,775 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
+2016-12-15 17:35:05,191 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:36:47,941 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:36:53,604 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:36:53,683 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function '' doesn't exist
+
+-----
+
+
+-----
+
+2016-12-15 17:37:16,537 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:37:16,555 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""
+
+-----
+IF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[5818].Value IS NOT NULL THEN ""_""_A[781].Value_A[781].Unit_""_A[4992].Value.Prefix("")_A[4992].Unit.Erase("").Postfix("")_"" ELSEIF A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_""
+2016-12-15 17:37:25,244 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:40:38,196 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:40:42,433 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:40:42,505 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+Search for ;;
+2016-12-15 17:40:53,793 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:40:53,809 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+Search for ;;
+2016-12-15 17:41:01,707 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:41:28,352 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:41:30,962 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:41:31,022 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+Search for ;[spaces or new lines];
+2016-12-15 17:41:36,541 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:42:59,051 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:43:02,112 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:43:02,205 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+Look at empty values between two semicolons.
+2016-12-15 17:43:07,649 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:43:17,083 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:43:25,717 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:43:25,784 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+2016-12-15 17:47:55,194 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:47:57,552 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:48:00,020 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:48:00,095 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:48:09,368 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:48:09,385 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:48:12,544 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:48:12,562 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:48:44,380 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:48:46,410 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:48:48,994 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:48:49,086 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:49:03,570 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:49:03,587 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:49:43,293 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:49:45,595 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:49:57,370 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:49:57,461 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:13,453 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:13,477 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:15,765 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:15,794 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ;;
+2016-12-15 17:50:19,245 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:19,254 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:20,525 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:20,532 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:24,517 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:24,525 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:25,437 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:25,449 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:25,605 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:25,612 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:25,797 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:25,804 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:26,573 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:26,580 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:26,749 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:26,756 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:50:26,957 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:50:26,964 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+; Spaces And/Or LineFeeds ;
+2016-12-15 17:51:20,442 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:51:22,119 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:51:24,614 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:51:24,688 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Spaces And/Or LineFeeds ;"
+2016-12-15 17:52:00,090 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:52:02,412 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:52:04,675 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:52:04,752 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ";;"
+2016-12-15 17:52:16,585 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:52:16,600 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 17:52:25,377 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:52:25,397 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Search for ";;"
+2016-12-15 17:52:27,833 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:52:27,846 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 17:53:00,530 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:53:00,541 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 17:53:14,859 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:53:14,869 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE ""
+
+-----
+ IF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[780].Value > 1 THEN ""_A[780].Value.Postfix("")_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" AND A[5818].Value IS NOT NULL THEN ""_""_A[781].Value_A[781].Unit_""_A[4992].Value.Prefix("")_A[4992].Unit.Erase("").Postfix("")_"" ELSEIF A[6206].Value LIKE ""THEN ""_A[781].Value_A[781].Unit_"" ELSEIF A[6206].Value LIKE "" THEN ""_A[781].Value_A[781].Unit_""
+2016-12-15 17:53:40,852 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:53:40,862 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 17:55:22,833 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:55:26,119 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:55:28,824 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:55:28,893 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+ IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-15 17:56:08,145 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:56:08,197 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NOT NULL
+
+-----
+ IF A[31].Values.Where("") IS NOT NULL THEN "" ELSEIF A[4446].Values.Where("") IS NOT NULL THEN "" ELSEIF A[2920].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 17:56:19,305 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:56:19,334 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[218].Values.Where().Distinct.Count <> 2' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[218].Values.Where("", "").Distinct.Count <> 2
+-----
+A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND COALESCE(A[4645].Values.Where(""), A[306].Values.Where("")) IS NOT NULL AND A[218].Values.Where("", "").Distinct.Count <> 2
+
+-----
+ IF A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND COALESCE(A[4645].Values.Where(""), A[306].Values.Where("")) IS NOT NULL AND A[218].Values.Where("", "").Distinct.Count <> 2 THEN "" ELSEIF A[4645].Values.Where("") IS NOT NULL OR A[306].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 17:56:30,530 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:56:30,545 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Condition 'A[218].Values.Where().Distinct.Count <> 2' have to contains only 1 operator
+
+Valid condition:
+value1 operator value2
+
+-----
+A[218].Values.Where("", "").Distinct.Count <> 2
+-----
+A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND COALESCE(A[4645].Values.Where(""), A[306].Values.Where("")) IS NOT NULL AND A[218].Values.Where("", "").Distinct.Count <> 2
+
+-----
+ IF A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND COALESCE(A[4645].Values.Where(""), A[306].Values.Where("")) IS NOT NULL AND A[218].Values.Where("", "").Distinct.Count <> 2 THEN "" ELSEIF A[4645].Values.Where("") IS NOT NULL OR A[306].Values.Where("") IS NOT NULL THEN ""
+2016-12-15 17:58:07,712 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 17:58:09,678 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 17:58:12,124 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:58:12,241 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NULL
+-----
+A[5498].Value IS NULL AND A[31].Values.Where("", "", "") IS NULL AND A[4446].Values.Where("") IS NULL AND A[2920].Values.Where("") IS NULL AND A[2337].Values.Where("", "") IS NULL AND A[306].Values.Where("", "") IS NULL AND A[4645].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[3266].Value NOT LIKE "" AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND A[5796].Value NOT LIKE "" AND A[6248].Value NOT LIKE "" AND A[218].Values.Where("", "").Distinct.Count <> 2 AND A[218].Values.Where("", "") IS NOT NULL
+
+-----
+ IF A[5498].Value IS NULL AND A[31].Values.Where("", "", "") IS NULL AND A[4446].Values.Where("") IS NULL AND A[2920].Values.Where("") IS NULL AND A[2337].Values.Where("", "") IS NULL AND A[306].Values.Where("", "") IS NULL AND A[4645].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[3266].Value NOT LIKE "" AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND A[5796].Value NOT LIKE "" AND A[6248].Value NOT LIKE "" AND A[218].Values.Where("", "").Distinct.Count <> 2 AND A[218].Values.Where("", "") IS NOT NULL THEN ""_ A[218].Values.Where("", "").ToLower().FlattenWithAnd()_"" ELSEIF A[3916].Value LIKE "" AND A[3919].Value LIKE "" AND A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[374].Values.Where("") IS NULL THEN "" ELSEIF A[3916].Value LIKE "" AND A[3919].Value LIKE "" THEN "" ELSEIF A[218].Values.Where("") IS NOT NULL AND A[218].Values.Where("") IS NOT NULL AND A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[374].Values.Where("") IS NULL THEN "" ELSEIF A[218].Values.Where("") IS NOT NULL AND A[218].Values.Where("") IS NOT NULL THEN "" 
+2016-12-15 17:58:43,599 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:58:43,625 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+A[4446].Values.Where("") IS NULL
+-----
+A[5498].Value IS NULL AND A[31].Values.Where("", "", "") IS NULL AND A[4446].Values.Where("") IS NULL AND A[2920].Values.Where("") IS NULL AND A[2337].Values.Where("", "") IS NULL AND A[306].Values.Where("", "") IS NULL AND A[4645].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[3266].Value NOT LIKE "" AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND A[5796].Value NOT LIKE "" AND A[6248].Value NOT LIKE "" AND A[218].Values.Where("", "").Distinct.Count <> 2 AND A[218].Values.Where("", "") IS NOT NULL
+
+-----
+ IF A[5498].Value IS NULL AND A[31].Values.Where("", "", "") IS NULL AND A[4446].Values.Where("") IS NULL AND A[2920].Values.Where("") IS NULL AND A[2337].Values.Where("", "") IS NULL AND A[306].Values.Where("", "") IS NULL AND A[4645].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[6216].Match(6216).Values.Where("") IS NULL AND A[3266].Value NOT LIKE "" AND A[374].Values.Where("") IS NULL AND A[3916].Value NOT LIKE "" AND A[3919].Value NOT LIKE "" AND A[5796].Value NOT LIKE "" AND A[6248].Value NOT LIKE "" AND A[218].Values.Where("", "").Distinct.Count <> 2 AND A[218].Values.Where("", "") IS NOT NULL THEN ""_ A[218].Values.Where("", "").ToLower().FlattenWithAnd()_"" ELSEIF A[3916].Value LIKE "" AND A[3919].Value LIKE "" AND A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[374].Values.Where("") IS NULL THEN "" ELSEIF A[3916].Value LIKE "" AND A[3919].Value LIKE "" THEN "" ELSEIF A[218].Values.Where("") IS NOT NULL AND A[218].Values.Where("") IS NOT NULL AND A[31].Values.Where("") IS NULL AND A[8664].Value IS NULL AND A[10515].Value IS NULL AND A[10514].Value IS NULL AND A[374].Values.Where("") IS NULL THEN "" ELSEIF A[218].Values.Where("") IS NOT NULL AND A[218].Values.Where("") IS NOT NULL THEN "" 
+2016-12-15 17:58:59,343 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 17:58:59,380 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:09,474 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:09,493 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:38,387 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:38,395 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:44,755 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:44,757 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:49,939 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:49,940 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:50,899 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:50,899 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:51,075 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:51,076 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:00:51,259 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:00:51,259 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:01:31,204 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:01:31,205 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:01:32,823 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 18:01:34,396 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 18:01:36,800 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:01:36,807 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:01:54,321 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-15 18:01:55,921 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-15 18:02:01,724 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-15 18:02:01,750 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: There is empty statement
+
+-----
+Look at empty values between two semicolons.
+Search for "; Space(s) And/Or LineFeed(s) ;"
+2016-12-15 18:02:40,874 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
