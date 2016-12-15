@@ -104,11 +104,12 @@ public class TChecker {
 	}
 
 	private static String checkExpression(String expr) {
+		expr = expr.trim();
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 		String exprCleaned = null;
 
-		if (expr.trim().isEmpty()) {
+		if (expr.isEmpty()) {
 			error = "Expression is empty";
 			errors.append(error);
 
@@ -760,9 +761,9 @@ public class TChecker {
 			// PdmMultivalueAttribute instead of PdmAttributeSet
 			conCleaned = conCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
 
-			int operatorsQty = conCleaned.length() - conCleaned.replaceAll("<>", "1").replaceAll(">=", "1").replaceAll("<=", "1")
-					.replaceAll("<", "").replaceAll(">", "").replaceAll("=", "").replaceAll("(?i) LIKE ", " LIK ")
-					.replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
+			int operatorsQty = conCleaned.length() - conCleaned.replaceAll("<>", "1").replaceAll(">=", "1")
+					.replaceAll("<=", "1").replaceAll("<", "").replaceAll(">", "").replaceAll("=", "")
+					.replaceAll("(?i) LIKE ", " LIK ").replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
 					.replaceAll("HasText(?!\\.)", "HasTex").replaceAll("IsEmpty(?!\\.)", "IsEmpt")
 					.replaceAll("IsDescendantOf\\(\\)(?!\\.)", "IsDescendantOf(")
 					.replaceAll("HasValue(?!\\.)", "HasValu").replaceAll("IsBiggerThan\\(\\)(?!\\.)", "IsBiggerThan(")

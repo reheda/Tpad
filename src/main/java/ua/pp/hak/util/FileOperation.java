@@ -20,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 import ua.pp.hak.ui.Constants;
 import ua.pp.hak.ui.MyFileFilter;
 import ua.pp.hak.ui.Notepad;
-import ua.pp.hak.update.UpdateInfo;
 
 public class FileOperation implements Constants {
 	final static Logger logger = LogManager.getLogger(FileOperation.class);
