@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -78,6 +79,7 @@ import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
 import ua.pp.hak.compiler.Attribute;
 import ua.pp.hak.compiler.TChecker;
+import ua.pp.hak.compiler.TParser;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
@@ -85,11 +87,13 @@ import ua.pp.hak.util.Legacy;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 	final static Logger logger = LogManager.getLogger(Notepad.class);
-	
+
 	private JFrame frame;
 	private RSyntaxTextArea taExpr;
-
+	private JTextField tfSKU;
 	private JTextArea taExprRes;
+	private JTextArea taParameters;
+
 	private JLabel statusBar;
 	private JScrollPane spExpr;
 	private JScrollPane spExprRes;
@@ -143,6 +147,15 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	public JButton getRedoButton() {
 		return redoButton;
 	}
+
+	public JTextField getSkuField() {
+		return tfSKU;
+	}
+
+	public JTextArea getParametersTextArea() {
+		return taParameters;
+	}
+
 
 	/****************************/
 	Notepad() {
@@ -293,7 +306,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		rightPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
-		JTextField tfSKU = new JTextField(20);
+		tfSKU = new JTextField(20);
 		tfSKU.setMaximumSize(new Dimension(4000, 20));
 		tfSKU.setFont(font.deriveFont(12f));
 		tfSKU.setText(defaultSKU);
@@ -303,7 +316,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		JLabel lblExpr = new JLabel(txtExpr);
 		JLabel lblParameters = new JLabel(txtParameters);
 		JLabel lblSKU = new JLabel(txtSKU);
-		JTextArea taParameters = new JTextArea();
+		taParameters = new JTextArea();
 		taParameters.setLineWrap(true);
 		taParameters.setFont(font.deriveFont(12f));
 		taParameters.setBorder(new EmptyBorder(3, 3, 3, 3));
@@ -497,7 +510,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		/////////
 		WindowListener frameClose = new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
-				if (fileHandler.confirmSave()){
+				if (fileHandler.confirmSave()) {
 					logger.info("Stop working...");
 					System.exit(0);
 				}
@@ -638,8 +651,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			fileHandler.saveAsFile();
 		////////////////////////////////////
 		else if (cmdText.equals(fileExit)) {
-			if (fileHandler.confirmSave()){
-				logger.info("Stop working...");				
+			if (fileHandler.confirmSave()) {
+				logger.info("Stop working...");
 				System.exit(0);
 			}
 		}
@@ -783,6 +796,21 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 		else if (evObj == checkButton) {
 			TChecker.check(this);
+			if (!parserPanelItem.isSelected()) {
+				parserPanelItem.doClick();
+			}
+		}
+		////////////////////////////////////
+		else if (evObj == parseButton) {
+//			try {
+//				Desktop.getDesktop().browse(new URI("http://templex.cnetcontent.com/Home/Parser"));
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			} catch (URISyntaxException e1) {
+//				e1.printStackTrace();
+//			}
+
+			TParser.parse(this);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}

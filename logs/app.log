@@ -1484,3 +1484,203 @@ COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where("")
 2016-12-15 22:24:59,927 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
 2016-12-15 22:24:59,988 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: expression is OK
 2016-12-15 22:25:06,476 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 18:38:31,496 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 18:38:31,548 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 18:38:36,089 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 18:38:36,096 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 18:38:45,000 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 18:39:31,851 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 18:39:31,865 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 18:43:40,614 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] http://templex.cnetcontent.com/Reference
+2016-12-16 18:52:49,806 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 18:52:49,816 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 19:03:44,660 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 19:04:02,884 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 19:04:02,903 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 19:05:39,618 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 19:05:39,628 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 19:12:50,306 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 19:32:32,575 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:20:28,807 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:20:59,535 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 20:20:59,545 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 20:22:33,063 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:22:38,242 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-16 20:22:41,109 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 20:22:41,124 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 20:24:25,917 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:25:05,094 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-16 20:25:26,758 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:25:29,712 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-16 20:26:41,065 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:27:06,282 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:32:13,599 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:34:24,698 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:35:52,504 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:35:54,304 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:40:19,897 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:40:24,275 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 20:40:24,295 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 20:41:12,290 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:43:18,351 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:48:04,857 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
+2016-12-16 20:49:24,458 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 20:49:24,474 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 20:51:23,091 INFO ua.pp.hak.Runner [main] Start working...
+2016-12-16 20:51:31,779 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Checking expression...
+2016-12-16 20:51:31,794 INFO ua.pp.hak.compiler.TChecker [AWT-EventQueue-0] Expression check result: Function 'Values' shouldn't be invoked on 'PdmAttribute'
+
+-----
+A[4446].Values.Where()
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where(""))
+
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL
+-----
+COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2
+
+-----
+IF COALESCE(A[5498].Value, A[31].Values.Where("", "", ""), A[4446].Values.Where(""), A[2920].Values.Where(""), A[2337].Values.Where("", ""), A[306].Values.Where("", ""), A[4645].Values.Where(""), A[8664].Value, A[10515].Value, A[10514].Value, A[6216].Match(6216).Values.Where("")) IS NOT NULL OR A[3266].Value LIKE "" OR A[374].Values.Where("") IS NOT NULL OR A[3916].Value LIKE "" OR A[3919].Value LIKE "" OR A[5796].Value LIKE "" OR A[6248].Value LIKE "" OR A[218].Values.Where("", "").Distinct.Count = 2 THEN ""
+2016-12-16 20:51:55,674 INFO ua.pp.hak.ui.Notepad [AWT-EventQueue-0] Stop working...
