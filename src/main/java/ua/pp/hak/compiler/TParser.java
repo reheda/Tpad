@@ -1,6 +1,7 @@
 package ua.pp.hak.compiler;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
@@ -12,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,8 +23,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.google.common.base.Predicate;
 
 import ua.pp.hak.ui.Notepad;
 
@@ -39,16 +45,16 @@ public class TParser {
 		JTextArea taExprRes = npd.getExprResTextArea();
 		JTextArea taParameters = npd.getParametersTextArea();
 		JTextField tfSKU = npd.getSkuField();
-		
+
 		taExprRes.setText("Parsing...");
 
-		String[] expressionResult = getExpressionResultInfoByPhantomJS(taExpr.getText(), taParameters.getText(),
+		String[] expressionResult = getExpressionResultInfoByChrome(taExpr.getText(), taParameters.getText(),
 				tfSKU.getText());
 		String expressionRes = expressionResult[0];
 		String expressionStatus = expressionResult[1];
 
 		Color color = null;
-		if (expressionStatus.equals("form-group has-success")) {
+		if (expressionStatus != null && expressionStatus.equals("form-group has-success")) {
 			color = green;
 		} else {
 			color = red;
@@ -65,48 +71,80 @@ public class TParser {
 	private static String[] getExpressionResultInfoByChrome(String exprText, String paramText, String skuIdText) {
 		// https://solutionspy.wordpress.com/2013/08/24/selenium-script-to-login-gmail-and-logout-successfully/
 
+		String expressionResult = null;
+		String expressionStatus = null;
+
 		// initialize Chrome driver
-		System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "webdrivers/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
+		// driver.manage().window().setSize(new org.openqa.selenium.Dimension(1,
+		// 1));
+		driver.manage().window().setPosition(new Point(-2000, 0));
+		try {
+			// hide Google Chrome driver http://stackoverflow.com/a/5506230
+			// Runtime.getRuntime().exec("HideNSeek.exe 0 \"" + "Google Chrome"
+			// + "\"");
+			String[] cmdarray = { "webdrivers/HideNSeek.exe", "0", "data:," };
+			Runtime.getRuntime().exec(cmdarray);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			// Open gmail
+			driver.get("http://templex.cnetcontent.com/Home/Parser");
 
-		// Open gmail
-		driver.get("http://templex.cnetcontent.com/Home/Parser");
+			// Enter userd id
+			WebElement element = driver.findElement(By.name("Email"));
+			element.sendKeys("test@test.com");
 
-		// Enter userd id
-		WebElement element = driver.findElement(By.name("Email"));
-		element.sendKeys("test@test.com");
+			// wait 5 secs for userid to be entered
+			// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
-		// wait 5 secs for userid to be entered
-		// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			// Enter Password
+			WebElement element1 = driver.findElement(By.name("Password"));
+			element1.sendKeys("password");
 
-		// Enter Password
-		WebElement element1 = driver.findElement(By.name("Password"));
-		element1.sendKeys("password");
+			// Submit button
+			element.submit();
 
-		// Submit button
-		element.submit();
+			WebElement parameters = driver.findElement(By.name("parameters"));
+			WebElement skuId = driver.findElement(By.name("skuId"));
+			WebElement expression = driver.findElement(By.name("expression"));
+			parameters.clear();
+			skuId.clear();
+			parameters.sendKeys(paramText);
+			expression.sendKeys(exprText);
+			skuId.sendKeys(skuIdText);
 
-		WebElement expression = driver.findElement(By.name("expression"));
-		expression.sendKeys(exprText);
-		WebElement parameters = driver.findElement(By.name("parameters"));
-		parameters.clear();
-		parameters.sendKeys(paramText);
-		WebElement skuId = driver.findElement(By.name("skuId"));
-		skuId.clear();
-		skuId.sendKeys(skuIdText);
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
-		// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
+					.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
+			waitForElToBeRemove(driver, By.id("loading"));
 
-		WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
-				.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
-		waitForElToBeRemove(driver, By.id("loading"));
+			new WebDriverWait(driver, DEFAULT_TIMEOUT).until(new Predicate<WebDriver>() {
+				public boolean apply(WebDriver driver) {
+					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+				}
 
-		String expressionResult = driver.findElement(By.name("result")).getAttribute("value");
-		String expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
-				.findElement(By.xpath("..")).getAttribute("class");
+			});
 
-		driver.close();
+			expressionResult = driver.findElement(By.name("result")).getAttribute("value");
+			expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
+					.findElement(By.xpath("..")).getAttribute("class");
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			driver.quit();
+		}
+
+		try {
+			Runtime.getRuntime().exec("webdrivers/HideNSeek.exe 1 \"" + "Google Chrome" + "\"");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return new String[] { expressionResult, expressionStatus };
 	}
 
@@ -123,7 +161,7 @@ public class TParser {
 		((DesiredCapabilities) caps).setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_SETTINGS_PREFIX + "userAgent",
 				USER_AGENT);
 		((DesiredCapabilities) caps).setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-				"phantomjs.exe");
+				"webdrivers/phantomjs.exe");
 		WebDriver driver = new PhantomJSDriver(caps);
 		try {
 			// Open gmail
@@ -143,16 +181,16 @@ public class TParser {
 			// Submit button
 			element.submit();
 
-			WebElement expression = driver.findElement(By.name("expression"));
-			expression.sendKeys(exprText);
 			WebElement parameters = driver.findElement(By.name("parameters"));
 			parameters.clear();
 			parameters.sendKeys(paramText);
 			WebElement skuId = driver.findElement(By.name("skuId"));
 			skuId.clear();
 			skuId.sendKeys(skuIdText);
+			WebElement expression = driver.findElement(By.name("expression"));
+			expression.sendKeys(exprText);
 
-			// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 			WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
 					.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));

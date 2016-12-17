@@ -809,8 +809,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 //			} catch (URISyntaxException e1) {
 //				e1.printStackTrace();
 //			}
-
+			long start = System.nanoTime();    
 			TParser.parse(this);
+			long elapsedTime = System.nanoTime() - start;
+			System.out.println(elapsedTime);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
