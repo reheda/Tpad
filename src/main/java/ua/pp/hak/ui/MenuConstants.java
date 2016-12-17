@@ -45,6 +45,7 @@ public interface MenuConstants {
 	final String helpLegacyInfo = "Legacy Info";
 	final String helpAttributeInfo = "Attribute Info";
 	final String helpHelpTopic = "Help Topic";
+	final String helpResetSettings = "Reset settings...";
 	final String helpCheckUpdates = "Check for Updates...";
 	final String helpAbout = "About";
 

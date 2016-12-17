@@ -23,7 +23,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -107,14 +106,14 @@ public class TParser {
 			// Submit button
 			element.submit();
 
-			WebElement parameters = driver.findElement(By.name("parameters"));
 			WebElement skuId = driver.findElement(By.name("skuId"));
-			WebElement expression = driver.findElement(By.name("expression"));
-			parameters.clear();
 			skuId.clear();
-			parameters.sendKeys(paramText);
-			expression.sendKeys(exprText);
 			skuId.sendKeys(skuIdText);
+			WebElement expression = driver.findElement(By.name("expression"));
+			expression.sendKeys(exprText);
+			WebElement parameters = driver.findElement(By.name("parameters"));
+			parameters.clear();
+			parameters.sendKeys(paramText);
 
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 

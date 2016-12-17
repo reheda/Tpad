@@ -1,7 +1,5 @@
 package ua.pp.hak.ui;
 
-import ua.pp.hak.Runner;
-
 public interface Constants {
 	final String applicationName = "Tpad";
 	final String defaultFileName = "Untitled";
@@ -13,7 +11,7 @@ public interface Constants {
 	final String txtSKU = "SKU ID: ";
 	final String defaultSKU = "12345679";
 	final String defaultParameters = "AccTree=-1, Evaluate=false, Locale=en-US, ResultSeparator=<>, Verbatim=false, LegacyValues=false";
-	final String defaultExpressionResult = "Microsoft Bluetooth Mobile Mouse 3600 - Mouse - Bluetooth 4.0 - Dark red\nOutputProcessors=RemarkProcessor+LegacyProductsToTableProcessor+L";
+	final String defaultExpressionResult = "";
 
 	final String imgTemplexBigLocation = "/images/templex-big.png";
 	final String imgNewLocation = "/images/new.png";

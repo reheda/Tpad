@@ -18,7 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ua.pp.hak.ui.Constants;
-import ua.pp.hak.ui.Notepad;
 
 public class UpdateInfo extends JFrame implements Constants {
 	final static Logger logger = LogManager.getLogger(UpdateInfo.class);

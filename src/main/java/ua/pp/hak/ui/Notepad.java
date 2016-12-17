@@ -18,14 +18,18 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -80,6 +84,9 @@ import org.fife.ui.rtextarea.RTextAreaEditorKit;
 import ua.pp.hak.compiler.Attribute;
 import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.compiler.TParser;
+import ua.pp.hak.setting.SettingStAXReader;
+import ua.pp.hak.setting.SettingStAXWriter;
+import ua.pp.hak.setting.Settings;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
@@ -100,6 +107,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JToolBar toolBar;
 	static String build = "x";
 
+	private Font defaultFont = new Font("Consolas", Font.PLAIN, 14);
 	private Font font = new Font("Consolas", Font.PLAIN, 14);
 	private FileOperation fileHandler;
 	private FindDialog findReplaceDialog = null;
@@ -108,7 +116,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JDialog backgroundDialog = null;
 	private JDialog foregroundDialog = null;
 	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
-			undoItem, redoItem;
+			undoItem, redoItem, statusBarItem;
 	private JCheckBoxMenuItem wordWrapItem;
 	private JCheckBoxMenuItem parserPanelItem;
 	private Action redoAction;
@@ -155,7 +163,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	public JTextArea getParametersTextArea() {
 		return taParameters;
 	}
-
 
 	/****************************/
 	Notepad() {
@@ -512,11 +519,21 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			public void windowClosing(WindowEvent we) {
 				if (fileHandler.confirmSave()) {
 					logger.info("Stop working...");
+
+					// save settings to settings.xml
+					saveSettings();
+
+					// just for getting backup
+					saveTempPadText();
+
 					System.exit(0);
 				}
 			}
 		};
 		frame.addWindowListener(frameClose);
+
+		// read settings.xml file and apply
+		readSettings();
 	}
 
 	public String getBuild() {
@@ -653,6 +670,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		else if (cmdText.equals(fileExit)) {
 			if (fileHandler.confirmSave()) {
 				logger.info("Stop working...");
+				// save settings to settings.xml
+				saveSettings();
+				// just for getting backup
+				saveTempPadText();
 				System.exit(0);
 			}
 		}
@@ -787,11 +808,20 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpCheckUpdates)) {
-			Updater.start(0);
+			saveSettings();
+			// just for getting backup
+			saveTempPadText();
+			if (fileHandler.confirmSave()) {
+				Updater.start(0);
+			}
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
 			showHelpTopic();
+		}
+		////////////////////////////////////
+		else if (cmdText.equals(helpResetSettings)) {
+			resetSettings();
 		}
 		////////////////////////////////////
 		else if (evObj == checkButton) {
@@ -802,14 +832,15 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (evObj == parseButton) {
-//			try {
-//				Desktop.getDesktop().browse(new URI("http://templex.cnetcontent.com/Home/Parser"));
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			} catch (URISyntaxException e1) {
-//				e1.printStackTrace();
-//			}
-			long start = System.nanoTime();    
+			// try {
+			// Desktop.getDesktop().browse(new
+			// URI("http://templex.cnetcontent.com/Home/Parser"));
+			// } catch (IOException e1) {
+			// e1.printStackTrace();
+			// } catch (URISyntaxException e1) {
+			// e1.printStackTrace();
+			// }
+			long start = System.nanoTime();
 			TParser.parse(this);
 			long elapsedTime = System.nanoTime() - start;
 			System.out.println(elapsedTime);
@@ -917,6 +948,90 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					}, null);
 
 		foregroundDialog.setVisible(true);
+	}
+
+	///////////////////////////////////
+	void saveSettings() {
+		Settings settings = new Settings(taExpr.getFont(), taExpr.getBackground(), taExpr.getForeground(),
+				wordWrapItem.isSelected(), statusBarItem.isSelected(), parserPanelItem.isSelected());
+
+		SettingStAXWriter.saveSettings(settings);
+		logger.info("Settings were saved!");
+	}
+
+	private void saveTempPadText() {
+		File temp = new File("temp/temp.txt");
+		File parent = temp.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) {
+			throw new IllegalStateException("Couldn't create dir: " + parent);
+		}
+		// FileWriter fout = null;
+		Writer fout = null;
+		try {
+			// fout = new FileWriter(temp);
+			fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), encoding));
+			taExpr.write(fout); // fout.write(npd.ta.getText()); was
+								// changed due
+			// to incorrect saving of new line
+		} catch (IOException ioe) {
+			logger.error(ioe.getMessage());
+		} finally {
+			try {
+				fout.close();
+			} catch (IOException excp) {
+				logger.error(excp.getMessage());
+			}
+		}
+		logger.info("Temp file was saved!");
+	}
+
+	void readSettings() {
+		Settings settings = SettingStAXReader.parseSettings();
+		if (settings == null) {
+			// file setting is not valid against XSD schema or doesn't exist
+			return;
+		}
+		font = settings.getFont();
+		taExpr.setFont(font);
+		taExpr.setBackground(settings.getBackgroundColor());
+		taExpr.setForeground(settings.getForegroundColor());
+
+		if (wordWrapItem.isSelected() != settings.isWordWrapEnabled()) {
+			wordWrapItem.doClick();
+		}
+		if (statusBarItem.isSelected() != settings.isStatusBarEnabled()) {
+			statusBarItem.doClick();
+		}
+		if (parserPanelItem.isSelected() != settings.isParserPanelEnabled()) {
+			parserPanelItem.doClick();
+		}
+		logger.info("Settings were read!");
+	}
+
+	void resetSettings() {
+
+		int answer = JOptionPane.showConfirmDialog(frame,
+				"Following settings will be reset to default:\n\n" + "    Font: familly, size, style\n"
+						+ "    Color: text, pad\n\n" + "Continue?",
+				"Reset", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+		if (answer == JOptionPane.YES_OPTION) {
+
+			taExpr.setFont(defaultFont);
+			taExpr.setBackground(new Color(-1)); // white
+			taExpr.setForeground(new Color(-16777216)); // black
+
+			if (wordWrapItem.isSelected() != true) {
+				wordWrapItem.doClick();
+			}
+			if (statusBarItem.isSelected() != true) {
+				statusBarItem.doClick();
+			}
+			if (parserPanelItem.isSelected() != true) {
+				parserPanelItem.doClick();
+			}
+			logger.info("Settings were reset!");
+		}
 	}
 
 	///////////////////////////////////
@@ -1042,7 +1157,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		parserPanelItem.setSelected(true);
 		parserPanelItem.setAccelerator(
 				(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)));
-		createCheckBoxMenuItem(viewStatusBar, KeyEvent.VK_S, viewMenu, this).setSelected(true);
+		statusBarItem = createCheckBoxMenuItem(viewStatusBar, KeyEvent.VK_S, viewMenu, this);
+		statusBarItem.setSelected(true);
 		/************
 		 * For Look and Feel, May not work properly on different operating
 		 * environment
@@ -1061,7 +1177,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
-
+		helpMenu.addSeparator();
+		createMenuItem(helpResetSettings, KeyEvent.VK_H, helpMenu, this);
 		helpMenu.addSeparator();
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
 		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)
@@ -1170,6 +1287,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	public static void main(String[] s) {
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new Notepad();

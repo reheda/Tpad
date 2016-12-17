@@ -27,7 +27,7 @@ public class TChecker {
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
-	static List<Attribute> attibutes = StAXParser.parse();
+	static List<Attribute> attibutes = DbStAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	final static String TYPE_SIMPLE = "Simple";
