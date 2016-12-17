@@ -43,11 +43,13 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -57,6 +59,7 @@ import javax.swing.JToolBar;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -100,6 +103,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JTextField tfSKU;
 	private JTextArea taExprRes;
 	private JTextArea taParameters;
+	private Notepad npd;
 
 	private JLabel statusBar;
 	private JScrollPane spExpr;
@@ -166,6 +170,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 	/****************************/
 	Notepad() {
+		this.npd = this;
 		frame = new JFrame(defaultFileName + " - " + applicationName);
 		// change icon of the app
 		frame.setIconImage(new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)).getImage());
@@ -825,7 +830,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (evObj == checkButton) {
-			TChecker.check(this);
+			Color green = new Color(0, 188, 57);
+			taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, green),
+					new EmptyBorder(2, 5, 2, 0)));
+			taExprRes.setText("Checking...");
+			doProcess("check");
+			// TChecker.check(this);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
@@ -840,8 +850,14 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// } catch (URISyntaxException e1) {
 			// e1.printStackTrace();
 			// }
+			
+			Color green = new Color(0, 188, 57);
+			taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, green),
+					new EmptyBorder(2, 5, 2, 0)));
 			long start = System.nanoTime();
-			TParser.parse(this);
+			// TParser.parse(this);
+			taExprRes.setText("Parsing...");
+			doProcess("parse");
 			long elapsedTime = System.nanoTime() - start;
 			System.out.println(elapsedTime);
 			if (!parserPanelItem.isSelected()) {
@@ -1282,6 +1298,194 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		toolBar.add(shortcutsButton);
 		toolBar.add(helpButton);
 		toolBar.add(aboutButton);
+	}
+
+	private void parse() {
+		final JPanel popup = new JPanel(new BorderLayout(5, 5));
+		popup.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
+				BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+		popup.setBackground(Color.white);
+		frame.getLayeredPane().add(popup);
+
+		JProgressBar pb = new JProgressBar();
+		popup.add(pb, BorderLayout.CENTER);
+		pb.setBorderPainted(true);
+		pb.setMinimum(0);
+		pb.setMaximum(100);
+		pb.setValue(0);
+		// pb.setStringPainted(true);
+		pb.setIndeterminate(true);
+		JButton cancel = new JButton("Cancel");
+		popup.add(cancel, BorderLayout.EAST);
+		popup.doLayout();
+		Dimension size = popup.getPreferredSize();
+		Dimension windowSize = frame.getSize();
+		int popupWidth = 300;
+		popup.setBounds((windowSize.width - popupWidth) / 2, (windowSize.height - size.height) / 2, popupWidth,
+				size.height);
+		frame.getLayeredPane().setLayer(popup, JLayeredPane.POPUP_LAYER);
+		popup.setVisible(false);
+
+		final SwingWorker<?, ?> worker = new SwingWorker<Void, Void>() {
+			protected Void doInBackground() throws InterruptedException {
+				publish();
+				TParser.parse(npd);
+				return null;
+			}
+
+			protected void process() {
+				taExprRes.setText("parsing...");
+			}
+
+			protected void done() {
+				popup.setVisible(false);
+				if (isCancelled()) {
+					Color red = new Color(189, 0, 0);
+					taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, red),
+							new EmptyBorder(2, 5, 2, 0)));
+
+					taExprRes.setText("Canceled!");
+				}
+			}
+		};
+		worker.execute();
+		popup.setVisible(true);
+
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				worker.cancel(true);
+			}
+		});
+	}
+
+	private void check() {
+		final JPanel popup = new JPanel(new BorderLayout(5, 5));
+		popup.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
+				BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+		popup.setBackground(Color.white);
+		frame.getLayeredPane().add(popup);
+
+		JProgressBar pb = new JProgressBar();
+		popup.add(pb, BorderLayout.CENTER);
+		pb.setBorderPainted(true);
+		pb.setMinimum(0);
+		pb.setMaximum(100);
+		pb.setValue(0);
+		// pb.setStringPainted(true);
+		pb.setIndeterminate(true);
+		JButton cancel = new JButton("Cancel");
+		popup.add(cancel, BorderLayout.EAST);
+		popup.doLayout();
+		Dimension size = popup.getPreferredSize();
+		Dimension windowSize = frame.getSize();
+		int popupWidth = 300;
+		popup.setBounds((windowSize.width - popupWidth) / 2, (windowSize.height - size.height) / 2, popupWidth,
+				size.height);
+		frame.getLayeredPane().setLayer(popup, JLayeredPane.POPUP_LAYER);
+		popup.setVisible(false);
+
+		final SwingWorker<?, ?> worker = new SwingWorker<Void, Void>() {
+			protected Void doInBackground() throws InterruptedException {
+				publish();
+				TChecker.check(npd);
+				return null;
+			}
+
+			protected void process() {
+				taExprRes.setText("parsing...");
+			}
+
+			protected void done() {
+				popup.setVisible(false);
+				if (isCancelled()) {
+					Color red = new Color(189, 0, 0);
+					taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, red),
+							new EmptyBorder(2, 5, 2, 0)));
+
+					taExprRes.setText("Canceled!");
+				}
+			}
+		};
+		worker.execute();
+		popup.setVisible(true);
+
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				worker.cancel(true);
+			}
+		});
+	}
+
+	private void doProcess(String processToDo) {
+		final JPanel popup = new JPanel(new BorderLayout(5, 5));
+		popup.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
+				BorderFactory.createEmptyBorder(15, 15, 15, 15)));
+		popup.setBackground(Color.white);
+		frame.getLayeredPane().add(popup);
+
+		JProgressBar pb = new JProgressBar();
+		popup.add(pb, BorderLayout.CENTER);
+		pb.setBorderPainted(true);
+		pb.setMinimum(0);
+		pb.setMaximum(100);
+		pb.setValue(0);
+		// pb.setStringPainted(true);
+		pb.setIndeterminate(true);
+		JButton cancel = new JButton("Cancel");
+		popup.add(cancel, BorderLayout.EAST);
+		popup.doLayout();
+		Dimension size = popup.getPreferredSize();
+		Dimension windowSize = frame.getSize();
+		int popupWidth = 300;
+		popup.setBounds((windowSize.width - popupWidth) / 2, (windowSize.height - size.height) / 2, popupWidth,
+				size.height);
+		frame.getLayeredPane().setLayer(popup, JLayeredPane.POPUP_LAYER);
+		popup.setVisible(false);
+
+		final SwingWorker<?, ?> worker = new SwingWorker<Void, String>() {
+			protected Void doInBackground() throws InterruptedException {
+				publish(processToDo);
+				if (processToDo.equals("parse")) {
+					TParser.parse(npd);
+				} else if (processToDo.equals("check")) {
+					TChecker.check(npd);
+				}
+				return null;
+			}
+
+			protected void process(List<String> chunks) {
+				// invoked by publish()
+
+				String proc = chunks.get(chunks.size() - 1);
+				if (proc.equals("parse") || proc.equals("check")) {
+
+					// do something
+
+				}
+			}
+
+			protected void done() {
+				popup.setVisible(false);
+				if (isCancelled()) {
+					Color red = new Color(189, 0, 0);
+					taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, red),
+							new EmptyBorder(2, 5, 2, 0)));
+
+					taExprRes.setText("Canceled!");
+				}
+			}
+		};
+		worker.execute();
+		popup.setVisible(true);
+
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				worker.cancel(true);
+			}
+		});
 	}
 
 	public static void main(String[] s) {

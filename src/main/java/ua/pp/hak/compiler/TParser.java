@@ -45,8 +45,6 @@ public class TParser {
 		JTextArea taParameters = npd.getParametersTextArea();
 		JTextField tfSKU = npd.getSkuField();
 
-		taExprRes.setText("Parsing...");
-
 		String[] expressionResult = getExpressionResultInfoByChrome(taExpr.getText(), taParameters.getText(),
 				tfSKU.getText());
 		String expressionRes = expressionResult[0];

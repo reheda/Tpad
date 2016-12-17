@@ -73,7 +73,6 @@ public class TChecker {
 		boolean isWholeExpressionValid = true;
 
 		eraseAllHighlighter(taExpr);
-		taExprRes.setText("Processing...");
 
 		String error = null;
 		logger.info("Checking expression...");
