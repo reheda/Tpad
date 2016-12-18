@@ -99,7 +99,8 @@ public class TChecker {
 		// set color of the expression result's text area
 		taExprRes.setBorder(
 				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
-
+		
+		logger.info("Finish checking expression");
 	}
 
 	private static String checkExpression(String expr) {
@@ -153,7 +154,6 @@ public class TChecker {
 
 		for (int i = 0; i < statements.length; i++) {
 			if (statements[i].trim().isEmpty()) {
-				System.out.println(statements[i].length());
 				errors.append("There is empty statement");
 				errors.append(NEW_LINE);
 				errors.append(NEW_LINE);

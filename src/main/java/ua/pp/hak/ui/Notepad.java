@@ -171,6 +171,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 	/****************************/
 	Notepad() {
+		logger.info("Creating GUI...");
 		this.npd = this;
 		frame = new JFrame(defaultFileName + " - " + applicationName);
 		// change icon of the app
@@ -538,12 +539,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		};
 		frame.addWindowListener(frameClose);
 
+		logger.info("Finish creating GUI");
+
 		// read settings.xml file and apply
 		readSettings();
-	}
-
-	public String getBuild() {
-		return build;
 	}
 
 	////////////////////////////////////
@@ -662,16 +661,23 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		String cmdText = ev.getActionCommand();
 		Object evObj = ev.getSource();
 		////////////////////////////////////
-		if (cmdText.equals(fileNew) || evObj == newButton)
+		if (cmdText.equals(fileNew) || evObj == newButton) {
+			logger.info("Creating new file");
 			fileHandler.newFile();
-		else if (cmdText.equals(fileOpen) || evObj == openButton)
+		} else if (cmdText.equals(fileOpen) || evObj == openButton) {
+			logger.info("Opening file");
 			fileHandler.openFile();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(fileSave) || evObj == saveButton)
+		else if (cmdText.equals(fileSave) || evObj == saveButton) {
+			logger.info("Saving file");
 			fileHandler.saveThisFile();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(fileSaveAs))
+		else if (cmdText.equals(fileSaveAs)) {
+			logger.info("SavingAs file");
 			fileHandler.saveAsFile();
+		}
 		////////////////////////////////////
 		else if (cmdText.equals(fileExit)) {
 			if (fileHandler.confirmSave()) {
@@ -684,24 +690,36 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(filePrint))
+		else if (cmdText.equals(filePrint)) {
+			logger.info("File print");
 			JOptionPane.showMessageDialog(frame, "Get ur printer repaired first! It seems u dont have one!",
 					"Bad Printer", JOptionPane.INFORMATION_MESSAGE);
+		}
 
 		////////////////////////////////////
-		else if (cmdText.equals(editCut) || evObj == cutButton)
+		else if (cmdText.equals(editCut) || evObj == cutButton) {
+			logger.info("Cut text");
 			taExpr.cut();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(editCopy) || evObj == copyButton)
+		else if (cmdText.equals(editCopy) || evObj == copyButton) {
+
+			logger.info("Copy text");
 			taExpr.copy();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(editPaste) || evObj == pasteButton)
+		else if (cmdText.equals(editPaste) || evObj == pasteButton) {
+			logger.info("Paste text");
 			taExpr.paste();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(editDelete))
+		else if (cmdText.equals(editDelete)) {
+			logger.info("Delete text");
 			taExpr.replaceSelection("");
+		}
 		////////////////////////////////////
 		else if (cmdText.equals(editFind) || evObj == findButton) {
+			logger.info("Open Find window");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 			if (findReplaceDialog == null)
@@ -710,6 +728,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editFindNext)) {
+			logger.info("Try Find next");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
@@ -720,6 +739,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editReplace) || evObj == replaceButton) {
+			logger.info("Open Replace window");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
@@ -729,20 +749,26 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editGoTo)) {
+			logger.info("Open goTo window");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 			goTo();
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(editSelectAll))
+		else if (cmdText.equals(editSelectAll)) {
+			logger.info("Select all");
 			taExpr.selectAll();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(editTimeDate))
+		else if (cmdText.equals(editTimeDate)) {
+			logger.info("Time date paste");
 			taExpr.insert(new Date().toString(), taExpr.getSelectionStart());
+		}
 		////////////////////////////////////
 		else if (cmdText.equals(formatWordWrap) || evObj == wrapButton) {
 			// JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
 			// ta.setLineWrap(temp.isSelected());
+			logger.info("Change WrodWrap");
 			JCheckBoxMenuItem temp;
 			if (evObj instanceof JCheckBoxMenuItem) {
 				temp = (JCheckBoxMenuItem) evObj;
@@ -757,18 +783,24 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(formatFont) || evObj == fontButton) {
+			logger.info("Open Font window");
 			font = FontChooser.showDialog(frame, "Font settings", true, taExpr.getFont());
 			taExpr.setFont(font);
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(formatForeground))
+		else if (cmdText.equals(formatForeground)) {
+			logger.info("Open TextColor window");
 			showForegroundColorDialog();
+		}
 		////////////////////////////////////
-		else if (cmdText.equals(formatBackground))
+		else if (cmdText.equals(formatBackground)) {
+			logger.info("Open PadColor window");
 			showBackgroundColorDialog();
+		}
 
 		////////////////////////////////////
 		else if (cmdText.equals(viewParserPanel)) {
+			logger.info("Change ParserPanel view");
 			JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
 			if (temp.isSelected()) {
 				splitPane.setRightComponent(rightPanel);
@@ -778,38 +810,46 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(viewStatusBar)) {
+			logger.info("Change StatusBar view");
 			JCheckBoxMenuItem temp = (JCheckBoxMenuItem) evObj;
 			statusBar.setVisible(temp.isSelected());
 		}
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomIn) || evObj == zoomInButton) {
+			logger.info("Change zoom: zoom in");
 			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() + 1));
 		}
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomOut) || evObj == zoomOutButton) {
+			logger.info("Change zoom: zoom out");
 			taExpr.setFont(taExpr.getFont().deriveFont(taExpr.getFont().getSize2D() - 1));
 		}
 		////////////////////////////////////
 
 		else if (cmdText.equals(viewZoomDefault) || evObj == zoomDefaultButton) {
+			logger.info("Change zoom: zoom default");
 			taExpr.setFont(font);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpKeyboardShortcuts) || evObj == shortcutsButton) {
+			logger.info("Open KeyboardShortcuts window");
 			showKeyboardShortcuts();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpLegacyInfo)) {
+			logger.info("Open LegacyInfo window");
 			showLegacyInfo();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpAttributeInfo)) {
+			logger.info("Open AttributeInfo window");
 			showAttributeInfo();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpAbout) || evObj == aboutButton) {
+			logger.info("Open About window");
 			showAbout();
 		}
 		////////////////////////////////////
@@ -818,6 +858,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// just for getting backup
 			saveTempPadText();
 			if (fileHandler.confirmSave()) {
+				logger.info("Checking updates...");
 				try {
 					Version currentVersion = new Version(applicationVersion);
 					Updater.start(currentVersion);
@@ -828,20 +869,25 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
+			logger.info("Open HelpTopic window");
 			showHelpTopic();
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpResetSettings)) {
+			logger.info("Try reset settings");
 			resetSettings();
 		}
 		////////////////////////////////////
 		else if (evObj == checkButton) {
 			// taExprRes.setText("Checking...");
+			long start = System.nanoTime();
 			doProcess("check");
 			// TChecker.check(this);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
+			long elapsedTime = System.nanoTime() - start;
+			logger.info("Elapsed timee to check: " + elapsedTime);
 		}
 		////////////////////////////////////
 		else if (evObj == parseButton) {
@@ -858,14 +904,15 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// taExprRes.setText("Parsing...");
 			doProcess("parse");
 			long elapsedTime = System.nanoTime() - start;
-			System.out.println(elapsedTime);
+			logger.info("Elapsed timee to parse: " + elapsedTime);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
 		}
 		////////////////////////////////////
 		else
-			statusBar.setText("This " + cmdText + " command is yet to be implemented");
+			logger.info("This " + cmdText + " command is yet to be implemented");
+		statusBar.setText("This " + cmdText + " command is yet to be implemented");
 	}
 	// action Performed
 	////////////////////////////////////
@@ -967,6 +1014,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 	///////////////////////////////////
 	void saveSettings() {
+		logger.info("Try to save settings...");
 		Settings settings = new Settings(taExpr.getFont(), taExpr.getBackground(), taExpr.getForeground(),
 				wordWrapItem.isSelected(), statusBarItem.isSelected(), parserPanelItem.isSelected());
 
@@ -975,6 +1023,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	private void saveTempPadText() {
+		logger.info("Try to save temp file...");
 		File temp = new File("temp/temp.txt");
 		File parent = temp.getParentFile();
 		if (!parent.exists() && !parent.mkdirs()) {
@@ -1001,6 +1050,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	void readSettings() {
+		logger.info("Try to read settings...");
 		Settings settings = SettingStAXReader.parseSettings();
 		if (settings == null) {
 			// file setting is not valid against XSD schema or doesn't exist

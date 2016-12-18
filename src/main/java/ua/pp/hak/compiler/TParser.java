@@ -64,7 +64,7 @@ public class TParser {
 				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
 
 		taExprRes.setText(expressionRes);
-		System.out.println("Done!");
+		logger.info("Finish parsing expression");
 	}
 
 	private static String[] getExpressionResultInfoByChrome(String exprText, String paramText, String skuIdText) {

@@ -56,8 +56,11 @@ public class Updater {
 		try {
 			Version latestVerion = new Version(Updater.getLatestVersion());
 			if (latestVerion.compareTo(currentVersion) > 0) {
+				logger.info("Start updating...");
 				new UpdateInfo(Updater.getWhatsNew());
+				logger.info("Finish updating...");
 			} else {
+				logger.info("No update is available");
 				JOptionPane.showMessageDialog(null, "No update is available", "Update",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
