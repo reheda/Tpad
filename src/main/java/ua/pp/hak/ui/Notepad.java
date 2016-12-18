@@ -910,9 +910,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
-		else
+		else{
 			logger.info("This " + cmdText + " command is yet to be implemented");
-		statusBar.setText("This " + cmdText + " command is yet to be implemented");
+			statusBar.setText("This " + cmdText + " command is yet to be implemented");			
+		}
 	}
 	// action Performed
 	////////////////////////////////////
