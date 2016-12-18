@@ -4,7 +4,8 @@ public interface Constants {
 	final String applicationName = "Tpad";
 	final String defaultFileName = "Untitled";
 	final String encoding = "UTF-8";
-
+	final String applicationVersion = Notepad.class.getPackage().getImplementationVersion() ;
+	
 	final String txtExprRes = "Expression result: ";
 	final String txtExpr = "Expression: ";
 	final String txtParameters = "Parameters: ";
@@ -35,6 +36,7 @@ public interface Constants {
 	final String imgInfoLocation = "/images/info.png";
 	final String imgKeyboardLocation = "/images/keyboard.png";
 
+
 	final String quickReferenceText = "<html><body style=\"font-family:Segoe UI; font-size:9px\">" + "<div>"
 			+ "<big><b>Quick reference</b></big> [<a href=\"http://templex.cnetcontent.com/Reference\">click to see the full reference</a>]"
 			+ "<hr />" + "<div style=\"zoom: 83%;border-left: 6px solid red;background-color: white;\">"
@@ -57,7 +59,7 @@ public interface Constants {
 			+ "</div>" + "</body></html>";
 
 	final String aboutText = "<html><body style=\"font-family:Segoe UI; font-size:9px\"><big><b>Tpad</b><i> beta</i></big><br>"
-			+ "v " + Notepad.class.getPackage().getImplementationVersion() + " <hr>"
+			+ "v " + applicationVersion + " <hr>"
 			+ "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<br>"
 			+ "\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<br>"
 			+ "LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR<br>"

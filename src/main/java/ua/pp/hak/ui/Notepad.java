@@ -94,6 +94,7 @@ import ua.pp.hak.update.Updater;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Legacy;
+import ua.pp.hak.util.Version;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 	final static Logger logger = LogManager.getLogger(Notepad.class);
@@ -817,7 +818,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// just for getting backup
 			saveTempPadText();
 			if (fileHandler.confirmSave()) {
-				Updater.start(0);
+				try {
+					Version currentVersion = new Version(applicationVersion);
+					Updater.start(currentVersion);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
 			}
 		}
 		////////////////////////////////////
@@ -830,7 +836,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		}
 		////////////////////////////////////
 		else if (evObj == checkButton) {
-//			taExprRes.setText("Checking...");
+			// taExprRes.setText("Checking...");
 			doProcess("check");
 			// TChecker.check(this);
 			if (!parserPanelItem.isSelected()) {
@@ -849,7 +855,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// }
 			long start = System.nanoTime();
 			// TParser.parse(this);
-//			taExprRes.setText("Parsing...");
+			// taExprRes.setText("Parsing...");
 			doProcess("parse");
 			long elapsedTime = System.nanoTime() - start;
 			System.out.println(elapsedTime);

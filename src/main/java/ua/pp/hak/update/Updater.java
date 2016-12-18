@@ -9,9 +9,11 @@ import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ua.pp.hak.util.Version;
+
 public class Updater {
 	final static Logger logger = LogManager.getLogger(Updater.class);
-	
+
 	private final static String versionURL = "http://tpad.hak.pp.ua/version.html";
 
 	private final static String historyURL = "http://tpad.hak.pp.ua/history.html";
@@ -44,7 +46,7 @@ public class Updater {
 		return buffer.toString();
 	}
 
-	public static void start(int currentVersion) {
+	public static void start(Version currentVersion) {
 		// change look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -52,10 +54,12 @@ public class Updater {
 			logger.error(e.getMessage());
 		}
 		try {
-			if (Integer.parseInt(Updater.getLatestVersion()) > currentVersion) {
+			Version latestVerion = new Version(Updater.getLatestVersion());
+			if (latestVerion.compareTo(currentVersion) > 0) {
 				new UpdateInfo(Updater.getWhatsNew());
 			} else {
-				JOptionPane.showMessageDialog(null, "No update is available", "Update", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No update is available", "Update",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
