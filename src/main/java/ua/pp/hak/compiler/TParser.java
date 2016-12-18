@@ -10,6 +10,8 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -31,12 +33,12 @@ import com.google.common.base.Predicate;
 import ua.pp.hak.ui.Notepad;
 
 public class TParser {
-
+	final static Logger logger = LogManager.getLogger(TParser.class);
 	final static int DEFAULT_TIMEOUT = 15;
 	final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
 	public static void parse(Notepad npd) {
-
+		logger.info("Parsing expression...");
 		Color green = new Color(0, 188, 57);
 		Color red = new Color(189, 0, 0);
 
@@ -125,10 +127,13 @@ public class TParser {
 				}
 
 			});
-
+			
 			expressionResult = driver.findElement(By.name("result")).getAttribute("value");
 			expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
 					.findElement(By.xpath("..")).getAttribute("class");
+			
+			logger.info("Expression status: " + expressionStatus);
+			logger.info("Expression result: " + expressionResult);
 
 		} catch (Exception e) {
 			e.printStackTrace();
