@@ -1173,7 +1173,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = settings.getStringColor();
 		taExpr.revalidate();
 		taExpr.repaint();
-		
+
 		if (wordWrapItem.isSelected() != settings.isWordWrapEnabled()) {
 			wordWrapItem.doClick();
 		}
