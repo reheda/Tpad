@@ -17,12 +17,14 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.ui.rsyntaxtextarea.Token;
 
 import ua.pp.hak.util.FileLocation;
 import ua.pp.hak.util.XSDValidator;
 
 public class SettingStAXReader {
 	final static Logger logger = LogManager.getLogger(SettingStAXReader.class);
+
 	public static Settings parseSettings() {
 		final String settingsLocation = "settings.xml";
 
@@ -50,6 +52,9 @@ public class SettingStAXReader {
 		final String FONT_TEXT = "font";
 		final String FOREGROUND_TEXT = "foreground";
 		final String BACKGROUND_TEXT = "background";
+		final String KEYWORD_TEXT = "keyword";
+		final String COMMENT_TEXT = "comment";
+		final String STRING_TEXT = "string";
 		final String WORDWRAP_TEXT = "wordwrap";
 		final String STATUSBAR_TEXT = "statusbar";
 		final String PARSERPANEL_TEXT = "parserpanel";
@@ -66,7 +71,9 @@ public class SettingStAXReader {
 
 		Color foregroundColor = new Color(-16777216); // black
 		Color backgroundColor = new Color(-1); // white
-
+		Color keywordColor = Color.blue; // white
+		Color commentColor = new Color(51, 136, 85); // green
+		Color stringColor = new Color(68, 102, 170); // lightBlue
 		boolean isWordWrapEnabled = false;
 		boolean isStatusBarEnabled = false;
 		boolean isParserPanelEnabled = false;
@@ -89,6 +96,12 @@ public class SettingStAXReader {
 					} else if (qName.equalsIgnoreCase(FOREGROUND_TEXT)) {
 						startElementName = qName;
 					} else if (qName.equalsIgnoreCase(BACKGROUND_TEXT)) {
+						startElementName = qName;
+					} else if (qName.equalsIgnoreCase(KEYWORD_TEXT)) {
+						startElementName = qName;
+					} else if (qName.equalsIgnoreCase(COMMENT_TEXT)) {
+						startElementName = qName;
+					} else if (qName.equalsIgnoreCase(STRING_TEXT)) {
 						startElementName = qName;
 					} else if (qName.equalsIgnoreCase(WORDWRAP_TEXT)) {
 						startElementName = qName;
@@ -131,6 +144,12 @@ public class SettingStAXReader {
 							foregroundColor = new Color(Integer.parseInt(temp));
 						} else if (startElementName.equals(BACKGROUND_TEXT)) {
 							backgroundColor = new Color(Integer.parseInt(temp));
+						} else if (startElementName.equals(KEYWORD_TEXT)) {
+							keywordColor = new Color(Integer.parseInt(temp));
+						} else if (startElementName.equals(COMMENT_TEXT)) {
+							commentColor = new Color(Integer.parseInt(temp));
+						} else if (startElementName.equals(STRING_TEXT)) {
+							stringColor = new Color(Integer.parseInt(temp));
 						}
 						bColor = false;
 					}
@@ -164,9 +183,10 @@ public class SettingStAXReader {
 
 		font = new Font(fontName, fontStyle, fontSize);
 
-		return new Settings(font, backgroundColor, foregroundColor, isWordWrapEnabled, isStatusBarEnabled,
-				isParserPanelEnabled);
+		return new Settings(font, backgroundColor, foregroundColor, keywordColor, commentColor, stringColor,
+				isWordWrapEnabled, isStatusBarEnabled, isParserPanelEnabled);
 	}
+
 	public static void main(String[] args) {
 		Settings set = parseSettings();
 		System.out.println(set);

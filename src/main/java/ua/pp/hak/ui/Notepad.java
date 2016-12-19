@@ -80,8 +80,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
 import ua.pp.hak.compiler.Attribute;
@@ -105,6 +108,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private JTextArea taExprRes;
 	private JTextArea taParameters;
 	private Notepad npd;
+	private SyntaxScheme scheme;
 
 	private JLabel statusBar;
 	private JScrollPane spExpr;
@@ -118,8 +122,14 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private FindDialog findReplaceDialog = null;
 	private JColorChooser bcolorChooser = null;
 	private JColorChooser fcolorChooser = null;
+	private JColorChooser keywordColorChooser = null;
+	private JColorChooser commentColorChooser = null;
+	private JColorChooser stringColorChooser = null;
 	private JDialog backgroundDialog = null;
 	private JDialog foregroundDialog = null;
+	private JDialog keywordDialog = null;
+	private JDialog commentDialog = null;
+	private JDialog stringDialog = null;
 	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
 			undoItem, redoItem, statusBarItem;
 	private JCheckBoxMenuItem wordWrapItem;
@@ -204,7 +214,24 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExpr.setFont(font);
 		taExpr.setTabSize(4);
 		taExpr.setMargin(new Insets(0, 5, 0, 5));
-		taExpr.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
+
+		// ----- change color of Syntax --------------------------
+		scheme = taExpr.getSyntaxScheme();
+		// new Color (153,51,153); //dark pink
+		scheme.getStyle(Token.RESERVED_WORD).foreground = Color.blue;
+		scheme.getStyle(Token.DATA_TYPE).foreground = Color.blue;
+		// light blue
+		scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = new Color(68, 102, 170);
+		// dark green
+		scheme.getStyle(Token.COMMENT_EOL).foreground = new Color(51, 136, 85);
+		taExpr.revalidate();
+		taExpr.repaint();
+		// ----- set syntax lexer --------------------------------
+		// taExpr.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
+		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
+		atmf.putMapping("templexLanguage", "ua.pp.hak.ui.TemplexTokenMaker");
+		taExpr.setSyntaxEditingStyle("templexLanguage");
+		// -------------------------------------------------------
 		taExpr.setCodeFoldingEnabled(true);
 		// A CompletionProvider is what knows of all possible completions, and
 		// analyzes the contents of the text area at the caret position to
@@ -798,6 +825,21 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			logger.info("Open PadColor window");
 			showBackgroundColorDialog();
 		}
+		////////////////////////////////////
+		else if (cmdText.equals(formatKeyword)) {
+			logger.info("Open KeywordColor window");
+			showKeywordColorDialog();
+		}
+		////////////////////////////////////
+		else if (cmdText.equals(formatComment)) {
+			logger.info("Open CommentColor window");
+			showCommentColorDialog();
+		}
+		////////////////////////////////////
+		else if (cmdText.equals(formatString)) {
+			logger.info("Open StringColor window");
+			showStringColorDialog();
+		}
 
 		////////////////////////////////////
 		else if (cmdText.equals(viewParserPanel)) {
@@ -834,7 +876,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			taExpr.setFont(font);
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(helpHome) || evObj == shortcutsButton) {
+		else if (cmdText.equals(helpHome)) {
 			logger.info("Open Tpad Home");
 			try {
 				Desktop.getDesktop().browse(new URI("http://tpad.hak.pp.ua/"));
@@ -981,8 +1023,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					logger.info(e.getURL());
 					try {
-						// Desktop.getDesktop().mail(new URI(e.getURL() +
-						// ""));
 						Desktop.getDesktop().browse(e.getURL().toURI());
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -994,6 +1034,58 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		});
 		JOptionPane.showMessageDialog(frame, textPane, helpHelpTopic, JOptionPane.INFORMATION_MESSAGE,
 				new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)));
+	}
+
+	void showKeywordColorDialog() {
+		if (keywordColorChooser == null)
+			keywordColorChooser = new JColorChooser();
+		if (keywordDialog == null)
+			keywordDialog = JColorChooser.createDialog(frame, formatKeyword, false, keywordColorChooser,
+					new ActionListener() {
+						public void actionPerformed(ActionEvent evvv) {
+							Color col = keywordColorChooser.getColor();
+							scheme.getStyle(Token.RESERVED_WORD).foreground = col;
+							scheme.getStyle(Token.DATA_TYPE).foreground = col;
+							taExpr.revalidate();
+							taExpr.repaint();
+						}
+					}, null);
+
+		keywordDialog.setVisible(true);
+	}
+
+	void showCommentColorDialog() {
+		if (commentColorChooser == null)
+			commentColorChooser = new JColorChooser();
+		if (commentDialog == null)
+			commentDialog = JColorChooser.createDialog(frame, formatComment, false, commentColorChooser,
+					new ActionListener() {
+						public void actionPerformed(ActionEvent evvv) {
+							Color col = commentColorChooser.getColor();
+							scheme.getStyle(Token.COMMENT_EOL).foreground = col;
+							taExpr.revalidate();
+							taExpr.repaint();
+						}
+					}, null);
+
+		commentDialog.setVisible(true);
+	}
+
+	void showStringColorDialog() {
+		if (stringColorChooser == null)
+			stringColorChooser = new JColorChooser();
+		if (stringDialog == null)
+			stringDialog = JColorChooser.createDialog(frame, formatKeyword, false, stringColorChooser,
+					new ActionListener() {
+						public void actionPerformed(ActionEvent evvv) {
+							Color col = stringColorChooser.getColor();
+							scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = col;
+							taExpr.revalidate();
+							taExpr.repaint();
+						}
+					}, null);
+
+		stringDialog.setVisible(true);
 	}
 
 	void showBackgroundColorDialog() {
@@ -1029,7 +1121,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	void saveSettings() {
 		logger.info("Try to save settings...");
 		Settings settings = new Settings(taExpr.getFont(), taExpr.getBackground(), taExpr.getForeground(),
-				wordWrapItem.isSelected(), statusBarItem.isSelected(), parserPanelItem.isSelected());
+				scheme.getStyle(Token.RESERVED_WORD).foreground, scheme.getStyle(Token.COMMENT_EOL).foreground,
+				scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground, wordWrapItem.isSelected(),
+				statusBarItem.isSelected(), parserPanelItem.isSelected());
 
 		SettingStAXWriter.saveSettings(settings);
 		logger.info("Settings were saved!");
@@ -1073,7 +1167,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExpr.setFont(font);
 		taExpr.setBackground(settings.getBackgroundColor());
 		taExpr.setForeground(settings.getForegroundColor());
-
+		scheme.getStyle(Token.RESERVED_WORD).foreground = settings.getKeywordColor();
+		scheme.getStyle(Token.DATA_TYPE).foreground = settings.getKeywordColor();
+		scheme.getStyle(Token.COMMENT_EOL).foreground = settings.getCommentColor();
+		scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = settings.getStringColor();
+		taExpr.revalidate();
+		taExpr.repaint();
+		
 		if (wordWrapItem.isSelected() != settings.isWordWrapEnabled()) {
 			wordWrapItem.doClick();
 		}
@@ -1090,7 +1190,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		int answer = JOptionPane.showConfirmDialog(frame,
 				"Following settings will be reset to default:\n\n" + "    Font: familly, size, style\n"
-						+ "    Color: text, pad\n\n" + "Continue?",
+						+ "    Color: text, pad, keywords, comments, literal strings\n\n" + "Continue?",
 				"Reset", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
 		if (answer == JOptionPane.YES_OPTION) {
@@ -1098,6 +1198,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			taExpr.setFont(defaultFont);
 			taExpr.setBackground(new Color(-1)); // white
 			taExpr.setForeground(new Color(-16777216)); // black
+			scheme.getStyle(Token.RESERVED_WORD).foreground = Color.blue;
+			scheme.getStyle(Token.DATA_TYPE).foreground = Color.blue;
+			scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = new Color(68, 102, 170);// lightBlue
+			scheme.getStyle(Token.COMMENT_EOL).foreground = new Color(51, 136, 85); // darkGreen
+			taExpr.revalidate();
+			taExpr.repaint();
 
 			if (wordWrapItem.isSelected() != true) {
 				wordWrapItem.doClick();
@@ -1230,6 +1336,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		formatMenu.addSeparator();
 		createMenuItem(formatForeground, KeyEvent.VK_T, formatMenu, this);
 		createMenuItem(formatBackground, KeyEvent.VK_P, formatMenu, this);
+		createMenuItem(formatKeyword, KeyEvent.VK_K, formatMenu, this);
+		createMenuItem(formatComment, KeyEvent.VK_C, formatMenu, this);
+		createMenuItem(formatString, KeyEvent.VK_S, formatMenu, this);
 
 		parserPanelItem = createCheckBoxMenuItem(viewParserPanel, KeyEvent.VK_P, viewMenu, this);
 		parserPanelItem.setSelected(true);
@@ -1253,7 +1362,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
 		helpMenu.addSeparator();
-		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, this);
 		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);

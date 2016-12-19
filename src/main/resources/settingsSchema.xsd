@@ -7,11 +7,14 @@
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="font" type="tns:FontFeature" />
-				<xsd:element name="foreground" type="tns:ForegroundFeature" />
-				<xsd:element name="background" type="tns:BackgroundFeature" />
-				<xsd:element name="wordwrap" type="tns:WordWrapFeature" />
-				<xsd:element name="statusbar" type="tns:StatusBarFeature" />
-				<xsd:element name="parserpanel" type="tns:ParserPanelFeature" />
+				<xsd:element name="foreground" type="tns:ColorFeature" />
+				<xsd:element name="background" type="tns:ColorFeature" />
+				<xsd:element name="keyword" type="tns:ColorFeature" />
+				<xsd:element name="comment" type="tns:ColorFeature" />
+				<xsd:element name="string" type="tns:ColorFeature" />
+				<xsd:element name="wordwrap" type="tns:StatusFeature" />
+				<xsd:element name="statusbar" type="tns:StatusFeature" />
+				<xsd:element name="parserpanel" type="tns:StatusFeature" />
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -24,34 +27,17 @@
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="ForegroundFeature">
+	<xsd:complexType name="ColorFeature">
 		<xsd:sequence>
 			<xsd:element name="color" type="xsd:integer" />
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="BackgroundFeature">
-		<xsd:sequence>
-			<xsd:element name="color" type="xsd:integer" />
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="WordWrapFeature">
+	<xsd:complexType name="StatusFeature">
 		<xsd:sequence>
 			<xsd:element name="enable" type="xsd:boolean" />
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="StatusBarFeature">
-		<xsd:sequence>
-			<xsd:element name="enable" type="xsd:boolean" />
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="ParserPanelFeature">
-		<xsd:sequence>
-			<xsd:element name="enable" type="xsd:boolean" />
-		</xsd:sequence>
-	</xsd:complexType>
 
 </xsd:schema>

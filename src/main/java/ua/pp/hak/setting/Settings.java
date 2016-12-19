@@ -7,18 +7,36 @@ public class Settings {
 	private Font font;
 	private Color backgroundColor;
 	private Color foregroundColor;
+	private Color keywordColor;
+	private Color commentColor;
+	private Color stringColor;
 	private boolean isWordWrapEnabled;
 	private boolean isStatusBarEnabled;
 	private boolean isParserPanelEnabled;
 
-	public Settings(Font font, Color backgroundColor, Color foregroundColor, boolean isWordWrapEnabled,
+	public Settings(Font font, Color backgroundColor, Color foregroundColor, Color keywordColor, Color commentColor, Color stringColor, boolean isWordWrapEnabled,
 			boolean isStatusBarEnabled, boolean isParserPanelEnabled) {
 		this.font = font;
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
+		this.keywordColor = keywordColor;
+		this.commentColor = commentColor;
+		this.stringColor = stringColor;
 		this.isWordWrapEnabled = isWordWrapEnabled;
 		this.isStatusBarEnabled = isStatusBarEnabled;
 		this.isParserPanelEnabled = isParserPanelEnabled;
+	}
+
+	public Color getKeywordColor() {
+		return keywordColor;
+	}
+
+	public Color getCommentColor() {
+		return commentColor;
+	}
+
+	public Color getStringColor() {
+		return stringColor;
 	}
 
 	public Color getBackgroundColor() {
@@ -73,6 +91,30 @@ public class Settings {
 		sb.append(foregroundColor.getGreen());
 		sb.append(",");
 		sb.append(foregroundColor.getBlue());
+		sb.append("); ");
+		sb.append("Keyword: (");
+		sb.append("rgb=");
+		sb.append(keywordColor.getRed());
+		sb.append(",");
+		sb.append(keywordColor.getGreen());
+		sb.append(",");
+		sb.append(keywordColor.getBlue());
+		sb.append("); ");
+		sb.append("Comment: (");
+		sb.append("rgb=");
+		sb.append(commentColor.getRed());
+		sb.append(",");
+		sb.append(commentColor.getGreen());
+		sb.append(",");
+		sb.append(commentColor.getBlue());
+		sb.append("); ");
+		sb.append("String: (");
+		sb.append("rgb=");
+		sb.append(stringColor.getRed());
+		sb.append(",");
+		sb.append(stringColor.getGreen());
+		sb.append(",");
+		sb.append(stringColor.getBlue());
 		sb.append("); ");
 		sb.append("isWordWrapEnabled=");
 		sb.append(isWordWrapEnabled);

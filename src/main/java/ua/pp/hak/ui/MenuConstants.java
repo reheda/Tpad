@@ -34,6 +34,9 @@ public interface MenuConstants extends Constants{
 	final String formatFont = "Font...";
 	final String formatForeground = "Set Text color...";
 	final String formatBackground = "Set Pad color...";
+	final String formatKeyword = "Set Keywords color...";
+	final String formatComment = "Set Comments color...";
+	final String formatString = "Set Literal Strings color...";
 
 	final String viewParserPanel = "Parser Panel";
 	final String viewStatusBar = "Status Bar";

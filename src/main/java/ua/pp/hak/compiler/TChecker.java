@@ -62,45 +62,49 @@ public class TChecker {
 	}
 
 	public static void check(Notepad npd) {
-		taExpr = npd.getExprTextArea();
-		JTextArea taExprRes = npd.getExprResTextArea();
-		String textExpr = taExpr.getText();
-		StringBuilder sbErrors = new StringBuilder();
+		try {
+			taExpr = npd.getExprTextArea();
+			JTextArea taExprRes = npd.getExprResTextArea();
+			String textExpr = taExpr.getText();
+			StringBuilder sbErrors = new StringBuilder();
 
-		Color green = new Color(0, 188, 57);
-		Color red = new Color(189, 0, 0);
+			Color green = new Color(0, 188, 57);
+			Color red = new Color(189, 0, 0);
 
-		boolean isWholeExpressionValid = true;
+			boolean isWholeExpressionValid = true;
 
-		eraseAllHighlighter(taExpr);
+			eraseAllHighlighter(taExpr);
 
-		String error = null;
-		logger.info("Checking expression...");
-		error = checkExpression(textExpr);
-		if (error != null) {
-			logger.info("Expression check result: " + error);
-			sbErrors.append(error);
-			isWholeExpressionValid = false;
-		} else {
-			logger.info("Expression check result: expression is OK");
+			String error = null;
+			logger.info("Checking expression...");
+			error = checkExpression(textExpr);
+			if (error != null) {
+				logger.info("Expression check result: " + error);
+				sbErrors.append(error);
+				isWholeExpressionValid = false;
+			} else {
+				logger.info("Expression check result: expression is OK");
+			}
+
+			Color color = null;
+			if (isWholeExpressionValid) {
+				color = green;
+				taExprRes.setText("Expression is valid!");
+			} else {
+				color = red;
+				// taExprRes.setText("Error! \n" + sbErrors.toString());
+				taExprRes.setText(sbErrors.toString());
+				taExprRes.setCaretPosition(0);
+			}
+
+			// set color of the expression result's text area
+			taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color),
+					new EmptyBorder(2, 5, 2, 0)));
+
+			logger.info("Finish checking expression");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
-
-		Color color = null;
-		if (isWholeExpressionValid) {
-			color = green;
-			taExprRes.setText("Expression is valid!");
-		} else {
-			color = red;
-			// taExprRes.setText("Error! \n" + sbErrors.toString());
-			taExprRes.setText(sbErrors.toString());
-			taExprRes.setCaretPosition(0);
-		}
-
-		// set color of the expression result's text area
-		taExprRes.setBorder(
-				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
-		
-		logger.info("Finish checking expression");
 	}
 
 	private static String checkExpression(String expr) {
@@ -691,7 +695,7 @@ public class TChecker {
 				return errors.toString();
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -1177,8 +1181,8 @@ public class TChecker {
 			int pointCoalesce = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
 			int pointIn = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
 
-			{	
-				if (condition.matches(" ?COALESCE\\(.*\\) NOT IN\\(.*")){
+			{
+				if (condition.matches(" ?COALESCE\\(.*\\) NOT IN\\(.*")) {
 					IN_TEXT = "NOT IN(";
 				}
 				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
@@ -1343,7 +1347,7 @@ public class TChecker {
 			int point = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
 
 			{
-				if (condition.matches(".* NOT IN\\(.*")){
+				if (condition.matches(".* NOT IN\\(.*")) {
 					IN_TEXT = "NOT IN(";
 				}
 				String allExceptFunc = condition.substring(0, condition.indexOf(IN_TEXT))
@@ -1577,7 +1581,6 @@ public class TChecker {
 
 			}
 		}
-		
 
 		// check parameters
 		error = checkParametersInCondition(returnValue);

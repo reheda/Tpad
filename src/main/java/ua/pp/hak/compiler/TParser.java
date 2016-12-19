@@ -38,33 +38,37 @@ public class TParser {
 	final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
 	public static void parse(Notepad npd) {
-		logger.info("Parsing expression...");
-		Color green = new Color(0, 188, 57);
-		Color red = new Color(189, 0, 0);
+		try {
+			logger.info("Parsing expression...");
+			Color green = new Color(0, 188, 57);
+			Color red = new Color(189, 0, 0);
 
-		RSyntaxTextArea taExpr = npd.getExprTextArea();
-		JTextArea taExprRes = npd.getExprResTextArea();
-		JTextArea taParameters = npd.getParametersTextArea();
-		JTextField tfSKU = npd.getSkuField();
+			RSyntaxTextArea taExpr = npd.getExprTextArea();
+			JTextArea taExprRes = npd.getExprResTextArea();
+			JTextArea taParameters = npd.getParametersTextArea();
+			JTextField tfSKU = npd.getSkuField();
 
-		String[] expressionResult = getExpressionResultInfoByChrome(taExpr.getText(), taParameters.getText(),
-				tfSKU.getText());
-		String expressionRes = expressionResult[0];
-		String expressionStatus = expressionResult[1];
+			String[] expressionResult = getExpressionResultInfoByChrome(taExpr.getText(), taParameters.getText(),
+					tfSKU.getText());
+			String expressionRes = expressionResult[0];
+			String expressionStatus = expressionResult[1];
 
-		Color color = null;
-		if (expressionStatus != null && expressionStatus.equals("form-group has-success")) {
-			color = green;
-		} else {
-			color = red;
+			Color color = null;
+			if (expressionStatus != null && expressionStatus.equals("form-group has-success")) {
+				color = green;
+			} else {
+				color = red;
+			}
+
+			// set color of the expression result's text area
+			taExprRes.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color),
+					new EmptyBorder(2, 5, 2, 0)));
+
+			taExprRes.setText(expressionRes);
+			logger.info("Finish parsing expression");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
-
-		// set color of the expression result's text area
-		taExprRes.setBorder(
-				new CompoundBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, color), new EmptyBorder(2, 5, 2, 0)));
-
-		taExprRes.setText(expressionRes);
-		logger.info("Finish parsing expression");
 	}
 
 	private static String[] getExpressionResultInfoByChrome(String exprText, String paramText, String skuIdText) {
@@ -127,11 +131,11 @@ public class TParser {
 				}
 
 			});
-			
+
 			expressionResult = driver.findElement(By.name("result")).getAttribute("value");
 			expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
 					.findElement(By.xpath("..")).getAttribute("class");
-			
+
 			logger.info("Expression status: " + expressionStatus);
 			logger.info("Expression result: " + expressionResult);
 

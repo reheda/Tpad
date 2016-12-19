@@ -18,6 +18,9 @@ public class SettingStAXWriter {
 
 		String foregroundColor = String.valueOf(settings.getForegroundColor().getRGB());
 		String backgroundColor = String.valueOf(settings.getBackgroundColor().getRGB());
+		String keywordColor = String.valueOf(settings.getKeywordColor().getRGB());
+		String commentColor = String.valueOf(settings.getCommentColor().getRGB());
+		String stringColor = String.valueOf(settings.getStringColor().getRGB());
 
 		String isWordWrapEnabled = String.valueOf(settings.isWordWrapEnabled());
 		String isStatusBarEnabled = String.valueOf(settings.isStatusBarEnabled());
@@ -60,6 +63,24 @@ public class SettingStAXWriter {
 			xMLStreamWriter.writeStartElement("background");
 			xMLStreamWriter.writeStartElement("color");
 			xMLStreamWriter.writeCharacters(backgroundColor);
+			xMLStreamWriter.writeEndElement();
+			xMLStreamWriter.writeEndElement();
+			
+			xMLStreamWriter.writeStartElement("keyword");
+			xMLStreamWriter.writeStartElement("color");
+			xMLStreamWriter.writeCharacters(keywordColor);
+			xMLStreamWriter.writeEndElement();
+			xMLStreamWriter.writeEndElement();
+			
+			xMLStreamWriter.writeStartElement("comment");
+			xMLStreamWriter.writeStartElement("color");
+			xMLStreamWriter.writeCharacters(commentColor);
+			xMLStreamWriter.writeEndElement();
+			xMLStreamWriter.writeEndElement();
+			
+			xMLStreamWriter.writeStartElement("string");
+			xMLStreamWriter.writeStartElement("color");
+			xMLStreamWriter.writeCharacters(stringColor);
 			xMLStreamWriter.writeEndElement();
 			xMLStreamWriter.writeEndElement();
 
