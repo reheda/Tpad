@@ -93,7 +93,7 @@ public class UpdateInfo extends JFrame implements Constants {
 	private void update() {
 		// String[] cmdarray = { "java", "-jar", "updater/update.jar",
 		// "-update"};
-		String[] cmdarray = { "updater/update.exe", "-update", "JobsParser.exe" };
+		String[] cmdarray = { "updater/update.exe", "-update", "Tpad.exe" };
 		try {
 			logger.info("Start updating...");
 			Runtime.getRuntime().exec(cmdarray);
