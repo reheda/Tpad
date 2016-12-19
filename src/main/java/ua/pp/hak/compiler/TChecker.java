@@ -691,7 +691,7 @@ public class TChecker {
 				return errors.toString();
 			}
 		}
-
+		
 		return null;
 	}
 
@@ -890,7 +890,7 @@ public class TChecker {
 
 				// check values
 				{
-					String[] values = conCleaned.split("(?i)<>|>=|<=|>|<|=| NOT LIKE | LIKE | IN\\(\\)");
+					String[] values = conCleaned.split("(?i)<>|>=|<=|>|<|=| NOT LIKE | LIKE | NOT IN\\(\\)| IN\\(\\)");
 					for (int i = 0; i < values.length; i++) {
 						error = checkValue(values[i]);
 						if (error != null) {
@@ -1171,18 +1171,21 @@ public class TChecker {
 		Pattern p = Pattern.compile(regex);
 
 		final String COALESCE_TEXT = "COALESCE(";
-		final String IN_TEXT = " IN(";
+		String IN_TEXT = " IN(";
 
 		if (condition.contains(COALESCE_TEXT) && condition.contains(IN_TEXT)) {
 			int pointCoalesce = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
 			int pointIn = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
 
-			{
+			{	
+				if (condition.matches(" ?COALESCE\\(.*\\) NOT IN\\(.*")){
+					IN_TEXT = "NOT IN(";
+				}
 				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
 						+ condition.substring(pointCoalesce + 1, condition.indexOf(IN_TEXT))
 						+ condition.substring(pointIn + 1);
 				if (!allExceptFunc.trim().isEmpty()) {
-					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					String[] values = allExceptFunc.split(" ?_ ?");
 					for (int i = 0; i < values.length; i++) {
 						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
@@ -1206,7 +1209,7 @@ public class TChecker {
 						pointCoalesce);
 
 				// check values and parameters
-				String[] values = conCleaned.split(", |,");
+				String[] values = conCleaned.split(" ?, ?");
 				for (int i = 0; i < values.length; i++) {
 					error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
 							.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
@@ -1279,11 +1282,12 @@ public class TChecker {
 		} else if (condition.contains(COALESCE_TEXT)) {
 			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
 			{
-				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
+				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT)) + "\"\""
 						+ condition.substring(point + 1);
 
 				if (!allExceptFunc.trim().isEmpty()) {
-					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					System.out.println(allExceptFunc);
+					String[] values = allExceptFunc.split(" ?_ ?");
 					for (int i = 0; i < values.length; i++) {
 						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
@@ -1300,7 +1304,6 @@ public class TChecker {
 					}
 				}
 			}
-
 			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(), point);
 
 			// check values and parameters
@@ -1340,10 +1343,13 @@ public class TChecker {
 			int point = getLastBracketIndex(condition, condition.indexOf(IN_TEXT));
 
 			{
+				if (condition.matches(".* NOT IN\\(.*")){
+					IN_TEXT = "NOT IN(";
+				}
 				String allExceptFunc = condition.substring(0, condition.indexOf(IN_TEXT))
 						+ condition.substring(point + 1);
 				if (!allExceptFunc.trim().isEmpty()) {
-					String[] values = allExceptFunc.split(" _ | _|_ |_");
+					String[] values = allExceptFunc.split(" ?_ ?");
 					for (int i = 0; i < values.length; i++) {
 						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
 								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
@@ -1425,7 +1431,7 @@ public class TChecker {
 		// parameters = "\"before\", \"after\""
 
 		StringBuilder errors = new StringBuilder();
-		String[] params = parameters.split(", |,");
+		String[] params = parameters.split(" ?, ?");
 
 		int paramsQty = params.length;
 
@@ -1571,6 +1577,7 @@ public class TChecker {
 
 			}
 		}
+		
 
 		// check parameters
 		error = checkParametersInCondition(returnValue);
