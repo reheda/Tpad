@@ -493,6 +493,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				} else {
 					findButton.setEnabled(true);
 					findItem.setEnabled(true);
+					gotoItem.setEnabled(true);
 					replaceButton.setEnabled(true);
 					replaceItem.setEnabled(true);
 				}
@@ -833,6 +834,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			taExpr.setFont(font);
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpHome) || evObj == shortcutsButton) {
+			logger.info("Open Tpad Home");
+			try {
+				Desktop.getDesktop().browse(new URI("http://tpad.hak.pp.ua/"));
+			} catch (IOException e1) {
+				logger.info(e1.getMessage());
+			} catch (URISyntaxException e1) {
+				logger.info(e1.getMessage());
+			}
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpKeyboardShortcuts) || evObj == shortcutsButton) {
 			logger.info("Open KeyboardShortcuts window");
 			showKeyboardShortcuts();
@@ -910,9 +922,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
-		else{
+		else {
 			logger.info("This " + cmdText + " command is yet to be implemented");
-			statusBar.setText("This " + cmdText + " command is yet to be implemented");			
+			statusBar.setText("This " + cmdText + " command is yet to be implemented");
 		}
 	}
 	// action Performed
@@ -1239,12 +1251,14 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			viewMenu.add(tmp);
 		}
 
+		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
+		helpMenu.addSeparator();
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, KeyEvent.VK_L, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 		helpMenu.addSeparator();
-		createMenuItem(helpResetSettings, KeyEvent.VK_H, helpMenu, this);
+		createMenuItem(helpResetSettings, KeyEvent.VK_R, helpMenu, this);
 		helpMenu.addSeparator();
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
 		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)

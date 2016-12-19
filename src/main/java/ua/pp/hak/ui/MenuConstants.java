@@ -2,7 +2,7 @@ package ua.pp.hak.ui;
 
 /**************************************/
 // public
-public interface MenuConstants {
+public interface MenuConstants extends Constants{
 	final String fileText = "File";
 	final String editText = "Edit";
 	final String formatText = "Format";
@@ -41,6 +41,7 @@ public interface MenuConstants {
 	final String viewZoomOut = "Zoom Out";
 	final String viewZoomDefault = "Zoom Default";
 
+	final String helpHome = applicationName + " Home Page";
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";
 	final String helpLegacyInfo = "Legacy Info";
 	final String helpAttributeInfo = "Attribute Info";
