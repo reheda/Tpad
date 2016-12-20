@@ -11,7 +11,7 @@ public interface Constants {
 	final String txtParameters = "Parameters: ";
 	final String txtSKU = "SKU ID: ";
 	final String defaultSKU = "12345679";
-	final String defaultParameters = "AccTree=-1, Evaluate=false, Locale=en-US, ResultSeparator=<>, Verbatim=false, LegacyValues=false";
+	final String defaultParameters = "AccTree=-1, Evaluate=false, Locale=en-US, Verbatim=false, LegacyValues=false";
 	final String defaultExpressionResult = "";
 
 	final String imgTemplexBigLocation = "/images/templex-big.png";
