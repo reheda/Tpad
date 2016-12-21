@@ -108,7 +108,9 @@ public class TChecker {
 	}
 
 	private static String checkExpression(String expr) {
+		
 		expr = expr.trim();
+		
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 		String exprCleaned = null;
@@ -151,6 +153,20 @@ public class TChecker {
 				.replaceAll(" ?\\. ?", ".").replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].")
 				.replaceAll(" ?\\( ?", "(").replaceAll(" ?\\) ?\\.", ").");
 
+		exprCleaned = exprCleaned.replaceAll("(?i) is ", " IS ");
+		exprCleaned = exprCleaned.replaceAll("(?i) not", " NOT");
+		exprCleaned = exprCleaned.replaceAll("(?i) null", " NULL");
+		exprCleaned = exprCleaned.replaceAll("(?i) then", " THEN");
+		exprCleaned = exprCleaned.replaceAll("(?i) else", " ELSE");
+		exprCleaned = exprCleaned.replaceAll("(?i) when", " WHEN");
+		exprCleaned = exprCleaned.replaceAll("(?i) end", " END");
+		exprCleaned = exprCleaned.replaceAll("(?i)case ", "CASE ");
+		exprCleaned = exprCleaned.replaceAll("(?i)if ", "IF ");
+		exprCleaned = exprCleaned.replaceAll("(?i)^null", "NULL");
+		exprCleaned = exprCleaned.replaceAll("(?i)coalesce", "COALESCE");
+		exprCleaned = exprCleaned.replaceAll("(?i) in", " IN");
+		
+		
 		// System.out.println(exprCleaned);
 
 		// split by semicolon
@@ -181,6 +197,11 @@ public class TChecker {
 				error = checkCaseStatement(statements[i]);
 				if (error != null) {
 					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(statements[i]);
 					return errors.toString();
 				}
 
@@ -194,13 +215,22 @@ public class TChecker {
 				error = checkIfThenElseStatement(statements[i]);
 				if (error != null) {
 					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(statements[i]);
 					return errors.toString();
 				}
 			} else {
 				error = checkReturnValue(statements[i]);
 				if (error != null) {
 					errors.append(error);
-
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(statements[i]);
 					return errors.toString();
 				}
 			}
@@ -550,7 +580,6 @@ public class TChecker {
 				"ExpressionResultLiteral", "ExpressionResultNumeric", "DateTimeOffset"));
 		functions.add(new Function("DECODE()", "You can invoke nothing on it"));
 
-
 	}
 
 	private static String checkElseStatementQuantity(String str) {
@@ -611,11 +640,6 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(exprCleaned);
 			return errors.toString();
 
 		}
@@ -625,11 +649,6 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -638,11 +657,6 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -652,11 +666,6 @@ public class TChecker {
 		if (!isIfThenElseStatementValid) {
 			errors.append("Invalid IF THEN ELSE statements.");
 			errors.append(structure);
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(exprCleaned);
 			return errors.toString();
 		}
 
@@ -670,11 +679,6 @@ public class TChecker {
 				error = checkCondition(condition);
 				if (error != null) {
 					errors.append(error);
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(exprCleaned);
 					return errors.toString();
 				}
 			}
@@ -689,11 +693,6 @@ public class TChecker {
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(exprCleaned);
 				return errors.toString();
 			}
 		}
@@ -762,7 +761,7 @@ public class TChecker {
 				conCleaned = conCleaned.substring(0, conCleaned.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length())
 						+ conCleaned.substring(point);
 			}
-			
+
 			if (conCleaned.toUpperCase().contains(DECODE_TEXT)) {
 				int point = getLastBracketIndex(conCleaned, conCleaned.indexOf(DECODE_TEXT));
 				conCleaned = conCleaned.substring(0, conCleaned.indexOf(DECODE_TEXT) + DECODE_TEXT.length())
@@ -878,9 +877,15 @@ public class TChecker {
 					}
 
 					// check parameters
-					error = checkParametersInCondition(con.split("(?i) IS ")[0]);
+					String tempValue = con.split("(?i) IS ")[0];
+					error = checkParametersInCondition(tempValue);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(tempValue);
 						errors.append(NEW_LINE);
 						errors.append(NEW_LINE);
 						errors.append("-----");
@@ -935,6 +940,11 @@ public class TChecker {
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
+						errors.append(values[i]);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
 						errors.append(con);
 						if (!con.equals(condition)) {
 							errors.append(NEW_LINE);
@@ -955,24 +965,26 @@ public class TChecker {
 	}
 
 	private static String checkValue(String value) {
-		// add variant if check value is just string surrounded by quotes
+		String valueCleaned = value.trim();
+		// erase brackets, but left Match(number) cause it should return
+		// PdmMultivalueAttribute instead of PdmAttributeSet
+		valueCleaned = valueCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
+		// ither cases
+		valueCleaned = valueCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]")
+				.replaceAll("Ksp\\[\\d+\\]", "Ksp[]");
 
 		// value cant finished with "." or ". "
 
 		StringBuilder errors = new StringBuilder();
-		if (value.matches(".*\\. ?$")) {
+		if (valueCleaned.matches(".*\\. ?$")) {
 			errors.append("Value shouldn't be finished with DOT");
 			errors.append(NEW_LINE);
 			errors.append(NEW_LINE);
 			errors.append("-----");
 			errors.append(NEW_LINE);
-			errors.append(value);
+			errors.append(valueCleaned);
 			return errors.toString();
 		}
-
-		String valueCleaned = value.trim();
-		valueCleaned = valueCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]")
-				.replaceAll("Ksp\\[\\d+\\]", "Ksp[]");
 
 		String[] functns = valueCleaned.split("\\.");
 
@@ -988,7 +1000,7 @@ public class TChecker {
 				errors.append(NEW_LINE);
 				errors.append("-----");
 				errors.append(NEW_LINE);
-				errors.append(value);
+				errors.append(valueCleaned);
 				return errors.toString();
 			}
 
@@ -1004,7 +1016,7 @@ public class TChecker {
 					errors.append(NEW_LINE);
 					errors.append("-----");
 					errors.append(NEW_LINE);
-					errors.append(value);
+					errors.append(valueCleaned);
 					return errors.toString();
 				}
 
@@ -1044,29 +1056,29 @@ public class TChecker {
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(value);
+						errors.append(valueCleaned);
 						return errors.toString();
 					}
 
-					if (!value.contains(".")) {
+					if (!valueCleaned.contains(".")) {
 						errors.append("DOT expected");
 						errors.append(NEW_LINE);
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(value);
+						errors.append(valueCleaned);
 						return errors.toString();
 					}
 
 				} else {
-					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i])  && !"DECODE()".equals(functns[i])&& !"NULL".equals(functns[i])
-							&& !value.contains(".")) {
+					if (!isString(functns[i]) && !"COALESCE()".equals(functns[i].toUpperCase()) && !"DECODE()".equals(functns[i].toUpperCase())
+							&& !"NULL".equals(functns[i].toUpperCase()) && !valueCleaned.contains(".")) {
 						errors.append("DOT expected");
 						errors.append(NEW_LINE);
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(value);
+						errors.append(valueCleaned);
 						return errors.toString();
 					}
 
@@ -1080,7 +1092,7 @@ public class TChecker {
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(value);
+						errors.append(valueCleaned);
 						return errors.toString();
 					}
 
@@ -1201,15 +1213,14 @@ public class TChecker {
 				if (!allExceptFunc.trim().isEmpty()) {
 					String[] values = allExceptFunc.split(" ?_ ?");
 					for (int i = 0; i < values.length; i++) {
-						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
-								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+						error = checkValue(values[i]);
 						if (error != null) {
 							errors.append(error);
 							errors.append(NEW_LINE);
 							errors.append(NEW_LINE);
 							errors.append("-----");
 							errors.append(NEW_LINE);
-							errors.append(condition);
+							errors.append(values[i]);
 							return errors.toString();
 						}
 
@@ -1221,77 +1232,10 @@ public class TChecker {
 				// check coalesce
 				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(),
 						pointCoalesce);
-				if (conCleaned.trim().isEmpty()){
-					errors.append("Value in the COALESCE shouldn't be empty");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
+				error = checkCoalesceOrInFunctionParameters(conCleaned, p, "COALESCE");
+				if (error != null) {
+					errors.append(error);
 					return errors.toString();
-				}
-				if (conCleaned.matches(".*\\, ?$")) {
-					errors.append("Value in the COALESCE shouldn't be finished with COMMA");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
-					return errors.toString();
-				}
-				
-				// check values and parameters
-				String[] values = correctSplitByComma(conCleaned);
-				for (int i = 0; i < values.length; i++) {
-					if (values[i].matches(".*\\_ ?$")) {
-						errors.append("Value in COALESCE shouldn't be finished with UNDERSCORE");
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(values[i]);
-						return errors.toString();
-					}
-					String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
-					for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
-						if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
-							errors.append("Value in the COALESCE shouldn't be empty");
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-						error = checkValue(valuesSplitedByUnderscore[j].replaceAll("(?<!Match)\\(.*?\\)", "()")
-								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-
-						Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
-						while (m.find()) {
-							String functionName = m.group(1) + "()";
-							String parameters = m.group(2);
-							error = checkParameters(functionName, parameters);
-							if (error != null) {
-								errors.append(error);
-								errors.append(NEW_LINE);
-								errors.append(NEW_LINE);
-								errors.append("-----");
-								errors.append(NEW_LINE);
-								errors.append(condition);
-								return errors.toString();
-							}
-						}
-					}
-
 				}
 			}
 
@@ -1299,175 +1243,28 @@ public class TChecker {
 				// check in
 				conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), pointIn);
 
-				if (conCleaned.trim().isEmpty()){
-					errors.append("Value in the IN shouldn't be empty");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
+				error = checkCoalesceOrInFunctionParameters(conCleaned, p, "IN");
+				if (error != null) {
+					errors.append(error);
 					return errors.toString();
-				}
-				if (conCleaned.matches(".*\\, ?$")) {
-					errors.append("Value in the IN shouldn't be finished with COMMA");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
-					return errors.toString();
-				}
-
-				// check values and parameters
-				String[] values = correctSplitByComma(conCleaned);
-				for (int i = 0; i < values.length; i++) {
-
-					if (values[i].matches(".*\\_ ?$")) {
-						errors.append("Value in the IN shouldn't be finished with UNDERSCORE");
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(values[i]);
-						return errors.toString();
-					}
-					String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
-					for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
-						if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
-							errors.append("Value in the IN shouldn't be empty");
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-						error = checkValue(valuesSplitedByUnderscore[j].replaceAll("(?<!Match)\\(.*?\\)", "()")
-								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-
-						Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
-						while (m.find()) {
-							String functionName = m.group(1) + "()";
-							String parameters = m.group(2);
-							error = checkParameters(functionName, parameters);
-							if (error != null) {
-								errors.append(error);
-								errors.append(NEW_LINE);
-								errors.append(NEW_LINE);
-								errors.append("-----");
-								errors.append(NEW_LINE);
-								errors.append(condition);
-								return errors.toString();
-							}
-						}
-					}
 				}
 			}
 
 		} else if (condition.contains(COALESCE_TEXT)) {
-			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
-			{
-				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT)) + "\"\""
-						+ condition.substring(point + 1);
+			String temp = condition.replaceAll("COALESCE\\(", "12345678");
+			int coalesceCounter = condition.length() - temp.length();
+			int startIndex = 0;
+			for (int j = 0; j < coalesceCounter; j++) {
+				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
 
-				if (!allExceptFunc.trim().isEmpty()) {
-					String[] values = allExceptFunc.split(" ?_ ?");
-					for (int i = 0; i < values.length; i++) {
-						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
-								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-
-					}
-				}
-			}
-			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(), point);
-			if (conCleaned.trim().isEmpty()){
-				errors.append("Value in the COALESCE shouldn't be empty");
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(condition);
-				return errors.toString();
-			}
-			if (conCleaned.matches(".*\\, ?$")) {
-				errors.append("Value in the COALESCE shouldn't be finished with COMMA");
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(condition);
-				return errors.toString();
-			}
-			// check values and parameters
-			String[] values = correctSplitByComma(conCleaned);
-			for (int i = 0; i < values.length; i++) {
-				if (values[i].matches(".*\\_ ?$")) {
-					errors.append("Value in the COALESCE shouldn't be finished with UNDERSCORE");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(values[i]);
+				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT, startIndex) + COALESCE_TEXT.length(), point);
+				error = checkCoalesceOrInFunctionParameters(conCleaned, p, "COALESCE");
+				if (error != null) {
+					errors.append(error);
 					return errors.toString();
 				}
-				String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
-				for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
-					if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
-						errors.append("Value in the COALESCE shouldn't be empty");
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(condition);
-						return errors.toString();
-					}
-					error = checkValue(valuesSplitedByUnderscore[j].replaceAll("(?<!Match)\\(.*?\\)", "()")
-							.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
-					if (error != null) {
-						errors.append(error);
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(condition);
-						return errors.toString();
-					}
 
-					Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
-					while (m.find()) {
-						String functionName = m.group(1) + "()";
-						String parameters = m.group(2);
-						error = checkParameters(functionName, parameters);
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-					}
-				}
-
+				startIndex = point;
 			}
 
 		} else if (condition.contains(IN_TEXT)) {
@@ -1482,15 +1279,9 @@ public class TChecker {
 				if (!allExceptFunc.trim().isEmpty()) {
 					String[] values = allExceptFunc.split(" ?_ ?");
 					for (int i = 0; i < values.length; i++) {
-						error = checkValue(values[i].replaceAll("(?<!Match)\\(.*?\\)", "()")
-								.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
+						error = checkValue(values[i]);
 						if (error != null) {
 							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
 							return errors.toString();
 						}
 
@@ -1500,77 +1291,15 @@ public class TChecker {
 			}
 
 			conCleaned = condition.substring(condition.indexOf(IN_TEXT) + IN_TEXT.length(), point);
-			if (conCleaned.trim().isEmpty()){
-				errors.append("Value in the IN shouldn't be empty");
+			error = checkCoalesceOrInFunctionParameters(conCleaned, p, "IN");
+			if (error != null) {
+				errors.append(error);
 				errors.append(NEW_LINE);
 				errors.append(NEW_LINE);
 				errors.append("-----");
 				errors.append(NEW_LINE);
-				errors.append(condition);
+				errors.append(conCleaned);
 				return errors.toString();
-			}
-			if (conCleaned.matches(".*\\, ?$")) {
-				errors.append("Value in the IN shouldn't be finished with COMMA");
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(condition);
-				return errors.toString();
-			}
-
-			// check values and parameters
-			String[] values = correctSplitByComma(conCleaned);
-			for (int i = 0; i < values.length; i++) {
-
-				if (values[i].matches(".*\\_ ?$")) {
-					errors.append("Value in the IN shouldn't be finished with UNDERSCORE");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(values[i]);
-					return errors.toString();
-				}
-				String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
-				for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
-					if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
-						errors.append("Value in the IN shouldn't be empty");
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(condition);
-						return errors.toString();
-					}
-					error = checkValue(valuesSplitedByUnderscore[j].replaceAll("(?<!Match)\\(.*?\\)", "()")
-							.replaceAll("Match\\(.*?,.*?\\)", "Match()"));
-					if (error != null) {
-						errors.append(error);
-						errors.append(NEW_LINE);
-						errors.append(NEW_LINE);
-						errors.append("-----");
-						errors.append(NEW_LINE);
-						errors.append(condition);
-						return errors.toString();
-					}
-
-					Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
-					while (m.find()) {
-						String functionName = m.group(1) + "()";
-						String parameters = m.group(2);
-						error = checkParameters(functionName, parameters);
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(condition);
-							return errors.toString();
-						}
-					}
-				}
 			}
 		}
 
@@ -1583,16 +1312,142 @@ public class TChecker {
 				error = checkParameters(functionName, parameters);
 				if (error != null) {
 					errors.append(error);
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
 					return errors.toString();
 				}
 			}
 
 		}
+		
+		if  (condition.contains(DECODE_TEXT)){
+			String temp = condition.replaceAll("DECODE\\(", "123456");
+			int decodeCounter = condition.length() - temp.length();
+			int startIndex = 0;
+			for (int j = 0; j < decodeCounter; j++) {
+				int point = getLastBracketIndex(condition, condition.indexOf(DECODE_TEXT, startIndex));
+				conCleaned = condition.substring(condition.indexOf(DECODE_TEXT, startIndex) + DECODE_TEXT.length(), point);
+				error = checkDecodeFunctionParameters(conCleaned, p);
+				if (error != null) {
+					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(conCleaned);
+					return errors.toString();
+				}
+
+				startIndex = point;
+			}
+		}
+		
+		return null;
+	}
+
+	private static String checkCoalesceOrInFunctionParameters(String conCleaned, Pattern p, String functionText) {
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+		if (conCleaned.trim().isEmpty()) {
+			errors.append("Value in the " + functionText + " shouldn't be empty");
+			return errors.toString();
+		}
+		if (conCleaned.matches(".*\\, ?$")) {
+			errors.append("Value in the " + functionText + " shouldn't be finished with COMMA");
+			return errors.toString();
+		}
+		// check values and parameters
+		String[] values = correctSplitByComma(conCleaned);
+		for (int i = 0; i < values.length; i++) {
+			if (values[i].matches(".*\\_ ?$")) {
+				errors.append("Value in the " + functionText + " shouldn't be finished with UNDERSCORE");
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(values[i]);
+				return errors.toString();
+			}
+			String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
+			for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
+				if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
+					errors.append("Value in the " + functionText + " shouldn't be empty");
+					return errors.toString();
+				}
+				error = checkValue(valuesSplitedByUnderscore[j]);
+				if (error != null) {
+					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(valuesSplitedByUnderscore[j]);
+					return errors.toString();
+				}
+
+				Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
+				while (m.find()) {
+					String functionName = m.group(1) + "()";
+					String parameters = m.group(2);
+					error = checkParameters(functionName, parameters);
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
+					}
+				}
+			}
+
+		}
+		return null;
+	}
+	
+	private static String checkDecodeFunctionParameters(String conCleaned, Pattern p ) {
+		// !!!!!! its not the same as checkCoalesceAndInFunctionParameters
+		String functionText = "DECODE";
+		
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+		if (conCleaned.trim().isEmpty()) {
+			errors.append("Value in the " + functionText + " shouldn't be empty");
+			return errors.toString();
+		}
+		if (conCleaned.contains(",")) {
+			errors.append(functionText + " should have only 1 parameter");
+			
+			return errors.toString();
+		}
+		// check values and parameters
+			if (conCleaned.matches(".*\\_ ?$")) {
+				errors.append("Value in the " + functionText + " shouldn't be finished with UNDERSCORE");
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(conCleaned);
+				return errors.toString();
+			}
+			String[] valuesSplitedByUnderscore = conCleaned.split(" ?_ ?");
+			for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
+				if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
+					errors.append("Value in the " + functionText + " shouldn't be empty");
+					return errors.toString();
+				}
+				error = checkValue(valuesSplitedByUnderscore[j]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+				Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
+				while (m.find()) {
+					String functionName = m.group(1) + "()";
+					String parameters = m.group(2);
+					error = checkParameters(functionName, parameters);
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
+					}
+				}
+			}
+
 		return null;
 	}
 
@@ -1713,14 +1568,20 @@ public class TChecker {
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 
+		// check brackets
+		if (!matchBrackets(returnValue)) {
+			errors.append("Bracket is not closed/opened");
+			return errors.toString();
+		}
+		// check brackets matching
+		if (!isParenthesisMatch(returnValue)) {
+			errors.append("Bracket is not using prorely");
+			return errors.toString();
+		}
+
 		// value cant finished with "_" or "_ "
 		if (returnValue.matches(".*_ ?$")) {
 			errors.append("Value shouldn't be finished with UNDERSCORE");
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(returnValue);
 			return errors.toString();
 		}
 
@@ -1742,7 +1603,7 @@ public class TChecker {
 					errors.append(NEW_LINE);
 					errors.append("-----");
 					errors.append(NEW_LINE);
-					errors.append(returnValue);
+					errors.append(values[i]);
 					return errors.toString();
 				}
 
@@ -1753,7 +1614,6 @@ public class TChecker {
 		error = checkParametersInCondition(returnValue);
 		if (error != null) {
 			errors.append(error);
-
 			return errors.toString();
 		}
 
@@ -1771,12 +1631,6 @@ public class TChecker {
 		if (!isCaseStatementValid) {
 			errors.append("Invalid CASE statements. ");
 			errors.append(structure);
-			errors.append(NEW_LINE);
-			errors.append(NEW_LINE);
-			errors.append("-----");
-			errors.append(NEW_LINE);
-			errors.append(caseStatement);
-
 			return errors.toString();
 		}
 
@@ -1794,11 +1648,6 @@ public class TChecker {
 				String stmnt = m.group(1);
 				if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
 					errors.append("CASE condition shouldn't contains UNDERSCORE");
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(caseStatement);
 					return errors.toString();
 				}
 
@@ -1807,12 +1656,6 @@ public class TChecker {
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(caseStatement);
-
 				return errors.toString();
 			}
 		}

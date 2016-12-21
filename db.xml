@@ -8738,4 +8738,5 @@
 	<attribute> <id>10649</id> <type>Multi-valued</type> <name>Knife Sharpeners - Degree Edge</name> </attribute>
 	<attribute> <id>10653</id> <type>Multi-valued</type> <name>Cable - Recommend Use</name> </attribute>
 	<attribute> <id>728</id> <type>Multi-valued</type> <name>Miscellaneous - Compatible Mobile Devices</name> </attribute>
+	<attribute> <id>1043</id> <type>Multi-valued</type> <name>Miscellaneous - CE Features</name> </attribute>
 </attributes>  
