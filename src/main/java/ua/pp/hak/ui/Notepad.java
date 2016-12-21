@@ -253,9 +253,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		// -----
 		spExpr = new JScrollPane(taExpr);
 		TextLineNumber tln = new TextLineNumber(taExpr);
-		tln.setUpdateFont(true); // enables the automatic updating of the Font
-									// when the Font of the related text
-									// component changes.
+		// enables the automatic updating of the Font when the Font of the
+		// related text component changes.
+		tln.setUpdateFont(true);
 		spExpr.setRowHeaderView(tln);
 		spExpr.setPreferredSize(new Dimension(600, 450));
 		// -----

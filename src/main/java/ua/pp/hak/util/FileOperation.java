@@ -61,7 +61,7 @@ public class FileOperation implements Constants {
 		this.npd.getFrame().setTitle(fileName + " - " + applicationName);
 
 		chooser = new JFileChooser();
-		chooser.addChoosableFileFilter(new MyFileFilter(".java", "Java Source Files(*.java)"));
+//		chooser.addChoosableFileFilter(new MyFileFilter(".java", "Java Source Files(*.java)"));
 		chooser.addChoosableFileFilter(new MyFileFilter(".txt", "Text Files(*.txt)"));
 		chooser.setCurrentDirectory(new File("."));
 

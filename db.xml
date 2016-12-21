@@ -8737,4 +8737,5 @@
 	<attribute> <id>10648</id> <type>Simple</type> <name>Knife Sharpeners - Double Faceted Blades</name> </attribute>
 	<attribute> <id>10649</id> <type>Multi-valued</type> <name>Knife Sharpeners - Degree Edge</name> </attribute>
 	<attribute> <id>10653</id> <type>Multi-valued</type> <name>Cable - Recommend Use</name> </attribute>
+	<attribute> <id>728</id> <type>Multi-valued</type> <name>Miscellaneous - Compatible Mobile Devices</name> </attribute>
 </attributes>  
