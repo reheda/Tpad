@@ -34,6 +34,7 @@ public class UpdateInfo extends JFrame implements Constants {
 	public UpdateInfo(String info) {
 		initComponents();
 		infoPane.setText(info);
+		infoPane.setCaretPosition(0);
 	}
 
 	private void initComponents() {
