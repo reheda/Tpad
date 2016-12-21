@@ -571,6 +571,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		// read settings.xml file and apply
 		readSettings();
+		
+		//check for updates
+		try{
+			Version currentVersion = new Version(applicationVersion);
+			boolean isUpdateAvailable = Updater.isUpdateAvailable(currentVersion);
+			if (isUpdateAvailable){
+				Updater.start(currentVersion);
+			}			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 	}
 
 	////////////////////////////////////

@@ -68,5 +68,17 @@ public class Updater {
 			logger.error(ex.getMessage());
 		}
 	}
+	
+	public static boolean isUpdateAvailable(Version currentVersion){
+		try {
+			Version latestVerion = new Version(Updater.getLatestVersion());
+			if (latestVerion.compareTo(currentVersion) > 0) {
+				return true;
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		return false;
+	}
 
 }
