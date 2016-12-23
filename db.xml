@@ -8741,4 +8741,20 @@
 	<attribute> <id>1043</id> <type>Multi-valued</type> <name>Miscellaneous - CE Features</name> </attribute>
 	<attribute> <id>10656</id> <type>Simple</type> <name>Coffee Makers - Cup Warmer</name> </attribute>
 	<attribute> <id>10657</id> <type>Simple</type> <name>Filters - Filter Type</name> </attribute>
+	<attribute> <id>10637</id> <type>Simple</type> <name>General - Bay Compatibility</name> </attribute>
+	<attribute> <id>10638</id> <type>Simple</type> <name>General - Storage Interface</name> </attribute>
+	<attribute> <id>10639</id> <type>Simple</type> <name>General - Cache Memory Capacity</name> </attribute>
+	<attribute> <id>10643</id> <type>Simple</type> <name>General - Voltage Required</name> </attribute>
+	<attribute> <id>10641</id> <type>Simple</type> <name>General - Location</name> </attribute>
+	<attribute> <id>10651</id> <type>Simple</type> <name>General - Punching Type</name> </attribute>
+	<attribute> <id>10644</id> <type>Multi-valued</type> <name>General - Placing / Mounting</name> </attribute>
+	<attribute> <id>10655</id> <type>Multi-valued</type> <name>General - Built-in Devices</name> </attribute>
+	<attribute> <id>10658</id> <type>Multi-valued</type> <name>General - Built-in Devices</name> </attribute>
+	<attribute> <id>10605</id> <type>Simple</type> <name>General - Cutting Height</name> </attribute>
+	<attribute> <id>10606</id> <type>Simple</type> <name>General - Cutting Width</name> </attribute>
+	<attribute> <id>10608</id> <type>Simple</type> <name>Vac / Blower - Airflow Speed</name> </attribute>
+	<attribute> <id>10542</id> <type>Simple</type> <name>Trimmer / Saw - Line Diameter</name> </attribute>
+	<attribute> <id>10544</id> <type>Simple</type> <name>Trimmer / Saw - Chain Pitch</name> </attribute>
+	<attribute> <id>10433</id> <type>Simple numeric</type> <name>Heating /// Cooling - Clean Air Delivery Rate (CADR)</name> </attribute>
+	<attribute> <id>10516</id> <type>Simple numeric</type> <name>Audio System - Preamp Outputs Qty</name> </attribute>
 </attributes>  
