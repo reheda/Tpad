@@ -4431,7 +4431,7 @@
 	<attribute> <id>3551</id> <type>Simple</type> <name>Refrigerator - Climate Class</name> </attribute>
 	<attribute> <id>3433</id> <type>Simple numeric</type> <name>Refrigerator - Compressors Qty</name> </attribute>
 	<attribute> <id>3560</id> <type>Simple</type> <name>Refrigerator - Refrigerant</name> </attribute>
-	<attribute> <id>3571</id> <type>Simple numeric</type> <name>Refrigerator - Refrigerator Net Capacity</name> </attribute>
+	<attribute> <id>3571</id> <type>Simple numeric</type> <name>Refrigerator Features - Refrigerator Net Capacity</name> </attribute>
 	<attribute> <id>3570</id> <type>Simple numeric</type> <name>Refrigerator Features - Refrigerator Shelves Qty</name> </attribute>
 	<attribute> <id>3568</id> <type>Simple numeric</type> <name>Refrigerator Features - Refrigerator Drawers Qty</name> </attribute>
 	<attribute> <id>3566</id> <type>Simple numeric</type> <name>Refrigerator Features - Refrigerator Door Compartments Qty</name> </attribute>
@@ -4442,7 +4442,7 @@
 	<attribute> <id>5476</id> <type>Repeating</type> <name>Refrigerator Shelves / Drawers Details - Interior Elements</name> </attribute>
 	<attribute> <id>5475</id> <type>Repeating</type> <name>Refrigerator Shelves / Drawers Details - Qty</name> </attribute>
 	<attribute> <id>5477</id> <type>Repeating</type> <name>Refrigerator Shelves / Drawers Details - Details</name> </attribute>
-	<attribute> <id>3564</id> <type>Simple numeric</type> <name>Refrigerator - Freezer Net Capacity</name> </attribute>
+	<attribute> <id>3564</id> <type>Simple numeric</type> <name>Freezer Features - Freezer Net Capacity</name> </attribute>
 	<attribute> <id>3555</id> <type>Simple</type> <name>Freezer Features - Freezer Rating</name> </attribute>
 	<attribute> <id>3553</id> <type>Simple</type> <name>Freezer Features - Fast Freeze</name> </attribute>
 	<attribute> <id>3565</id> <type>Simple numeric</type> <name>Freezer Features - Freezing Capacity</name> </attribute>
@@ -4614,7 +4614,7 @@
 	<attribute> <id>7816</id> <type>Repeating numeric</type> <name>Set Details - Height (Niche)</name> </attribute>
 	<attribute> <id>3660</id> <type>Simple numeric</type> <name>Microwave Ovens - Microwave Oven Capacity</name> </attribute>
 	<attribute> <id>3661</id> <type>Simple numeric</type> <name>Microwave Ovens - Max Microwave Power</name> </attribute>
-	<attribute> <id>4537</id> <type>Simple numeric</type> <name>Microwave Oven Features - Power Levels Qty</name> </attribute>
+	<attribute> <id>4537</id> <type>Simple numeric</type> <name>Microwave Ovens - Power Levels Qty</name> </attribute>
 	<attribute> <id>4536</id> <type>Multi-valued</type> <name>Microwave Ovens - Microwave Cooking Programs</name> </attribute>
 	<attribute> <id>5457</id> <type>Simple numeric</type> <name>Oven Features - Water Tank Capacity</name> </attribute>
 	<attribute> <id>5548</id> <type>Simple numeric</type> <name>Oven - Max Microwave Power</name> </attribute>
@@ -5748,7 +5748,7 @@
 	<attribute> <id>6795</id> <type>Simple</type> <name>General - Type</name> </attribute>
 	<attribute> <id>6801</id> <type>Multi-valued</type> <name>General - Package Content</name> </attribute>
 	<attribute> <id>6818</id> <type>Simple</type> <name>General - Size</name> </attribute>
-	<attribute> <id>6805</id> <type>Simple</type> <name>General - Dishwasher Safe</name> </attribute>
+	<attribute> <id>6805</id> <type>Simple</type> <name>Cleaning /// Care - Dishwasher Safe</name> </attribute>
 	<attribute> <id>6809</id> <type>Multi-valued</type> <name>General - Design Features</name> </attribute>
 	<attribute> <id>6812</id> <type>Multi-valued</type> <name>General - Features</name> </attribute>
 	<attribute> <id>6808</id> <type>Multi-valued</type> <name>General - Theme / Design</name> </attribute>
@@ -8739,4 +8739,6 @@
 	<attribute> <id>10653</id> <type>Multi-valued</type> <name>Cable - Recommend Use</name> </attribute>
 	<attribute> <id>728</id> <type>Multi-valued</type> <name>Miscellaneous - Compatible Mobile Devices</name> </attribute>
 	<attribute> <id>1043</id> <type>Multi-valued</type> <name>Miscellaneous - CE Features</name> </attribute>
+	<attribute> <id>10656</id> <type>Simple</type> <name>Coffee Makers - Cup Warmer</name> </attribute>
+	<attribute> <id>10657</id> <type>Simple</type> <name>Filters - Filter Type</name> </attribute>
 </attributes>  
