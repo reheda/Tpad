@@ -8757,4 +8757,6 @@
 	<attribute> <id>10544</id> <type>Simple</type> <name>Trimmer / Saw - Chain Pitch</name> </attribute>
 	<attribute> <id>10433</id> <type>Simple numeric</type> <name>Heating /// Cooling - Clean Air Delivery Rate (CADR)</name> </attribute>
 	<attribute> <id>10516</id> <type>Simple numeric</type> <name>Audio System - Preamp Outputs Qty</name> </attribute>
+	<attribute> <id>10659</id> <type>Simple numeric</type> <name>Front Camera  - Min Focal Length</name> </attribute>
+	<attribute> <id>10660</id> <type>Simple numeric</type> <name>Telescope Mount - Max Supported Weight</name> </attribute>
 </attributes>  
