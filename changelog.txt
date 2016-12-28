@@ -1,0 +1,22 @@
+<b>v1.0.3</b><br /> 
+- added attributes: <code>10659, 10660</code>
+---
+<b>v 1.0.2</b><br />
+- fixed issue with invoking Values function on Ksp. E.g. <code>DC.Ksp.Values</code><br /> 
+- fixed the check for empty parameters in function. E.g. <code>A[12].Values.Where()</code><br /> 
+- fixed group's name of attributes: <code>3571, 3564, 4537, 6805</code><br /> 
+- added attributes: <code>10433, 10516, 10542, 10544, 10605, 10606, 10608, 10637, 10638, 10639, 10641, 10643, 10644, 10651, 10655, 10656, 10657, 10658</code>
+---
+<b>v 1.0.1</b><br />
+- fixed issue with functions with parameter in the IN function. E.g. <code>IF A[601].Value IN (A[12].Where("").Values) THEN 2</code> <br />
+- fixed issue with empty values in the Coalesce function. E.g.<code>COALESCE(2,)</code> <br />
+- fixed issue with empty values in the IN function. E.g. <code>IN(2,)</code> <br />
+- fixed issue with comment after value. E.g.<code>A[10653].Values --comment</code> (thanks to Max for identifying) <br />
+- fixed issue with concatenated values in the Coalesce. E.g. <code>COALESCE(SKU.Brand_SKU.Brand);</code> (thanks to Max for identifying)<br />
+- fixed issues with multi Coalesce. E.g. <code>COALESCE(2)_COALESCE(2,asd)</code><br />
+- added <code>DECODE()</code> function (thanks to Max for identifying)<br />
+- added <code>728</code> and <code>1043</code> attributes
+---
+<b>v 1.0.0</b><br />
+First release.
+---
