@@ -2,6 +2,7 @@ package ua.pp.hak.compiler;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
@@ -38,6 +39,8 @@ public class TParser {
 	final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
 	public static void parse(Notepad npd) {
+		long start = System.nanoTime();
+
 		try {
 			logger.info("Parsing expression...");
 			Color green = new Color(0, 188, 57);
@@ -69,6 +72,10 @@ public class TParser {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+
+		long elapsedTime = System.nanoTime() - start;
+		logger.info("Elapsed time to parse: " + elapsedTime + " ns (~ "
+				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 	}
 
 	private static String[] getExpressionResultInfoByChrome(String exprText, String paramText, String skuIdText) {
@@ -82,7 +89,7 @@ public class TParser {
 		WebDriver driver = new ChromeDriver();
 		// driver.manage().window().setSize(new org.openqa.selenium.Dimension(1,
 		// 1));
-		driver.manage().window().setPosition(new Point(-2000, 0));
+		driver.manage().window().setPosition(new Point(-10000, 0));
 		try {
 			// hide Google Chrome driver http://stackoverflow.com/a/5506230
 			// Runtime.getRuntime().exec("HideNSeek.exe 0 \"" + "Google Chrome"

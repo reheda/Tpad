@@ -10,8 +10,10 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -33,6 +35,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -72,7 +75,10 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
@@ -85,7 +91,11 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
+import org.fife.ui.rtextarea.RecordableTextAction;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
 
 import ua.pp.hak.compiler.Attribute;
 import ua.pp.hak.compiler.TChecker;
@@ -934,14 +944,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 		else if (evObj == checkButton) {
 			// taExprRes.setText("Checking...");
-			long start = System.nanoTime();
 			doProcess("check");
 			// TChecker.check(this);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
-			long elapsedTime = System.nanoTime() - start;
-			logger.info("Elapsed timee to check: " + elapsedTime);
 		}
 		////////////////////////////////////
 		else if (evObj == parseButton) {
@@ -953,12 +960,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			// } catch (URISyntaxException e1) {
 			// e1.printStackTrace();
 			// }
-			long start = System.nanoTime();
+
 			// TParser.parse(this);
 			// taExprRes.setText("Parsing...");
 			doProcess("parse");
-			long elapsedTime = System.nanoTime() - start;
-			logger.info("Elapsed timee to parse: " + elapsedTime);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
@@ -1299,16 +1304,50 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		// fileMenu.addSeparator();
 		createMenuItem(fileExit, KeyEvent.VK_X, fileMenu, this);
 
-		Action[] actions = taExpr.getActions();
-		int n = actions.length;
-		for (int i = 0; i < n; i++) {
-			Action a = actions[i];
-			if (a.getValue(Action.NAME).equals(RTextAreaEditorKit.rtaUndoAction)) {
-				undoAction = a;
-			} else if (a.getValue(Action.NAME).equals(RTextAreaEditorKit.rtaRedoAction)) {
-				redoAction = a;
+		{
+			// add few actions to TextArea
+			Action[] actions = taExpr.getActions();
+			int n = actions.length;
+			int defaultModifier = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+			int alt = InputEvent.ALT_MASK;
+			int shift = InputEvent.SHIFT_MASK;
+			InputMap im = taExpr.getInputMap();
+			ActionMap am = taExpr.getActionMap();
+			for (int i = 0; i < n; i++) {
+				Action a = actions[i];
+				String actionName = (String) a.getValue(Action.NAME);
+				if (actionName.equals(RTextAreaEditorKit.rtaUndoAction)) {
+					undoAction = a;
+				} else if (actionName.equals(RTextAreaEditorKit.rtaRedoAction)) {
+					redoAction = a;
+				} else if (actionName.equals(RTextAreaEditorKit.rtaUpperSelectionCaseAction)) {
+					// set shortcut Ctrl+Shift+X for ToUpperCase function
+					im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, defaultModifier | shift),
+							RTextAreaEditorKit.rtaUpperSelectionCaseAction);
+				} else if (actionName.equals(RTextAreaEditorKit.rtaLowerSelectionCaseAction)) {
+					// set shortcut Ctrl+Shift+Y for ToLowerCase function
+					im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, defaultModifier | shift),
+							RTextAreaEditorKit.rtaLowerSelectionCaseAction);
+				} else if (actionName.equals(RTextAreaEditorKit.rtaNextOccurrenceAction)) {
+					// change action of next occurrence shortcut (Ctrl+K)
+					am.put(RTextAreaEditorKit.rtaNextOccurrenceAction,
+							new NextOccurrenceAction(RTextAreaEditorKit.rtaNextOccurrenceAction));
+				} else if (actionName.equals(RTextAreaEditorKit.rtaPrevOccurrenceAction)) {
+					// change action of prev occurrence shortcut (Ctrl+Shift+K)
+					am.put(RTextAreaEditorKit.rtaPrevOccurrenceAction,
+							new PreviousOccurrenceAction(RTextAreaEditorKit.rtaPrevOccurrenceAction));
+				}
 			}
+
+			final String rtaCopyLineDownAction = "RTA.CopyLineDownAction";
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, defaultModifier | alt), rtaCopyLineDownAction);
+			am.put(rtaCopyLineDownAction, new LineCopyAction(rtaCopyLineDownAction, 1));
+
+			final String rtaCopyLineUpAction = "RTA.CopyLineUpAction";
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, defaultModifier | alt), rtaCopyLineUpAction);
+			am.put(rtaCopyLineUpAction, new LineCopyAction(rtaCopyLineUpAction, -1));
 		}
+
 		undoItem = createMenuItem(editUndo, KeyEvent.VK_U, editMenu, KeyEvent.VK_Z, undoAction);
 		redoItem = createMenuItem(editRedo, KeyEvent.VK_O, editMenu, KeyEvent.VK_Y, redoAction);
 		editMenu.addSeparator();
@@ -1543,6 +1582,173 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				worker.cancel(true);
 			}
 		});
+	}
+
+	/**
+	 * Action that copies a line up or down. VR edition
+	 */
+	public static class LineCopyAction extends RecordableTextAction {
+
+		private int copyAmt;
+
+		public LineCopyAction(String name, int copyAmt) {
+			super(name);
+			this.copyAmt = copyAmt;
+		}
+
+		@Override
+		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+			if (!textArea.isEditable() || !textArea.isEnabled()) {
+				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+				return;
+			}
+			try {
+				int caret = textArea.getCaretPosition();
+				Document doc = textArea.getDocument();
+				Element root = doc.getDefaultRootElement();
+				int line = root.getElementIndex(caret);
+				if (copyAmt == -1) {
+					copyLineUp(textArea, line);
+				} else if (copyAmt == 1) {
+					copyLineDown(textArea, line);
+				} else {
+					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+					return;
+				}
+			} catch (BadLocationException ble) {
+				// Never happens.
+				ble.printStackTrace();
+				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+				return;
+			}
+		}
+
+		@Override
+		public final String getMacroID() {
+			return getName();
+		}
+
+		private void copyLineDown(RTextArea textArea, int line) throws BadLocationException {
+			Document doc = textArea.getDocument();
+			Element root = doc.getDefaultRootElement();
+			Element elem = root.getElement(line);
+			int start = elem.getStartOffset();
+			int end = elem.getEndOffset();
+			int caret = textArea.getCaretPosition();
+			int caretOffset = caret - start;
+			String text = doc.getText(start, end - start);
+			// doc.remove(start, end-start);
+			Element elem2 = root.getElement(line); // not "line+1" - removed.
+			// int start2 = elem2.getStartOffset();
+			int end2 = elem2.getEndOffset();
+			doc.insertString(end2, text, null);
+			elem = root.getElement(line + 1);
+			textArea.setCaretPosition(elem.getStartOffset() + caretOffset);
+		}
+
+		private void copyLineUp(RTextArea textArea, int line) throws BadLocationException {
+			Document doc = textArea.getDocument();
+			Element root = doc.getDefaultRootElement();
+			int lineCount = root.getElementCount();
+			Element elem = root.getElement(line);
+			int start = elem.getStartOffset();
+			int end = line == lineCount - 1 ? elem.getEndOffset() - 1 : elem.getEndOffset();
+			int caret = textArea.getCaretPosition();
+			int caretOffset = caret - start;
+			String text = doc.getText(start, end - start);
+			if (line == lineCount - 1) {
+				start--; // Remove previous line's ending \n
+			}
+			// doc.remove(start, end-start);
+			Element elem2 = root.getElement(line);
+			int start2 = elem2.getStartOffset();
+			// int end2 = elem2.getEndOffset();
+			if (line == lineCount - 1) {
+				text += '\n';
+			}
+			doc.insertString(start2, text, null);
+			// caretOffset = Math.min(start2+caretOffset, end2-1);
+			textArea.setCaretPosition(start2 + caretOffset);
+		}
+
+	}
+
+	/**
+	 * Selects the next occurrence of the text last selected.
+	 */
+	public static class NextOccurrenceAction extends RecordableTextAction {
+
+		public NextOccurrenceAction(String name) {
+			super(name);
+		}
+
+		@Override
+		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+			String selectedText = textArea.getSelectedText();
+			if (selectedText == null || selectedText.length() == 0) {
+				selectedText = RTextArea.getSelectedOccurrenceText();
+				if (selectedText == null || selectedText.length() == 0) {
+					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+					return;
+				}
+			}
+			SearchContext context = new SearchContext(selectedText);
+			if (textArea.getMarkAllOnOccurrenceSearches()) { // VR edition: was
+																// if
+																// (!textArea.getMarkAllOnOccurrenceSearches())
+				context.setMarkAll(false);
+			}
+			if (!SearchEngine.find(textArea, context).wasFound()) {
+				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+			}
+			RTextArea.setSelectedOccurrenceText(selectedText);
+		}
+
+		@Override
+		public final String getMacroID() {
+			return getName();
+		}
+
+	}
+
+	/**
+	 * Select the previous occurrence of the text last selected.
+	 */
+	public static class PreviousOccurrenceAction extends RecordableTextAction {
+
+		public PreviousOccurrenceAction(String name) {
+			super(name);
+		}
+
+		@Override
+		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+			String selectedText = textArea.getSelectedText();
+			if (selectedText == null || selectedText.length() == 0) {
+				selectedText = RTextArea.getSelectedOccurrenceText();
+				if (selectedText == null || selectedText.length() == 0) {
+					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+					return;
+				}
+			}
+			SearchContext context = new SearchContext(selectedText);
+			if (textArea.getMarkAllOnOccurrenceSearches()) { // VR edition: was
+																// if
+																// (!textArea.getMarkAllOnOccurrenceSearches())
+																// {
+				context.setMarkAll(false);
+			}
+			context.setSearchForward(false);
+			if (!SearchEngine.find(textArea, context).wasFound()) {
+				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+			}
+			RTextArea.setSelectedOccurrenceText(selectedText);
+		}
+
+		@Override
+		public final String getMacroID() {
+			return getName();
+		}
+
 	}
 
 	public static void main(String[] s) {

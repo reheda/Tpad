@@ -1,5 +1,6 @@
 <b>v1.0.3</b><br /> 
-- added attributes: <code>10659, 10660</code>
+- added attributes: <code>10659, 10660</code><br />
+- refactored code (is not visible) 
 ---
 <b>v 1.0.2</b><br />
 - fixed issue with invoking Values function on Ksp. E.g. <code>DC.Ksp.Values</code><br /> 

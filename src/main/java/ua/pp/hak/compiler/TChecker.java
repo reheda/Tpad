@@ -1,6 +1,7 @@
 package ua.pp.hak.compiler;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,8 @@ public class TChecker {
 	}
 
 	public static void check(Notepad npd) {
+		long start = System.nanoTime();
+
 		try {
 			taExpr = npd.getExprTextArea();
 			JTextArea taExprRes = npd.getExprResTextArea();
@@ -105,6 +108,10 @@ public class TChecker {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+
+		long elapsedTime = System.nanoTime() - start;
+		logger.info("Elapsed time to check: " + elapsedTime + " ns (~ "
+				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 	}
 
 	private static String checkExpression(String expr) {
@@ -1462,11 +1469,10 @@ public class TChecker {
 		String[] params = parameters.split(" ?, ?");
 
 		int paramsQty = 0;
-		if (!parameters.trim().isEmpty()){
+		if (!parameters.trim().isEmpty()) {
 			paramsQty = params.length;
 		}
-		
-		System.out.println("f: '"+ functionName+"', pQty: " +paramsQty + ", p: '"+ parameters+"'");
+
 		for (FunctionWithParameters func : functionsWithParams) {
 
 			if (func.getName().equals(functionName)) {
