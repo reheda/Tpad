@@ -367,7 +367,7 @@ public class TChecker {
 		functionsWithParams.add(new FunctionWithParameters("ToString()", 1, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("ToText()", 1, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("Match()", 0, MAX_LIMIT, "Int32[]"));
-		functionsWithParams.add(new FunctionWithParameters("Split()", 1, MAX_LIMIT, "String[]"));
+		functionsWithParams.add(new FunctionWithParameters("Split()", 0, MAX_LIMIT, "String[]"));
 		functionsWithParams.add(new FunctionWithParameters("UseSeparators()", 1, MAX_LIMIT, "String[]"));
 		functionsWithParams.add(new FunctionWithParameters("Where()", 1, MAX_LIMIT, "String[]"));
 		functionsWithParams.add(new FunctionWithParameters("WhereNot()", 1, MAX_LIMIT, "String[]"));

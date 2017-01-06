@@ -1,6 +1,7 @@
 <b>v1.0.3</b><br /> 
 - added attributes: <code>10659, 10660</code><br />
-- refactored code (is not visible) 
+- refactored code (is not visible)<br />
+- fixed issue with empty parameters in the Split function. E.g. <code>A[387].Value.Replace(" / "," ").Split()</code> (thanks to Asya for identifying)
 ---
 <b>v 1.0.2</b><br />
 - fixed issue with invoking Values function on Ksp. E.g. <code>DC.Ksp.Values</code><br /> 
