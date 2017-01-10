@@ -8759,4 +8759,8 @@
 	<attribute> <id>10516</id> <type>Simple numeric</type> <name>Audio System - Preamp Outputs Qty</name> </attribute>
 	<attribute> <id>10659</id> <type>Simple numeric</type> <name>Front Camera  - Min Focal Length</name> </attribute>
 	<attribute> <id>10660</id> <type>Simple numeric</type> <name>Telescope Mount - Max Supported Weight</name> </attribute>
+	<attribute> <id>10661</id> <type>Simple</type> <name>VR Headset - Adjustable Headband</name> </attribute>
+	<attribute> <id>10662</id> <type>Simple</type> <name>VR Headset - Control Type</name> </attribute>
+	<attribute> <id>10663</id> <type>Simple</type> <name>VR Headset - Cover Type</name> </attribute>
+	<attribute> <id>10664</id> <type>Multi-valued</type> <name>VR Headset - Included Software</name> </attribute>
 </attributes>  
