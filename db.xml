@@ -8763,4 +8763,6 @@
 	<attribute> <id>10662</id> <type>Simple</type> <name>VR Headset - Control Type</name> </attribute>
 	<attribute> <id>10663</id> <type>Simple</type> <name>VR Headset - Cover Type</name> </attribute>
 	<attribute> <id>10664</id> <type>Multi-valued</type> <name>VR Headset - Included Software</name> </attribute>
+	<attribute> <id>10665</id> <type>Simple</type> <name>Display - Widescreen</name> </attribute>
+	<attribute> <id>10666</id> <type>Multi-valued</type> <name>Display - Features</name> </attribute>
 </attributes>  
