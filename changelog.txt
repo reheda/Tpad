@@ -1,5 +1,5 @@
 <b>v 1.0.4</b><br /> 
-- added attributes: <code>10661, 10662, 10663, 10664</code>
+- added attributes: <code>10661, 10662, 10663, 10664, 10665, 10666</code>
 ---
 <b>v 1.0.3</b><br /> 
 - added attributes: <code>10659, 10660</code><br />
