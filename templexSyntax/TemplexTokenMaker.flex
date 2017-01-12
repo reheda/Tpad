@@ -4,7 +4,7 @@
  * TemplexTokenMaker.java - Scanner for Templex.
  * 
  */
-package org.fife.ui.rsyntaxtextarea.modes;
+package ua.pp.hak.ui;
 
 import java.io.*;
 import javax.swing.text.Segment;
@@ -264,6 +264,7 @@ MLCEnd			= "*/"
 	"THEN" |
 	"ELSE" |
 	"ELSEIF" |
+	"LIKE" |
 	"IN" |
 	"CASE" |
 	"WHEN" |
