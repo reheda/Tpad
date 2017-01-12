@@ -1203,7 +1203,7 @@ public class TChecker {
 		Pattern p = Pattern.compile(regex);
 
 		final String COALESCE_TEXT = "COALESCE(";
-		String IN_TEXT = " IN(";
+		String IN_TEXT = "IN(";
 		final String DECODE_TEXT = "DECODE(";
 
 		if (condition.contains(COALESCE_TEXT) && condition.contains(IN_TEXT)) {
@@ -1598,8 +1598,9 @@ public class TChecker {
 		}
 
 		final String COALESCE_TEXT = "COALESCE(";
+		final String IN_TEXT = "IN(";
 
-		if (!returnValue.contains(COALESCE_TEXT)) {
+		if (!returnValue.contains(COALESCE_TEXT) && !returnValue.contains(IN_TEXT)) {
 			// check values
 
 			// erase brackets, but left Match(number) cause it should return
