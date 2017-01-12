@@ -1598,9 +1598,8 @@ public class TChecker {
 		}
 
 		final String COALESCE_TEXT = "COALESCE(";
-		final String IN_TEXT = "IN(";
 
-		if (!returnValue.contains(COALESCE_TEXT) && !returnValue.contains(IN_TEXT)) {
+		if (!returnValue.contains(COALESCE_TEXT)) {
 			// check values
 
 			// erase brackets, but left Match(number) cause it should return
@@ -1633,6 +1632,69 @@ public class TChecker {
 		return null;
 	}
 
+	
+
+	private static String checkWhenStatement(String value) {
+		// this method special for IN function. 
+		// By default we are using "checkReturnValue" function, but we shouldn't add there "IN" function
+				
+		StringBuilder errors = new StringBuilder();
+		String error = null;
+
+		// check brackets
+		if (!matchBrackets(value)) {
+			errors.append("Bracket is not closed/opened");
+			return errors.toString();
+		}
+		// check brackets matching
+		if (!isParenthesisMatch(value)) {
+			errors.append("Bracket is not using prorely");
+			return errors.toString();
+		}
+
+		// value cant finished with "_" or "_ "
+		if (value.matches(".*_ ?$")) {
+			errors.append("Value shouldn't be finished with UNDERSCORE");
+			return errors.toString();
+		}
+
+		final String COALESCE_TEXT = "COALESCE(";
+		final String IN_TEXT = "IN(";
+
+		if (!value.contains(COALESCE_TEXT) && !value.contains(IN_TEXT)) {
+			// check values
+
+			// erase brackets, but left Match(number) cause it should return
+			// PdmMultivalueAttribute instead of PdmAttributeSet
+			String returnValueCleaned = value.replaceAll("(?<!Match)\\(.*?\\)", "()")
+					.replaceAll("Match\\(.*?,.*?\\)", "Match()");
+			String[] values = returnValueCleaned.split(" ?_ ?");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+					errors.append(NEW_LINE);
+					errors.append(NEW_LINE);
+					errors.append("-----");
+					errors.append(NEW_LINE);
+					errors.append(values[i]);
+					return errors.toString();
+				}
+
+			}
+		}
+
+		// check parameters
+		error = checkParametersInCondition(value);
+		if (error != null) {
+			errors.append(error);
+			return errors.toString();
+		}
+
+		return null;
+	}
+	
+	
 	private static String checkCaseStatement(String caseStatement) {
 		StringBuilder errors = new StringBuilder();
 		String error = null;
@@ -1655,22 +1717,27 @@ public class TChecker {
 		while (m.find()) {
 
 			String returnValue = m.group(2);
+			String stmnt = m.group(1);
 
-			{
-				// CASE can't contains UNDERSCORE
-				String stmnt = m.group(1);
-				if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
-					errors.append("CASE condition shouldn't contains UNDERSCORE");
-					return errors.toString();
-				}
-
+			
+			// CASE can't contains UNDERSCORE
+			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
+				errors.append("CASE condition shouldn't contains UNDERSCORE");
+				return errors.toString();
 			}
-
-			error = checkReturnValue(returnValue);
+			
+			//check if WHEN statement
+			if (stmnt.trim().toUpperCase().contains("WHEN")) {
+				error = checkWhenStatement(returnValue);
+			} else {
+				error = checkReturnValue(returnValue);
+			}
+			
 			if (error != null) {
 				errors.append(error);
 				return errors.toString();
 			}
+			
 		}
 
 		return null;
