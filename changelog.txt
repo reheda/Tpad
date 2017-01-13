@@ -1,7 +1,7 @@
 <b>v 1.0.4</b><br /> 
 - fixed issue with empty parameters in the UseSeparators function. E.g. <code>A[9702].Match(6310, 9585, 9702).Values.UseSeparators()</code><br />
 - fixed issue with the IN function in the CASE statement. E.g. <code>CASE SKU.Brand WHEN IN ("alfresco", "asko") THEN "ok" END</code> (thanks to Kolia for identifying)<br />
-- added attributes: <code>10661, 10662, 10663, 10664, 10665, 10666</code><br />
+- added attributes: <code>10661, 10662, 10663, 10664, 10665, 10666, 10672</code><br />
 - added keyword <code>LIKE</code> to highlight
 ---
 <b>v 1.0.3</b><br /> 
