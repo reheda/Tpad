@@ -8765,4 +8765,5 @@
 	<attribute> <id>10664</id> <type>Multi-valued</type> <name>VR Headset - Included Software</name> </attribute>
 	<attribute> <id>10665</id> <type>Simple</type> <name>Display - Widescreen</name> </attribute>
 	<attribute> <id>10666</id> <type>Multi-valued</type> <name>Display - Features</name> </attribute>
+	<attribute> <id>10672</id> <type>Simple</type> <name>Battery - Specific Battery Name</name> </attribute>
 </attributes>  
