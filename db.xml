@@ -8768,4 +8768,9 @@
 	<attribute> <id>10672</id> <type>Simple</type> <name>Battery - Specific Battery Name</name> </attribute>
 	<attribute> <id>10674</id> <type>Simple</type> <name>Game Controller (2nd) - Connectivity Technology</name> </attribute>
 	<attribute> <id>10675</id> <type>Simple</type> <name>Game Controller (2nd) - Qty</name> </attribute>
+	<attribute> <id>10667</id> <type>Simple</type> <name>Hair Removal System - Technology</name> </attribute>
+	<attribute> <id>10668</id> <type>Multi-valued</type> <name>Hair Removal System - Treatment Zone</name> </attribute>
+	<attribute> <id>10669</id> <type>Simple numeric</type> <name>Hair Removal System - Treatment Surface</name> </attribute>
+	<attribute> <id>10670</id> <type>Simple</type> <name>Hair Removal System - Light Module Lifetime</name> </attribute>
+	<attribute> <id>10671</id> <type>Simple numeric</type> <name>Hair Removal System - Max Energy Level</name> </attribute>
 </attributes>  
