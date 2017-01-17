@@ -547,14 +547,20 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		DocumentListener myListener = new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
 				fileHandler.saved = false;
+				//add asterisk at the beginning
+				addSymbolAtTheTitleBeginning('*');
 			}
 
 			public void removeUpdate(DocumentEvent e) {
 				fileHandler.saved = false;
+				//add asterisk at the beginning
+				addSymbolAtTheTitleBeginning('*');
 			}
 
 			public void insertUpdate(DocumentEvent e) {
 				fileHandler.saved = false;
+				//add asterisk at the beginning
+				addSymbolAtTheTitleBeginning('*');
 			}
 
 		};
@@ -581,6 +587,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		// read settings.xml file and apply
 		readSettings();
+	}
+	
+	private void addSymbolAtTheTitleBeginning(char c) {
+		String tempTitle = frame.getTitle();
+		if (tempTitle.charAt(0) != c) {
+			frame.setTitle(c + frame.getTitle());
+		}
 	}
 
 	////////////////////////////////////

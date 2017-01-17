@@ -1,5 +1,6 @@
 <b>v 1.0.5</b><br /> 
-- added attributes: <code>10674, 10675</code>
+- added attributes: <code>10674, 10675</code><br />
+- addition <code>*</code> at the title beginning if document was changed
 ---
 <b>v 1.0.4</b><br /> 
 - fixed issue with empty parameters in the UseSeparators function. E.g. <code>A[9702].Match(6310, 9585, 9702).Values.UseSeparators()</code><br />
