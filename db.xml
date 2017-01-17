@@ -8766,4 +8766,6 @@
 	<attribute> <id>10665</id> <type>Simple</type> <name>Display - Widescreen</name> </attribute>
 	<attribute> <id>10666</id> <type>Multi-valued</type> <name>Display - Features</name> </attribute>
 	<attribute> <id>10672</id> <type>Simple</type> <name>Battery - Specific Battery Name</name> </attribute>
+	<attribute> <id>10674</id> <type>Simple</type> <name>Game Controller (2nd) - Connectivity Technology</name> </attribute>
+	<attribute> <id>10675</id> <type>Simple</type> <name>Game Controller (2nd) - Qty</name> </attribute>
 </attributes>  
