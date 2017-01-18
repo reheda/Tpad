@@ -9,8 +9,6 @@ import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ua.pp.hak.util.Version;
-
 public class Updater {
 	final static Logger logger = LogManager.getLogger(Updater.class);
 

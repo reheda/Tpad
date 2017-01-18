@@ -1,4 +1,4 @@
-package ua.pp.hak.compiler;
+package ua.pp.hak.util;
 
 public class Attribute {
 	private int id;

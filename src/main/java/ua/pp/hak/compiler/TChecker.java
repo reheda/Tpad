@@ -21,6 +21,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import ua.pp.hak.ui.Notepad;
 import ua.pp.hak.ui.SquigglePainter;
+import ua.pp.hak.util.Attribute;
 
 public class TChecker {
 	final static Logger logger = LogManager.getLogger(TChecker.class);
@@ -28,7 +29,7 @@ public class TChecker {
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
-	static List<Attribute> attibutes = DbStAXParser.parse();
+	static List<Attribute> attibutes = DatabaseStAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	final static String TYPE_SIMPLE = "Simple";

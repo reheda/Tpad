@@ -32,13 +32,14 @@ import com.siemens.ct.exi.api.sax.EXISource;
 import com.siemens.ct.exi.exceptions.EXIException;
 import com.siemens.ct.exi.helpers.DefaultEXIFactory;
 
+import ua.pp.hak.util.Attribute;
 import ua.pp.hak.util.FileLocation;
 import ua.pp.hak.util.XSDValidator;
 
-public class DbStAXParser {
+public class DatabaseStAXParser {
 
 	static final boolean USE_SCHEMA = true;
-	final static Logger logger = LogManager.getLogger(DbStAXParser.class);
+	final static Logger logger = LogManager.getLogger(DatabaseStAXParser.class);
 
 	public static List<Attribute> parse() {
 		List<Attribute> list = new ArrayList<>();

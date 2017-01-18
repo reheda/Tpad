@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import ua.pp.hak.ui.Constants;
 import ua.pp.hak.ui.MyFileFilter;
@@ -252,4 +253,35 @@ public class FileOperation implements Constants {
 //		this.npd.getRedoButton().setEnabled(false);
 	}
 	//////////////////////////////////////
+	
+	
+	
+	public void saveTempPadText() {
+		RSyntaxTextArea taExpr = npd.getExprTextArea();
+		
+		logger.info("Try to save temp file...");
+		File temp = new File("temp/temp.txt");
+		File parent = temp.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) {
+			throw new IllegalStateException("Couldn't create dir: " + parent);
+		}
+		// FileWriter fout = null;
+		Writer fout = null;
+		try {
+			// fout = new FileWriter(temp);
+			fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), encoding));
+			taExpr.write(fout); // fout.write(npd.ta.getText()); was
+								// changed due
+			// to incorrect saving of new line
+		} catch (IOException ioe) {
+			logger.error(ioe.getMessage());
+		} finally {
+			try {
+				fout.close();
+			} catch (IOException excp) {
+				logger.error(excp.getMessage());
+			}
+		}
+		logger.info("Temp file was saved!");
+	}
 }
