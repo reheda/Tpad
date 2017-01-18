@@ -32,6 +32,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.common.base.Predicate;
 
 import ua.pp.hak.ui.Notepad;
+import ua.pp.hak.util.ProcessKiller;
 
 public class TParser {
 	final static Logger logger = LogManager.getLogger(TParser.class);
@@ -83,7 +84,17 @@ public class TParser {
 
 		String expressionResult = null;
 		String expressionStatus = null;
-
+		
+		// kill process if needed
+		String processName = "chromedriver.exe";
+		try {
+			if (ProcessKiller.isProcessRunning(processName)) {
+				ProcessKiller.killProcess(processName);
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
 		// initialize Chrome driver
 		System.setProperty("webdriver.chrome.driver", "webdrivers/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();

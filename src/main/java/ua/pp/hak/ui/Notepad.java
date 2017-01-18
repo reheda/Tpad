@@ -69,6 +69,7 @@ import ua.pp.hak.util.Actions;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Listeners;
+import ua.pp.hak.util.ProcessKiller;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 	final static Logger logger = LogManager.getLogger(Notepad.class);
@@ -257,7 +258,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 					// just for getting backup
 					fileHandler.saveTempPadText();
-
+					
+					// kill process if needed
+					String processName = "chromedriver.exe";
+					try {
+						if (ProcessKiller.isProcessRunning(processName)) {
+							ProcessKiller.killProcess(processName);
+						}
+					} catch (Exception ex) {
+						logger.error(ex.getMessage());
+					}
+					
 					System.exit(0);
 				}
 			}
