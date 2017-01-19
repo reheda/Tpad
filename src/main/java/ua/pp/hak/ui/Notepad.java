@@ -12,9 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -69,7 +66,6 @@ import ua.pp.hak.util.Actions;
 import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Listeners;
-import ua.pp.hak.util.ProcessKiller;
 
 public class Notepad implements ActionListener, MenuConstants, Constants {
 	final static Logger logger = LogManager.getLogger(Notepad.class);
@@ -199,8 +195,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		return fileHandler;
 	}
 
+	public SettingsOperation getSettingsHandler() {
+		return settingsHandler;
+	}
+
 	/****************************/
 	Notepad() {
+		
 		logger.info("Creating GUI...");
 		this.npd = this;
 		frame = new JFrame(defaultFileName + " - " + applicationName);
@@ -223,16 +224,18 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		// logger.error(e.getMessage());
 		// }
 
+		
 		createSplitPaneView();
 		createStatusBarView();
-
+		createMenuBar();
+		createToolBar();
+		
 		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		frame.getContentPane().add(statusBar, BorderLayout.SOUTH);
 		frame.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
 		frame.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
-		createMenuBar();
-		createToolBar();
 		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
+		
 		frame.setSize(1000, 450);
 		frame.pack();
 		frame.setLocation(100, 50);
@@ -244,36 +247,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		fileHandler = new FileOperation(this);
 		settingsHandler = new SettingsOperation(this);
 
-		/////////////////////
+		// add TextArea listeners. Should place at the end of the class due to using buttons and items.
 		taExpr.addCaretListener(new Listeners.Caret(this));
+		taExpr.addMouseWheelListener(new Listeners.MouseWheel(this));
 		taExpr.getDocument().addDocumentListener(new Listeners.Document(this));
-		/////////
-		WindowListener frameClose = new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				if (fileHandler.confirmSave()) {
-					logger.info("Stop working...");
-
-					// save settings to settings.xml
-					settingsHandler.saveSettings();
-
-					// just for getting backup
-					fileHandler.saveTempPadText();
-					
-					// kill process if needed
-					String processName = "chromedriver.exe";
-					try {
-						if (ProcessKiller.isProcessRunning(processName)) {
-							ProcessKiller.killProcess(processName);
-						}
-					} catch (Exception ex) {
-						logger.error(ex.getMessage());
-					}
-					
-					System.exit(0);
-				}
-			}
-		};
-		frame.addWindowListener(frameClose);
+		
+		// add Frame listener
+		frame.addWindowListener(new Listeners.Window(this));
 
 		logger.info("Finish creating GUI");
 
@@ -289,11 +269,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private void createSplitPaneView() {
 		createLeftPanelView();
 		createRightPanelView();
-
-		// Provide minimum sizes for the two components in the split pane.
-		Dimension minimumSize = new Dimension(300, 200);
-		spExpr.setMinimumSize(minimumSize);
-		spExprRes.setMinimumSize(minimumSize);
 
 		// Create a split pane with the two scroll panes in it.
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, rightPanel);
@@ -324,13 +299,14 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	}
 
 	private void createExpressionView() {
-		// -------
+
 		taExpr = new RSyntaxTextArea(30, 60);
 		taExpr.setFont(font);
 		taExpr.setTabSize(4);
+		taExpr.setCodeFoldingEnabled(true);
 		taExpr.setMargin(new Insets(0, 5, 0, 5));
 
-		// ----- change color of Syntax --------------------------
+		// change color of Syntax
 		scheme = taExpr.getSyntaxScheme();
 		// new Color (153,51,153); //dark pink
 		scheme.getStyle(Token.RESERVED_WORD).foreground = Color.blue;
@@ -342,21 +318,17 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExpr.revalidate();
 		taExpr.repaint();
 
-		// ----- set lexer syntax --------------------------------
+		// set lexer syntax
 		// taExpr.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
 		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
 		atmf.putMapping("templexLanguage", "ua.pp.hak.ui.TemplexTokenMaker");
 		taExpr.setSyntaxEditingStyle("templexLanguage");
-		// -------------------------------------------------------
 
-		taExpr.setCodeFoldingEnabled(true);
-
-		// ----- set auto complete --------------------------------
+		// set auto complete
 		CompletionProvider provider = AutoCompleter.createCompletionProvider();
 		AutoCompletion ac = new AutoCompletion(provider);
 		ac.install(taExpr);
 
-		// -----
 		spExpr = new JScrollPane(taExpr);
 		TextLineNumber tln = new TextLineNumber(taExpr);
 		// enables the automatic updating of the Font when the Font of the
@@ -364,8 +336,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		tln.setUpdateFont(true);
 		spExpr.setRowHeaderView(tln);
 		spExpr.setPreferredSize(new Dimension(600, 450));
-		// -----
-		taExpr.addMouseWheelListener(new Listeners.MouseWheel(this));
+		spExpr.setMinimumSize(new Dimension(300, 200));
 
 		changeActionMap();
 	}
@@ -491,9 +462,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private void createExpressionResultView() {
 		// create Expression result view
 		taExprRes = new JTextArea();
-		spExprRes = new JScrollPane(taExprRes);
-		spExprRes.setPreferredSize(new Dimension(400, 450));
-		spExprRes.setBorder(new EmptyBorder(0, 0, 0, 0));
 		taExprRes.setFont(font.deriveFont(12f));
 		taExprRes.setEditable(false);
 		// tp.setBackground(new Color(240,240,240)); //light grey
@@ -503,6 +471,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExprRes.setText(defaultExpressionResult);
 		taExprRes.setText(taExprRes.getText().replaceAll("\n", "//\n"));
 		taExprRes.setLineWrap(true);
+		
+		spExprRes = new JScrollPane(taExprRes);
+		spExprRes.setPreferredSize(new Dimension(400, 450));
+		spExprRes.setBorder(new EmptyBorder(0, 0, 0, 0));
+		spExprRes.setMinimumSize(new Dimension(300, 200));
 	}
 
 	///////////////////////////////////
@@ -969,8 +942,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
 		wordWrapItem = createCheckBoxMenuItem(formatWordWrap, KeyEvent.VK_W, formatMenu, this);
-		taExpr.setLineWrap(true);
 		wordWrapItem.setSelected(true);
+		taExpr.setLineWrap(true);
 
 		createMenuItem(formatFont, KeyEvent.VK_F, formatMenu, KeyEvent.VK_T, this);
 		formatMenu.addSeparator();

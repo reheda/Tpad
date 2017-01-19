@@ -1,8 +1,8 @@
 <b>v 1.0.5</b><br /> 
-- added attributes: <code>10667, 10668, 10669, 10670, 10671, 10674, 10675</code><br />
-- added check for running process if Parsing was terminated
+- added attributes: <code>10667, 10668, 10669, 10670, 10671, 10674, 10675, 10679</code><br />
+- added check for running process if Parsing was terminated<br />
 - title will contain <code>*</code> at the beginning if document is changed<br />
-- refactored code (is not visible)<br />
+- refactored code (is not visible)
 ---
 <b>v 1.0.4</b><br /> 
 - fixed issue with empty parameters in the UseSeparators function. E.g. <code>A[9702].Match(6310, 9585, 9702).Values.UseSeparators()</code><br />

@@ -8773,4 +8773,5 @@
 	<attribute> <id>10669</id> <type>Simple numeric</type> <name>Hair Removal System - Treatment Surface</name> </attribute>
 	<attribute> <id>10670</id> <type>Simple</type> <name>Hair Removal System - Light Module Lifetime</name> </attribute>
 	<attribute> <id>10671</id> <type>Simple numeric</type> <name>Hair Removal System - Max Energy Level</name> </attribute>
+	<attribute> <id>10679</id> <type>Simple numeric</type> <name>Cleaning - Operating Area</name> </attribute>
 </attributes>  

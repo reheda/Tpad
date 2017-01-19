@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -22,11 +24,15 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.ui.Notepad;
 
 public class Listeners {
+	final static Logger logger = LogManager.getLogger(Listeners.class);
 
 	public static class MouseWheel implements MouseWheelListener {
 		private RSyntaxTextArea taExpr;
@@ -236,5 +242,41 @@ public class Listeners {
 			}
 		}
 
+	};
+	
+	public static class Window extends WindowAdapter {
+		FileOperation fileHandler;
+		SettingsOperation settingsHandler;
+		
+		public Window(Notepad npd) {
+			fileHandler = npd.getFileHandler();
+			settingsHandler = npd.getSettingsHandler();
+		}
+
+		@Override
+		public void windowClosing(WindowEvent we) {
+
+			if (fileHandler.confirmSave()) {
+				logger.info("Stop working...");
+
+				// save settings to settings.xml
+				settingsHandler.saveSettings();
+
+				// just for getting backup
+				fileHandler.saveTempPadText();
+
+				// kill process if needed
+				String processName = "chromedriver.exe";
+				try {
+					if (ProcessKiller.isProcessRunning(processName)) {
+						ProcessKiller.killProcess(processName);
+					}
+				} catch (Exception ex) {
+					logger.error(ex.getMessage());
+				}
+
+				System.exit(0);
+			}
+		}
 	};
 }
