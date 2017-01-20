@@ -176,7 +176,7 @@ public class TpsInfo implements Constants, MenuConstants {
 		StringBuilder sb = new StringBuilder();
 		char[] skuChars = Sku.toCharArray();
 		for (int i = 0; i < skuChars.length; i++) {
-			if (!Character.isLetter(skuChars[i])) {
+			if (Character.isDigit(skuChars[i])) {
 				sb.append(skuChars[i]);
 			}
 		}
@@ -188,10 +188,12 @@ public class TpsInfo implements Constants, MenuConstants {
 		Elements contentAvus = doc.select("#Avus_Result");
 		Elements contentSku = doc.select("#Sku_Result");
 		Elements contentTexts = doc.select("#Texts_Result");
+		Elements contentSpecs = doc.select("#Specs_Result");
 
 		String avusRes = contentAvus.get(0).text();
 		String skuRes = contentSku.get(0).text();
 		String textsRes = contentTexts.get(0).text();
+		String specsRes = contentSpecs.get(0).text();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -224,14 +226,13 @@ public class TpsInfo implements Constants, MenuConstants {
 		sb.append("<td>unit</td>");
 		sb.append("</tr>");
 		//////////////////////////////////////
+		sb.append(parseSpecsInfo(specsRes));		
 		sb.append(parseFeatureInfo(textsRes));
+		sb.append(getEndRow());
+		
 		sb.append(parseAttributeInfo(avusRes));
+		sb.append(getEndRow());
 		//////////////////////////////////////
-		sb.append("<tr class='header'>");
-		for (int i = 0; i < 9; i++) {
-			sb.append("<td class='red'>&nbsp;</td>");
-		}
-		sb.append("</tr>");
 
 		sb.append("</tbody>");
 		sb.append("</table>");
@@ -426,12 +427,74 @@ public class TpsInfo implements Constants, MenuConstants {
 		if (obj.has("data")) {
 
 			JSONObject data = obj.getJSONObject("data");
+			
+			if (data.has("tx-feat")) {
+				JSONObject tx = data.getJSONObject("tx-feat");
 
-			String[] bla = { "tx-mkt", "tx-ksp", "tx-wib" };
-			for (int k = 0; k < bla.length; k++) {
+				if (tx.has("items")) {
+					JSONArray items = tx.getJSONArray("items");
 
-				if (data.has(bla[k])) {
-					JSONObject tx = data.getJSONObject(bla[k]);
+					for (int i = 0; i < items.length(); i++) {
+						JSONObject item = items.getJSONObject(i);
+
+						String name = null;
+						if (item.has("name")) {
+							name = item.getString("name");
+						}
+
+						if (item.has("lines")) {
+							JSONArray lines = item.getJSONArray("lines");
+
+							for (int j = 0; j < lines.length(); j++) {
+								sb.append("<tr>");
+								if (i == 0) {
+									sb.append("<td>");
+									sb.append("PF");
+									sb.append("<td>");
+									sb.append("Product Features");
+									sb.append("</td>");
+									sb.append("</td>");
+								} else {
+									sb.append("<td>");
+									sb.append("&nbsp;");
+									sb.append("</td>");
+									sb.append("<td>");
+									sb.append("&nbsp;");
+									sb.append("</td>");
+								}
+								sb.append("<td class='red'>");
+								sb.append("&nbsp;");
+								sb.append("</td>");
+								sb.append("<td>");
+								if (name != null) {
+									sb.append(name);
+									sb.append(": ");
+								}
+								sb.append(lines.getString(j));
+								sb.append("</td>");
+								sb.append("<td class='red'>");
+								sb.append("&nbsp;");
+								sb.append("</td>");
+								for (int z = 0; z < 2; z++) {
+									sb.append("<td>");
+									sb.append("&nbsp;");
+									sb.append("</td>");
+									sb.append("<td class='red'>");
+									sb.append("&nbsp;");
+									sb.append("</td>");
+								}
+								sb.append("</tr>");
+							}
+						}
+					}
+				}
+			}
+			
+			String[] arr = { "tx-mkt", "tx-ksp", "tx-wib" };
+			for (int k = 0; k < arr.length; k++) {
+
+				if (data.has(arr[k])) {
+					JSONObject tx = data.getJSONObject(arr[k]);
 
 					if (tx.has("lines")) {
 						JSONArray lines = tx.getJSONArray("lines");
@@ -440,20 +503,20 @@ public class TpsInfo implements Constants, MenuConstants {
 							sb.append("<tr>");
 							if (i == 0) {
 								sb.append("<td>");
-								if (bla[k].equals("tx-mkt")) {
-									sb.append("MKT");
+								if (arr[k].equals("tx-mkt")) {
+									sb.append("MD");
 									sb.append("<td>");
-									sb.append("Marketing text");
+									sb.append("Marketing Description");
 									sb.append("</td>");
-								} else if (bla[k].equals("tx-ksp")) {
+								} else if (arr[k].equals("tx-ksp")) {
 									sb.append("KSP");
 									sb.append("<td>");
-									sb.append("Key selling points");
+									sb.append("Key Selling Points");
 									sb.append("</td>");
-								} else if (bla[k].equals("tx-wib")) {
+								} else if (arr[k].equals("tx-wib")) {
 									sb.append("WIB");
 									sb.append("<td>");
-									sb.append("What's in the box");
+									sb.append("What's in the Box");
 									sb.append("</td>");
 								} else {
 									sb.append("&nbsp;");
@@ -493,69 +556,63 @@ public class TpsInfo implements Constants, MenuConstants {
 				}
 			}
 
-			if (data.has("tx-feat")) {
-				JSONObject tx = data.getJSONObject("tx-feat");
+			
+		}
 
-				if (tx.has("items")) {
-					JSONArray items = tx.getJSONArray("items");
+		return sb.toString();
+	}
+	
+	
+	private static String parseSpecsInfo(String json){
+		StringBuilder sb = new StringBuilder();
 
-					for (int i = 0; i < items.length(); i++) {
-						JSONObject item = items.getJSONObject(i);
+		JSONObject obj = new JSONObject(json);
+		if (obj.has("data")) {
+			JSONObject data = obj.getJSONObject("data");
 
-						String name = null;
-						if (item.has("name")) {
-							name = item.getString("name");
-						}
+			if (data.has("tx-std-desc")) {
 
-						if (item.has("lines")) {
-							JSONArray lines = item.getJSONArray("lines");
-
-							for (int j = 0; j < lines.length(); j++) {
-								sb.append("<tr>");
-								if (i == 0) {
-									sb.append("<td>");
-									sb.append("FB");
-									sb.append("<td>");
-									sb.append("Profuct features");
-									sb.append("</td>");
-									sb.append("</td>");
-								} else {
-									sb.append("<td>");
-									sb.append("&nbsp;");
-									sb.append("</td>");
-									sb.append("<td>");
-									sb.append("&nbsp;");
-									sb.append("</td>");
-								}
-								sb.append("<td class='red'>");
-								sb.append("&nbsp;");
-								sb.append("</td>");
-								sb.append("<td>");
-								if (name != null) {
-									sb.append(name);
-									sb.append(": ");
-								}
-								sb.append(lines.getString(j));
-								sb.append("</td>");
-								sb.append("<td class='red'>");
-								sb.append("&nbsp;");
-								sb.append("</td>");
-								for (int z = 0; z < 2; z++) {
-									sb.append("<td>");
-									sb.append("&nbsp;");
-									sb.append("</td>");
-									sb.append("<td class='red'>");
-									sb.append("&nbsp;");
-									sb.append("</td>");
-								}
-								sb.append("</tr>");
-							}
-						}
-					}
+				String descr = data.getString("tx-std-desc");
+				
+				sb.append("<tr>");
+				sb.append("<td>");
+				sb.append("SD");
+				sb.append("</td>");
+				sb.append("<td>");
+				sb.append("Standard Description");
+				sb.append("</td>");
+				sb.append("<td class='red'>");
+				sb.append("&nbsp;");
+				sb.append("</td>");
+				sb.append("<td>");
+				sb.append(descr);
+				sb.append("</td>");
+				sb.append("<td class='red'>");
+				sb.append("&nbsp;");
+				sb.append("</td>");
+				for (int z = 0; z < 2; z++) {
+					sb.append("<td>");
+					sb.append("&nbsp;");
+					sb.append("</td>");
+					sb.append("<td class='red'>");
+					sb.append("&nbsp;");
+					sb.append("</td>");
 				}
+				sb.append("</tr>");
 			}
 		}
 
+		return sb.toString();
+	}
+	
+	private static String getEndRow (){
+		StringBuilder sb = new StringBuilder();
+		sb.append("<tr class='header'>");
+		for (int i = 0; i < 9; i++) {
+			sb.append("<td class='red'>&nbsp;</td>");
+		}
+		sb.append("</tr>");
+		
 		return sb.toString();
 	}
 }
