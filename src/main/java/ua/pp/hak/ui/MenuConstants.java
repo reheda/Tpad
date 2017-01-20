@@ -48,6 +48,7 @@ public interface MenuConstants extends Constants{
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";
 	final String helpLegacyInfo = "Legacy Info";
 	final String helpAttributeInfo = "Attribute Info";
+	final String helpTpsInfo = "TPS Info";
 	final String helpHelpTopic = "Help Topic";
 	final String helpResetSettings = "Reset settings...";
 	final String helpCheckUpdates = "Check for Updates...";

@@ -698,6 +698,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			AttributeInfoDialog.showAttributeInfo(frame);
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpTpsInfo)) {
+			logger.info("Open TpsInfo window");
+			TpsInfo.show(this);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpAbout) || evObj == aboutButton) {
 			logger.info("Open About window");
 			AboutDialog.showAbout(frame);
@@ -978,6 +983,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(helpKeyboardShortcuts, KeyEvent.VK_K, helpMenu, this);
 		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
+		createMenuItem(helpTpsInfo, KeyEvent.VK_P, helpMenu, KeyEvent.VK_P, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 		helpMenu.addSeparator();
 		createMenuItem(helpResetSettings, KeyEvent.VK_R, helpMenu, this);
