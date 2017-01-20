@@ -1,6 +1,7 @@
 <b>v 1.0.5</b><br /> 
-- added attributes: <code>10667, 10668, 10669, 10670, 10671, 10674, 10675, 10679</code><br />
+- added attributes: <code>3725, 10667, 10668, 10669, 10670, 10671, 10674, 10675, 10679, 10680</code><br />
 - added check for running process if Parsing was terminated<br />
+- added TPS Info menu item to check info about attributes of the SKU (E.g. 7203466)<br />
 - title will contain <code>*</code> at the beginning if document is changed<br />
 - refactored code (is not visible)
 ---
