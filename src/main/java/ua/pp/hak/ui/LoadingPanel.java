@@ -63,6 +63,8 @@ public class LoadingPanel {
 					TParser.parse(npd);
 				} else if (processToDo.equals("check")) {
 					TChecker.check(npd);
+				} else if (processToDo.equals("tps")){
+					TpsInfo.show(npd);
 				}
 				return null;
 			}
@@ -71,7 +73,7 @@ public class LoadingPanel {
 				// invoked by publish()
 
 				String proc = chunks.get(chunks.size() - 1);
-				if (proc.equals("parse") || proc.equals("check")) {
+				if (proc.equals("parse") || proc.equals("check") || proc.equals("tps")) {
 
 					// do something
 

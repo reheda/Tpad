@@ -700,7 +700,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		////////////////////////////////////
 		else if (cmdText.equals(helpTpsInfo)) {
 			logger.info("Open TpsInfo window");
-			TpsInfo.show(this);
+//			TpsInfo.show(this);
+			LoadingPanel.doProcess("tps", npd);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpAbout) || evObj == aboutButton) {
