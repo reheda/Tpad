@@ -3,6 +3,7 @@
 - added check for running process if Parsing was terminated<br />
 - added TPS Info menu item to check info about attributes of the SKU (E.g. <code>7203466</code>)<br />
 - title will contain <code>*</code> at the beginning if document is changed<br />
+- turned case sensitivity off for <code>NULL</code> function<br />
 - refactored code (is not visible)
 ---
 <b>v 1.0.4</b><br /> 

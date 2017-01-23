@@ -163,14 +163,13 @@ public class TChecker {
 
 		exprCleaned = exprCleaned.replaceAll("(?i) is ", " IS ");
 		exprCleaned = exprCleaned.replaceAll("(?i) not", " NOT");
-		exprCleaned = exprCleaned.replaceAll("(?i) null", " NULL");
+		exprCleaned = exprCleaned.replaceAll("(?i)(?<!\\w)null", " NULL");
 		exprCleaned = exprCleaned.replaceAll("(?i) then", " THEN");
 		exprCleaned = exprCleaned.replaceAll("(?i) else", " ELSE");
 		exprCleaned = exprCleaned.replaceAll("(?i) when", " WHEN");
 		exprCleaned = exprCleaned.replaceAll("(?i) end", " END");
 		exprCleaned = exprCleaned.replaceAll("(?i)case ", "CASE ");
 		exprCleaned = exprCleaned.replaceAll("(?i)if ", "IF ");
-		exprCleaned = exprCleaned.replaceAll("(?i)^null", "NULL");
 		exprCleaned = exprCleaned.replaceAll("(?i)coalesce", "COALESCE");
 		exprCleaned = exprCleaned.replaceAll("(?i) in", " IN");
 
