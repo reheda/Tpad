@@ -8776,4 +8776,8 @@
 	<attribute> <id>10679</id> <type>Simple numeric</type> <name>Cleaning - Operating Area</name> </attribute>
 	<attribute> <id>3725</id> <type>Repeating</type> <name>Included Accessories - Coffee Maker Accessories</name> </attribute>
 	<attribute> <id>10680</id> <type>Simple</type> <name>Turntable - Included Cartridge Name</name> </attribute>
+	<attribute> <id>10618</id> <type>Simple</type> <name>Media - Surface Finish</name> </attribute>
+	<attribute> <id>10620</id> <type>Simple</type> <name>Media - Coating</name> </attribute>
+	<attribute> <id>10619</id> <type>Simple</type> <name>Media - Adhesive Type</name> </attribute>
+	<attribute> <id>10621</id> <type>Simple</type> <name>Media - Perforation</name> </attribute>
 </attributes>  
