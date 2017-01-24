@@ -1,0 +1,253 @@
+functionName function
+returnType|Returns description. The absolute value of <em>n</em>.
+paramType n|Param decription.
+paramType2 n|Param2 decription.
+ Function description. <a href="functionName2">isalpha</a>(c) or <a href="functionName3">isdigit</a>(c)
+
+
+##### SKU #####
+
+Brand constant
+String|
+ Returns the brand of this product.
+
+Colors constant
+IEnumerable`1|
+ Gets a list of standardized color names.
+ Remarks: Use this to test the product color in expressions, but prefer the <code>InvariantColors<code> alternative.
+
+Description constant
+String|
+ Returns our standardized description for this product.
+ Remarks: This description is unique.
+
+FancyColors constant
+IEnumerable`1|
+ Gets a list of colors as described by the manufacturer.
+ Remarks: Use this when exporting values describing the product to the consumer (i.e. as part of the product title, or a color description for the user), but not for testing product color or to export raw data to be fed into third party systems.
+
+InvariantColors constant
+IEnumerable`1|
+ Gets a list of standardized color names, in US English.
+ Remarks: Use this to test the product color in expressions.
+
+ItemName constant
+String|
+ Returns a concatenation of the product line, model name (without partnumber) and product type for this product.
+ Remarks: Do not use this.
+
+Keywords constant
+IEnumerable`1|
+ Returns a list of search keywords for this product, including brand, manufacturer, product line, model name and product type.
+
+LaunchDate constant
+DateTime|
+ The estimated launch date of this product.
+
+Manufacturer constant
+String|
+ Returns the name of the manufacturer of this product.
+ Remarks: This is not necessarily the product brand.
+
+ModelName constant
+String|
+ Returns the model name of this product.
+
+Name constant
+String|
+ Returns our short name for this this product.
+ Remarks: This product name is minimalistic and not guaranteed to be unique.
+
+NonOemAccessories constant
+Int32|
+ Number of non-oem accessories available for this product.
+
+PackQuantity constant
+Int32|
+ Returns the number of items included in this product's package.
+ This is the minimum number of items that can be bought in the standard retail packaging offered by the manufacturer, it doesn't include retailer or promotional bundler.
+
+PartNumber constant
+String|
+  Returns the manufacturer's part number for this product.
+
+
+
+
+
+----------------------------------
+
+A[] constant
+AltCats constant
+BestImage constant
+BestImages constant
+Body constant
+BoxContents constant
+
+
+BulletFeatures constant
+CategoryCode constant
+CategoryCodes constant
+CategoryKey constant
+CategoryKeys constant
+CategoryName constant
+
+CompatibleProducts constant
+Count constant
+CustomerPn constant
+CustomerPns constant
+
+
+Distinct constant
+
+GroupName constant
+HasText constant
+Header constant
+Invariant constant
+
+InvariantUnit constant
+InvariantValues constant
+IsEmpty constant
+
+Key constant
+KeySellingPoints constant
+
+Ksp constant
+
+Length constant
+LineCount constant
+Main constant
+
+ManufacturerNames constant
+MarketingText constant
+MimeType constant
+
+ModelNames constant
+Msds constant
+
+
+Order constant
+
+
+ProductFeatures constant
+ProductId constant
+ProductIds constant
+ProductLine constant
+ProductLineNames constant
+ProductNames constant
+ProductSheet constant
+ProductType constant
+QuickStartGuide constant
+Thumbnail constant
+Total constant
+Unit constant
+UnitUSM constant
+Url constant
+UserManual constant
+Value constant
+Values constant
+ValuesAndUnits constant
+ValuesAndUnitsUSM constant
+ValuesUSM constant
+ValueUSM constant
+XmlContent constant
+MS constant
+ES constant
+Request constant
+ParentProducts constant
+Sys constant
+Generator constant
+SKU constant
+CAT constant
+DC constant
+
+
+AND
+CASE
+ELSE IF
+ELSE
+END
+IF
+IS NOT NULL
+IS NULL
+LIKE
+NOT LIKE
+NOT NULL
+NOT
+NULL
+OR
+THEN
+WHEN
+
+
+Round function
+Min  function
+MinMax  function
+Match  function
+Max  function
+ListPaths  function
+ListUSM  function
+Last  function
+FlattenWithAnd  function
+HtmlEncode  function
+GetLines  function
+GetPath  function
+First  function
+DiscardNulls  function
+ExtractDecimals  function
+GetAncestry  function
+GetDateTime  function
+GetDescendants  function
+GetFullColorDescription  function
+ToHtml  function
+ToLower  function
+ToLowerFirstChar  function
+ToPlainText  function
+ToTitleCase  function
+ToUpper  function
+ToUpperFirstChar  function
+
+
+IN("text")
+COALESCE("text")
+DECODE("htmlText")
+
+
+AtLeast(minimum)
+AtMost(maximum)
+Erase("value")
+EraseTextSurroundedBy("surroundingCharacters")
+Format("literalFormat")
+GetLine(3)
+GetLineBody(2)
+Flatten("")
+IfLike("pattern", "replacement")
+IfLongerThan(2, "replacementText")
+IsDescendantOf("categoryKey")
+Match(1)
+Match(2, 2, 1)
+Pick(2)
+Pluralize()
+Postfix("suffix")
+Prefix("prefix")
+RegexReplace("pattern", "substitution")
+Replace("oldValue", "newValue")
+Shorten(1)
+Shorten(1, "")
+Skip(5)
+Split("separator1")
+Split("separator1", "separator2", "")
+MultiplyBy(factor)
+Take(2)
+ToText("literalFormat")
+Where("pattern1")
+Where("pattern1", "pattern2", "")
+WhereCategory("codeOrKey1", "codeOrKey2", "")
+WhereManufacturer("mfFilter1", "mfFilter2", "")
+WhereModelName("modelFilter1", "modelFilter2", "")
+WhereNot("pattern1")
+WhereNot("pattern1", "pattern2", "")
+WhereProductLine("plFilter1", "plFilter2", "")
+WhereUnit("unitFilter1", "unitFilter2", "")
+WhereUnitOrValue("unitOrValueFilter1", "unitOrValueFilter2", "")
+UseSeparators("separator1", "separator2", "")

@@ -59,11 +59,11 @@ import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
+import ua.pp.hak.autocomplete.AutoCompleter;
 import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.update.Version;
 import ua.pp.hak.util.Actions;
-import ua.pp.hak.util.AutoCompleter;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Listeners;
 
