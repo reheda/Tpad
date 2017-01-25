@@ -60,6 +60,7 @@ import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 
 import ua.pp.hak.autocomplete.AutoCompleter;
+import ua.pp.hak.autocomplete.LanguageSupportFactory;
 import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.update.Updater;
 import ua.pp.hak.update.Version;
@@ -325,9 +326,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		taExpr.setSyntaxEditingStyle("templexLanguage");
 
 		// set auto complete
-		CompletionProvider provider = AutoCompleter.createCompletionProvider();
-		AutoCompletion ac = new AutoCompletion(provider);
-		ac.install(taExpr);
+		 LanguageSupportFactory.get().register(taExpr);
+//		CompletionProvider provider = AutoCompleter.createCompletionProvider();
+//		AutoCompletion ac = new AutoCompletion(provider);
+//		ac.install(taExpr);
 
 		spExpr = new JScrollPane(taExpr);
 		TextLineNumber tln = new TextLineNumber(taExpr);

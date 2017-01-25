@@ -29,7 +29,7 @@ sub fixDesc {
 my $this_script = abs_path($0);
 my $dir = dirname($this_script);
 my $infile = "$dir/templex.txt";
-my $outfile = "$dir/../templex.xml";
+my $outfile = "$dir/templex.xml";
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 my $datestamp = sprintf("%4d-%02d-%02d %02d:%02d:%02d\n",
@@ -95,6 +95,14 @@ while (length($line)>0) {
 			$item .= " returnType=\"";
 			$item .= $1 . "\"";
 			$returnValDesc = $2;
+		} elsif ($2 eq "constant"){
+			chomp($line = <IN>);
+			if ($line !~ m/^([^\|]+)\|(.*)$/) {
+				print("ERROR: Bad format for function return type line: '$line'\n");
+				exit(1);
+			}
+			$item .= " returnType=\"";
+			$item .= $1 . "\"";
 		}
 		$item .= " definedIn=\"" . $definedIn . "\">\n";
 		my $params = "";

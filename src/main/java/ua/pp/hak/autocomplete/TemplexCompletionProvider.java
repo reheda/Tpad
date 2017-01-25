@@ -49,8 +49,9 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 	 * @param codeCP The code completion provider.
 	 */
 	protected void addShorthandCompletions(DefaultCompletionProvider codeCP) {
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "main",
-								"int main(int argc, char **argv)"));
+//		codeCP.addCompletion(new ShorthandCompletion(codeCP, "main", "int main(int argc, char **argv)"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "line", "-------------------------------------------------------------"));
+		
 //for (int i=0; i<5000; i++) {
 //	codeCP.addCompletion(new BasicCompletion(codeCP, "Number" + i));
 //}
@@ -99,12 +100,12 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 	 */
 	protected CompletionProvider createStringCompletionProvider() {
 		DefaultCompletionProvider cp = new DefaultCompletionProvider();
-		cp.addCompletion(new BasicCompletion(cp, "%c", "char", "Prints a character"));
-		cp.addCompletion(new BasicCompletion(cp, "%i", "signed int", "Prints a signed integer"));
-		cp.addCompletion(new BasicCompletion(cp, "%f", "float", "Prints a float"));
-		cp.addCompletion(new BasicCompletion(cp, "%s", "string", "Prints a string"));
-		cp.addCompletion(new BasicCompletion(cp, "%u", "unsigned int", "Prints an unsigned integer"));
-		cp.addCompletion(new BasicCompletion(cp, "\\n", "Newline", "Prints a newline"));
+//		cp.addCompletion(new BasicCompletion(cp, "%c", "char", "Prints a character"));
+//		cp.addCompletion(new BasicCompletion(cp, "%i", "signed int", "Prints a signed integer"));
+//		cp.addCompletion(new BasicCompletion(cp, "%f", "float", "Prints a float"));
+//		cp.addCompletion(new BasicCompletion(cp, "%s", "string", "Prints a string"));
+//		cp.addCompletion(new BasicCompletion(cp, "%u", "unsigned int", "Prints an unsigned integer"));
+//		cp.addCompletion(new BasicCompletion(cp, "\\n", "Newline", "Prints a newline"));
 		return cp;
 	}
 
@@ -115,7 +116,7 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 	 * @return The resource to load.
 	 */
 	protected String getXmlResource() {
-		return "data/templex.xml";
+		return "templex.xml";
 	}
 
 

@@ -352,6 +352,10 @@ ExpressionResult|
  Returns the text value of each element with the first letter in lower case. (<a href="http://txdev1.cnetcontent.com/Reference#5C3C707D">Reference link</a>)
  Remarks: This will not lower the case of the first letter if the second letter is upper case.
 
+ToString function
+ExpressionResultLiteral|
+ Empty description.
+
 ToText function
 String|
 String literalFormat|
@@ -497,6 +501,10 @@ ExpressionResult|
  Returns this string with the first letter in lower case. (<a href="http://txdev1.cnetcontent.com/Reference#DABC1E90">Reference link</a>)
  Remarks: This will not lower the case of the first letter if the second letter is upper case.
 
+ToString function
+ExpressionResultLiteral|
+ Empty description.
+
 ToText function
 String|
 String literalFormat|
@@ -553,6 +561,10 @@ HasText constant
 Boolean|
  Indicates whether this numeric value contains any visible text. (<a href="http://txdev1.cnetcontent.com/Reference#A9ABF4F">Reference link</a>)
  Remarks: This will return false for strings containing only blank characters such as whitespaces, tabs and line breaks.
+
+HasValue constant
+ExpressionResultLiteral|
+ Empty description.
 
 HtmlEncode function
 ExpressionResult|
@@ -642,6 +654,10 @@ ToLowerFirstChar function
 ExpressionResult|
  Returns this numeric value with the first letter in lower case. (<a href="http://txdev1.cnetcontent.com/Reference#5276FDA8">Reference link</a>)
  Remarks: This will not lower the case of the first letter if the second letter is upper case.
+
+ToString function
+ExpressionResultLiteral|
+ Empty description.
 
 ToText function
 String|
@@ -970,6 +986,10 @@ String|
  Returns the customer partnumber of this product. (<a href="http://txdev1.cnetcontent.com/Reference#B868C9B0">Reference link</a>)
  Remarks: This may not always be available.
 
+Gtin constant
+Gtin|
+ Empty description.
+
 Manufacturer constant
 String|
  Returns the manufacturer name of this product. (<a href="http://txdev1.cnetcontent.com/Reference#B42CBA6B">Reference link</a>)
@@ -1089,9 +1109,187 @@ LineCount constant
 Int32|
  Returns the number of lines in these specs. (<a href="http://txdev1.cnetcontent.com/Reference#97871155">Reference link</a>)
 
+CompatibleProducts constant
+ExpressionResultList|
+ Empty description.
+
 
 ##### SpecSection #####
 
 Name constant
 String|
  Returns the name of this section. (<a href="http://txdev1.cnetcontent.com/Reference#BC7E5027">Reference link</a>)
+
+
+##### DateTime #####
+
+Day constant
+ExpressionResultNumeric|
+ Empty description.
+
+Month constant
+ExpressionResultNumeric|
+ Empty description.
+
+Year constant
+ExpressionResultNumeric|
+ Empty description.
+
+
+##### ProductPackage ##### 
+
+Height constant
+ExpressionResultNumeric|
+ Empty description.
+
+IsBiggerThan function
+ExpressionResultLiteral|
+ Empty description.
+
+Weight constant
+ExpressionResultNumeric|
+ Empty description.
+
+Width constant
+ExpressionResultNumeric|
+ Empty description.
+
+
+##### Gtin ##### 
+
+Format constant
+ExpressionResultLiteral|
+ Empty description.
+
+
+##### Nothing ##### 
+
+AND constant
+And|
+ Empty description.
+
+CASE constant
+Case|
+ Empty description.
+
+CAT constant
+ProductCategories|
+ Empty description.
+
+COALESCE function
+String|
+AnyType[] type|
+ Empty description.
+
+DC constant
+DigitalContent|
+ Empty description.
+
+DECODE function
+String|
+AnyType[] type|
+ Empty description.
+
+ELSE constant
+Else|
+ Empty description.
+
+END constant
+End|
+ Empty description.
+
+ES constant
+Specs|
+ Empty description.
+
+Generator constant
+TemplexGenerator|
+ Empty description.
+
+IF constant
+If|
+ Empty description.
+
+IN function
+String|
+AnyType[] type|
+ Empty description.
+
+IS constant
+Is|
+ Empty description.
+
+LIKE constant
+Like|
+ Empty description.
+
+MS constant
+Specs|
+ Empty description.
+
+NOT constant
+Not|
+ Empty description.
+
+NULL constant
+Null|
+ Empty description.
+
+OR constant
+Or|
+ Empty description.
+
+Package constant
+ProductPackage|
+ Empty description.
+
+ParentProducts constant
+RelatedProductList|
+ Empty description.
+
+Request constant
+RelatedProduct|
+ Empty description.
+
+SKU constant
+Sku|
+ Empty description.
+
+Sys constant
+SystemObject|
+ Empty description.
+
+THEN constant
+Then|
+ Empty description.
+
+WHEN constant
+When|
+ Empty description.
+
+
+##### AlternativeCategory ##### 
+
+GetAncestry function
+IEnumerable`1|
+[Boolean] boolean|Optional
+ Empty description.
+
+GetDescendants function
+IEnumerable`1|
+[Boolean] boolean|Optional
+ Empty description.
+
+IsDescendantOf function
+Boolean|
+String alternativeCategoryCode|
+ Empty description.
+
+Key constant
+String|
+ Empty description.
+
+Name constant
+String|
+ Empty description.
+

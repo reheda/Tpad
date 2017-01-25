@@ -36,8 +36,8 @@ class TemplexCellRenderer extends CompletionCellRenderer {
 	 * Constructor.
 	 */
 	public TemplexCellRenderer() {
-		variableIcon = getIcon("var.png");
-		functionIcon = getIcon("function.png");
+		variableIcon = getIcon("/images/var.png");
+		functionIcon = getIcon("/images/function.png");
 	}
 
 
