@@ -1165,11 +1165,11 @@ ExpressionResultLiteral|
 ##### Nothing #####
 
 AND constant
-And|
+Operator|
  Empty description.
 
 CASE constant
-Case|
+Operator|
  Empty description.
 
 CAT constant
@@ -1179,7 +1179,7 @@ ProductCategories|
 COALESCE function
 String|
 AnyType[] type|
- Empty description.
+ Coalescing returns the first value from a separated list of values that is not null.
 
 DC constant
 DigitalContent|
@@ -1187,15 +1187,15 @@ DigitalContent|
 
 DECODE function
 String|
-AnyType[] type|
- Empty description.
+AnyType type|
+ Decodes HTML encoding, and replacing for instance "&gt;" with ">"
 
 ELSE constant
-Else|
+Operator|
  Empty description.
 
 END constant
-End|
+Operator|
  Empty description.
 
 ES constant
@@ -1207,7 +1207,7 @@ TemplexGenerator|
  Empty description.
 
 IF constant
-If|
+Operator|
  Empty description.
 
 IN function
@@ -1216,11 +1216,11 @@ AnyType[] type|
  Empty description.
 
 IS constant
-Is|
+Operator|
  Empty description.
 
 LIKE constant
-Like|
+Operator|
  Empty description.
 
 MS constant
@@ -1228,7 +1228,7 @@ Specs|
  Empty description.
 
 NOT constant
-Not|
+Operator|
  Empty description.
 
 NULL constant
@@ -1236,7 +1236,7 @@ Null|
  Empty description.
 
 OR constant
-Or|
+Operator|
  Empty description.
 
 Package constant

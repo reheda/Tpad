@@ -8,8 +8,8 @@
    Author:         VR
    Version:        0.1
 
-   This file was generated from: C:/Program Files/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-01-25 01:40:14
+   This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
+   on date: 2017-01-25 12:23:06
 
 -->
 <api language="Templex">
@@ -22,7 +22,7 @@
 <keyword name="AltCats" type="constant" returnType="IEnumerable`1" definedIn="ProductCategories">
 	<desc><![CDATA[Returns a list of alternative categories for this product, the main being the first. (<a href="http://txdev1.cnetcontent.com/Reference#7BCE01EA">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="AND" type="constant" returnType="And" definedIn="Nothing">
+<keyword name="AND" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="AtLeast" type="function" returnType="Nullable`1" definedIn="ExpressionResultNumeric">
@@ -60,7 +60,7 @@
 	<desc><![CDATA[Generates product bullet points aggressively. (<a href="http://txdev1.cnetcontent.com/Reference#19C5D5C1">Reference link</a>)<br>
 <br />Remarks: <em>This is useful when a minimum number of bullet points absolutely neets to be met.</em>]]></desc>
 </keyword>
-<keyword name="CASE" type="constant" returnType="Case" definedIn="Nothing">
+<keyword name="CASE" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="CAT" type="constant" returnType="ProductCategories" definedIn="Nothing">
@@ -82,7 +82,7 @@
 	<params>
 		<param type="AnyType[]" name="type"/>
 	</params>
-	<desc>Empty description.</desc>
+	<desc>Coalescing returns the first value from a separated list of values that is not null.</desc>
 </keyword>
 <keyword name="Colors" type="constant" returnType="IEnumerable`1" definedIn="Sku">
 	<desc><![CDATA[Gets a list of standardized color names. (<a href="http://txdev1.cnetcontent.com/Reference#B28D568C">Reference link</a>)<br>
@@ -118,9 +118,9 @@
 </keyword>
 <keyword name="DECODE" type="function" returnType="String" definedIn="Nothing">
 	<params>
-		<param type="AnyType[]" name="type"/>
+		<param type="AnyType" name="type"/>
 	</params>
-	<desc>Empty description.</desc>
+	<desc><![CDATA[Decodes HTML encoding, and replacing for instance "&gt;" with ">"]]></desc>
 </keyword>
 <keyword name="Description" type="constant" returnType="String" definedIn="DigitalContentItem">
 	<desc><![CDATA[Return the description of this content. (<a href="http://txdev1.cnetcontent.com/Reference#4FE52986">Reference link</a>)]]></desc>
@@ -135,10 +135,10 @@
 <keyword name="Distinct" type="constant" returnType="ExpressionResult" definedIn="ExpressionResultList">
 	<desc><![CDATA[Returns a new list with all the elements from this list, removing duplicates. (<a href="http://txdev1.cnetcontent.com/Reference#3A0DB75D">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="ELSE" type="constant" returnType="Else" definedIn="Nothing">
+<keyword name="ELSE" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
-<keyword name="END" type="constant" returnType="End" definedIn="Nothing">
+<keyword name="END" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="Erase" type="function" returnType="ExpressionResult" definedIn="ExpressionResultList">
@@ -362,7 +362,7 @@
 <keyword name="HtmlEncode" type="function" returnType="ExpressionResult" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Encodes the content of this numeric value so it can be safely placed within html tags. (<a href="http://txdev1.cnetcontent.com/Reference#F7511A3B">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="IF" type="constant" returnType="If" definedIn="Nothing">
+<keyword name="IF" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="IfLike" type="function" returnType="ExpressionResult" definedIn="ExpressionResultList">
@@ -454,7 +454,7 @@
 <keyword name="InvariantValues" type="constant" returnType="ExpressionResultList" definedIn="PdmRepeatingAttribute">
 	<desc><![CDATA[Returns an ExpressionResultList object containing all the invariant values in this repeating attribute. (<a href="http://txdev1.cnetcontent.com/Reference#5EC944C9">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="IS" type="constant" returnType="Is" definedIn="Nothing">
+<keyword name="IS" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="IsBiggerThan" type="function" returnType="ExpressionResultLiteral" definedIn="ProductPackage">
@@ -510,7 +510,7 @@
 <keyword name="Length" type="constant" returnType="Int32" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Indicates the number of characters in a String. (<a href="http://txdev1.cnetcontent.com/Reference#95A881D0">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="LIKE" type="constant" returnType="Like" definedIn="Nothing">
+<keyword name="LIKE" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="LineCount" type="constant" returnType="Int32" definedIn="Specs">
@@ -634,13 +634,13 @@
 <keyword name="NonOemAccessories" type="constant" returnType="Int32" definedIn="Sku">
 	<desc><![CDATA[Number of non-oem accessories available for this product. (<a href="http://txdev1.cnetcontent.com/Reference#9C8D490C">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="NOT" type="constant" returnType="Not" definedIn="Nothing">
+<keyword name="NOT" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="NULL" type="constant" returnType="Null" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
-<keyword name="OR" type="constant" returnType="Or" definedIn="Nothing">
+<keyword name="OR" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="Order" type="constant" returnType="Int32" definedIn="SpecLine">

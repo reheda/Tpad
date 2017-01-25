@@ -1,5 +1,6 @@
 <b>v 1.0.6</b><br /> 
 - fixed check for NULL function. (E.g. <code>IF SKU.Bran IS NOT NULL THEN 2</code>)<br />
+- added attributes: <code>10681</code><br />
 - changed view of the autocompletion popup (added pretty much info about the function)
 ---
 <b>v 1.0.5</b><br /> 

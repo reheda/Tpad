@@ -53,12 +53,26 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 		// main(int argc, char **argv)"));
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "line",
 				"-------------------------------------------------------------"));
+		
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Data[String value]", "Data[\"\"]", "String",
 				"<strong>String Data[String value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>RelatedProduct</em>"));
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "BulletFeatures[Int32 value]", "BulletFeatures[]", "String",
 				"<strong>String BulletFeatures[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>TemplexGenerator</em>"));
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Ksp[Int32 value]", "Ksp[]", "String",
 				"<strong>String Ksp[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>DigitalContent</em>"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "A[Int32 attrCode]", "A[]", "TemplexAttribute",
+				"<strong>TemplexAttribute A[Int32 attrCode]</strong><br /><hr /><br />"
+				+ "The number between square brackets contains the ID of the attribute, for instance the attribute [35].<br /><br /><hr />Defined in: <em>Nothing</em>"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "REFERENCE", "$TXCLIENTIDENTIFIER$", "String",
+				"<strong>String $TXCLIENTIDENTIFIER$</strong><br /><hr /><br />"
+						+ "References allows you to reuse the result of another expression. The following types of references are available:<br /><br />"
+						+ "<em>Template item reference</em><br />"
+						+ "You can reference another template item using the $ notation<br /><br />"
+						+ "<strong>Note</strong> the following limitations:" + "<ul>"
+						+ "<li>Referenced expressions cannot reference other expressions</li>"
+						+ "<li>While items from other sections can be referenced, these must export into the same 'file'</li>"
+						+ "<li>Something that's not an item meant for export cannot be referenced</li>" + "</ul>"
+						+ "<br /><br /><hr />Defined in: <em>Nothing</em>"));
 
 //for (int i=0; i<5000; i++) {
 //	codeCP.addCompletion(new BasicCompletion(codeCP, "Number" + i));
