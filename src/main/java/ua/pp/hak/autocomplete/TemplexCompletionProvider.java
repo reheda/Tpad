@@ -49,9 +49,17 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 	 * @param codeCP The code completion provider.
 	 */
 	protected void addShorthandCompletions(DefaultCompletionProvider codeCP) {
-//		codeCP.addCompletion(new ShorthandCompletion(codeCP, "main", "int main(int argc, char **argv)"));
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "line", "-------------------------------------------------------------"));
-		
+		// codeCP.addCompletion(new ShorthandCompletion(codeCP, "main", "int
+		// main(int argc, char **argv)"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "line",
+				"-------------------------------------------------------------"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Data[String value]", "Data[\"\"]", "String",
+				"<strong>String Data[String value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>RelatedProduct</em>"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "BulletFeatures[Int32 value]", "BulletFeatures[]", "String",
+				"<strong>String BulletFeatures[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>TemplexGenerator</em>"));
+		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Ksp[Int32 value]", "Ksp[]", "String",
+				"<strong>String Ksp[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>DigitalContent</em>"));
+
 //for (int i=0; i<5000; i++) {
 //	codeCP.addCompletion(new BasicCompletion(codeCP, "Number" + i));
 //}
