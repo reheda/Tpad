@@ -1,3 +1,6 @@
+<b>v 1.0.7</b><br /> 
+- fixed issue with the escaped double quote in the literal string. E.g. <code>IF A[7114].Value LIKE "No" THEN "No assembly required." ELSE "Assembly required.|Put it all together with our professional &lt;a href=""javascript:openContextSensitiveLink('1043363604288');"">in-home assembly service&lt;/a>";</code>
+---
 <b>v 1.0.6</b><br /> 
 - fixed check for NULL function. E.g. <code>IF SKU.Brand IS NOT NULL THEN 2</code> (thanks to Asya for identifying)<br />
 - added attributes: <code>10681</code><br />

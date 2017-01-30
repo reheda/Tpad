@@ -154,7 +154,7 @@ public class TChecker {
 		}
 
 		// erase text surrounded by quotes
-		exprCleaned = exprCleaned.replaceAll("\".*?\"", "\"\"");
+		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
 
 		// clean expression to make it parsable
 		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll("(?i)ELSE IF", "ELSEIF")
