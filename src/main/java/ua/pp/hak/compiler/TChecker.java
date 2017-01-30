@@ -402,8 +402,8 @@ public class TChecker {
 		functions.add(new Function("IsDescendantOf()", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("LaunchDate", "DateTime", "Sku"));
 		functions.add(new Function("GetDateTime()", "DateTimeOffset", "SystemObject"));
-		functions.add(new Function("Count", "ExpressionResultNumeric", "ExpressionResultList",
-				"ExpressionResultLiteral", "ExpressionResultNumeric", "PdmMultivalueAttribute"));
+		functions.add(new Function("Count", "ExpressionResultNumeric", "ExpressionResultList", "ExpressionResultLiteral",
+						"ExpressionResultNumeric", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(
 				new Function("Total", "ExpressionResultNumeric", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("BestImage", "DigitalContentItem", "DigitalContent"));
