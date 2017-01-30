@@ -1,5 +1,5 @@
 <b>v 1.0.7</b><br /> 
-- fixed issue with the escaped double quote in the literal string. E.g. <code>IF A[7114].Value LIKE "No" THEN "No assembly required." ELSE "Assembly required.|Put it all together with our professional &lt;a href=""javascript:openContextSensitiveLink('1043363604288');"">in-home assembly service&lt;/a>";</code>
+- fixed issue with the escaped double quote in the literal string. E.g. <code>IF A[7114].Value LIKE "No" THEN "No assembly required." ELSE "Assembly required.|Put it all together with our professional &lt;a href=""javascript:openContextSensitiveLink('1043363604288');"">in-home assembly service&lt;/a>";</code> (thanks to Asya for identifying)
 - fixed issue with invoking Count function on the Repeating Attribute. E.g. <code>A[3739].Count</code>
 ---
 <b>v 1.0.6</b><br /> 
