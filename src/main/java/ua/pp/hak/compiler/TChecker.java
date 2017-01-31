@@ -1258,8 +1258,21 @@ public class TChecker {
 			}
 
 		} else if (condition.contains(COALESCE_TEXT)) {
-			String temp = condition.replaceAll("COALESCE\\(", "12345678");
-			int coalesceCounter = condition.length() - temp.length();
+			
+			
+			// count external COALESCE (for COALESCE in COALESCE check)
+			int coalesceCounter = 0;
+			{
+				int tempIndex = 0;
+				int tempLen = condition.length() - condition.indexOf(COALESCE_TEXT);
+				while (tempIndex != -1 && tempIndex < tempLen) {
+					tempIndex = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, tempIndex));
+					if (tempIndex != -1) {
+						coalesceCounter++;
+					}
+				}
+			}
+			
 			int startIndex = 0;
 			for (int j = 0; j < coalesceCounter; j++) {
 				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
@@ -1381,26 +1394,44 @@ public class TChecker {
 					errors.append("Value in the " + functionText + " shouldn't be empty");
 					return errors.toString();
 				}
-				error = checkValue(valuesSplitedByUnderscore[j]);
-				if (error != null) {
-					errors.append(error);
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(valuesSplitedByUnderscore[j]);
-					return errors.toString();
-				}
-
-				Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
-				while (m.find()) {
-					String functionName = m.group(1) + "()";
-					String parameters = m.group(2);
-					error = checkParameters(functionName, parameters);
+				
+				// add COALESCE in COALESCE check
+				if (valuesSplitedByUnderscore[j].contains(functionText)) {
+					error = checkParametersInCondition(valuesSplitedByUnderscore[j]);
 					if (error != null) {
 						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(valuesSplitedByUnderscore[j]);
 						return errors.toString();
 					}
+					
+				} else {
+
+					error = checkValue(valuesSplitedByUnderscore[j]);
+					if (error != null) {
+						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(valuesSplitedByUnderscore[j]);
+						return errors.toString();
+					}
+
+					Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
+					while (m.find()) {
+						String functionName = m.group(1) + "()";
+						String parameters = m.group(2);
+						error = checkParameters(functionName, parameters);
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+					}
+				
 				}
 			}
 
@@ -1549,7 +1580,7 @@ public class TChecker {
 	private static int getLastBracketIndex(String str, int startIndex) {
 
 		if (startIndex < 0) {
-			return 0;
+			return -1;
 		}
 
 		Stack<Character> stack = new Stack<Character>();
@@ -1563,17 +1594,17 @@ public class TChecker {
 				stack.push(c);
 			else if (c == ')')
 				if (stack.empty())
-					return 0;
+					return -1;
 				else if (stack.size() == 1 && stack.peek() == '(')
 					return i;
 				else if (stack.peek() == '(')
 					stack.pop();
 				else
-					return 0;
+					return -1;
 
 		}
 
-		return 0;
+		return -1;
 	}
 
 	private static String checkReturnValue(String returnValue) {

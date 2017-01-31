@@ -8781,4 +8781,6 @@
 	<attribute> <id>10619</id> <type>Simple</type> <name>Media - Adhesive Type</name> </attribute>
 	<attribute> <id>10621</id> <type>Simple</type> <name>Media - Perforation</name> </attribute>
 	<attribute> <id>10681</id> <type>Simple</type> <name>Television - HDR Technology</name> </attribute>
+	<attribute> <id>10682</id> <type>Simple</type> <name>Display - Video Format (Non-standard)</name> </attribute>
+	<attribute> <id>10685</id> <type>Simple</type> <name>Display - Video Format</name> </attribute>
 </attributes>  
