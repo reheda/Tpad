@@ -8784,4 +8784,5 @@
 	<attribute> <id>10682</id> <type>Simple</type> <name>Display - Video Format (Non-standard)</name> </attribute>
 	<attribute> <id>10685</id> <type>Simple</type> <name>Display - Video Format</name> </attribute>
 	<attribute> <id>10686</id> <type>Simple</type> <name>Display - Windows Ink Capability</name> </attribute>
+	<attribute> <id>10687</id> <type>Simple</type> <name>Chassis - Built-in Camera</name> </attribute>
 </attributes>  
