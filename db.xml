@@ -8785,4 +8785,6 @@
 	<attribute> <id>10685</id> <type>Simple</type> <name>Display - Video Format</name> </attribute>
 	<attribute> <id>10686</id> <type>Simple</type> <name>Display - Windows Ink Capability</name> </attribute>
 	<attribute> <id>10687</id> <type>Simple</type> <name>Chassis - Built-in Camera</name> </attribute>
+	<attribute> <id>10688</id> <type>Simple</type> <name>Mobile Broadband - Generation</name> </attribute>
+	<attribute> <id>10689</id> <type>Simple</type> <name>Mobile Broadband - High-Speed Communication Standard</name> </attribute>
 </attributes>  
