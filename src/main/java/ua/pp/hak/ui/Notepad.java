@@ -737,14 +737,14 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			settingsHandler.resetSettings();
 		}
 		////////////////////////////////////
-		else if (evObj == checkButton) {
+		else if (cmdText.equals(expressionCheck) || evObj == checkButton) {
 			LoadingPanel.doProcess("check", npd);
 			if (!parserPanelItem.isSelected()) {
 				parserPanelItem.doClick();
 			}
 		}
 		////////////////////////////////////
-		else if (evObj == parseButton) {
+		else if (cmdText.equals(expressionParse) || evObj == parseButton) {
 			// try {
 			// Desktop.getDesktop().browse(new
 			// URI("http://templex.cnetcontent.com/Home/Parser"));
@@ -915,6 +915,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		JMenu editMenu = createMenu(editText, KeyEvent.VK_E, mb);
 		JMenu formatMenu = createMenu(formatText, KeyEvent.VK_O, mb);
 		JMenu viewMenu = createMenu(viewText, KeyEvent.VK_V, mb);
+		JMenu expressionMenu = createMenu(expressionText, KeyEvent.VK_X, mb);
 		JMenu helpMenu = createMenu(helpText, KeyEvent.VK_H, mb);
 
 		createMenuItem(fileNew, KeyEvent.VK_N, fileMenu, KeyEvent.VK_N, this);
@@ -963,8 +964,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		parserPanelItem = createCheckBoxMenuItem(viewParserPanel, KeyEvent.VK_P, viewMenu, this);
 		parserPanelItem.setSelected(true);
-		parserPanelItem.setAccelerator(
-				(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)));
+		// Ctrl + Shift + P shortcut
+		// parserPanelItem.setAccelerator((KeyStroke.getKeyStroke(KeyEvent.VK_P,
+		// ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK)));
 		statusBarItem = createCheckBoxMenuItem(viewStatusBar, KeyEvent.VK_S, viewMenu, this);
 		statusBarItem.setSelected(true);
 		/************
@@ -980,6 +982,9 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			createMenuItem(viewZoomDefault, KeyEvent.VK_O, tmp, KeyEvent.VK_0, this);
 			viewMenu.add(tmp);
 		}
+
+		createMenuItem(expressionCheck, KeyEvent.VK_C, expressionMenu, KeyEvent.VK_C, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(expressionParse, KeyEvent.VK_P, expressionMenu, KeyEvent.VK_P, KeyEvent.SHIFT_MASK, this);
 
 		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
 		helpMenu.addSeparator();

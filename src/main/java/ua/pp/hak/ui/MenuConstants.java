@@ -7,6 +7,7 @@ public interface MenuConstants extends Constants{
 	final String editText = "Edit";
 	final String formatText = "Format";
 	final String viewText = "View";
+	final String expressionText = "Expression";
 	final String helpText = "Help";
 
 	final String fileNew = "New";
@@ -44,6 +45,9 @@ public interface MenuConstants extends Constants{
 	final String viewZoomOut = "Zoom Out";
 	final String viewZoomDefault = "Zoom Default";
 
+	final String expressionCheck = "Check";
+	final String expressionParse = "Parse";
+	
 	final String helpHome = applicationName + " Home Page";
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";
 	final String helpLegacyInfo = "Legacy Info";

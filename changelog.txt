@@ -1,6 +1,7 @@
 <b>v 1.0.8</b><br /> 
 - fixed issue with Coalesce function in Coalesce function. E.g. <code>COALESCE(A[5691].Values.FlattenWithAnd()_COALESCE(A[5691].Values.Skip(1).First(), A[5691].Values.First()), A[5691].Values.Take(2).Flatten("</li><li>"));</code> (thanks to Oleg for identifying)<br />
-- added attributes: <code>10682, 10685, 10686, 10687, 10688, 10689</code>
+- added attributes: <code>10682, 10685, 10686, 10687, 10688, 10689</code><br />
+- added <code>Expression</code> menu, keyboard shortcuts for <code>Check</code> and <code>Parse</code> functions
 ---
 <b>v 1.0.7</b><br /> 
 - fixed issue with the escaped double quote in the literal string. E.g. <code>IF A[7114].Value LIKE "No" THEN "No assembly required." ELSE "Assembly required.|Put it all together with our professional &lt;a href=""javascript:openContextSensitiveLink('1043363604288');"">in-home assembly service&lt;/a>";</code> (thanks to Asya for identifying)<br />

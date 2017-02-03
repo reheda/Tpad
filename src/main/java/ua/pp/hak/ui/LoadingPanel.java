@@ -34,8 +34,9 @@ public class LoadingPanel {
 				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		popup.setBackground(Color.white);
 		frame.getLayeredPane().add(popup);
-
-		JLabel label = new JLabel("Processing...");
+		
+		String prorcessToDoCapitalized = processToDo.substring(0, 1).toUpperCase() + processToDo.substring(1);
+		JLabel label = new JLabel("[" + prorcessToDoCapitalized + "] Processing...");
 		popup.add(label, BorderLayout.NORTH);
 		JProgressBar pb = new JProgressBar();
 		popup.add(pb, BorderLayout.CENTER);
