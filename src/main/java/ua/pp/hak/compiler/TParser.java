@@ -3,6 +3,7 @@ package ua.pp.hak.compiler;
 import java.awt.Color;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
@@ -16,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
@@ -36,8 +38,9 @@ import ua.pp.hak.util.ProcessKiller;
 
 public class TParser {
 	final static Logger logger = LogManager.getLogger(TParser.class);
-	final static int DEFAULT_TIMEOUT = 15;
-	final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+	private final static int DEFAULT_TIMEOUT = 15;
+	private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+	private static Set<Cookie> cookies;
 
 	public static void parse(Notepad npd) {
 		long start = System.nanoTime();
@@ -84,7 +87,7 @@ public class TParser {
 
 		String expressionResult = null;
 		String expressionStatus = null;
-		
+
 		// kill process if needed
 		String processName = "chromedriver.exe";
 		try {
@@ -94,13 +97,12 @@ public class TParser {
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
-		
+
 		// initialize Chrome driver
 		System.setProperty("webdriver.chrome.driver", "webdrivers/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
-		// driver.manage().window().setSize(new org.openqa.selenium.Dimension(1,
-		// 1));
 		driver.manage().window().setPosition(new Point(-10000, 0));
+		driver.manage().window().setSize(new org.openqa.selenium.Dimension(1, 1));
 		try {
 			// hide Google Chrome driver http://stackoverflow.com/a/5506230
 			// Runtime.getRuntime().exec("HideNSeek.exe 0 \"" + "Google Chrome"
@@ -112,31 +114,42 @@ public class TParser {
 		}
 		try {
 			// Open gmail
-			driver.get("http://templex.cnetcontent.com/Home/Parser");
 
-			// Enter userd id
-			WebElement element = driver.findElement(By.name("Email"));
-			element.sendKeys("test@test.com");
+			if (cookies == null) {
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
 
-			// wait 5 secs for userid to be entered
-			// driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+				// Enter userd id
+				WebElement element = driver.findElement(By.name("Email"));
+				element.sendKeys("test@test.com");
 
-			// Enter Password
-			WebElement element1 = driver.findElement(By.name("Password"));
-			element1.sendKeys("password");
+				// wait 5 secs for userid to be entered
+				// driver.manage().timeouts().implicitlyWait(5,
+				// TimeUnit.SECONDS);
 
-			// Submit button
-			element.submit();
+				// Enter Password
+				WebElement element1 = driver.findElement(By.name("Password"));
+				element1.sendKeys("password");
 
-			WebElement skuId = driver.findElement(By.name("skuId"));
-			skuId.clear();
-			skuId.sendKeys(skuIdText);
-			WebElement expression = driver.findElement(By.name("expression"));
-			expression.sendKeys(exprText);
-			WebElement parameters = driver.findElement(By.name("parameters"));
-			parameters.clear();
-			parameters.sendKeys(paramText);
+				// Submit button
+				element.submit();
 
+				cookies = driver.manage().getCookies();
+			} else {
+
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
+
+				for (Cookie cookie : cookies) {
+					driver.manage().addCookie(cookie);
+				}
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
+
+			}
+
+			// process expression
+			// evaluateExpressionWithSendkeys(driver, exprText, paramText, skuIdText);
+			evaluateExpressionWithJavascript(driver, exprText, paramText, skuIdText);
+
+			// wait for loading to disappear
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 			WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
@@ -150,6 +163,7 @@ public class TParser {
 
 			});
 
+			// get results
 			expressionResult = driver.findElement(By.name("result")).getAttribute("value");
 			expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
 					.findElement(By.xpath("..")).getAttribute("class");
@@ -250,4 +264,33 @@ public class TParser {
 			driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 		}
 	}
+
+	private static void evaluateExpressionWithJavascript(WebDriver driver, String expressionText, String parametersText,
+			String skuIdText) {
+		// its x3 faster than 'Sendkeys' with huge expression
+		if (driver instanceof JavascriptExecutor) {
+
+			// must escape new lines and single quote for correct work of JS
+			expressionText = expressionText.replaceAll("\n", "\\\\n").replaceAll("\'", "\\\\'");
+
+			((JavascriptExecutor) driver)
+					.executeScript("$.connection.hub.start().done(function parse(){hub.server.parseExpression('"
+							+ expressionText + "','" + parametersText + "',++hub.lastServedRequest,'" + skuIdText + "');});");
+		}
+
+	}
+
+	private static void evaluateExpressionWithSendkeys(WebDriver driver, String expressionText, String parametersText,
+			String skuIdText) {
+		WebElement skuId = driver.findElement(By.name("skuId"));
+		skuId.clear();
+		skuId.sendKeys(skuIdText);
+		WebElement expression = driver.findElement(By.name("expression"));
+		expression.sendKeys(expressionText);
+		WebElement parameters = driver.findElement(By.name("parameters"));
+		parameters.clear();
+		parameters.sendKeys(parametersText);
+
+	}
+
 }
