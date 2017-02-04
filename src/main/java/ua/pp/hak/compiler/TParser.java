@@ -33,6 +33,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Predicate;
 
+import ua.pp.hak.ui.LoadingPanel;
 import ua.pp.hak.ui.Notepad;
 import ua.pp.hak.util.ProcessKiller;
 
@@ -146,7 +147,8 @@ public class TParser {
 			}
 
 			// process expression
-			// evaluateExpressionWithSendkeys(driver, exprText, paramText, skuIdText);
+			// evaluateExpressionWithSendkeys(driver, exprText, paramText,
+			// skuIdText);
 			evaluateExpressionWithJavascript(driver, exprText, paramText, skuIdText);
 
 			// wait for loading to disappear
@@ -172,7 +174,7 @@ public class TParser {
 			logger.info("Expression result: " + expressionResult);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} finally {
 
 			driver.quit();
@@ -183,6 +185,178 @@ public class TParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return new String[] { expressionResult, expressionStatus };
+	}
+
+	public static String parseForSkuList(Notepad npd, String parametersText, String[] skuList) {
+		long start = System.nanoTime();
+
+		StringBuilder sb = new StringBuilder();
+		try {
+			logger.info("Parsing expression for SKU list...");
+
+			RSyntaxTextArea taExpr = npd.getExprTextArea();
+			String expressionText = taExpr.getText();
+
+			// kill process if needed
+			String processName = "chromedriver.exe";
+			if (ProcessKiller.isProcessRunning(processName)) {
+				ProcessKiller.killProcess(processName);
+			}
+
+			// initialize Chrome driver
+			System.setProperty("webdriver.chrome.driver", "webdrivers/chromedriver.exe");
+			WebDriver driver = new ChromeDriver();
+			driver.manage().window().setPosition(new Point(-10000, 0));
+			driver.manage().window().setSize(new org.openqa.selenium.Dimension(1, 1));
+
+			String[] cmdarray = { "webdrivers/HideNSeek.exe", "0", "data:," };
+			Runtime.getRuntime().exec(cmdarray);
+
+			if (cookies == null) {
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
+
+				// Enter userd id
+				WebElement element = driver.findElement(By.name("Email"));
+				element.sendKeys("test@test.com");
+
+				// wait 5 secs for userid to be entered
+				// driver.manage().timeouts().implicitlyWait(5,
+				// TimeUnit.SECONDS);
+
+				// Enter Password
+				WebElement element1 = driver.findElement(By.name("Password"));
+				element1.sendKeys("password");
+
+				// Submit button
+				element.submit();
+
+				cookies = driver.manage().getCookies();
+			} else {
+
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
+
+				for (Cookie cookie : cookies) {
+					driver.manage().addCookie(cookie);
+				}
+				driver.get("http://templex.cnetcontent.com/Home/Parser");
+
+			}
+			try {
+
+				sb.append("<html>");
+				sb.append(
+						"<head><style> div.centered {text-align: center;} div.centered table { border-collapse: collapse; margin: 0 auto;  background-color: white; padding:5px;} tr {border-bottom: 1px solid #dddddd; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; border-bottom: none; } td { text-align: left; border-right: 1px solid #dddddd;} td.red { border-right: 1px solid #E03134; } td.cntr {text-align: center;} body {font-family: Segoe UI; font-size:9px; } </style></head>");
+				sb.append("<body>");
+				sb.append("<div class='centered'>");
+				sb.append("<table>");
+				sb.append("<tbody>");
+				sb.append("<tr class='header'>");
+				sb.append("<td>SKU</td>");
+				sb.append("<td>Expression Result (Parameters: " + parametersText + ")</td>");
+				sb.append("</tr>");
+
+				String oldProcessingLabelText = LoadingPanel.getLabel().getText();
+				for (int i = 0; i < skuList.length; i++) {
+
+					LoadingPanel.getLabel()
+							.setText(oldProcessingLabelText.concat(" (" + (i + 1) + "/" + skuList.length + ")"));
+					driver.get("http://templex.cnetcontent.com/Home/Parser");
+					String[] expressionResult = getExpressionResultInfoByChromeForSkuList(driver, expressionText,
+							parametersText, skuList[i]);
+
+					String expressionRes = expressionResult[0];
+					String expressionStatus = expressionResult[1];
+					sb.append("<tr style='font-family: Consolas;'>");
+					sb.append("<td>");
+					sb.append(skuList[i]);
+					sb.append("</td>");
+					sb.append("<td>");
+					if (expressionStatus != null && expressionStatus.equals("form-group has-success")) {
+						sb.append(escapeHtml(expressionRes).replaceAll("\\n", "<br />"));
+					} else if (expressionStatus != null && expressionStatus.equals("form-group has-error")) {
+						sb.append("<font color='red'>");
+						sb.append(escapeHtml(expressionRes).replaceAll("\\n", "<br />"));
+						sb.append("</font>");
+					} else {
+						sb.append("<font color='red'>");
+						sb.append("Something goes wrong. Report it.");
+						sb.append("</font>");
+					}
+					sb.append("</td>");
+
+				}
+
+				sb.append("<tr class='header'>");
+				sb.append("<td class='red'>&nbsp;</td>");
+				sb.append("<td class='red'>&nbsp;</td>");
+				sb.append("</tr>");
+				sb.append("</tbody>");
+				sb.append("</table>");
+				sb.append("</div>");
+				sb.append("</body>");
+				sb.append("</html>");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			} finally {
+				driver.quit();
+			}
+
+			Runtime.getRuntime().exec("webdrivers/HideNSeek.exe 1 \"" + "Google Chrome" + "\"");
+
+			logger.info("Finish parsing expression for SKU list");
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		long elapsedTime = System.nanoTime() - start;
+		logger.info("Elapsed time to parse: " + elapsedTime + " ns (~ "
+				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
+
+		return sb.toString();
+	}
+
+	private static String[] getExpressionResultInfoByChromeForSkuList(WebDriver driver, String exprText,
+			String paramText, String skuIdText) {
+
+		String expressionResult = null;
+		String expressionStatus = null;
+
+		try {
+
+			// process expression
+			evaluateExpressionWithJavascript(driver, exprText, paramText, skuIdText);
+
+			// wait for loading to disappear
+			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			try {
+				WebElement myDynamicElement = (new WebDriverWait(driver, 3))
+						.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
+			waitForElToBeRemove(driver, By.id("loading"));
+
+			new WebDriverWait(driver, DEFAULT_TIMEOUT).until(new Predicate<WebDriver>() {
+				public boolean apply(WebDriver driver) {
+					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+				}
+
+			});
+
+			// get results
+			expressionResult = driver.findElement(By.name("result")).getAttribute("value");
+			expressionStatus = driver.findElement(By.name("result")).findElement(By.xpath(".."))
+					.findElement(By.xpath("..")).getAttribute("class");
+
+			logger.info("Expression status: " + expressionStatus);
+			logger.info("Expression result: " + expressionResult);
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
 		return new String[] { expressionResult, expressionStatus };
 	}
 
@@ -272,10 +446,12 @@ public class TParser {
 
 			// must escape new lines and single quote for correct work of JS
 			expressionText = expressionText.replaceAll("\n", "\\\\n").replaceAll("\'", "\\\\'");
+			parametersText = parametersText.replaceAll("\n", "\\\\n").replaceAll("\'", "\\\\'");
+			skuIdText = skuIdText.replaceAll("\n", "\\\\n").replaceAll("\'", "\\\\'");
 
-			((JavascriptExecutor) driver)
-					.executeScript("$.connection.hub.start().done(function parse(){hub.server.parseExpression('"
-							+ expressionText + "','" + parametersText + "',++hub.lastServedRequest,'" + skuIdText + "');});");
+			((JavascriptExecutor) driver).executeScript(
+					"$.connection.hub.start().done(function parse(){hub.server.parseExpression('" + expressionText
+							+ "','" + parametersText + "',++hub.lastServedRequest,'" + skuIdText + "');});");
 		}
 
 	}
@@ -291,6 +467,34 @@ public class TParser {
 		parameters.clear();
 		parameters.sendKeys(parametersText);
 
+	}
+
+	private static String escapeHtml(String input) {
+		StringBuilder escapedText = new StringBuilder();
+		boolean isChanged = false;
+		
+		final String[][] basicEscape = { { "\"", "&quot;" }, // " - double-quote
+				{ "&", "&amp;" }, // & - ampersand
+				{ "<", "&lt;" }, // < - less-than
+				{ ">", "&gt;" } }; // > - greater-than
+		
+		for (int i = 0; i < input.length(); i++) {
+			isChanged = false;
+			for (int j = 0; j < basicEscape.length; j++) {
+				System.out.println("compare " + input.charAt(0) + " with " + basicEscape[j][0]);
+				if (input.charAt(i) == basicEscape[j][0].charAt(0)) {
+					escapedText.append(basicEscape[j][1]);
+					isChanged = true;
+				}
+
+			}
+
+			if (!isChanged) {
+				escapedText.append(input.charAt(i));
+			}
+		}
+
+		return escapedText.toString();
 	}
 
 }

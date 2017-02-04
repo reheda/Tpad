@@ -435,6 +435,18 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		rightPanel.add(lblParameters);
 		rightPanel.add(spParameters);
+		JButton generateParams = new JButton("Generate...");
+		generateParams.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String newParams = new ParameterGeneratorDialog().generateParameters(rightPanel);
+				if (newParams!=null){
+					taParameters.setText(newParams);
+				}
+			}
+		});
+		rightPanel.add(generateParams);
 		rightPanel.add(new JLabel(" "));
 
 		rightPanel.add(lblSKU);
@@ -760,6 +772,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(expressionParseSkuList)) {
+			logger.info("Open ParseSkuList window");
+			LoadingPanel.doProcess("parse-sku-list", npd);
+		}
+		////////////////////////////////////
 		else {
 			logger.info("This " + cmdText + " command is yet to be implemented");
 			statusBar.setText("This " + cmdText + " command is yet to be implemented");
@@ -985,6 +1002,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		createMenuItem(expressionCheck, KeyEvent.VK_C, expressionMenu, KeyEvent.VK_C, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(expressionParse, KeyEvent.VK_P, expressionMenu, KeyEvent.VK_P, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(expressionParseSkuList, KeyEvent.VK_S, expressionMenu, this);
 
 		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
 		helpMenu.addSeparator();

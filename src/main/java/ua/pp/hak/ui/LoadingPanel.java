@@ -23,6 +23,12 @@ import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.compiler.TParser;
 
 public class LoadingPanel {
+	private static JLabel label;
+	
+	public static JLabel getLabel() {
+		return label;
+	}
+
 	public static void doProcess(String processToDo, Notepad npd) {
 		
 		
@@ -36,7 +42,7 @@ public class LoadingPanel {
 		frame.getLayeredPane().add(popup);
 		
 		String prorcessToDoCapitalized = processToDo.substring(0, 1).toUpperCase() + processToDo.substring(1);
-		JLabel label = new JLabel("[" + prorcessToDoCapitalized + "] Processing...");
+		label = new JLabel("[" + prorcessToDoCapitalized + "] Processing...");
 		popup.add(label, BorderLayout.NORTH);
 		JProgressBar pb = new JProgressBar();
 		popup.add(pb, BorderLayout.CENTER);
@@ -62,6 +68,8 @@ public class LoadingPanel {
 				publish(processToDo);
 				if (processToDo.equals("parse")) {
 					TParser.parse(npd);
+				}else if (processToDo.equals("parse-sku-list")){
+					new ParseSkuListDialog().show(npd);
 				} else if (processToDo.equals("check")) {
 					TChecker.check(npd);
 				} else if (processToDo.equals("tps")){

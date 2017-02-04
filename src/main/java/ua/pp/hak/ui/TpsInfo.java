@@ -81,7 +81,7 @@ public class TpsInfo implements Constants, MenuConstants {
 		main.add(buttons);
 		main.add(parameters);
 
-		int result = JOptionPane.showConfirmDialog(null, main, helpTpsInfo + ". Enter your test parameters",
+		int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, helpTpsInfo + ". Enter your test parameters",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
