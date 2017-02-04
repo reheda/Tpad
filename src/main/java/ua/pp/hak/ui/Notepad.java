@@ -1002,7 +1002,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		createMenuItem(expressionCheck, KeyEvent.VK_C, expressionMenu, KeyEvent.VK_C, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(expressionParse, KeyEvent.VK_P, expressionMenu, KeyEvent.VK_P, KeyEvent.SHIFT_MASK, this);
-		createMenuItem(expressionParseSkuList, KeyEvent.VK_S, expressionMenu, this);
+		createMenuItem(expressionParseSkuList, KeyEvent.VK_S, expressionMenu, KeyEvent.VK_P,
+				KeyEvent.SHIFT_MASK + KeyEvent.ALT_MASK, this);
 
 		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
 		helpMenu.addSeparator();

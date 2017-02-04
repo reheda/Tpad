@@ -39,10 +39,6 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 	private JTextField tfLocale, tfResultSeparator, tfAccTree;
 	private String defaultText = "AccTree=-1";
 
-	public static void main(String[] args) {
-		new ParameterGeneratorDialog().generateParameters(null);
-	}
-
 	public String generateParameters(JComponent parent) {
 		JPanel main = new JPanel();
 		main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
@@ -95,6 +91,113 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		paramPanel.add(createParametersToSelect());
 
 		return paramPanel;
+	}
+
+	private JPanel createParametersToSelect() {
+		String[] valueStrings = { "true", "false" };
+
+		evaluate = createCheckBox("Evaluate");
+		locale = createCheckBox("Locale");
+		verbatim = createCheckBox("Verbatim");
+		legacyValues = createCheckBox("LegacyValues");
+		resultSeparator = createCheckBox("ResultSeparator");
+		accTree = new JLabel("AccTree");
+
+		cbEvaluate = createComboBox(valueStrings);
+		cbVerbatim = createComboBox(valueStrings);
+		cbLegacyValues = createComboBox(valueStrings);
+		tfLocale = new JTextField("en-US");
+		tfLocale.setEnabled(false);
+		tfLocale.addKeyListener(this);
+		tfResultSeparator = new JTextField(";");
+		tfResultSeparator.setEnabled(false);
+		tfResultSeparator.addKeyListener(this);
+		tfAccTree = new JTextField("-1");
+		tfAccTree.addKeyListener(this);
+
+		JPanel parametersToSelect = new JPanel(new SpringLayout());
+
+		parametersToSelect.add(accTree);
+		parametersToSelect.add(tfAccTree);
+		parametersToSelect.add(new JLabel("   "));
+		parametersToSelect.add(evaluate);
+		parametersToSelect.add(cbEvaluate);
+
+		parametersToSelect.add(locale);
+		parametersToSelect.add(tfLocale);
+		parametersToSelect.add(new JLabel("   "));
+		parametersToSelect.add(verbatim);
+		parametersToSelect.add(cbVerbatim);
+
+		parametersToSelect.add(resultSeparator);
+		parametersToSelect.add(tfResultSeparator);
+		parametersToSelect.add(new JLabel("   "));
+		parametersToSelect.add(legacyValues);
+		parametersToSelect.add(cbLegacyValues);
+
+		parametersToSelect.setAlignmentX(Component.LEFT_ALIGNMENT);
+		SpringUtilities.makeCompactGrid(parametersToSelect, 3, 5, 5, 5, 3, 3);
+		return parametersToSelect;
+	}
+
+	private JComboBox<String> createComboBox(String[] items) {
+		JComboBox<String> comboBox = new JComboBox<>(items);
+		comboBox.setEnabled(false);
+		comboBox.addActionListener(this);
+		return comboBox;
+	}
+
+	private JCheckBox createCheckBox(String text) {
+		JCheckBox cb = new JCheckBox(text);
+		cb.addActionListener(this);
+		return cb;
+	}
+
+	private String removeParameters(String parameterName) {
+		String oldParamText = taParameters.getText();
+		String newParamText = oldParamText;
+
+		// check with comma
+		if (oldParamText.matches(".*,.*?" + parameterName + ".*=.*")) {
+			newParamText = newParamText.replaceAll(",\\s*?\\b" + parameterName + "\\b.*?=.*?(,|$)", ",");
+
+			// check without comma
+		} else if (oldParamText.matches(".*?" + parameterName + ".*=.*")) {
+			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", "");
+		}
+
+		if (!newParamText.trim().isEmpty() && newParamText.trim().charAt(newParamText.trim().length() - 1) == ',') {
+			newParamText = newParamText.substring(0, newParamText.lastIndexOf(','));
+		}
+
+		if (newParamText.startsWith(" ")) {
+			newParamText = newParamText.replaceAll("^\\s*", "");
+		}
+		return newParamText;
+	}
+
+	private String addParameters(String parameterName, String parameterValue) {
+		String oldParamText = taParameters.getText();
+		String newParamText = oldParamText;
+		String txtToAdd = parameterName.concat("=").concat(parameterValue).concat(",");
+
+		if (oldParamText.matches(".*" + parameterName + ".*=.*")) {
+			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", txtToAdd);
+		} else {
+			String trimmerdOldParamText = oldParamText.trim();
+			if (!trimmerdOldParamText.isEmpty()
+					&& trimmerdOldParamText.charAt(trimmerdOldParamText.length() - 1) != ',') {
+				txtToAdd = ", ".concat(txtToAdd);
+			} else if (!trimmerdOldParamText.isEmpty()) {
+				txtToAdd = " ".concat(txtToAdd);
+			}
+			newParamText = newParamText.concat(txtToAdd);
+		}
+
+		if (!newParamText.trim().isEmpty() && newParamText.trim().charAt(newParamText.trim().length() - 1) == ',') {
+			newParamText = newParamText.substring(0, newParamText.lastIndexOf(','));
+		}
+		return newParamText;
 	}
 
 	private void checkParameters() {
@@ -168,53 +271,6 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		}
 	}
 
-	private String removeParameters(String parameterName) {
-		String oldParamText = taParameters.getText();
-		String newParamText = oldParamText;
-
-		// check with comma
-		if (oldParamText.matches(".*,.*?" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll(",\\s*?\\b" + parameterName + "\\b.*?=.*?(,|$)", ",");
-
-			// check without comma
-		} else if (oldParamText.matches(".*?" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", "");
-		}
-
-		if (!newParamText.trim().isEmpty() && newParamText.trim().charAt(newParamText.trim().length() - 1) == ',') {
-			newParamText = newParamText.substring(0, newParamText.lastIndexOf(','));
-		}
-
-		if (newParamText.startsWith(" ")) {
-			newParamText = newParamText.replaceAll("^\\s*", "");
-		}
-		return newParamText;
-	}
-
-	private String addParameters(String parameterName, String parameterValue) {
-		String oldParamText = taParameters.getText();
-		String newParamText = oldParamText;
-		String txtToAdd = parameterName.concat("=").concat(parameterValue).concat(",");
-
-		if (oldParamText.matches(".*" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", txtToAdd);
-		} else {
-			String trimmerdOldParamText = oldParamText.trim();
-			if (!trimmerdOldParamText.isEmpty()
-					&& trimmerdOldParamText.charAt(trimmerdOldParamText.length() - 1) != ',') {
-				txtToAdd = ", ".concat(txtToAdd);
-			} else if (!trimmerdOldParamText.isEmpty()) {
-				txtToAdd = " ".concat(txtToAdd);
-			}
-			newParamText = newParamText.concat(txtToAdd);
-		}
-
-		if (!newParamText.trim().isEmpty() && newParamText.trim().charAt(newParamText.trim().length() - 1) == ',') {
-			newParamText = newParamText.substring(0, newParamText.lastIndexOf(','));
-		}
-		return newParamText;
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		// String cmdText = ev.getActionCommand();
@@ -285,63 +341,4 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 
 	}
 
-	private JPanel createParametersToSelect() {
-		String[] valueStrings = { "true", "false" };
-
-		evaluate = createCheckBox("Evaluate");
-		locale = createCheckBox("Locale");
-		verbatim = createCheckBox("Verbatim");
-		legacyValues = createCheckBox("LegacyValues");
-		resultSeparator = createCheckBox("ResultSeparator");
-		accTree = new JLabel("AccTree");
-
-		cbEvaluate = createComboBox(valueStrings);
-		cbVerbatim = createComboBox(valueStrings);
-		cbLegacyValues = createComboBox(valueStrings);
-		tfLocale = new JTextField("en-US");
-		tfLocale.setEnabled(false);
-		tfLocale.addKeyListener(this);
-		tfResultSeparator = new JTextField();
-		tfResultSeparator.setEnabled(false);
-		tfResultSeparator.addKeyListener(this);
-		tfAccTree = new JTextField("-1");
-		tfAccTree.addKeyListener(this);
-
-		JPanel parametersToSelect = new JPanel(new SpringLayout());
-
-		parametersToSelect.add(accTree);
-		parametersToSelect.add(tfAccTree);
-		parametersToSelect.add(new JLabel("   "));
-		parametersToSelect.add(evaluate);
-		parametersToSelect.add(cbEvaluate);
-
-		parametersToSelect.add(locale);
-		parametersToSelect.add(tfLocale);
-		parametersToSelect.add(new JLabel("   "));
-		parametersToSelect.add(verbatim);
-		parametersToSelect.add(cbVerbatim);
-
-		parametersToSelect.add(resultSeparator);
-		parametersToSelect.add(tfResultSeparator);
-		parametersToSelect.add(new JLabel("   "));
-		parametersToSelect.add(legacyValues);
-		parametersToSelect.add(cbLegacyValues);
-
-		parametersToSelect.setAlignmentX(Component.LEFT_ALIGNMENT);
-		SpringUtilities.makeCompactGrid(parametersToSelect, 3, 5, 5, 5, 3, 3);
-		return parametersToSelect;
-	}
-
-	private JComboBox<String> createComboBox(String[] items) {
-		JComboBox<String> comboBox = new JComboBox<>(items);
-		comboBox.setEnabled(false);
-		comboBox.addActionListener(this);
-		return comboBox;
-	}
-
-	private JCheckBox createCheckBox(String text) {
-		JCheckBox cb = new JCheckBox(text);
-		cb.addActionListener(this);
-		return cb;
-	}
 }

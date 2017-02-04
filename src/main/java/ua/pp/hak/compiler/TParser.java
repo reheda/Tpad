@@ -481,7 +481,6 @@ public class TParser {
 		for (int i = 0; i < input.length(); i++) {
 			isChanged = false;
 			for (int j = 0; j < basicEscape.length; j++) {
-				System.out.println("compare " + input.charAt(0) + " with " + basicEscape[j][0]);
 				if (input.charAt(i) == basicEscape[j][0].charAt(0)) {
 					escapedText.append(basicEscape[j][1]);
 					isChanged = true;
