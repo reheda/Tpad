@@ -43,12 +43,15 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 
 			main.setPreferredSize(new Dimension(400, 500));
 
+			// take expression before opening the window
+			String expressionText = npd.getExprTextArea().getText();
+			
 			int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, "Parse Sku list", JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.PLAIN_MESSAGE);
 
 			if (result == JOptionPane.OK_OPTION) {
 				//"(?m)^[ \t]*\r?\n" - regex to remove empty lines
-				String text = TParser.parseForSkuList(npd, taParameters.getText(),
+				String text = TParser.parseForSkuList(expressionText, taParameters.getText(),
 						taSkuList.getText().replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"));
 
 				JTextPane textPane = new JTextPane();

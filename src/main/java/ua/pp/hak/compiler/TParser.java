@@ -154,8 +154,12 @@ public class TParser {
 			// wait for loading to disappear
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
-			WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
-					.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
+			try {
+				WebElement myDynamicElement = (new WebDriverWait(driver, DEFAULT_TIMEOUT))
+						.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
 			waitForElToBeRemove(driver, By.id("loading"));
 
 			new WebDriverWait(driver, DEFAULT_TIMEOUT).until(new Predicate<WebDriver>() {
@@ -188,15 +192,12 @@ public class TParser {
 		return new String[] { expressionResult, expressionStatus };
 	}
 
-	public static String parseForSkuList(Notepad npd, String parametersText, String[] skuList) {
+	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList) {
 		long start = System.nanoTime();
 
 		StringBuilder sb = new StringBuilder();
 		try {
 			logger.info("Parsing expression for SKU list...");
-
-			RSyntaxTextArea taExpr = npd.getExprTextArea();
-			String expressionText = taExpr.getText();
 
 			// kill process if needed
 			String processName = "chromedriver.exe";
@@ -472,12 +473,12 @@ public class TParser {
 	private static String escapeHtml(String input) {
 		StringBuilder escapedText = new StringBuilder();
 		boolean isChanged = false;
-		
+
 		final String[][] basicEscape = { { "\"", "&quot;" }, // " - double-quote
 				{ "&", "&amp;" }, // & - ampersand
 				{ "<", "&lt;" }, // < - less-than
 				{ ">", "&gt;" } }; // > - greater-than
-		
+
 		for (int i = 0; i < input.length(); i++) {
 			isChanged = false;
 			for (int j = 0; j < basicEscape.length; j++) {

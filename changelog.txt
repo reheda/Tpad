@@ -1,9 +1,13 @@
+<b>v 1.0.9</b><br /> 
+- added handling quick result issue of wrong expression for <code>Parse</code> function<br />
+- changed way of getting expression for <code>Parse for SKU list...</code> function
+---
 <b>v 1.0.8</b><br /> 
 - fixed issue with Coalesce function in Coalesce function. E.g. <code>COALESCE(A[5691].Values.FlattenWithAnd()_COALESCE(A[5691].Values.Skip(1).First(), A[5691].Values.First()), A[5691].Values.Take(2).Flatten(";"));</code> (thanks to Oleg for identifying)<br />
 - added attributes: <code>10682, 10685, 10686, 10687, 10688, 10689</code><br />
 - added <code>Expression</code> menu, keyboard shortcuts for <code>Check</code> and <code>Parse</code> functions<br />
 - added <code>Parse for SKU list...</code> function (thanks to Alex for the idea)<br />
-- added <code>Parameter Generator</code> button to help creating parameters<br />
+- added <code>Generate...</code> button to help creating parameters<br />
 - improved <code>Parse</code> function performance speed (~ 3 times faster on huge expressions)
 ---
 <b>v 1.0.7</b><br /> 
