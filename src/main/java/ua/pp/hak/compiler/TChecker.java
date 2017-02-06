@@ -1273,6 +1273,24 @@ public class TChecker {
 				}
 			}
 			
+			{
+				int point = getLastBracketIndex(condition, condition.lastIndexOf(COALESCE_TEXT));
+				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
+						+"COALESCE(\"\")" + condition.substring(point + 1);
+				if (!allExceptFunc.trim().isEmpty()) {
+					String[] values = allExceptFunc.split(" ?_ ?");
+					for (int i = 0; i < values.length; i++) {
+						error = checkValue(values[i]);
+						if (error != null) {
+							errors.append(error);
+							return errors.toString();
+						}
+
+					}
+				}
+
+			}
+			
 			int startIndex = 0;
 			for (int j = 0; j < coalesceCounter; j++) {
 				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));

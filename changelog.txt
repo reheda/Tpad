@@ -1,4 +1,5 @@
 <b>v 1.0.9</b><br /> 
+- fixed issue with COALESCE surrounded by wrong functions. E.g. <code>aaaCOALESCE(2)bbb</code><br />
 - added handling quick result issue of wrong expression for <code>Parse</code> function<br />
 - changed way of getting expression for <code>Parse for SKU list...</code> function
 ---
