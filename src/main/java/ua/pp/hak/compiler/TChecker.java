@@ -1274,7 +1274,7 @@ public class TChecker {
 			}
 			
 			{
-				int point = getLastBracketIndex(condition, condition.lastIndexOf(COALESCE_TEXT));
+				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
 				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
 						+"COALESCE(\"\")" + condition.substring(point + 1);
 				if (!allExceptFunc.trim().isEmpty()) {
