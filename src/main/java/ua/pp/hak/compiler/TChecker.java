@@ -1273,25 +1273,10 @@ public class TChecker {
 				}
 			}
 			
-			{
-				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT));
-				String allExceptFunc = condition.substring(0, condition.indexOf(COALESCE_TEXT))
-						+"COALESCE(\"\")" + condition.substring(point + 1);
-				if (!allExceptFunc.trim().isEmpty()) {
-					String[] values = allExceptFunc.split(" ?_ ?");
-					for (int i = 0; i < values.length; i++) {
-						error = checkValue(values[i]);
-						if (error != null) {
-							errors.append(error);
-							return errors.toString();
-						}
-
-					}
-				}
-
-			}
-			
 			int startIndex = 0;
+			StringBuilder sbAllExceptFunc = new StringBuilder();
+			//all before coalesce
+			sbAllExceptFunc.append( condition.substring(0, condition.indexOf(COALESCE_TEXT)));
 			for (int j = 0; j < coalesceCounter; j++) {
 				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
 
@@ -1304,6 +1289,32 @@ public class TChecker {
 				}
 
 				startIndex = point;
+				
+				//insert COALESCE("") without parameters
+				sbAllExceptFunc.append("COALESCE(\"\")");
+				
+				//all after coalesce till the next coalesce or end of the string
+				if (j+1 < coalesceCounter){
+					sbAllExceptFunc.append(condition.substring(point+1,condition.indexOf(COALESCE_TEXT, startIndex)));						
+				} else {
+					if ( point +1< condition.length()){
+						sbAllExceptFunc.append(condition.substring(point+1));							
+					}
+				}
+			}
+			
+			//check all expect coalesce
+			String allExceptFunc = sbAllExceptFunc.toString();
+			if (!allExceptFunc.trim().isEmpty()) {
+				String[] values = allExceptFunc.split(" ?_ ?");
+				for (int i = 0; i < values.length; i++) {
+					error = checkValue(values[i]);
+					if (error != null) {
+						errors.append(error);
+						return errors.toString();
+					}
+
+				}
 			}
 
 		} else if (condition.contains(IN_TEXT)) {
