@@ -48,6 +48,7 @@ public interface MenuConstants extends Constants{
 	final String expressionCheck = "Check";
 	final String expressionParse = "Parse";
 	final String expressionParseSkuList = "Parse for SKU List...";
+	final String expressionAttrNameIntoComment = "Insert attr names...";
 	
 	final String helpHome = applicationName + " Home Page";
 	final String helpKeyboardShortcuts = "Keyboard Shortcuts";

@@ -777,6 +777,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			LoadingPanel.doProcess("parse-sku-list", npd);
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(expressionAttrNameIntoComment)) {
+			logger.info("Open AttrNameIntoComment window");
+			AttributeNameIntoCommentDialog.show(npd);
+		}
+		////////////////////////////////////
 		else {
 			logger.info("This " + cmdText + " command is yet to be implemented");
 			statusBar.setText("This " + cmdText + " command is yet to be implemented");
@@ -1004,6 +1009,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(expressionParse, KeyEvent.VK_P, expressionMenu, KeyEvent.VK_P, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(expressionParseSkuList, KeyEvent.VK_S, expressionMenu, KeyEvent.VK_P,
 				KeyEvent.SHIFT_MASK + KeyEvent.ALT_MASK, this);
+		expressionMenu.addSeparator();
+		createMenuItem(expressionAttrNameIntoComment, KeyEvent.VK_A, expressionMenu, this);
 
 		createMenuItem(helpHome, KeyEvent.VK_T, helpMenu, this);
 		helpMenu.addSeparator();
