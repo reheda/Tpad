@@ -178,7 +178,10 @@ public class FindDialog extends JPanel implements ActionListener {
 		String s1 = ta.getText();
 		String s2 = findWhat.getText();
 
-		lastIndex = ta.getCaretPosition();
+		if (lastIndex <= 0) {
+			lastIndex = ta.getCaretPosition();
+
+		}
 
 		int selStart = ta.getSelectionStart();
 		int selEnd = ta.getSelectionEnd();
@@ -191,6 +194,7 @@ public class FindDialog extends JPanel implements ActionListener {
 			 * using caretPosition.*** else lastIndex=lastIndex-s2.length();
 			 ******/
 
+			lastIndex = lastIndex > 0 ? lastIndex - s2.length() : lastIndex;
 			if (!matchCase.isSelected())
 				lastIndex = s1.toUpperCase().lastIndexOf(s2.toUpperCase(), lastIndex);
 			else
@@ -198,6 +202,8 @@ public class FindDialog extends JPanel implements ActionListener {
 		} else {
 			if (selStart != selEnd)
 				lastIndex = selStart + 1;
+
+			lastIndex = lastIndex > 0 ? lastIndex + s2.length() : lastIndex;
 			if (!matchCase.isSelected())
 				lastIndex = s1.toUpperCase().indexOf(s2.toUpperCase(), lastIndex);
 			else
