@@ -27,6 +27,8 @@ import javax.swing.text.Highlighter.HighlightPainter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
 
 import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.ui.Notepad;
@@ -134,39 +136,49 @@ public class Listeners {
 			}
 			if (selectedCharsNumber == 0) {
 				statusBar.setText("Line " + (lineNumber + 1) + ", Column " + (column + 1));
-				if (highlighter != null) {
-					// taExpr.getHighlighter().removeAllHighlights();
-					// highlighter.removeAllHighlights();
-					for (Object tag : highlighterTags) {
-						highlighter.removeHighlight(tag);
-					}
-					highlighterTags.clear();
-					highlighter = null;
-					// painter = new LinePainter(ta, new
-					// Color(255,255,210)); // restore line painter
-				} else {
-				}
+				SearchContext context = new SearchContext();
+				context.setMarkAll(true);
+				context.setMatchCase(false);
+				context.setWholeWord(true);
+				SearchEngine.markAll(taExpr, context);
+//				if (highlighter != null) {
+//					// taExpr.getHighlighter().removeAllHighlights();
+//					// highlighter.removeAllHighlights();
+//					for (Object tag : highlighterTags) {
+//						highlighter.removeHighlight(tag);
+//					}
+//					highlighterTags.clear();
+//					highlighter = null;
+//					// painter = new LinePainter(ta, new
+//					// Color(255,255,210)); // restore line painter
+//				} else {
+//				}
 			} else {
+				SearchContext context = new SearchContext(selectedText);
+				context.setMarkAll(true);
+				context.setMatchCase(false);
+				context.setWholeWord(true);
+				SearchEngine.markAll(taExpr, context);
 				// set highlighter
-				if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
-					try {
-						highlighter = taExpr.getHighlighter();
-						HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
-								new Color(191, 255, 178)); // light green
-						int p0 = 0, p1 = 0;
-						do {
-							p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
-							p1 = p0 + selectedText.length();
-
-							if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
-									&& p0 != selectionStartPos) {
-								highlighterTags.add(highlighter.addHighlight(p0, p1, wordpainter));
-							}
-						} while (p0 > -1);
-					} catch (Exception exc) {
-						exc.printStackTrace();
-					}
-				}
+//				if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
+//					try {
+//						highlighter = taExpr.getHighlighter();
+//						HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
+//								new Color(191, 255, 178)); // light green
+//						int p0 = 0, p1 = 0;
+//						do {
+//							p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
+//							p1 = p0 + selectedText.length();
+//
+//							if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
+//									&& p0 != selectionStartPos) {
+//								highlighterTags.add(highlighter.addHighlight(p0, p1, wordpainter));
+//							}
+//						} while (p0 > -1);
+//					} catch (Exception exc) {
+//						exc.printStackTrace();
+//					}
+//				}
 
 				// set status
 				if (selectedLinesNumber == 0)

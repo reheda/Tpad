@@ -247,7 +247,10 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		fileHandler = new FileOperation(this);
 		settingsHandler = new SettingsOperation(this);
-
+		
+		//set mark occurence color (light green)
+		taExpr.setMarkAllHighlightColor(new Color(191, 255, 178)); 
+		
 		// add TextArea listeners. Should place at the end of the class due to using buttons and items.
 		taExpr.addCaretListener(new Listeners.Caret(this));
 		taExpr.addMouseWheelListener(new Listeners.MouseWheel(this));
@@ -387,14 +390,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 					// set shortcut Ctrl+Shift+Y for ToLowerCase function
 					im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, defaultModifier | shift),
 							RTextAreaEditorKit.rtaLowerSelectionCaseAction);
-				} else if (actionName.equals(RTextAreaEditorKit.rtaNextOccurrenceAction)) {
-					// change action of next occurrence shortcut (Ctrl+K)
-					am.put(RTextAreaEditorKit.rtaNextOccurrenceAction,
-							new Actions.NextOccurrenceAction(RTextAreaEditorKit.rtaNextOccurrenceAction));
-				} else if (actionName.equals(RTextAreaEditorKit.rtaPrevOccurrenceAction)) {
-					// change action of prev occurrence shortcut (Ctrl+Shift+K)
-					am.put(RTextAreaEditorKit.rtaPrevOccurrenceAction,
-							new Actions.PreviousOccurrenceAction(RTextAreaEditorKit.rtaPrevOccurrenceAction));
 				}
 			}
 

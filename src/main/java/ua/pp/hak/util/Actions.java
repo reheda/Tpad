@@ -107,86 +107,6 @@ public class Actions {
 	}
 
 	/**
-	 * Selects the next occurrence of the text last selected.
-	 */
-	@SuppressWarnings("serial")
-	public static class NextOccurrenceAction extends RecordableTextAction {
-
-		public NextOccurrenceAction(String name) {
-			super(name);
-		}
-
-		@Override
-		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
-			String selectedText = textArea.getSelectedText();
-			if (selectedText == null || selectedText.length() == 0) {
-				selectedText = RTextArea.getSelectedOccurrenceText();
-				if (selectedText == null || selectedText.length() == 0) {
-					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-					return;
-				}
-			}
-			SearchContext context = new SearchContext(selectedText);
-
-			// VR edition. Was: if (!textArea.getMarkAllOnOccurrenceSearches())
-			if (textArea.getMarkAllOnOccurrenceSearches()) {
-				context.setMarkAll(false);
-			}
-			if (!SearchEngine.find(textArea, context).wasFound()) {
-				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-			}
-			RTextArea.setSelectedOccurrenceText(selectedText);
-		}
-
-		@Override
-		public final String getMacroID() {
-			return getName();
-		}
-
-	}
-
-	/**
-	 * Select the previous occurrence of the text last selected.
-	 */
-	@SuppressWarnings("serial")
-	public static class PreviousOccurrenceAction extends RecordableTextAction {
-
-		public PreviousOccurrenceAction(String name) {
-			super(name);
-		}
-
-		@Override
-		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
-			String selectedText = textArea.getSelectedText();
-			if (selectedText == null || selectedText.length() == 0) {
-				selectedText = RTextArea.getSelectedOccurrenceText();
-				if (selectedText == null || selectedText.length() == 0) {
-					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-					return;
-				}
-			}
-			SearchContext context = new SearchContext(selectedText);
-
-			// VR edition. Was: if (!textArea.getMarkAllOnOccurrenceSearches())
-			// {
-			if (textArea.getMarkAllOnOccurrenceSearches()) {
-				context.setMarkAll(false);
-			}
-			context.setSearchForward(false);
-			if (!SearchEngine.find(textArea, context).wasFound()) {
-				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-			}
-			RTextArea.setSelectedOccurrenceText(selectedText);
-		}
-
-		@Override
-		public final String getMacroID() {
-			return getName();
-		}
-
-	}
-
-	/**
 	 * Action that change a size of the font.
 	 */
 	@SuppressWarnings("serial")
@@ -203,10 +123,10 @@ public class Actions {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Font tempFont = taExpr.getFont();
-			float newFontSize = tempFont.getSize2D() + delta; 
-			
-			if (newFontSize > 0){
-				taExpr.setFont(tempFont.deriveFont(newFontSize));				
+			float newFontSize = tempFont.getSize2D() + delta;
+
+			if (newFontSize > 0) {
+				taExpr.setFont(tempFont.deriveFont(newFontSize));
 			}
 		}
 
