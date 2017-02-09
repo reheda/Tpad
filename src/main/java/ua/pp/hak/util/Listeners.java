@@ -1,6 +1,5 @@
 package ua.pp.hak.util;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Point;
@@ -9,26 +8,27 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import javax.swing.text.Highlighter.HighlightPainter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.rsta.ui.search.SearchEvent;
+import org.fife.rsta.ui.search.SearchListener;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
+import org.fife.ui.rtextarea.SearchResult;
 
 import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.ui.Notepad;
@@ -89,8 +89,8 @@ public class Listeners {
 	public static class Caret implements CaretListener {
 		private RSyntaxTextArea taExpr;
 		private JLabel statusBar;
-		private Highlighter highlighter;
-		private ArrayList<Object> highlighterTags = new ArrayList<>();
+//		private Highlighter highlighter;
+//		private ArrayList<Object> highlighterTags = new ArrayList<>();
 		private JButton findButton, replaceButton, cutButton, copyButton;
 		private JMenuItem findItem, gotoItem, replaceItem;
 
@@ -141,18 +141,18 @@ public class Listeners {
 				context.setMatchCase(false);
 				context.setWholeWord(true);
 				SearchEngine.markAll(taExpr, context);
-//				if (highlighter != null) {
-//					// taExpr.getHighlighter().removeAllHighlights();
-//					// highlighter.removeAllHighlights();
-//					for (Object tag : highlighterTags) {
-//						highlighter.removeHighlight(tag);
-//					}
-//					highlighterTags.clear();
-//					highlighter = null;
-//					// painter = new LinePainter(ta, new
-//					// Color(255,255,210)); // restore line painter
-//				} else {
-//				}
+				// if (highlighter != null) {
+				// // taExpr.getHighlighter().removeAllHighlights();
+				// // highlighter.removeAllHighlights();
+				// for (Object tag : highlighterTags) {
+				// highlighter.removeHighlight(tag);
+				// }
+				// highlighterTags.clear();
+				// highlighter = null;
+				// // painter = new LinePainter(ta, new
+				// // Color(255,255,210)); // restore line painter
+				// } else {
+				// }
 			} else {
 				SearchContext context = new SearchContext(selectedText);
 				context.setMarkAll(true);
@@ -160,25 +160,30 @@ public class Listeners {
 				context.setWholeWord(true);
 				SearchEngine.markAll(taExpr, context);
 				// set highlighter
-//				if (!isLetterOrDigit(text, selectionStartPos - 1) && !isLetterOrDigit(text, selectionEndPos)) {
-//					try {
-//						highlighter = taExpr.getHighlighter();
-//						HighlightPainter wordpainter = new DefaultHighlighter.DefaultHighlightPainter(
-//								new Color(191, 255, 178)); // light green
-//						int p0 = 0, p1 = 0;
-//						do {
-//							p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(), p1);
-//							p1 = p0 + selectedText.length();
-//
-//							if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) && !isLetterOrDigit(text, p1)
-//									&& p0 != selectionStartPos) {
-//								highlighterTags.add(highlighter.addHighlight(p0, p1, wordpainter));
-//							}
-//						} while (p0 > -1);
-//					} catch (Exception exc) {
-//						exc.printStackTrace();
-//					}
-//				}
+				// if (!isLetterOrDigit(text, selectionStartPos - 1) &&
+				// !isLetterOrDigit(text, selectionEndPos)) {
+				// try {
+				// highlighter = taExpr.getHighlighter();
+				// HighlightPainter wordpainter = new
+				// DefaultHighlighter.DefaultHighlightPainter(
+				// new Color(191, 255, 178)); // light green
+				// int p0 = 0, p1 = 0;
+				// do {
+				// p0 = text.toLowerCase().indexOf(selectedText.toLowerCase(),
+				// p1);
+				// p1 = p0 + selectedText.length();
+				//
+				// if (p0 > -1 && !isLetterOrDigit(text, p0 - 1) &&
+				// !isLetterOrDigit(text, p1)
+				// && p0 != selectionStartPos) {
+				// highlighterTags.add(highlighter.addHighlight(p0, p1,
+				// wordpainter));
+				// }
+				// } while (p0 > -1);
+				// } catch (Exception exc) {
+				// exc.printStackTrace();
+				// }
+				// }
 
 				// set status
 				if (selectedLinesNumber == 0)
@@ -189,12 +194,12 @@ public class Listeners {
 			}
 		}
 
-		private boolean isLetterOrDigit(String str, int index) {
-			if (index < 0 || index >= str.length())
-				return false;
-
-			return Character.isLetter(str.charAt(index)) || Character.isDigit(str.charAt(index));
-		}
+//		private boolean isLetterOrDigit(String str, int index) {
+//			if (index < 0 || index >= str.length())
+//				return false;
+//
+//			return Character.isLetter(str.charAt(index)) || Character.isDigit(str.charAt(index));
+//		}
 
 		private void buttonStatusChange() {
 
@@ -255,11 +260,11 @@ public class Listeners {
 		}
 
 	};
-	
+
 	public static class Window extends WindowAdapter {
 		FileOperation fileHandler;
 		SettingsOperation settingsHandler;
-		
+
 		public Window(Notepad npd) {
 			fileHandler = npd.getFileHandler();
 			settingsHandler = npd.getSettingsHandler();
@@ -291,4 +296,69 @@ public class Listeners {
 			}
 		}
 	};
+
+	public static class Search implements SearchListener {
+		RSyntaxTextArea taExpr;
+		JLabel statusBar;
+
+		public Search(Notepad npd) {
+			taExpr = npd.getExprTextArea();
+			statusBar = npd.getStatusBar();
+		}
+
+		/**
+		 * Listens for events from our search dialogs and actually does the
+		 * dirty work.
+		 */
+		@Override
+		public void searchEvent(SearchEvent e) {
+
+			SearchEvent.Type type = e.getType();
+			SearchContext context = e.getSearchContext();
+			SearchResult result = null;
+
+			switch (type) {
+			default: // Prevent FindBugs warning later
+			case MARK_ALL:
+				result = SearchEngine.markAll(taExpr, context);
+				break;
+			case FIND:
+				result = SearchEngine.find(taExpr, context);
+				if (!result.wasFound()) {
+					UIManager.getLookAndFeel().provideErrorFeedback(taExpr);
+				}
+				break;
+			case REPLACE:
+				result = SearchEngine.replace(taExpr, context);
+				if (!result.wasFound()) {
+					UIManager.getLookAndFeel().provideErrorFeedback(taExpr);
+				}
+				break;
+			case REPLACE_ALL:
+				result = SearchEngine.replaceAll(taExpr, context);
+				JOptionPane.showMessageDialog(null, result.getCount() + " occurrences replaced.");
+				break;
+			}
+
+			String text = null;
+			if (result.wasFound()) {
+				text = "Text found; occurrences: " + result.getMarkedCount();
+			} else if (type == SearchEvent.Type.MARK_ALL) {
+				if (result.getMarkedCount() > 0) {
+					text = "Occurrences marked: " + result.getMarkedCount();
+				} else {
+					text = "";
+				}
+			} else {
+				text = "Text not found";
+			}
+			statusBar.setText(text);
+
+		}
+
+		@Override
+		public String getSelectedText() {
+			return taExpr.getSelectedText();
+		}
+	}
 }

@@ -1,9 +1,11 @@
 <b>v 1.0.9</b><br /> 
 - fixed issue with COALESCE surrounded by wrong functions. E.g. <code>aaaCOALESCE(2)bbb</code><br />
-- fixed <code>Replace All</code> function. E.g. <code>Replace "Model" to "SKU.ModelName"<br />
+- removed <code>Find Next</code> menu item<br />
 - added handling quick result issue of wrong expression for <code>Parse</code> function<br />
 - added <code>Insert attr names</code> function to <code>Expression</code> menu (thanks to Alex for the idea)<br />
-- changed way of getting expression for <code>Parse for SKU list...</code> function
+- changed way of getting expression for <code>Parse for SKU list...</code> function<br />
+- changed <code>Find...</code> and <code>Replace...</code> functions<br />
+- refactored code
 ---
 <b>v 1.0.8</b><br /> 
 - fixed issue with Coalesce function in Coalesce function. E.g. <code>COALESCE(A[5691].Values.FlattenWithAnd()_COALESCE(A[5691].Values.Skip(1).First(), A[5691].Values.First()), A[5691].Values.Take(2).Flatten(";"));</code> (thanks to Oleg for identifying)<br />

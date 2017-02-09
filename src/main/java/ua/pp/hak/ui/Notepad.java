@@ -50,16 +50,14 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
+import org.fife.ui.rtextarea.SearchContext;
 
-import ua.pp.hak.autocomplete.AutoCompleter;
 import ua.pp.hak.autocomplete.LanguageSupportFactory;
 import ua.pp.hak.setting.SettingsOperation;
 import ua.pp.hak.update.Updater;
@@ -68,7 +66,7 @@ import ua.pp.hak.util.Actions;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Listeners;
 
-public class Notepad implements ActionListener, MenuConstants, Constants {
+public class Notepad implements ActionListener, MenuConstants, Constants{
 	final static Logger logger = LogManager.getLogger(Notepad.class);
 
 	private JFrame frame;
@@ -90,11 +88,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 	private Font font = new Font("Consolas", Font.PLAIN, 14);
 	private FileOperation fileHandler;
 	private SettingsOperation settingsHandler;
-	private FindDialog findReplaceDialog = null;
+	private FindDialogRSTA findDialog = null;
+	private ReplaceDialogRSTA replaceDialog = null;
 	private JColorChooser bcolorChooser, fcolorChooser, keywordColorChooser, commentColorChooser, stringColorChooser;
 	private JDialog backgroundDialog, foregroundDialog, keywordDialog, commentDialog, stringDialog;
-	private JMenuItem cutItem, copyItem, deleteItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem,
+	private JMenuItem cutItem, copyItem, deleteItem, findItem, replaceItem, gotoItem, selectAllItem,
 			undoItem, redoItem;
+//	private JMenuItem findNextItem;
 	private JCheckBoxMenuItem wordWrapItem;
 	private JCheckBoxMenuItem parserPanelItem;
 	private JCheckBoxMenuItem statusBarItem;
@@ -247,6 +247,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 
 		fileHandler = new FileOperation(this);
 		settingsHandler = new SettingsOperation(this);
+		
+		findDialog  = new FindDialogRSTA(frame, new Listeners.Search(this));
+		replaceDialog  = new ReplaceDialogRSTA(frame, new Listeners.Search(this));
+		// This ties the properties of the two dialogs together (match case, regex, etc.).
+		SearchContext context = findDialog.getSearchContext();
+		replaceDialog.setSearchContext(context);
 		
 		//set mark occurence color (light green)
 		taExpr.setMarkAllHighlightColor(new Color(191, 255, 178)); 
@@ -553,30 +559,32 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			logger.info("Open Find window");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
-			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(taExpr);
-			findReplaceDialog.showDialog(frame, true);// find
+			if (replaceDialog.isVisible()) {
+				replaceDialog.setVisible(false);
+			}
+			findDialog.setVisible(true);
 		}
 		////////////////////////////////////
-		else if (cmdText.equals(editFindNext)) {
-			logger.info("Try Find next");
-			if (taExpr.getText().length() == 0)
-				return; // text box have no text
-
-			if (findReplaceDialog == null)
-				statusBar.setText("Nothing to search for, use Find option of Edit Menu first !!!!");
-			else
-				findReplaceDialog.findNextWithSelection();
-		}
+//		else if (cmdText.equals(editFindNext)) {
+//			logger.info("Try Find next");
+//			if (taExpr.getText().length() == 0)
+//				return; // text box have no text
+//
+//			if (findReplaceDialog == null)
+//				statusBar.setText("Nothing to search for, use Find option of Edit Menu first !!!!");
+//			else
+//				findReplaceDialog.findNextWithSelection();
+//		}
 		////////////////////////////////////
 		else if (cmdText.equals(editReplace) || evObj == replaceButton) {
 			logger.info("Open Replace window");
 			if (taExpr.getText().length() == 0)
 				return; // text box have no text
 
-			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(taExpr);
-			findReplaceDialog.showDialog(frame, false);// replace
+			if (findDialog.isVisible()) {
+				findDialog.setVisible(false);
+			}
+			replaceDialog.setVisible(true);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(editGoTo)) {
@@ -958,8 +966,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		deleteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		editMenu.addSeparator();
 		findItem = createMenuItem(editFind, KeyEvent.VK_F, editMenu, KeyEvent.VK_F, this);
-		findNextItem = createMenuItem(editFindNext, KeyEvent.VK_N, editMenu, this);
-		findNextItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+//		findNextItem = createMenuItem(editFindNext, KeyEvent.VK_N, editMenu, this);
+//		findNextItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		replaceItem = createMenuItem(editReplace, KeyEvent.VK_R, editMenu, KeyEvent.VK_H, this);
 		gotoItem = createMenuItem(editGoTo, KeyEvent.VK_G, editMenu, KeyEvent.VK_G, this);
 		editMenu.addSeparator();
@@ -1025,13 +1033,13 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			public void menuSelected(MenuEvent evvvv) {
 				if (taExpr.getText().length() == 0) {
 					findItem.setEnabled(false);
-					findNextItem.setEnabled(false);
+//					findNextItem.setEnabled(false);
 					replaceItem.setEnabled(false);
 					selectAllItem.setEnabled(false);
 					gotoItem.setEnabled(false);
 				} else {
 					findItem.setEnabled(true);
-					findNextItem.setEnabled(true);
+//					findNextItem.setEnabled(true);
 					replaceItem.setEnabled(true);
 					selectAllItem.setEnabled(true);
 					gotoItem.setEnabled(true);
@@ -1131,4 +1139,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		});
 	}
+
+	
 }
