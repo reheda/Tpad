@@ -8787,4 +8787,5 @@
 	<attribute> <id>10687</id> <type>Simple</type> <name>Chassis - Built-in Camera</name> </attribute>
 	<attribute> <id>10688</id> <type>Simple</type> <name>Mobile Broadband - Generation</name> </attribute>
 	<attribute> <id>10689</id> <type>Simple</type> <name>Mobile Broadband - High-Speed Communication Standard</name> </attribute>
+	<attribute> <id>10690</id> <type>Multi-valued</type> <name>Miscellaneous - OEM Manufacturer Equivalent Part Number</name> </attribute>
 </attributes>  
