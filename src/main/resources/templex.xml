@@ -9,7 +9,7 @@
    Version:        0.1
 
    This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-01-25 12:23:06
+   on date: 2017-02-10 15:18:41
 
 -->
 <api language="Templex">
@@ -68,6 +68,9 @@
 </keyword>
 <keyword name="CategoryCode" type="constant" returnType="String" definedIn="RelatedProduct">
 	<desc><![CDATA[Returns the category code of this product. (<a href="http://txdev1.cnetcontent.com/Reference#CFCA5985">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="CategoryCode" type="constant" returnType="String" definedIn="Sku">
+	<desc>Empty description.</desc>
 </keyword>
 <keyword name="CategoryCodes" type="constant" returnType="IEnumerable`1" definedIn="RelatedProductList">
 	<desc><![CDATA[Returns the category codes of these related products. (<a href="http://txdev1.cnetcontent.com/Reference#43A0E92E">Reference link</a>)]]></desc>
@@ -316,6 +319,14 @@
 </keyword>
 <keyword name="GetLines" type="function" returnType="IEnumerable`1" definedIn="Specs">
 	<desc><![CDATA[Returns the specified number of lines skipping the  (<a href="http://txdev1.cnetcontent.com/Reference#341A763B">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="GetPath" type="function" returnType="String" definedIn="AlternativeCategory">
+	<params>
+		<param type="[String]" name="separator">
+			<desc>Optional</desc>
+		</param>
+	</params>
+	<desc>Empty description.</desc>
 </keyword>
 <keyword name="GroupName" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the name of the attribute group this attribute belongs to. (<a href="http://txdev1.cnetcontent.com/Reference#47DF78C8">Reference link</a>)<br>

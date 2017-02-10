@@ -1,5 +1,9 @@
 ##### Sku #####
 
+CategoryCode constant
+String|
+ Empty description.
+
 Brand constant
 String|
  Returns the brand of this product (<a href="http://txdev1.cnetcontent.com/Reference#AF67F4DB">Reference link</a>)
@@ -1283,6 +1287,11 @@ IEnumerable`1|
 IsDescendantOf function
 Boolean|
 String alternativeCategoryCode|
+ Empty description.
+
+GetPath function
+String|
+[String] separator|Optional
  Empty description.
 
 Key constant

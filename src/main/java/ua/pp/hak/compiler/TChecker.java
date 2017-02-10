@@ -359,6 +359,7 @@ public class TChecker {
 		functionsWithParams.add(new FunctionWithParameters("Flatten()", 0, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("GetFullColorDescription()", 0, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("ListPaths()", 0, 1, "String"));
+		functionsWithParams.add(new FunctionWithParameters("GetPath()", 0, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("EraseTextSurroundedBy()", 1, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("Format()", 1, 1, "String"));
 		functionsWithParams.add(new FunctionWithParameters("IsDescendantOf()", 1, 1, "String"));
@@ -537,7 +538,7 @@ public class TChecker {
 		functions.add(new Function("MimeType", "ExpressionResultLiteral", "DigitalContentItem"));
 		functions.add(new Function("ModelName", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
 		functions.add(new Function("Name", "ExpressionResultLiteral", "Sku", "PdmAttribute", "PdmMultivalueAttribute",
-				"PdmRepeatingAttribute", "SpecSection"));
+				"PdmRepeatingAttribute", "SpecSection", "AlternativeCategory"));
 		functions.add(new Function("PartNumber", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
 		functions.add(new Function("ProductLine", "ExpressionResultLiteral", "Sku", "RelatedProduct"));
 		functions.add(new Function("ProductType", "ExpressionResultLiteral", "Sku"));
@@ -585,6 +586,8 @@ public class TChecker {
 		functions.add(new Function("ToString()", "ExpressionResultLiteral", "ExpressionResultList",
 				"ExpressionResultLiteral", "ExpressionResultNumeric", "DateTimeOffset"));
 		functions.add(new Function("DECODE()", "You can invoke nothing on it"));
+		functions.add(new Function("GetPath()", "ExpressionResultLiteral", "AlternativeCategory"));
+		functions.add(new Function("CategoryCode", "ExpressionResultLiteral", "Sku"));
 
 	}
 
