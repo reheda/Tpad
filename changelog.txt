@@ -5,7 +5,8 @@
 - changed <code>Find...</code> and <code>Replace...</code> functions<br />
 - added handling quick result issue of wrong expression for <code>Parse</code> function<br />
 - added <code>Insert attr names</code> function to <code>Expression</code> menu (thanks to Alex for the idea)<br />
-- added attributes: <code>10690</code>
+- added attributes: <code>10690</code><br />
+- added functions <code>GetPath()</code> to be invoked on AlternativeCategory and <code>CategoryCode</code> to be invoked on SKU<br />
 - refactored code
 ---
 <b>v 1.0.8</b><br /> 
