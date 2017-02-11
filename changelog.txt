@@ -1,12 +1,12 @@
 <b>v 1.0.9</b><br /> 
 - fixed issue with COALESCE surrounded by wrong functions. E.g. <code>aaaCOALESCE(2)bbb</code><br />
 - removed <code>Find Next</code> menu item<br />
-- changed way of getting expression for <code>Parse for SKU list...</code> function<br />
 - changed <code>Find...</code> and <code>Replace...</code> functions<br />
+- changed way of getting expression for <code>Parse for SKU list...</code> function<br />
 - added handling quick result issue of wrong expression for <code>Parse</code> function<br />
 - added <code>Insert attr names</code> function to <code>Expression</code> menu (thanks to Alex for the idea)<br />
 - added attributes: <code>10690</code><br />
-- added functions <code>GetPath()</code> to be invoked on AlternativeCategory and <code>CategoryCode</code> to be invoked on SKU<br />
+- added functions <code>GetPath()</code> to be invoked on AlternativeCategory and <code>CategoryCode</code> to be invoked on Sku<br />
 - refactored code
 ---
 <b>v 1.0.8</b><br /> 
