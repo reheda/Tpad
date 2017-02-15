@@ -510,9 +510,9 @@ public class TChecker {
 		functions.add(new Function("ProductId", "ExpressionResultNumeric", "Sku", "RelatedProduct"));
 		functions.add(new Function("AltCats", "List`1", "ProductCategories"));
 		functions.add(new Function("BestImages", "List`1", "DigitalContent"));
-		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
-		functions.add(new Function("AtLeast()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
-		functions.add(new Function("AtMost()", "ExpressionResultNumeric", "ExpressionResultNumeric"));
+		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
+		functions.add(new Function("AtLeast()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
+		functions.add(new Function("AtMost()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
 		functions.add(new Function("MultiplyBy()", "ExpressionResult", "ExpressionResultNumeric",
 				"ExpressionResultList", "ExpressionResultLiteral"));
 		functions.add(new Function("Match()", "PdmAttributeSet", "PdmRepeatingAttribute"));

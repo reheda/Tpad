@@ -1,4 +1,5 @@
 <b>v 1.0.10</b><br /> 
+- fixed issue with invoking functions: <code>Round()</code>, <code>AtLeast()</code> and <code>AtMost()</code> on ExpressionResultLiteral. E.g. <code>A[4755].ValueUSM.ExtractDecimals(0.0).First().MultiplyBy(10.76).Round()</code><br />
 - added possibility of invoking <code>Count</code> function on Specs
 ---
 <b>v 1.0.9</b><br /> 
