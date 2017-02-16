@@ -1661,41 +1661,112 @@ public class TChecker {
 			return errors.toString();
 		}
 
-		final String COALESCE_TEXT = "COALESCE(";
-
-		if (!returnValue.contains(COALESCE_TEXT)) {
-			// check values
-
+		// check for THROW
+		if (returnValue.toUpperCase().contains("THROW")) {
 			// erase brackets, but left Match(number) cause it should return
 			// PdmMultivalueAttribute instead of PdmAttributeSet
 			String returnValueCleaned = returnValue.replaceAll("(?<!Match)\\(.*?\\)", "()")
 					.replaceAll("Match\\(.*?,.*?\\)", "Match()");
-			String[] values = returnValueCleaned.split(" ?_ ?");
-			for (int i = 0; i < values.length; i++) {
-				error = checkValue(values[i]);
-				if (error != null) {
-					errors.append(error);
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(values[i]);
-					return errors.toString();
+
+			// check throw structure
+			{
+				boolean isThrowError = false;
+				switch (returnValueCleaned.trim()) {
+				case "THROW":
+				case "throw new NoSuitableValueException()":
+				case "throw new MissingProductDataException()":
+				case "throw new OutOfScopeException()":
+					break;
+
+				default:
+					isThrowError = true;
+					break;
+				}
+
+				if (isThrowError) {
+					error = "You shoudn't throw like this: '" + returnValueCleaned.trim() + "'" + NEW_LINE + NEW_LINE
+							+ "Valid stucture:" + NEW_LINE + "1) 'THROW'" + NEW_LINE
+							+ "2) 'throw new CorrectClassName()'";
+					if (error != null) {
+						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(returnValueCleaned);
+						return errors.toString();
+					}
 				}
 
 			}
-		}
 
-		// check parameters
-		error = checkParametersInCondition(returnValue);
-		if (error != null) {
-			errors.append(error);
-			return errors.toString();
-		}
+			// check throw parameters
+			{
+				String regex = "\\((.*?)\\)";
+				Pattern p = Pattern.compile(regex);
+				Matcher m = p.matcher(returnValue);
+				while (m.find()) {
+					String parameters = m.group(1);
 
+					// check if text
+					boolean isString = parameters.matches("\".*\"");
+					// check if number
+					boolean isDouble = parameters.matches("\\d+\\.\\d+");
+					boolean isInteger = parameters.matches("\\d+");
+
+					if (!parameters.isEmpty() && !isString && !isDouble && !isInteger) {
+
+						error = "Incorrect parameter's type while throwing.\n"
+								+ "You should use String, Integer or Empty parameter";
+						if (error != null) {
+							errors.append(error);
+							errors.append(NEW_LINE);
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(returnValue);
+							return errors.toString();
+						}
+					}
+				}
+			}
+
+		} else {
+
+			final String COALESCE_TEXT = "COALESCE(";
+
+			if (!returnValue.contains(COALESCE_TEXT)) {
+				// check values
+
+				// erase brackets, but left Match(number) cause it should return
+				// PdmMultivalueAttribute instead of PdmAttributeSet
+				String returnValueCleaned = returnValue.replaceAll("(?<!Match)\\(.*?\\)", "()")
+						.replaceAll("Match\\(.*?,.*?\\)", "Match()");
+				String[] values = returnValueCleaned.split(" ?_ ?");
+				for (int i = 0; i < values.length; i++) {
+					error = checkValue(values[i]);
+					if (error != null) {
+						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(values[i]);
+						return errors.toString();
+					}
+
+				}
+			}
+
+			// check parameters
+			error = checkParametersInCondition(returnValue);
+			if (error != null) {
+				errors.append(error);
+				return errors.toString();
+			}
+		}
 		return null;
 	}
-
 	
 
 	private static String checkWhenStatement(String value) {
