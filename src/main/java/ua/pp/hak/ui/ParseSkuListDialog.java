@@ -3,6 +3,7 @@ package ua.pp.hak.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,7 +28,8 @@ import ua.pp.hak.util.RequestFocusListener;
 public class ParseSkuListDialog implements Constants, MenuConstants {
 
 	final static Logger logger = LogManager.getLogger(ParseSkuListDialog.class);
-
+	private int loadTime = 3;
+	private int parseTime = 15;
 	private JTextArea taParameters, taSkuList;
 	private Notepad npd;
 
@@ -36,8 +38,10 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 		try {
 			JPanel main = new JPanel();
 			main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
-			
+
 			main.add(createParameterPanel());
+			main.add(new JLabel("   "));
+			main.add(createTimeToWaitPanel());
 			main.add(new JLabel("   "));
 			main.add(createSkuListPanel());
 
@@ -45,14 +49,14 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 
 			// take expression before opening the window
 			String expressionText = npd.getExprTextArea().getText();
-			
-			int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, "Parse Sku list", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE);
+
+			int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, "Parse Sku list",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 			if (result == JOptionPane.OK_OPTION) {
-				//"(?m)^[ \t]*\r?\n" - regex to remove empty lines
+				// "(?m)^[ \t]*\r?\n" - regex to remove empty lines
 				String text = TParser.parseForSkuList(expressionText, taParameters.getText(),
-						taSkuList.getText().replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"));
+						taSkuList.getText().replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"), loadTime, parseTime);
 
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
@@ -79,8 +83,6 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 
 	}
 
-	
-
 	private JPanel createParameterPanel() {
 		taParameters = new JTextArea();
 		taParameters.setLineWrap(true);
@@ -91,21 +93,19 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 		spParameters.setPreferredSize(new Dimension(400, 50));
 		spParameters.setMinimumSize(new Dimension(400, 50));
 		spParameters.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-
 
 		JPanel paramPanel = new JPanel();
 		paramPanel.setLayout(new BoxLayout(paramPanel, BoxLayout.Y_AXIS));
 		paramPanel.setBorder(BorderFactory.createTitledBorder("Parameters: "));
 		paramPanel.add(spParameters);
-		
+
 		JButton generateParams = new JButton("Generate...");
 		generateParams.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String newParams = new ParameterGeneratorDialog().generateParameters(paramPanel);
-				if (newParams!=null){
+				if (newParams != null) {
 					taParameters.setText(newParams);
 				}
 			}
@@ -132,5 +132,45 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 		skuListPanel.add(spSkuList);
 
 		return skuListPanel;
+	}
+
+	private JPanel createTimeToWaitPanel() {
+		FlowLayout experimentLayout = new FlowLayout();
+		experimentLayout.setAlignment(FlowLayout.LEADING);
+
+		JPanel timeToWaitPanel = new JPanel();
+		timeToWaitPanel.setLayout(experimentLayout);
+		timeToWaitPanel.setBorder(BorderFactory.createTitledBorder("Time to wait (optional): "));
+
+		JLabel loadingLabel = new JLabel();
+		JLabel parsingLabel = new JLabel();
+		JLabel spliter = new JLabel("   ");
+
+		JButton btnSet = new JButton("Set...");
+		btnSet.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int[] time = new TimeSetterDialog().setTime(timeToWaitPanel);
+				if (time != null) {
+					loadTime = time[0];
+					parseTime = time[1];
+					loadingLabel.setText("Load time: " + loadTime + " sec");
+					parsingLabel.setText("Parse time: " + parseTime + " sec");
+					spliter.setText("  |  ");
+				}
+			}
+		});
+
+		timeToWaitPanel.add(btnSet);
+		timeToWaitPanel.add(new JLabel("   "));
+		timeToWaitPanel.add(loadingLabel);
+		timeToWaitPanel.add(spliter);
+		timeToWaitPanel.add(parsingLabel);
+
+		timeToWaitPanel.add(new JLabel("      "));
+		timeToWaitPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		return timeToWaitPanel;
 	}
 }

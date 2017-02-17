@@ -2,7 +2,8 @@
 - fixed issue with invoking functions: <code>Round()</code>, <code>AtLeast()</code> and <code>AtMost()</code> on ExpressionResultLiteral. E.g. <code>A[4755].ValueUSM.ExtractDecimals(0.0).First().MultiplyBy(10.76).Round()</code> (thanks to Kolia for identifying)<br />
 - added possibility of invoking <code>Count</code> function on Specs<br />
 - added check for Throwing exception. E.g. <code>throw new NoSuitableValueException()</code><br />
-- added <code>Substitution</code> parameter to <code>Generate...</code> button
+- added <code>Substitution</code> parameter to <code>Generate...</code> button<br />
+- added <code>Time to wait</code> block to <code>Parse for SKU list</code> function to increase time delay interrupt while server load is significant (thanks to Oleg for the idea)
 ---
 <b>v 1.0.9</b><br /> 
 - fixed issue with COALESCE surrounded by wrong functions. E.g. <code>aaaCOALESCE(2)bbb</code><br />

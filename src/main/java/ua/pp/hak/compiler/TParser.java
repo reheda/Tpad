@@ -192,7 +192,7 @@ public class TParser {
 		return new String[] { expressionResult, expressionStatus };
 	}
 
-	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList) {
+	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList, int loadTime, int parseTime) {
 		long start = System.nanoTime();
 
 		StringBuilder sb = new StringBuilder();
@@ -264,7 +264,7 @@ public class TParser {
 							.setText(oldProcessingLabelText.concat(" (" + (i + 1) + "/" + skuList.length + ")"));
 					driver.get("http://templex.cnetcontent.com/Home/Parser");
 					String[] expressionResult = getExpressionResultInfoByChromeForSkuList(driver, expressionText,
-							parametersText, skuList[i]);
+							parametersText, skuList[i], loadTime, parseTime);
 
 					String expressionRes = expressionResult[0];
 					String expressionStatus = expressionResult[1];
@@ -319,7 +319,7 @@ public class TParser {
 	}
 
 	private static String[] getExpressionResultInfoByChromeForSkuList(WebDriver driver, String exprText,
-			String paramText, String skuIdText) {
+			String paramText, String skuIdText, int loadTime, int parseTime) {
 
 		String expressionResult = null;
 		String expressionStatus = null;
@@ -330,16 +330,16 @@ public class TParser {
 			evaluateExpressionWithJavascript(driver, exprText, paramText, skuIdText);
 
 			// wait for loading to disappear
-			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(loadTime, TimeUnit.SECONDS);
 			try {
-				WebElement myDynamicElement = (new WebDriverWait(driver, 3))
+				WebElement myDynamicElement = (new WebDriverWait(driver, loadTime))
 						.until(ExpectedConditions.visibilityOfElementLocated(By.id("loading")));
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
 			waitForElToBeRemove(driver, By.id("loading"));
 
-			new WebDriverWait(driver, DEFAULT_TIMEOUT).until(new Predicate<WebDriver>() {
+			new WebDriverWait(driver, parseTime).until(new Predicate<WebDriver>() {
 				public boolean apply(WebDriver driver) {
 					return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
 				}
