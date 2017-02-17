@@ -34,9 +34,9 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 
 	private JTextArea taParameters;
 	private JLabel accTree;
-	private JCheckBox evaluate, locale, verbatim, legacyValues, resultSeparator;
+	private JCheckBox evaluate, locale, verbatim, legacyValues, resultSeparator, substitution;
 	private JComboBox<String> cbEvaluate, cbVerbatim, cbLegacyValues;
-	private JTextField tfLocale, tfResultSeparator, tfAccTree;
+	private JTextField tfLocale, tfResultSeparator, tfAccTree, tfSubstitution;
 	private String defaultText = "AccTree=-1";
 
 	public String generateParameters(JComponent parent) {
@@ -101,6 +101,7 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		verbatim = createCheckBox("Verbatim");
 		legacyValues = createCheckBox("LegacyValues");
 		resultSeparator = createCheckBox("ResultSeparator");
+		substitution = createCheckBox("Substitution");
 		accTree = new JLabel("AccTree");
 
 		cbEvaluate = createComboBox(valueStrings);
@@ -112,6 +113,9 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		tfResultSeparator = new JTextField(";");
 		tfResultSeparator.setEnabled(false);
 		tfResultSeparator.addKeyListener(this);
+		tfSubstitution = new JTextField("Old/g~New");
+		tfSubstitution.setEnabled(false);
+		tfSubstitution.addKeyListener(this);
 		tfAccTree = new JTextField("-1");
 		tfAccTree.addKeyListener(this);
 
@@ -134,9 +138,15 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		parametersToSelect.add(new JLabel("   "));
 		parametersToSelect.add(legacyValues);
 		parametersToSelect.add(cbLegacyValues);
+		
+		parametersToSelect.add(substitution);
+		parametersToSelect.add(tfSubstitution);
+		parametersToSelect.add(new JLabel("   "));
+		parametersToSelect.add(new JLabel("   "));
+		parametersToSelect.add(new JLabel("   "));
 
 		parametersToSelect.setAlignmentX(Component.LEFT_ALIGNMENT);
-		SpringUtilities.makeCompactGrid(parametersToSelect, 3, 5, 5, 5, 3, 3);
+		SpringUtilities.makeCompactGrid(parametersToSelect, 4, 5, 5, 5, 3, 3);
 		return parametersToSelect;
 	}
 
@@ -225,6 +235,13 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 			tfResultSeparator.setEnabled(false);
 			resultSeparator.setSelected(false);
 		}
+		if (paramText.matches(".*Substitution.*=.*")) {
+			tfSubstitution.setEnabled(true);
+			substitution.setSelected(true);
+		} else {
+			tfSubstitution.setEnabled(false);
+			substitution.setSelected(false);
+		}
 		if (paramText.matches(".*Verbatim.*=.*")) {
 			cbVerbatim.setEnabled(true);
 			verbatim.setSelected(true);
@@ -268,6 +285,9 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 		} else if (evObj == tfResultSeparator) {
 			String newParamText = addParameters(resultSeparator.getText(), "\"" + tfResultSeparator.getText() + "\"");
 			taParameters.setText(newParamText);
+		} else if (evObj == tfSubstitution) {
+			String newParamText = addParameters(substitution.getText(), "\"" + tfSubstitution.getText() + "\"");
+			taParameters.setText(newParamText);
 		}
 	}
 
@@ -294,6 +314,16 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 			} else {
 				tfResultSeparator.setEnabled(false);
 				newParamText = removeParameters(resultSeparator.getText());
+			}
+			taParameters.setText(newParamText);
+		} else if (evObj == substitution) {
+			String newParamText = null;
+			if (substitution.isSelected()) {
+				tfSubstitution.setEnabled(true);
+				newParamText = addParameters(substitution.getText(), "\"" + tfSubstitution.getText() + "\"");
+			} else {
+				tfSubstitution.setEnabled(false);
+				newParamText = removeParameters(substitution.getText());
 			}
 			taParameters.setText(newParamText);
 		} else if (evObj == evaluate) {
