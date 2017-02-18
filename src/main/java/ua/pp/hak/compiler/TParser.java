@@ -50,6 +50,7 @@ public class TParser {
 			logger.info("Parsing expression...");
 			Color green = new Color(0, 188, 57);
 			Color red = new Color(189, 0, 0);
+			Color orange = new Color(233, 144, 2);
 
 			RSyntaxTextArea taExpr = npd.getExprTextArea();
 			JTextArea taExprRes = npd.getExprResTextArea();
@@ -64,6 +65,8 @@ public class TParser {
 			Color color = null;
 			if (expressionStatus != null && expressionStatus.equals("form-group has-success")) {
 				color = green;
+			} else if (expressionStatus != null && expressionStatus.equals("form-group has-warning")) {
+				color = orange;
 			} else {
 				color = red;
 			}
@@ -192,7 +195,8 @@ public class TParser {
 		return new String[] { expressionResult, expressionStatus };
 	}
 
-	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList, int loadTime, int parseTime) {
+	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList, int loadTime,
+			int parseTime) {
 		long start = System.nanoTime();
 
 		StringBuilder sb = new StringBuilder();
@@ -277,6 +281,10 @@ public class TParser {
 						sb.append(escapeHtml(expressionRes).replaceAll("\\n", "<br />"));
 					} else if (expressionStatus != null && expressionStatus.equals("form-group has-error")) {
 						sb.append("<font color='red'>");
+						sb.append(escapeHtml(expressionRes).replaceAll("\\n", "<br />"));
+						sb.append("</font>");
+					} else if (expressionStatus != null && expressionStatus.equals("form-group has-warning")) {
+						sb.append("<font color='orange'>");
 						sb.append(escapeHtml(expressionRes).replaceAll("\\n", "<br />"));
 						sb.append("</font>");
 					} else {
