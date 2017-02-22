@@ -8788,4 +8788,6 @@
 	<attribute> <id>10688</id> <type>Simple</type> <name>Mobile Broadband - Generation</name> </attribute>
 	<attribute> <id>10689</id> <type>Simple</type> <name>Mobile Broadband - High-Speed Communication Standard</name> </attribute>
 	<attribute> <id>10690</id> <type>Multi-valued</type> <name>Miscellaneous - OEM Manufacturer Equivalent Part Number</name> </attribute>
+	<attribute> <id>10692</id> <type>Simple numeric</type> <name>Washing Machine - Additional Washer Capacity</name> </attribute>
+	<attribute> <id>10693</id> <type>Simple</type> <name>Heating /// Cooling - Charge Acceptance</name> </attribute>
 </attributes>  
