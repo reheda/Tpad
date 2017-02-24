@@ -26,6 +26,7 @@ public class TemplexLanguageSupport extends AbstractLanguageSupport {
 	public TemplexLanguageSupport() {
 		setParameterAssistanceEnabled(true);
 		setShowDescWindow(true);
+		setAutoActivationEnabled(true);
 	}
 
 
