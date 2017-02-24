@@ -40,6 +40,10 @@ public class TChecker {
 	final static String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
 
 	private static ArrayList<Function> functions;
+	public static ArrayList<Function> getFunctions() {
+		return functions;
+	}
+
 	private static ArrayList<FunctionWithParameters> functionsWithParams;
 
 	private static void eraseAllHighlighter(RSyntaxTextArea taExpr) {
@@ -54,7 +58,7 @@ public class TChecker {
 		return attibutes;
 	}
 
-	private static String getAttributeType(int attr) {
+	public static String getAttributeType(int attr) {
 		for (Attribute attribute : attibutes) {
 			if (attribute.getId() == attr) {
 				return attribute.getType();
@@ -393,7 +397,7 @@ public class TChecker {
 
 	}
 
-	private static void initFunctions() {
+	public static void initFunctions() {
 		functions = new ArrayList<>();
 		functions.add(new Function("Main", "AlternativeCategory", "ProductCategories"));
 		functions.add(new Function("HasText", "ExpressionResultLiteral", "ExpressionResultList",
@@ -1151,7 +1155,7 @@ public class TChecker {
 		return false;
 	}
 
-	private static String getFunctionReturnType(String functionName, String previousType) {
+	public static String getFunctionReturnType(String functionName, String previousType) {
 		if (functionName.matches("Match\\(\\d+\\)")) {
 			return "PdmMultivalueAttribute";
 		}
@@ -1168,7 +1172,7 @@ public class TChecker {
 		return null;
 	}
 
-	private static boolean isFunctionMemberOfValid(String functionName, String previousType) {
+	public static boolean isFunctionMemberOfValid(String functionName, String previousType) {
 
 		if (functionName.matches("Match\\(\\d+\\)") && previousType.equals("PdmRepeatingAttribute")) {
 			return true;
