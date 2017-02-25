@@ -1,9 +1,14 @@
 package ua.pp.hak.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Legacy {
 	private static HashMap<String, String> legacy;
+
+	public static HashMap<String, String> getLegacy() {
+		return legacy;
+	}
 
 	static {
 		initLegacy();
@@ -11,6 +16,15 @@ public class Legacy {
 
 	public static String getLecagyName(String legacyCode) {
 		return legacy.get(legacyCode);
+	}
+
+	public static String getLecagyCode(String legacyName) {
+		for (Map.Entry<String, String> entry : legacy.entrySet()) {
+			if (entry.getValue().equals(legacyName)){
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	private static void initLegacy() {
