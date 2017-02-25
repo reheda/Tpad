@@ -8,8 +8,8 @@
    Author:         VR
    Version:        0.1
 
-   This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-02-10 15:18:41
+   This file was generated from: C:/Program Files/eclipse/workspace/Tpad/templexSyntax/templex.txt
+   on date: 2017-02-25 00:57:23
 
 -->
 <api language="Templex">
@@ -1059,8 +1059,7 @@
 </keyword>
 <keyword name="UnitUSM" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the unit of this attribute, if any, in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#F622ECE5">Reference link</a>)<br>
-<br />Remarks: <em>Prefer this when exporting a unit in US metrics.</em>
-]]></desc>
+<br />Remarks: <em>Prefer this when exporting a unit in US metrics.</em>]]></desc>
 </keyword>
 <keyword name="UnitUSM" type="constant" returnType="String" definedIn="PdmMultivalueAttribute">
 	<desc><![CDATA[Returns the unit of this multi-valued attribute, if any, in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#9C73BC6F">Reference link</a>)<br>
@@ -1084,7 +1083,7 @@
 	<desc><![CDATA[Replaces the counting separator ¬ with the specified respective separator (<a href="http://txdev1.cnetcontent.com/Reference#971A2448">Reference link</a>)<br>
 <br />Remarks: <em>You may specify only the first few separators and whitespace will automatically be used for the remaining values, you can also specify no separators, and whitespace will be used for all values.</em>]]></desc>
 </keyword>
-<keyword name="Value" type="constant" returnType="String" definedIn="PdmAttributeSet">
+<keyword name="Value" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the value of this attribute (<a href="http://txdev1.cnetcontent.com/Reference#83E284C7">Reference link</a>)<br>
 <br />Remarks: <em>Prefer this when exporting a value.</em>]]></desc>
 </keyword>
@@ -1137,9 +1136,10 @@
 	<desc><![CDATA[Returns an ExpressionResultList object containing all the USM values in this repeating attribute. (<a href="http://txdev1.cnetcontent.com/Reference#E63BF6A4">Reference link</a>)<br>
 <br />Remarks: <em>Use .ValuesWithUnitsUsm for a list of text containing units</em>]]></desc>
 </keyword>
-<keyword name="ValueUSM" type="constant" returnType="String" definedIn="PdmAttributeSet">
+<keyword name="ValueUSM" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the value of this attribute in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#FDE562F0">Reference link</a>)<br>
-<br />Remarks: <em>Prefer this when exporting a value in US metrics.</em>]]></desc>
+<br />Remarks: <em>Prefer this when exporting a value in US metrics.</em>
+]]></desc>
 </keyword>
 <keyword name="ValueUSM" type="constant" returnType="String" definedIn="PdmMultivalueAttribute">
 	<desc><![CDATA[Returns the value of this attribute in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#93F724BA">Reference link</a>)<br>

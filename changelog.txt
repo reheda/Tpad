@@ -1,6 +1,7 @@
 <b>v 1.0.11</b><br /> 
 - added attributes: <code>10692, 10693</code><br />
-- added auto activation of the completion popup after <code>.</code>
+- added auto activation of the completion popup after <code>.</code><br />
+- added algorithms to auto-completion (for now its filtered by return type)
 ---
 <b>v 1.0.10</b><br /> 
 - fixed issue with invoking functions: <code>Round()</code>, <code>AtLeast()</code> and <code>AtMost()</code> on ExpressionResultLiteral. E.g. <code>A[4755].ValueUSM.ExtractDecimals(0.0).First().MultiplyBy(10.76).Round()</code> (thanks to Kolia for identifying)<br />

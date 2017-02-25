@@ -91,7 +91,6 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 	 */
 	protected CompletionProvider createCodeCompletionProvider() {
 		DefaultCompletionProvider cp = new TemplexSourceCompletionProvider();
-		cp.setAutoActivationRules(false, "."); // Default - only activate after '.'
 		loadCodeCompletionsFromXml(cp);
 		addShorthandCompletions(cp);
 		return cp;

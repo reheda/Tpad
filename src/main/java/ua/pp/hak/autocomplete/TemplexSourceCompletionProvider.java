@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.Util;
 
-import ua.pp.hak.compiler.Function;
 import ua.pp.hak.compiler.TChecker;
 
 /**
@@ -39,118 +36,38 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
-		List<Completion> tempCompletions = new ArrayList<>(completions);
 		List<Completion> retVal = new ArrayList<Completion>();
 		String text = getAlreadyEnteredText(comp);
-		int lastDotIndex = comp.getCaretPosition() - text.length() - 1;
-		if (lastDotIndex > -1) {
+		
+		//get return type of the expression and fill in possibleCompleteion list
+		List<Completion> possibleCompletions = new ArrayList<>();
+		int indexBeforeEnteredText = comp.getCaretPosition() - text.length();
+		if (indexBeforeEnteredText > -1) {
+			String allText = comp.getText().substring(0, indexBeforeEnteredText);
+			String returnType = getReturnType(allText);
 
-			String allText = comp.getText().substring(0, lastDotIndex);
-			int previosDotIndex = allText.lastIndexOf(".") + 1;
-			if (previosDotIndex < 0) {
-				previosDotIndex = allText.lastIndexOf("_") + 1;
-			}
-			if (previosDotIndex < 0) {
-				previosDotIndex = allText.lastIndexOf(";") + 1;
-			}
-			if (previosDotIndex < 0) {
-				int lineStartIndex = 0;
-				if (comp instanceof JTextArea) {
-					try {
-						JTextArea ta = (JTextArea) comp;
-						int lineNumber = ta.getLineOfOffset(lastDotIndex);
-						lineStartIndex = ta.getLineStartOffset(lineNumber);
-					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				}
-				previosDotIndex = lineStartIndex;
-			}
-			System.out.println(previosDotIndex);
-			System.out.println(text);
-
-			ArrayList<Function> functions = TChecker.getFunctions();
-			if (functions == null) {
-				TChecker.initFunctions();
-			}
-
-			System.out.println("---");
-			System.out.println(previosDotIndex);
-			System.out.println(lastDotIndex);
-			System.out.println(allText.substring(previosDotIndex, lastDotIndex).trim());
-			String invokedOn = allText.substring(previosDotIndex, lastDotIndex).trim().replaceAll("\\(.*\\)", "()");
-			String returnType = TChecker.getFunctionReturnType(invokedOn, "");
-			if (returnType == null) {
-				if (invokedOn.matches("A\\[\\d+\\]")) {
-					final String TYPE_SIMPLE = "Simple";
-					final String TYPE_MULTI_VALUED = "Multi-valued";
-					final String TYPE_SIMPLE_NUMERIC = "Simple numeric";
-					final String TYPE_REPEATING = "Repeating";
-					final String TYPE_REPEATING_NUMERIC = "Repeating numeric";
-					final String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
-
-					int attr = Integer.parseInt(invokedOn.replaceAll("[^0-9]", ""));
-					String attrType = TChecker.getAttributeType(attr);
-					if (attrType != null) {
-						switch (attrType) {
-						case TYPE_SIMPLE:
-							returnType = "PdmAttribute";
-							break;
-						case TYPE_SIMPLE_NUMERIC:
-							returnType = "PdmAttribute";
-							break;
-						case TYPE_MULTI_VALUED:
-							returnType = "PdmMultivalueAttribute";
-							break;
-						case TYPE_MULTI_VALUED_NUMERIC:
-							returnType = "PdmMultivalueAttribute";
-							break;
-						case TYPE_REPEATING:
-							returnType = "PdmRepeatingAttribute";
-							break;
-						case TYPE_REPEATING_NUMERIC:
-							returnType = "PdmRepeatingAttribute";
-							break;
-						default:
-							break;
-						}
-					}
-				}
-			}
-			System.out.println(returnType);
-
-			//
-			// for (Function function : functions) {
-			// TChecker.isFunctionMemberOfValid("","");
-			// }
-
-			List<Completion> toRemove = new ArrayList<>();
-			System.out.println(tempCompletions.size());
-			for (int i = 0; i < tempCompletions.size(); i++) {
-				Completion completeion = tempCompletions.get(i);
-				String summary = completeion.getSummary();
+			for (Completion completion : completions) {
+				String summary = completion.getSummary();
 				int ind = summary.indexOf("Defined in: <em>") + 16;
 				if (ind > -1) {
 					String definedIf = summary.substring(ind, summary.length() - 5);
-					if (!definedIf.equals(returnType)) {
-						toRemove.add(completeion);
+					if (definedIf.equals(returnType)) {
+						possibleCompletions.add(completion);
 					}
 				}
-
 			}
 
-			if (toRemove.size() != tempCompletions.size()) {
-
-				for (Completion com : toRemove) {
-					tempCompletions.remove(com);
-				}
-			}
 		}
-		if (text != null && tempCompletions != null) {
+		
+		//use default list if no suitable completions
+		if (possibleCompletions.isEmpty()) {
+			possibleCompletions = completions;
+		}
+		
+		//filter completions by already entered text 
+		if (text != null) {
 
-			int index = Collections.binarySearch(tempCompletions, text, comparator);
+			int index = Collections.binarySearch(possibleCompletions, text, comparator);
 			if (index < 0) { // No exact match
 				index = -index - 1;
 			} else {
@@ -159,14 +76,14 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 				// of one of those overloads, but we must return all of them,
 				// so search backward until we find the first one.
 				int pos = index - 1;
-				while (pos > 0 && comparator.compare(tempCompletions.get(pos), text) == 0) {
-					retVal.add(tempCompletions.get(pos));
+				while (pos > 0 && comparator.compare(possibleCompletions.get(pos), text) == 0) {
+					retVal.add(possibleCompletions.get(pos));
 					pos--;
 				}
 			}
 
-			while (index < tempCompletions.size()) {
-				Completion c = tempCompletions.get(index);
+			while (index < possibleCompletions.size()) {
+				Completion c = possibleCompletions.get(index);
 				if (Util.startsWithIgnoreCase(c.getInputText(), text)) {
 					retVal.add(c);
 					index++;
@@ -179,6 +96,93 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
 		return retVal;
 
+	}
+
+	private String getReturnType(String allText) {
+		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE ");
+		String exprCleaned = values[values.length - 1].trim();
+
+		// erase text surrounded by quotes
+		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
+
+		// clean expression to make it parsable
+		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll(" ?\\. ?", ".")
+				.replaceAll(" ?\\[ ?", "[").replaceAll(" ?\\] ?\\.", "].").replaceAll(" ?\\( ?", "(")
+				.replaceAll(" ?\\) ?\\.", ").");
+
+		int exprCleanedLen = exprCleaned.length();
+		if (exprCleanedLen > 1 && exprCleaned.charAt(exprCleanedLen - 1) == '.'
+				&& exprCleaned.charAt(exprCleanedLen - 2) != '.') {
+			// remove dot in the end
+			exprCleaned = exprCleaned.substring(0, exprCleanedLen - 1);
+		} else {
+			exprCleaned = "";
+		}
+
+		exprCleaned = exprCleaned.replaceAll("(?i)coalesce", "COALESCE");
+		exprCleaned = exprCleaned.replaceAll("(?i)in\\(", "IN(");
+
+		final String COALESCE_TEXT = "COALESCE(";
+		final String IN_TEXT = "IN(";
+		final String DECODE_TEXT = "DECODE(";
+
+		if (exprCleaned.contains(IN_TEXT)) {
+
+			exprCleaned = exprCleaned.substring(exprCleaned.indexOf(IN_TEXT) + IN_TEXT.length());
+			if (!exprCleaned.isEmpty() && exprCleaned.charAt(exprCleaned.length() - 1) == ',') {
+				exprCleaned = "";
+			}
+			if (!exprCleaned.isEmpty()) {
+				String[] valuesSplitWithComma = TChecker.correctSplitByComma(exprCleaned);
+				if (valuesSplitWithComma.length > 0) {
+					exprCleaned = valuesSplitWithComma[valuesSplitWithComma.length - 1];
+				}
+			}
+		} else if (exprCleaned.contains(COALESCE_TEXT)) {
+			exprCleaned = exprCleaned.substring(exprCleaned.lastIndexOf(COALESCE_TEXT) + COALESCE_TEXT.length());
+			if (!exprCleaned.isEmpty() && exprCleaned.charAt(exprCleaned.length() - 1) == ',') {
+				exprCleaned = "";
+			}
+			if (!exprCleaned.isEmpty()) {
+				String[] valuesSplitWithComma = TChecker.correctSplitByComma(exprCleaned);
+				if (valuesSplitWithComma.length > 0) {
+					exprCleaned = valuesSplitWithComma[valuesSplitWithComma.length - 1];
+				}
+			}
+		} else if (exprCleaned.contains(DECODE_TEXT)) {
+
+			exprCleaned = exprCleaned.substring(exprCleaned.indexOf(DECODE_TEXT) + DECODE_TEXT.length());
+		}
+
+		// erase brackets, but left Match(number) cause it should return
+		// PdmMultivalueAttribute instead of PdmAttributeSet
+		exprCleaned = exprCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
+
+		// ither cases
+		exprCleaned = exprCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]").replaceAll("Ksp\\[\\d+\\]",
+				"Ksp[]");
+
+		String[] functns = exprCleaned.split("\\.");
+
+		String previousType = null;
+
+		for (int i = 0; i < functns.length; i++) {
+			// check if pdm attribute or not
+			if (functns[i].matches("A\\[\\d+\\]")) {
+				int attr = Integer.parseInt(functns[i].replaceAll("[^0-9]", ""));
+				String attrType = TChecker.getAttributeType(attr);
+				if (attrType != null) {
+					previousType = TChecker.getPdmReturnType(attrType);
+				}
+			} else {
+
+				previousType = TChecker.getFunctionReturnType(functns[i], previousType);
+
+			}
+
+		}
+
+		return previousType;
 	}
 
 }

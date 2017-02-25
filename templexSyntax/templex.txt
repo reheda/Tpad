@@ -716,9 +716,6 @@ String|
  Returns the unit of this attribute, if any, in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#F622ECE5">Reference link</a>)
  <br />Remarks: <em>Prefer this when exporting a unit in US metrics.</em>
 
-
-##### PdmAttributeSet #####
-
 Value constant
 String|
  Returns the value of this attribute (<a href="http://txdev1.cnetcontent.com/Reference#83E284C7">Reference link</a>)
@@ -728,6 +725,9 @@ ValueUSM constant
 String|
  Returns the value of this attribute in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#FDE562F0">Reference link</a>)
  <br />Remarks: <em>Prefer this when exporting a value in US metrics.</em>
+
+
+##### PdmAttributeSet #####
 
 InvariantValues constant
 ExpressionResultList|

@@ -26,20 +26,19 @@ import ua.pp.hak.util.Attribute;
 public class TChecker {
 	final static Logger logger = LogManager.getLogger(TChecker.class);
 
+	static {
+		initFunctions();
+		initFunctionsWithParams();
+	}
+
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
 
 	static List<Attribute> attibutes = DatabaseStAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
-	final static String TYPE_SIMPLE = "Simple";
-	final static String TYPE_MULTI_VALUED = "Multi-valued";
-	final static String TYPE_SIMPLE_NUMERIC = "Simple numeric";
-	final static String TYPE_REPEATING = "Repeating";
-	final static String TYPE_REPEATING_NUMERIC = "Repeating numeric";
-	final static String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
-
 	private static ArrayList<Function> functions;
+
 	public static ArrayList<Function> getFunctions() {
 		return functions;
 	}
@@ -133,9 +132,6 @@ public class TChecker {
 
 			return errors.toString();
 		}
-
-		initFunctions();
-		initFunctionsWithParams();
 
 		// check comments
 		error = checkComments(expr);
@@ -397,7 +393,7 @@ public class TChecker {
 
 	}
 
-	public static void initFunctions() {
+	private static void initFunctions() {
 		functions = new ArrayList<>();
 		functions.add(new Function("Main", "AlternativeCategory", "ProductCategories"));
 		functions.add(new Function("HasText", "ExpressionResultLiteral", "ExpressionResultList",
@@ -514,9 +510,12 @@ public class TChecker {
 		functions.add(new Function("ProductId", "ExpressionResultNumeric", "Sku", "RelatedProduct"));
 		functions.add(new Function("AltCats", "List`1", "ProductCategories"));
 		functions.add(new Function("BestImages", "List`1", "DigitalContent"));
-		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
-		functions.add(new Function("AtLeast()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
-		functions.add(new Function("AtMost()", "ExpressionResultNumeric", "ExpressionResultNumeric", "ExpressionResultLiteral"));
+		functions.add(new Function("Round()", "ExpressionResultNumeric", "ExpressionResultNumeric",
+				"ExpressionResultLiteral"));
+		functions.add(new Function("AtLeast()", "ExpressionResultNumeric", "ExpressionResultNumeric",
+				"ExpressionResultLiteral"));
+		functions.add(new Function("AtMost()", "ExpressionResultNumeric", "ExpressionResultNumeric",
+				"ExpressionResultLiteral"));
 		functions.add(new Function("MultiplyBy()", "ExpressionResult", "ExpressionResultNumeric",
 				"ExpressionResultList", "ExpressionResultLiteral"));
 		functions.add(new Function("Match()", "PdmAttributeSet", "PdmRepeatingAttribute"));
@@ -1040,28 +1039,8 @@ public class TChecker {
 					int attr = Integer.parseInt(functns[i].replaceAll("[^0-9]", ""));
 					String attrType = getAttributeType(attr);
 					if (attrType != null) {
-						switch (attrType) {
-						case TYPE_SIMPLE:
-							previousType = "PdmAttribute";
-							break;
-						case TYPE_SIMPLE_NUMERIC:
-							previousType = "PdmAttribute";
-							break;
-						case TYPE_MULTI_VALUED:
-							previousType = "PdmMultivalueAttribute";
-							break;
-						case TYPE_MULTI_VALUED_NUMERIC:
-							previousType = "PdmMultivalueAttribute";
-							break;
-						case TYPE_REPEATING:
-							previousType = "PdmRepeatingAttribute";
-							break;
-						case TYPE_REPEATING_NUMERIC:
-							previousType = "PdmRepeatingAttribute";
-							break;
-						default:
-							break;
-						}
+						previousType = getPdmReturnType(attrType);
+
 					} else {
 						errors.append("Attribute '");
 						errors.append(functns[i]);
@@ -1121,6 +1100,42 @@ public class TChecker {
 		return null;
 	}
 
+	public static String getPdmReturnType(String attrType) {
+		String pdmReturnType = null;
+
+		final String TYPE_SIMPLE = "Simple";
+		final String TYPE_MULTI_VALUED = "Multi-valued";
+		final String TYPE_SIMPLE_NUMERIC = "Simple numeric";
+		final String TYPE_REPEATING = "Repeating";
+		final String TYPE_REPEATING_NUMERIC = "Repeating numeric";
+		final String TYPE_MULTI_VALUED_NUMERIC = "Multi-valued numeric";
+
+		switch (attrType) {
+		case TYPE_SIMPLE:
+			pdmReturnType = "PdmAttribute";
+			break;
+		case TYPE_SIMPLE_NUMERIC:
+			pdmReturnType = "PdmAttribute";
+			break;
+		case TYPE_MULTI_VALUED:
+			pdmReturnType = "PdmMultivalueAttribute";
+			break;
+		case TYPE_MULTI_VALUED_NUMERIC:
+			pdmReturnType = "PdmMultivalueAttribute";
+			break;
+		case TYPE_REPEATING:
+			pdmReturnType = "PdmRepeatingAttribute";
+			break;
+		case TYPE_REPEATING_NUMERIC:
+			pdmReturnType = "PdmRepeatingAttribute";
+			break;
+		default:
+			break;
+		}
+
+		return pdmReturnType;
+	}
+
 	private static boolean isString(String str) {
 		return str.matches("\".*\"");
 	}
@@ -1172,7 +1187,7 @@ public class TChecker {
 		return null;
 	}
 
-	public static boolean isFunctionMemberOfValid(String functionName, String previousType) {
+	private static boolean isFunctionMemberOfValid(String functionName, String previousType) {
 
 		if (functionName.matches("Match\\(\\d+\\)") && previousType.equals("PdmRepeatingAttribute")) {
 			return true;
@@ -1266,8 +1281,7 @@ public class TChecker {
 			}
 
 		} else if (condition.contains(COALESCE_TEXT)) {
-			
-			
+
 			// count external COALESCE (for COALESCE in COALESCE check)
 			int coalesceCounter = 0;
 			{
@@ -1280,11 +1294,11 @@ public class TChecker {
 					}
 				}
 			}
-			
+
 			int startIndex = 0;
 			StringBuilder sbAllExceptFunc = new StringBuilder();
-			//all before coalesce
-			sbAllExceptFunc.append( condition.substring(0, condition.indexOf(COALESCE_TEXT)));
+			// all before coalesce
+			sbAllExceptFunc.append(condition.substring(0, condition.indexOf(COALESCE_TEXT)));
 			for (int j = 0; j < coalesceCounter; j++) {
 				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
 
@@ -1297,21 +1311,23 @@ public class TChecker {
 				}
 
 				startIndex = point;
-				
-				//insert COALESCE("") without parameters
+
+				// insert COALESCE("") without parameters
 				sbAllExceptFunc.append("COALESCE(\"\")");
-				
-				//all after coalesce till the next coalesce or end of the string
-				if (j+1 < coalesceCounter){
-					sbAllExceptFunc.append(condition.substring(point+1,condition.indexOf(COALESCE_TEXT, startIndex)));						
+
+				// all after coalesce till the next coalesce or end of the
+				// string
+				if (j + 1 < coalesceCounter) {
+					sbAllExceptFunc
+							.append(condition.substring(point + 1, condition.indexOf(COALESCE_TEXT, startIndex)));
 				} else {
-					if ( point +1< condition.length()){
-						sbAllExceptFunc.append(condition.substring(point+1));							
+					if (point + 1 < condition.length()) {
+						sbAllExceptFunc.append(condition.substring(point + 1));
 					}
 				}
 			}
-			
-			//check all expect coalesce
+
+			// check all expect coalesce
 			String allExceptFunc = sbAllExceptFunc.toString();
 			if (!allExceptFunc.trim().isEmpty()) {
 				String[] values = allExceptFunc.split(" ?_ ?");
@@ -1431,7 +1447,7 @@ public class TChecker {
 					errors.append("Value in the " + functionText + " shouldn't be empty");
 					return errors.toString();
 				}
-				
+
 				// add COALESCE in COALESCE check
 				if (valuesSplitedByUnderscore[j].contains(functionText)) {
 					error = checkParametersInCondition(valuesSplitedByUnderscore[j]);
@@ -1444,7 +1460,7 @@ public class TChecker {
 						errors.append(valuesSplitedByUnderscore[j]);
 						return errors.toString();
 					}
-					
+
 				} else {
 
 					error = checkValue(valuesSplitedByUnderscore[j]);
@@ -1468,7 +1484,7 @@ public class TChecker {
 							return errors.toString();
 						}
 					}
-				
+
 				}
 			}
 
@@ -1738,8 +1754,9 @@ public class TChecker {
 		} else {
 
 			final String COALESCE_TEXT = "COALESCE(";
+			final String DECODE_TEXT = "DECODE(";
 
-			if (!returnValue.contains(COALESCE_TEXT)) {
+			if (!returnValue.contains(COALESCE_TEXT) && !returnValue.contains(DECODE_TEXT)) {
 				// check values
 
 				// erase brackets, but left Match(number) cause it should return
@@ -1771,12 +1788,12 @@ public class TChecker {
 		}
 		return null;
 	}
-	
 
 	private static String checkWhenStatement(String value) {
-		// this method special for IN function. 
-		// By default we are using "checkReturnValue" function, but we shouldn't add there "IN" function
-				
+		// this method special for IN function.
+		// By default we are using "checkReturnValue" function, but we shouldn't
+		// add there "IN" function
+
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 
@@ -1805,8 +1822,8 @@ public class TChecker {
 
 			// erase brackets, but left Match(number) cause it should return
 			// PdmMultivalueAttribute instead of PdmAttributeSet
-			String returnValueCleaned = value.replaceAll("(?<!Match)\\(.*?\\)", "()")
-					.replaceAll("Match\\(.*?,.*?\\)", "Match()");
+			String returnValueCleaned = value.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)",
+					"Match()");
 			String[] values = returnValueCleaned.split(" ?_ ?");
 			for (int i = 0; i < values.length; i++) {
 				error = checkValue(values[i]);
@@ -1832,8 +1849,7 @@ public class TChecker {
 
 		return null;
 	}
-	
-	
+
 	private static String checkCaseStatement(String caseStatement) {
 		StringBuilder errors = new StringBuilder();
 		String error = null;
@@ -1858,31 +1874,30 @@ public class TChecker {
 			String returnValue = m.group(2);
 			String stmnt = m.group(1);
 
-			
 			// CASE can't contains UNDERSCORE
 			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
 				errors.append("CASE condition shouldn't contains UNDERSCORE");
 				return errors.toString();
 			}
-			
-			//check if WHEN statement
+
+			// check if WHEN statement
 			if (stmnt.trim().toUpperCase().contains("WHEN")) {
 				error = checkWhenStatement(returnValue);
 			} else {
 				error = checkReturnValue(returnValue);
 			}
-			
+
 			if (error != null) {
 				errors.append(error);
 				return errors.toString();
 			}
-			
+
 		}
 
 		return null;
 	}
 
-	private static String[] correctSplitByComma(String str) {
+	public static String[] correctSplitByComma(String str) {
 		str = str.replaceAll(" ?, ?", ",");
 
 		List<String> list = new ArrayList<>();
