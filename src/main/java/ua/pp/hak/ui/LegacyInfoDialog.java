@@ -21,11 +21,13 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -275,11 +277,16 @@ final class AutoCompletePanel extends JPanel {
 		pTop.setBorder(BorderFactory.createTitledBorder(""));
 		pTop.add(btnByCode, BorderLayout.NORTH);
 		pTop.add(comboCode, BorderLayout.SOUTH);
+		
 
 		JPanel pBottom = new JPanel(new BorderLayout());
 		pBottom.setBorder(BorderFactory.createTitledBorder(""));
 		pBottom.add(btnByName, BorderLayout.NORTH);
-		pBottom.add(comboName, BorderLayout.SOUTH);
+		pBottom.add(comboName, BorderLayout.CENTER);
+		JLabel lblHint = new JLabel(" Pattern accepts % wildcards ");
+		lblHint.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHint.setForeground(Color.GRAY);
+		pBottom.add(lblHint,BorderLayout.SOUTH);
 
 		Box box = Box.createVerticalBox();
 		box.add(pTop);
