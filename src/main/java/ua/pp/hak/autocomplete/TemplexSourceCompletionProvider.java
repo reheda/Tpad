@@ -15,17 +15,11 @@ import ua.pp.hak.compiler.TChecker;
 /**
  * The completion provider used for Templex source code.
  *
- * @author Robert Futrell
+ * @author VR
  * @version 1.0
  */
 public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
-	/**
-	 * Constructor.
-	 *
-	 * @param jarManager
-	 *            The jar manager for this provider.
-	 */
 	public TemplexSourceCompletionProvider() {
 		setAutoActivationRules(false, "."); // Default - only activate after '.'
 	}

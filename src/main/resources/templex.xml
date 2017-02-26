@@ -9,7 +9,7 @@
    Version:        0.1
 
    This file was generated from: C:/Program Files/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-02-25 00:57:23
+   on date: 2017-02-26 14:36:33
 
 -->
 <api language="Templex">
@@ -25,11 +25,23 @@
 <keyword name="AND" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
 </keyword>
+<keyword name="AtLeast" type="function" returnType="Nullable`1" definedIn="ExpressionResultLiteral">
+	<params>
+		<param type="Decimal" name="minimum"/>
+	</params>
+	<desc><![CDATA[Returns this numeric value or the specified minimum value, whichever is greater. (<a href="http://txdev1.cnetcontent.com/Reference#E92BD858">Reference link</a>)]]></desc>
+</keyword>
 <keyword name="AtLeast" type="function" returnType="Nullable`1" definedIn="ExpressionResultNumeric">
 	<params>
 		<param type="Decimal" name="minimum"/>
 	</params>
 	<desc><![CDATA[Returns this numeric value or the specified minimum value, whichever is greater. (<a href="http://txdev1.cnetcontent.com/Reference#E92BD858">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="AtMost" type="function" returnType="Nullable`1" definedIn="ExpressionResultLiteral">
+	<params>
+		<param type="Decimal" name="maximum"/>
+	</params>
+	<desc><![CDATA[Returns this numeric value or the specified maximum value, whichever is smaller. (<a href="http://txdev1.cnetcontent.com/Reference#79D3618">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="AtMost" type="function" returnType="Nullable`1" definedIn="ExpressionResultNumeric">
 	<params>
@@ -92,6 +104,12 @@
 <br />Remarks: <em>Use this to test the product color in expressions, but prefer the <a href="InvariantColors"><code>InvariantColors</code></a> alternative.</em>]]></desc>
 </keyword>
 <keyword name="CompatibleProducts" type="constant" returnType="ExpressionResultList" definedIn="Specs">
+	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Count" type="constant" returnType="Decimal" definedIn="ExpressionResultLiteral">
+	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Count" type="constant" returnType="Decimal" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Empty description.<br>
 ]]></desc>
 </keyword>
@@ -102,6 +120,10 @@
 <keyword name="Count" type="constant" returnType="Decimal" definedIn="PdmRepeatingAttribute">
 	<desc><![CDATA[Returns the number of values in this this repeating attribute. (<a href="http://txdev1.cnetcontent.com/Reference#41894ABE">Reference link</a>)<br>
 <br />Remarks: <em>This returns 1 if this contains a single value, 2 if this contains two values, etc...</em>]]></desc>
+</keyword>
+<keyword name="Count" type="constant" returnType="Decimal" definedIn="Specs">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
 </keyword>
 <keyword name="Count" type="constant" returnType="ExpressionResult" definedIn="ExpressionResultList">
 	<desc><![CDATA[Returns the number of elements in this list. (<a href="http://txdev1.cnetcontent.com/Reference#41BDD032">Reference link</a>)]]></desc>
@@ -258,8 +280,7 @@
 	<desc><![CDATA[Converts to text and merges all the text in this list, with gramatically correct separators. (<a href="http://txdev1.cnetcontent.com/Reference#AE573DBD">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="Format" type="constant" returnType="ExpressionResultLiteral" definedIn="Gtin">
-	<desc><![CDATA[Empty description.<br>
-]]></desc>
+	<desc>Empty description.</desc>
 </keyword>
 <keyword name="Format" type="function" returnType="ExpressionResultList" definedIn="ExpressionResultList">
 	<params>
@@ -512,6 +533,10 @@
 <keyword name="LaunchDate" type="constant" returnType="DateTime" definedIn="Sku">
 	<desc><![CDATA[The estimated launch date of this product. (<a href="http://txdev1.cnetcontent.com/Reference#2C5B930D">Reference link</a>)]]></desc>
 </keyword>
+<keyword name="Length" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
+</keyword>
 <keyword name="Length" type="constant" returnType="Int32" definedIn="ExpressionResultList">
 	<desc><![CDATA[Indicates the number of characters in a String. (<a href="http://txdev1.cnetcontent.com/Reference#52CE121">Reference link</a>)]]></desc>
 </keyword>
@@ -610,6 +635,19 @@
 <keyword name="Msds" type="constant" returnType="DigitalContentItem" definedIn="DigitalContent">
 	<desc><![CDATA[Returns the manufacturer's Material Safety Data Sheet for this product. (<a href="http://txdev1.cnetcontent.com/Reference#39992759">Reference link</a>)]]></desc>
 </keyword>
+<keyword name="MultiplyBy" type="function" returnType="Nullable`1" definedIn="ExpressionResultList">
+	<params>
+		<param type="Decimal" name="factor"/>
+	</params>
+	<desc><![CDATA[Returns the result of multiplying this numeric value with the specified factor. (<a href="http://txdev1.cnetcontent.com/Reference#24F2CAE3">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="MultiplyBy" type="function" returnType="Nullable`1" definedIn="ExpressionResultLiteral">
+	<params>
+		<param type="Decimal" name="factor"/>
+	</params>
+	<desc><![CDATA[Returns the result of multiplying this numeric value with the specified factor. (<a href="http://txdev1.cnetcontent.com/Reference#24F2CAE3">Reference link</a>)<br>
+]]></desc>
+</keyword>
 <keyword name="MultiplyBy" type="function" returnType="Nullable`1" definedIn="ExpressionResultNumeric">
 	<params>
 		<param type="Decimal" name="factor"/>
@@ -617,10 +655,8 @@
 	<desc><![CDATA[Returns the result of multiplying this numeric value with the specified factor. (<a href="http://txdev1.cnetcontent.com/Reference#24F2CAE3">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="Name" type="constant" returnType="String" definedIn="AlternativeCategory">
-	<desc>Empty description.</desc>
-</keyword>
-<keyword name="Name" type="constant" returnType="String" definedIn="AlternativeCategory">
-	<desc>Empty description.</desc>
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
 </keyword>
 <keyword name="Name" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the name of this attribute. (<a href="http://txdev1.cnetcontent.com/Reference#23D808B">Reference link</a>)<br>
@@ -660,6 +696,11 @@
 </keyword>
 <keyword name="Package" type="constant" returnType="ProductPackage" definedIn="Nothing">
 	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Package" type="constant" returnType="ProductPackage" definedIn="RelatedProduct">
+	<desc><![CDATA[Empty description.<br>
+
+]]></desc>
 </keyword>
 <keyword name="PackQuantity" type="constant" returnType="Int32" definedIn="RelatedProduct">
 	<desc><![CDATA[Returns the pack quantity of this product. (<a href="http://txdev1.cnetcontent.com/Reference#AFE21102">Reference link</a>)]]></desc>
@@ -739,8 +780,7 @@
 	<desc><![CDATA[Returns the product Ids of these related products. (<a href="http://txdev1.cnetcontent.com/Reference#2C9AB411">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="ProductLine" type="constant" returnType="String" definedIn="RelatedProduct">
-	<desc><![CDATA[Returns the product line of this product. (<a href="http://txdev1.cnetcontent.com/Reference#34D2BB89">Reference link</a>)<br>
-]]></desc>
+	<desc><![CDATA[Returns the product line of this product. (<a href="http://txdev1.cnetcontent.com/Reference#34D2BB89">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="ProductLine" type="constant" returnType="String" definedIn="Sku">
 	<desc><![CDATA[Returns the product line of this product. (<a href="http://txdev1.cnetcontent.com/Reference#E0B6FCE1">Reference link</a>)]]></desc>
@@ -830,6 +870,9 @@
 </keyword>
 <keyword name="Request" type="constant" returnType="RelatedProduct" definedIn="Nothing">
 	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Round" type="function" returnType="Nullable`1" definedIn="ExpressionResultLiteral">
+	<desc><![CDATA[Returns this numeric value rounded to the nearest integer value. (<a href="http://txdev1.cnetcontent.com/Reference#52E45B5D">Reference link</a>)]]></desc>
 </keyword>
 <keyword name="Round" type="function" returnType="Nullable`1" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Returns this numeric value rounded to the nearest integer value. (<a href="http://txdev1.cnetcontent.com/Reference#52E45B5D">Reference link</a>)]]></desc>
@@ -962,6 +1005,9 @@
 	<desc><![CDATA[Converts this content to plain text. (<a href="http://txdev1.cnetcontent.com/Reference#675ECBE0">Reference link</a>)<br>
 <br />Remarks: <em>Only works on Marketing Text, Key Selling Points or Product Features, and throws an exception for other types of content such as images.</em>]]></desc>
 </keyword>
+<keyword name="ToString" type="function" returnType="ExpressionResultLiteral" definedIn="DateTimeOffset">
+	<desc>Empty description.</desc>
+</keyword>
 <keyword name="ToString" type="function" returnType="ExpressionResultLiteral" definedIn="ExpressionResultList">
 	<desc>Empty description.</desc>
 </keyword>
@@ -976,6 +1022,13 @@
 </keyword>
 <keyword name="Total" type="constant" returnType="Decimal" definedIn="PdmRepeatingAttribute">
 	<desc><![CDATA[Returns the result of adding all the numeric values in this repeating attribute. (<a href="http://txdev1.cnetcontent.com/Reference#AB061717">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="ToText" type="function" returnType="String" definedIn="DateTimeOffset">
+	<params>
+		<param type="String" name="literalFormat"/>
+	</params>
+	<desc><![CDATA[Returns a text representation of this string, and accepts formatting options (<a href="http://txdev1.cnetcontent.com/Reference#3B4B7582">Reference link</a>)<br>
+<br />Remarks: <em>Formatting options include the ones described <a href="https://msdn.microsoft.com/en-us/library/dwhawy9k(v=vs.110).aspx">here</a></em>]]></desc>
 </keyword>
 <keyword name="ToText" type="function" returnType="String" definedIn="ExpressionResultList">
 	<params>
@@ -1037,13 +1090,11 @@
 </keyword>
 <keyword name="ToUpperFirstChar" type="function" returnType="ExpressionResult" definedIn="ExpressionResultLiteral">
 	<desc><![CDATA[Returns this string with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#2A047B8B">Reference link</a>)<br>
-<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
-]]></desc>
+<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>]]></desc>
 </keyword>
 <keyword name="ToUpperFirstChar" type="function" returnType="ExpressionResult" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Returns this numeric value with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#958A4673">Reference link</a>)<br>
-<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
-]]></desc>
+<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>]]></desc>
 </keyword>
 <keyword name="Unit" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the unit of this attribute, if any. (<a href="http://txdev1.cnetcontent.com/Reference#4C4A8CE">Reference link</a>)<br>
@@ -1094,6 +1145,16 @@
 <keyword name="Value" type="constant" returnType="String" definedIn="PdmRepeatingAttribute">
 	<desc><![CDATA[Returns the value of this repeating attribute (<a href="http://txdev1.cnetcontent.com/Reference#33741C76">Reference link</a>)<br>
 <br />Remarks: <em>Prefer this when exporting a value.</em>]]></desc>
+</keyword>
+<keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="DateTimeOffset">
+	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="DateTimeOffset">
+	<desc>Empty description.</desc>
+</keyword>
+<keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="Gtin">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
 </keyword>
 <keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="PdmAttributeSet">
 	<desc><![CDATA[Returns an ExpressionResultList object containing all the values in this attribute grouping. (<a href="http://txdev1.cnetcontent.com/Reference#AC1055E6">Reference link</a>)<br>
@@ -1203,8 +1264,7 @@
 		<param type="String[]" name="pattern"/>
 	</params>
 	<desc><![CDATA[Returns a new list with all the elements from this that do not match any the specified pattern(s). (<a href="http://txdev1.cnetcontent.com/Reference#F4725E33">Reference link</a>)<br>
-<br />Remarks: <em>Pattern accepts % wildcards.</em>
-]]></desc>
+<br />Remarks: <em>Pattern accepts % wildcards.</em>]]></desc>
 </keyword>
 <keyword name="WhereNot" type="function" returnType="PdmMultivalueAttribute" definedIn="PdmMultivalueAttribute">
 	<params>
@@ -1245,8 +1305,7 @@
 ]]></desc>
 </keyword>
 <keyword name="Width" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
-	<desc><![CDATA[Empty description.<br>
-]]></desc>
+	<desc>Empty description.</desc>
 </keyword>
 <keyword name="XmlContent" type="constant" returnType="String" definedIn="DigitalContentItem">
 	<desc><![CDATA[Returns this content in raw XML form. (<a href="http://txdev1.cnetcontent.com/Reference#E325AA14">Reference link</a>)<br>

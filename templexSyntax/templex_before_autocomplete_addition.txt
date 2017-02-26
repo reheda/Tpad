@@ -398,10 +398,6 @@ String[] pattern|
  Returns a new list with all the elements from this that do not match any the specified pattern(s). (<a href="http://txdev1.cnetcontent.com/Reference#F4725E33">Reference link</a>)
  <br />Remarks: <em>Pattern accepts % wildcards.</em>
 
-MultiplyBy function
-Nullable`1|
-Decimal factor|
- Returns the result of multiplying this numeric value with the specified factor. (<a href="http://txdev1.cnetcontent.com/Reference#24F2CAE3">Reference link</a>)
 
 ##### ExpressionResultLiteral #####
 
@@ -532,29 +528,6 @@ ToUpperFirstChar function
 ExpressionResult|
  Returns this string with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#2A047B8B">Reference link</a>)
  <br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
-
-Count constant
-Decimal|
- Empty description.
-
-Round function
-Nullable`1|
- Returns this numeric value rounded to the nearest integer value. (<a href="http://txdev1.cnetcontent.com/Reference#52E45B5D">Reference link</a>)
-
-AtLeast function
-Nullable`1|
-Decimal minimum|
- Returns this numeric value or the specified minimum value, whichever is greater. (<a href="http://txdev1.cnetcontent.com/Reference#E92BD858">Reference link</a>)
-
-AtMost function
-Nullable`1|
-Decimal maximum|
- Returns this numeric value or the specified maximum value, whichever is smaller. (<a href="http://txdev1.cnetcontent.com/Reference#79D3618">Reference link</a>)
-
-MultiplyBy function
-Nullable`1|
-Decimal factor|
- Returns the result of multiplying this numeric value with the specified factor. (<a href="http://txdev1.cnetcontent.com/Reference#24F2CAE3">Reference link</a>)
 
 
 ##### ExpressionResultNumeric #####
@@ -709,10 +682,6 @@ ToUpperFirstChar function
 ExpressionResult|
  Returns this numeric value with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#958A4673">Reference link</a>)
  <br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
-
-Count constant
-Decimal|
- Empty description.
 
 
 ##### PdmAttribute #####
@@ -1049,11 +1018,6 @@ ProductLine constant
 String|
  Returns the product line of this product. (<a href="http://txdev1.cnetcontent.com/Reference#34D2BB89">Reference link</a>)
 
-Package constant
-ProductPackage|
- Empty description.
-
-
 
 ##### RelatedProductList #####
 
@@ -1153,10 +1117,6 @@ CompatibleProducts constant
 ExpressionResultList|
  Empty description.
 
-Count constant
-Decimal|
- Empty description.
-
 
 ##### SpecSection #####
 
@@ -1198,19 +1158,11 @@ Width constant
 ExpressionResultNumeric|
  Empty description.
 
-Length constant
-ExpressionResultNumeric|
- Empty description.
-
 
 ##### Gtin #####
 
 Format constant
 ExpressionResultLiteral|
- Empty description.
-
-Values constant
-ExpressionResultList|
  Empty description.
 
 
@@ -1348,22 +1300,5 @@ String|
 
 Name constant
 String|
- Empty description.
-
-
-##### DateTimeOffset #####
-
-ToText function
-String|
-String literalFormat|
- Returns a text representation of this string, and accepts formatting options (<a href="http://txdev1.cnetcontent.com/Reference#3B4B7582">Reference link</a>)
- <br />Remarks: <em>Formatting options include the ones described <a href="https://msdn.microsoft.com/en-us/library/dwhawy9k(v=vs.110).aspx">here</a></em>
-
-ToString function
-ExpressionResultLiteral|
- Empty description.
-
-Values constant
-ExpressionResultList|
  Empty description.
 
