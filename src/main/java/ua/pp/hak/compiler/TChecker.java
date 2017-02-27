@@ -1875,8 +1875,13 @@ public class TChecker {
 			String stmnt = m.group(1);
 
 			// CASE can't contains UNDERSCORE
-			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")) {
+			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_") && !returnValue.contains("COALESCE(")) {
 				errors.append("CASE condition shouldn't contains UNDERSCORE");
+				errors.append(NEW_LINE);
+				errors.append(NEW_LINE);
+				errors.append("-----");
+				errors.append(NEW_LINE);
+				errors.append(returnValue);
 				return errors.toString();
 			}
 

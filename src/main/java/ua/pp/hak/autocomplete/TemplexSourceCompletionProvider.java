@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.text.JTextComponent;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.Util;
@@ -20,6 +22,8 @@ import ua.pp.hak.compiler.TChecker;
  */
 public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
+	final static Logger logger = LogManager.getLogger(TemplexSourceCompletionProvider.class);
+
 	public TemplexSourceCompletionProvider() {
 		setAutoActivationRules(false, "."); // Default - only activate after '.'
 	}
@@ -32,33 +36,40 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
 		List<Completion> retVal = new ArrayList<Completion>();
 		String text = getAlreadyEnteredText(comp);
-		
-		//get return type of the expression and fill in possibleCompleteion list
+
+		// get return type of the expression and fill in possibleCompleteion
+		// list
 		List<Completion> possibleCompletions = new ArrayList<>();
 		int indexBeforeEnteredText = comp.getCaretPosition() - text.length();
 		if (indexBeforeEnteredText > -1) {
 			String allText = comp.getText().substring(0, indexBeforeEnteredText);
-			String returnType = getReturnType(allText);
 
-			for (Completion completion : completions) {
-				String summary = completion.getSummary();
-				int ind = summary.indexOf("Defined in: <em>") + 16;
-				if (ind > -1) {
-					String definedIf = summary.substring(ind, summary.length() - 5);
-					if (definedIf.equals(returnType)) {
-						possibleCompletions.add(completion);
+			try {
+
+				String returnType = getReturnType(allText);
+
+				for (Completion completion : completions) {
+					String summary = completion.getSummary();
+					int ind = summary.indexOf("Defined in: <em>") + 16;
+					if (ind > -1) {
+						String definedIf = summary.substring(ind, summary.length() - 5);
+						if (definedIf.equals(returnType)) {
+							possibleCompletions.add(completion);
+						}
 					}
 				}
+			} catch (Exception e) {
+				logger.error(e.getMessage());
 			}
 
 		}
-		
-		//use default list if no suitable completions
+
+		// use default list if no suitable completions
 		if (possibleCompletions.isEmpty()) {
 			possibleCompletions = completions;
 		}
-		
-		//filter completions by already entered text 
+
+		// filter completions by already entered text
 		if (text != null) {
 
 			int index = Collections.binarySearch(possibleCompletions, text, comparator);
@@ -94,6 +105,11 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
 	private String getReturnType(String allText) {
 		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE ");
+
+		if (values.length == 0) {
+			return null;
+		}
+
 		String exprCleaned = values[values.length - 1].trim();
 
 		// erase text surrounded by quotes
