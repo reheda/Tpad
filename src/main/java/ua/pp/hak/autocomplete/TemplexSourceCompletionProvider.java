@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.text.JTextComponent;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.Util;
@@ -19,6 +21,8 @@ import ua.pp.hak.compiler.TChecker;
  * @version 1.0
  */
 public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
+	
+	final static Logger logger = LogManager.getLogger(TemplexSourceCompletionProvider.class);
 
 	public TemplexSourceCompletionProvider() {
 		setAutoActivationRules(false, "."); // Default - only activate after '.'
@@ -38,18 +42,25 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 		int indexBeforeEnteredText = comp.getCaretPosition() - text.length();
 		if (indexBeforeEnteredText > -1) {
 			String allText = comp.getText().substring(0, indexBeforeEnteredText);
-			String returnType = getReturnType(allText);
+			
+			try {
+				String returnType = getReturnType(allText);
 
-			for (Completion completion : completions) {
-				String summary = completion.getSummary();
-				int ind = summary.indexOf("Defined in: <em>") + 16;
-				if (ind > -1) {
-					String definedIf = summary.substring(ind, summary.length() - 5);
-					if (definedIf.equals(returnType)) {
-						possibleCompletions.add(completion);
+				for (Completion completion : completions) {
+					String summary = completion.getSummary();
+					int ind = summary.indexOf("Defined in: <em>") + 16;
+					if (ind > -1) {
+						String definedIf = summary.substring(ind, summary.length() - 5);
+						if (definedIf.equals(returnType)) {
+							possibleCompletions.add(completion);
+						}
 					}
 				}
+				
+			} catch (Exception e) {
+				logger.error(e.getMessage());
 			}
+
 
 		}
 		
@@ -94,6 +105,11 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
 	private String getReturnType(String allText) {
 		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE ");
+		
+		if (values.length == 0) {
+			return null;
+		}
+		
 		String exprCleaned = values[values.length - 1].trim();
 
 		// erase text surrounded by quotes
