@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,40 +26,45 @@ import ua.pp.hak.ui.LoadingPanel;
 public class PlanioParser {
 	final static Logger logger = LogManager.getLogger(PlanioParser.class);
 	private final static String CNET_CONTENT_ISSUES_URL = "https://claims.cnetcontent.com/issues/";
-
-	private String processingLabelText;
-	private Set<ExpressionObject> allExprWithErrors;
-	private boolean outputExpressionCode;
-
 	private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
-	public String getResultPage(String[] inputLinks) throws IOException {
-		logger.info("Check expression list...");
-		allExprWithErrors = new HashSet<>();
+	private List<ExpressionObject> exprListWithErrors;
+	private boolean outputExpressionCode;
 
-		String oldProcessingLabelText = LoadingPanel.getLabel().getText();
+	public String getResultPage(String[] inputLinks) throws IOException {
+		long start = System.nanoTime();
+		exprListWithErrors = new ArrayList<>();
+		logger.info("Check expression list...");
 
 		// get distinct values
-		Set<String> mySet = new HashSet<>(Arrays.asList(inputLinks));
-		String[] distinctLinks = mySet.toArray(new String[mySet.size()]);
+		Set<String> linksSet = new HashSet<>(Arrays.asList(inputLinks));
+		String[] distinctLinks = linksSet.toArray(new String[linksSet.size()]);
 
-		int len = distinctLinks.length;
-		for (int i = 0; i < mySet.size(); i++) {
-			processingLabelText = oldProcessingLabelText + " [Step " + (i + 1) + " of " + len + "]";
+		// fill set with expressions
+		Set<ExpressionObject> exprSet = new HashSet<>();
+		for (int i = 0; i < linksSet.size(); i++) {
 			String json = getJson(distinctLinks[i]);
 			if (json != null) {
-				allExprWithErrors.addAll(getExpressionListWithErrors(json));
+				fillExpressionSet(json, exprSet);
 			}
 		}
 
-		String page = generatePage(allExprWithErrors);
+		// parse expression code to set
+		parseExpressionCodesToSet(exprSet);
+
+		fillExpresionListWithErrors(exprSet);
+		String page = generatePage(exprListWithErrors);
 
 		logger.info("Finish check expression list.");
+		long elapsedTime = System.nanoTime() - start;
+		logger.info("Elapsed time to check expression list: " + elapsedTime + " ns (~ "
+				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
+		System.out.println(page);
 		return page;
 
 	}
 
-	private String generatePage(Set<ExpressionObject> allExprWithErrors) {
+	private String generatePage(List<ExpressionObject> exprListWithErrors) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
 		sb.append(
@@ -75,7 +81,7 @@ public class PlanioParser {
 		sb.append("<td class='red'>Error message</td>");
 		sb.append("</tr>");
 
-		for (ExpressionObject expr : allExprWithErrors) {
+		for (ExpressionObject expr : exprListWithErrors) {
 			sb.append("<tr>");
 			String link = CNET_CONTENT_ISSUES_URL + expr.getId();
 			sb.append("<td class='red'>");
@@ -126,13 +132,14 @@ public class PlanioParser {
 		return sb.toString();
 	}
 
-	private List<ExpressionObject> getExpressionListWithErrors(String json) throws IOException {
-		List<ExpressionObject> exprListWithErrors = new ArrayList<>();
+	private void fillExpresionListWithErrors(Set<ExpressionObject> exprSet) throws IOException {
 
-		List<ExpressionObject> exprList = getExpressionList(json);
-		for (ExpressionObject exprObj : exprList) {
-			String exprCode = exprObj.getExpressionCode().replace("<pre><code class=\"sql\">", "")
-					.replace("</code></pre>", "");
+		for (ExpressionObject exprObj : exprSet) {
+			String exprCode = exprObj.getExpressionCode();
+			if (exprCode == null) {
+				continue;
+			}
+			exprCode = exprCode.replace("<pre><code class=\"sql\">", "").replace("</code></pre>", "");
 
 			// don't take empty expression
 			if (!exprCode.trim().isEmpty()) {
@@ -157,29 +164,20 @@ public class PlanioParser {
 				logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - empty");
 			}
 		}
-		return exprListWithErrors;
+
 	}
 
-	private List<ExpressionObject> getExpressionList(String json) throws IOException {
-
-		List<TemplateObject> objList = getTemplateList(json);
-
-		// create expression list
-		List<ExpressionObject> exprList = new ArrayList<>();
-		for (TemplateObject templateObject : objList) {
-
-			if (templateObject.getName().contains("expression")) {
-				exprList.add(new ExpressionObject(templateObject));
-			}
-		}
+	private void parseExpressionCodesToSet(Set<ExpressionObject> exprSet) throws IOException {
 
 		// parse expression code
-		for (int i = 0; i < exprList.size(); i++) {
+		int index = 1;
+		String oldProcessingLabelText = LoadingPanel.getLabel().getText();
+		for (ExpressionObject expressionObject : exprSet) {
+			if (Thread.currentThread().isInterrupted()) {
+				break;
+			}
 
-			ExpressionObject expressionObject = exprList.get(i);
-
-			LoadingPanel.getLabel()
-					.setText(processingLabelText.concat(" -> (" + (i + 1) + "/" + exprList.size() + ")"));
+			LoadingPanel.getLabel().setText(oldProcessingLabelText.concat(" (" + (index) + "/" + exprSet.size() + ")"));
 
 			// add "/" at the beginning to be valid
 			String exprJson = getJson("/" + expressionObject.getId());
@@ -210,11 +208,21 @@ public class PlanioParser {
 					logger.error("Json doesn't contain 'issue'");
 				}
 			}
-
+			index++;
 		}
 
-		// return expression list
-		return exprList;
+	}
+
+	private void fillExpressionSet(String json, Set<ExpressionObject> exprSet) throws IOException {
+
+		List<TemplateObject> objList = getTemplateList(json);
+
+		for (TemplateObject templateObject : objList) {
+
+			if (templateObject.getName().contains("expression")) {
+				exprSet.add(new ExpressionObject(templateObject));
+			}
+		}
 
 	}
 
@@ -326,7 +334,7 @@ public class PlanioParser {
 			logger.error("GET request not worked, " + CNET_CONTENT_ISSUES_URL + id);
 			ExpressionObject eto = new ExpressionObject(Long.parseLong(id), null, null);
 			eto.setExpressionResult("<font color='red'>Can't parse info from the page. Report it.</font>");
-			allExprWithErrors.add(eto);
+			exprListWithErrors.add(eto);
 			return null;
 		}
 

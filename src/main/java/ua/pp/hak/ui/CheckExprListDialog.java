@@ -68,7 +68,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 				// "(?m)^[ \t]*\r?\n" - regex to remove empty lines
 				String links = taLinksList.getText();
 				String text = new PlanioParser().getResultPage(links.replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"));
-
+				
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
 				textPane.setBackground(null);
@@ -89,6 +89,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 				return;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 
