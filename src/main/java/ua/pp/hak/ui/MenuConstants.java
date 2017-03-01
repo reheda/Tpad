@@ -46,6 +46,7 @@ public interface MenuConstants extends Constants{
 	final String viewZoomDefault = "Zoom Default";
 
 	final String expressionCheck = "Check";
+	final String expressionCheckExprList = "Check expr list...";
 	final String expressionParse = "Parse";
 	final String expressionParseSkuList = "Parse for SKU List...";
 	final String expressionAttrNameIntoComment = "Insert attr names...";

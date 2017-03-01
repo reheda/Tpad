@@ -118,7 +118,7 @@ public class TChecker {
 				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 	}
 
-	private static String checkExpression(String expr) {
+	public static String checkExpression(String expr) {
 
 		expr = expr.trim();
 

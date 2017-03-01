@@ -72,6 +72,8 @@ public class LoadingPanel {
 					new ParseSkuListDialog().show(npd);
 				} else if (processToDo.equals("check")) {
 					TChecker.check(npd);
+				} else if (processToDo.equals("check-expr-list")) {
+					new CheckExprListDialog().show(npd);
 				} else if (processToDo.equals("tps")){
 					TpsInfo.show(npd);
 				}

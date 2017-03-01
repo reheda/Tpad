@@ -759,6 +759,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants{
 			}
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(expressionCheckExprList)) {
+			logger.info("Open CheckExprList window");
+			LoadingPanel.doProcess("check-expr-list", npd);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(expressionParse) || evObj == parseButton) {
 			// try {
 			// Desktop.getDesktop().browse(new
@@ -1009,6 +1014,8 @@ public class Notepad implements ActionListener, MenuConstants, Constants{
 		}
 
 		createMenuItem(expressionCheck, KeyEvent.VK_C, expressionMenu, KeyEvent.VK_C, KeyEvent.SHIFT_MASK, this);
+		createMenuItem(expressionCheckExprList, KeyEvent.VK_E, expressionMenu, KeyEvent.VK_C,
+				KeyEvent.SHIFT_MASK + KeyEvent.ALT_MASK, this);
 		createMenuItem(expressionParse, KeyEvent.VK_P, expressionMenu, KeyEvent.VK_P, KeyEvent.SHIFT_MASK, this);
 		createMenuItem(expressionParseSkuList, KeyEvent.VK_S, expressionMenu, KeyEvent.VK_P,
 				KeyEvent.SHIFT_MASK + KeyEvent.ALT_MASK, this);
