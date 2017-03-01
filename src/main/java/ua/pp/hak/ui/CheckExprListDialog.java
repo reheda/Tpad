@@ -135,7 +135,8 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 
 		taLinksList = new JTextArea();
 		taLinksList.setLineWrap(true);
-		TextLineNumber tln = new TextLineNumber(taLinksList);
+		TextLineNumber tln = new TextLineNumber(taLinksList, 2);
+		tln.setUpdateFont(true);
 		taLinksList.setFont(npd.getDefaultFont().deriveFont(12f));
 		taLinksList.addAncestorListener(new RequestFocusListener());
 		JScrollPane spSkuList = new JScrollPane(taLinksList);

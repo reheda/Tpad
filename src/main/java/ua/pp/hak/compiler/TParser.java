@@ -478,7 +478,7 @@ public class TParser {
 
 	}
 
-	private static String escapeHtml(String input) {
+	public static String escapeHtml(String input) {
 		StringBuilder escapedText = new StringBuilder();
 		boolean isChanged = false;
 

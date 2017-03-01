@@ -19,12 +19,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ua.pp.hak.compiler.TChecker;
+import ua.pp.hak.compiler.TParser;
 import ua.pp.hak.ui.LoadingPanel;
 
 public class PlanioParser {
 	final static Logger logger = LogManager.getLogger(PlanioParser.class);
-	String processingLabelText;
-	Set<ExpressionTemplateObject> allExprWithErrors;
+	private final static String CNET_CONTENT_ISSUES_URL = "https://claims.cnetcontent.com/issues/";
+
+	private String processingLabelText;
+	private Set<ExpressionObject> allExprWithErrors;
+	private boolean outputExpressionCode;
 
 	private final static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
@@ -49,12 +53,12 @@ public class PlanioParser {
 
 		String page = generatePage(allExprWithErrors);
 
-		logger.info("Finish check expression list...");
+		logger.info("Finish check expression list.");
 		return page;
 
 	}
 
-	private String generatePage(Set<ExpressionTemplateObject> allExprWithErrors) {
+	private String generatePage(Set<ExpressionObject> allExprWithErrors) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
 		sb.append(
@@ -65,20 +69,23 @@ public class PlanioParser {
 		sb.append("<tbody>");
 		sb.append("<tr class='header'>");
 		sb.append("<td>Expression link</td>");
-		// sb.append("<td>Expression code</td>");
+		if (outputExpressionCode) {
+			sb.append("<td>Expression code</td>");
+		}
 		sb.append("<td class='red'>Error message</td>");
 		sb.append("</tr>");
 
-		for (ExpressionTemplateObject expr : allExprWithErrors) {
+		for (ExpressionObject expr : allExprWithErrors) {
 			sb.append("<tr>");
-			String link = "https://claims.cnetcontent.com/issues/" + expr.getId();
+			String link = CNET_CONTENT_ISSUES_URL + expr.getId();
 			sb.append("<td class='red'>");
 			sb.append(link);
 			sb.append("</td>");
-			// sb.append("<td>");
-			// sb.append("<pre>" + TParser.escapeHtml(expr.getExpressionCode())
-			// + "</pre>");
-			// sb.append("</td>");
+			if (outputExpressionCode) {
+				sb.append("<td>");
+				sb.append("<pre>" + TParser.escapeHtml(expr.getExpressionCode()) + "</pre>");
+				sb.append("</td>");
+			}
 			sb.append("<td>");
 			String exprResult = expr.getExpressionResult();
 			// shorten error message
@@ -107,7 +114,11 @@ public class PlanioParser {
 	private String getEndRow() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<tr class='header'>");
-		for (int i = 0; i < 2; i++) {
+		int columns = 2;
+		if (outputExpressionCode) {
+			columns++;
+		}
+		for (int i = 0; i < columns; i++) {
 			sb.append("<td class='red'>&nbsp;</td>");
 		}
 		sb.append("</tr>");
@@ -115,11 +126,11 @@ public class PlanioParser {
 		return sb.toString();
 	}
 
-	private List<ExpressionTemplateObject> getExpressionListWithErrors(String json) throws IOException {
-		List<ExpressionTemplateObject> exprListWithErrors = new ArrayList<>();
+	private List<ExpressionObject> getExpressionListWithErrors(String json) throws IOException {
+		List<ExpressionObject> exprListWithErrors = new ArrayList<>();
 
-		List<ExpressionTemplateObject> exprList = getExpressionObjectsList(json);
-		for (ExpressionTemplateObject exprObj : exprList) {
+		List<ExpressionObject> exprList = getExpressionList(json);
+		for (ExpressionObject exprObj : exprList) {
 			String exprCode = exprObj.getExpressionCode().replace("<pre><code class=\"sql\">", "")
 					.replace("</code></pre>", "");
 
@@ -135,45 +146,43 @@ public class PlanioParser {
 						exprObj.setIsExpressionValid(false);
 						exprObj.setExpressionResult(result);
 						exprListWithErrors.add(exprObj);
-						logger.info("https://claims.cnetcontent.com/issues/" + exprObj.getId() + " - not ok");
+						logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - not ok");
 					} else {
-						logger.info("https://claims.cnetcontent.com/issues/" + exprObj.getId() + " - " + status
-								+ " (isn't checked)");
+						logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - " + status + " (isn't checked)");
 					}
 				} else {
-					logger.info("https://claims.cnetcontent.com/issues/" + exprObj.getId() + " - ok");
+					logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - ok");
 				}
 			} else {
-				logger.info("https://claims.cnetcontent.com/issues/" + exprObj.getId() + " - empty");
+				logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - empty");
 			}
 		}
 		return exprListWithErrors;
 	}
 
-	private List<ExpressionTemplateObject> getExpressionObjectsList(String json) throws IOException {
+	private List<ExpressionObject> getExpressionList(String json) throws IOException {
 
-		List<TemplateObject> objList = getTemplateObjectsList(json);
+		List<TemplateObject> objList = getTemplateList(json);
 
 		// create expression list
-		List<ExpressionTemplateObject> exprList = new ArrayList<>();
+		List<ExpressionObject> exprList = new ArrayList<>();
 		for (TemplateObject templateObject : objList) {
 
 			if (templateObject.getName().contains("expression")) {
-				exprList.add(new ExpressionTemplateObject(templateObject));
+				exprList.add(new ExpressionObject(templateObject));
 			}
 		}
 
 		// parse expression code
-
 		for (int i = 0; i < exprList.size(); i++) {
 
-			ExpressionTemplateObject expressionTemplateObject = exprList.get(i);
+			ExpressionObject expressionObject = exprList.get(i);
 
 			LoadingPanel.getLabel()
 					.setText(processingLabelText.concat(" -> (" + (i + 1) + "/" + exprList.size() + ")"));
 
 			// add "/" at the beginning to be valid
-			String exprJson = getJson("/" + expressionTemplateObject.getId());
+			String exprJson = getJson("/" + expressionObject.getId());
 			if (exprJson != null) {
 				JSONObject jsonObj = new JSONObject(exprJson);
 				if (jsonObj.has("issue")) {
@@ -181,7 +190,7 @@ public class PlanioParser {
 
 					if (obj.has("description")) {
 						String expressionCode = obj.getString("description");
-						expressionTemplateObject.setExpressionCode(expressionCode);
+						expressionObject.setExpressionCode(expressionCode);
 					} else {
 						logger.error("Json doesn't contain 'description'");
 					}
@@ -190,7 +199,7 @@ public class PlanioParser {
 						JSONObject status = obj.getJSONObject("status");
 						if (status.has("name")) {
 							String statusName = status.getString("name");
-							expressionTemplateObject.setStatus(statusName);
+							expressionObject.setStatus(statusName);
 						} else {
 							logger.error("Json doesn't contain 'name'");
 						}
@@ -209,7 +218,7 @@ public class PlanioParser {
 
 	}
 
-	private List<TemplateObject> getTemplateObjectsList(String json) {
+	private List<TemplateObject> getTemplateList(String json) {
 
 		List<TemplateObject> objList = new ArrayList<>();
 		JSONObject jsonObj = new JSONObject(json);
@@ -273,21 +282,6 @@ public class PlanioParser {
 		return objList;
 	}
 
-	String unEscape(String myString) {
-		// String myString = "\u0048\u0065\u006C\u006C\u006F World";
-		String str = myString.split(" ")[0];
-		str = str.replace("\\", "");
-		String[] arr = str.split("u");
-		String text = "";
-		for (int i = 1; i < arr.length; i++) {
-			int hexVal = Integer.parseInt(arr[i], 16);
-			text += (char) hexVal;
-		}
-		// Text will now have Hello
-
-		return text;
-	}
-
 	private String getJson(String link) throws IOException {
 
 		String[] values = link.split("/");
@@ -329,8 +323,8 @@ public class PlanioParser {
 			// print result
 			return response.toString();
 		} else {
-			logger.error("GET request not worked, " + "https://claims.cnetcontent.com/issues/" + id);
-			ExpressionTemplateObject eto = new ExpressionTemplateObject(Long.parseLong(id),null,null);
+			logger.error("GET request not worked, " + CNET_CONTENT_ISSUES_URL + id);
+			ExpressionObject eto = new ExpressionObject(Long.parseLong(id), null, null);
 			eto.setExpressionResult("<font color='red'>Can't parse info from the page. Report it.</font>");
 			allExprWithErrors.add(eto);
 			return null;
@@ -426,17 +420,17 @@ class TemplateObject {
 
 }
 
-class ExpressionTemplateObject extends TemplateObject {
+class ExpressionObject extends TemplateObject {
 	private String expressionCode;
 	private String expressionResult;
 	private boolean isExpressionValid = true;
 	private String status;
 
-	public ExpressionTemplateObject(Long id, String subject, String name) {
+	public ExpressionObject(Long id, String subject, String name) {
 		super(id, subject, name);
 	}
 
-	public ExpressionTemplateObject(TemplateObject tObj) {
+	public ExpressionObject(TemplateObject tObj) {
 		super(tObj.getId(), tObj.getSubject(), tObj.getName());
 	}
 
@@ -474,7 +468,7 @@ class ExpressionTemplateObject extends TemplateObject {
 
 	@Override
 	public String toString() {
-		return "ExpressionTemplateObject [expressionCode=" + expressionCode + ", expressionResult=" + expressionResult
+		return "ExpressionObject [expressionCode=" + expressionCode + ", expressionResult=" + expressionResult
 				+ ", isExpressionValid=" + isExpressionValid + ", status=" + status + "]";
 	}
 
@@ -497,7 +491,7 @@ class ExpressionTemplateObject extends TemplateObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ExpressionTemplateObject other = (ExpressionTemplateObject) obj;
+		ExpressionObject other = (ExpressionObject) obj;
 		if (expressionCode == null) {
 			if (other.expressionCode != null)
 				return false;
