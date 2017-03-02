@@ -37,12 +37,12 @@ public class PlanioParser {
 		logger.info("Check expression list...");
 
 		// get distinct values
-		Set<String> linksSet = new HashSet<>(Arrays.asList(inputLinks));
-		String[] distinctLinks = linksSet.toArray(new String[linksSet.size()]);
+		Set<String> tempLinksSet = new HashSet<>(Arrays.asList(inputLinks));
+		String[] distinctLinks = tempLinksSet.toArray(new String[tempLinksSet.size()]);
 
 		// fill set with expressions
 		Set<ExpressionObject> exprSet = new HashSet<>();
-		for (int i = 0; i < linksSet.size(); i++) {
+		for (int i = 0; i < distinctLinks.length; i++) {
 			String json = getJson(distinctLinks[i]);
 			if (json != null) {
 				fillExpressionSet(json, exprSet);
@@ -52,14 +52,17 @@ public class PlanioParser {
 		// parse expression code to set
 		parseExpressionCodesToSet(exprSet);
 
+		// fill expression list witj errors
 		fillExpresionListWithErrors(exprSet);
+
+		// get result page
 		String page = generatePage(exprListWithErrors);
 
 		logger.info("Finish check expression list.");
 		long elapsedTime = System.nanoTime() - start;
 		logger.info("Elapsed time to check expression list: " + elapsedTime + " ns (~ "
 				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
-		System.out.println(page);
+
 		return page;
 
 	}
@@ -340,7 +343,7 @@ public class PlanioParser {
 
 	}
 
-	public boolean isJSONValid(String json) {
+	boolean isJSONValid(String json) {
 		try {
 			new JSONObject(json);
 		} catch (JSONException ex) {

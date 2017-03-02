@@ -44,7 +44,6 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 			int result = 0;
 			while (!isAccepted) {
 
-				// replace "null" to "npd.getFrame()"
 				result = JOptionPane.showConfirmDialog(npd.getFrame(), main, "Check Expression List",
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -54,7 +53,6 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 					String links = taLinksList.getText();
 					String[] errors = checkLinks(links);
 					if (errors != null) {
-						// replace "null" to "npd.getFrame()"
 						JOptionPane.showMessageDialog(npd.getFrame(), errors, "Wrong links", JOptionPane.ERROR_MESSAGE);
 					} else {
 						isAccepted = true;
@@ -68,7 +66,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 				// "(?m)^[ \t]*\r?\n" - regex to remove empty lines
 				String links = taLinksList.getText();
 				String text = new PlanioParser().getResultPage(links.replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"));
-				
+
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
 				textPane.setBackground(null);
