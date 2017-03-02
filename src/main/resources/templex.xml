@@ -9,7 +9,7 @@
    Version:        0.1
 
    This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-03-02 09:44:54
+   on date: 2017-03-02 10:29:35
 
 -->
 <api language="Templex">
@@ -372,10 +372,13 @@
 <keyword name="HasValue" type="constant" returnType="ExpressionResultLiteral" definedIn="ExpressionResultNumeric">
 	<desc>Empty description.</desc>
 </keyword>
+<keyword name="HasValue" type="constant" returnType="ExpressionResultLiteral" definedIn="NullableValueUnitPair">
+	<desc>Empty description.</desc>
+</keyword>
 <keyword name="Header" type="constant" returnType="String" definedIn="SpecLine">
 	<desc><![CDATA[Returns the header of this spec line. (<a href="http://txdev1.cnetcontent.com/Reference#CE26311F">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="Height" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
+<keyword name="Height" type="constant" returnType="NullableValueUnitPair" definedIn="ProductPackage">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="HtmlEncode" type="function" returnType="ExpressionResult" definedIn="ExpressionResultList">
@@ -526,10 +529,6 @@
 <keyword name="LaunchDate" type="constant" returnType="DateTime" definedIn="Sku">
 	<desc><![CDATA[The estimated launch date of this product. (<a href="http://txdev1.cnetcontent.com/Reference#2C5B930D">Reference link</a>)]]></desc>
 </keyword>
-<keyword name="Length" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
-	<desc><![CDATA[Empty description.<br>
-]]></desc>
-</keyword>
 <keyword name="Length" type="constant" returnType="Int32" definedIn="ExpressionResultList">
 	<desc><![CDATA[Indicates the number of characters in a String. (<a href="http://txdev1.cnetcontent.com/Reference#52CE121">Reference link</a>)]]></desc>
 </keyword>
@@ -538,6 +537,10 @@
 </keyword>
 <keyword name="Length" type="constant" returnType="Int32" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Indicates the number of characters in a String. (<a href="http://txdev1.cnetcontent.com/Reference#95A881D0">Reference link</a>)]]></desc>
+</keyword>
+<keyword name="Length" type="constant" returnType="NullableValueUnitPair" definedIn="ProductPackage">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
 </keyword>
 <keyword name="LIKE" type="constant" returnType="Operator" definedIn="Nothing">
 	<desc>Empty description.</desc>
@@ -1128,6 +1131,10 @@
 	<desc><![CDATA[Replaces the counting separator ¬ with the specified respective separator (<a href="http://txdev1.cnetcontent.com/Reference#971A2448">Reference link</a>)<br>
 <br />Remarks: <em>You may specify only the first few separators and whitespace will automatically be used for the remaining values, you can also specify no separators, and whitespace will be used for all values.</em>]]></desc>
 </keyword>
+<keyword name="Value" type="constant" returnType="String" definedIn="NullableValueUnitPair">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
+</keyword>
 <keyword name="Value" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the value of this attribute (<a href="http://txdev1.cnetcontent.com/Reference#83E284C7">Reference link</a>)<br>
 <br />Remarks: <em>Prefer this when exporting a value.</em>]]></desc>
@@ -1204,7 +1211,7 @@
 	<desc><![CDATA[Returns the value of this attribute in US metrics. (<a href="http://txdev1.cnetcontent.com/Reference#C918C1BB">Reference link</a>)<br>
 <br />Remarks: <em>Prefer this when exporting a value in US metrics.</em>]]></desc>
 </keyword>
-<keyword name="Weight" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
+<keyword name="Weight" type="constant" returnType="NullableValueUnitPair" definedIn="ProductPackage">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="WHEN" type="constant" returnType="When" definedIn="Nothing">
@@ -1298,7 +1305,7 @@
 <br />Remarks: <em>Ask Luis if you think you need to use this. Supports % wildcards. This is NOT supported by multi-valued attributes. </em>
 ]]></desc>
 </keyword>
-<keyword name="Width" type="constant" returnType="ExpressionResultNumeric" definedIn="ProductPackage">
+<keyword name="Width" type="constant" returnType="NullableValueUnitPair" definedIn="ProductPackage">
 	<desc>Empty description.</desc>
 </keyword>
 <keyword name="XmlContent" type="constant" returnType="String" definedIn="DigitalContentItem">

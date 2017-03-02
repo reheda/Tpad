@@ -49,7 +49,7 @@ public class FunctionWithParameters {
 		// check if text
 		boolean isString = parameter.matches("\".*\"");
 		// check if number
-		boolean isDouble = parameter.matches("\\d+\\.\\d+");
+		boolean isDouble = parameter.matches("(\\d+)?\\.\\d+");
 		boolean isInteger = parameter.matches("\\d+");
 		// check if function
 		boolean isFunction = parameter.matches(".*\\.\\w+");

@@ -547,7 +547,8 @@ public class TChecker {
 		functions.add(new Function("ProductType", "ExpressionResultLiteral", "Sku"));
 		functions.add(new Function("Unit", "ExpressionResultLiteral", "PdmAttribute"));
 		functions.add(new Function("UnitUSM", "ExpressionResultLiteral", "PdmAttribute"));
-		functions.add(new Function("Value", "ExpressionResultLiteral", "PdmAttribute", "Gtin"));
+		functions.add(new Function("Value", "ExpressionResultLiteral", "PdmAttribute", "ExpressionResultNumeric",
+				"NullableValueUnitPair", "Gtin"));
 		functions.add(new Function("ValueUSM", "ExpressionResultLiteral", "PdmAttribute"));
 		functions.add(new Function("XmlContent", "ExpressionResultLiteral", "DigitalContentItem"));
 		functions.add(new Function("ListPaths()", "ExpressionResultLiteral", "ProductCategories"));
@@ -574,10 +575,11 @@ public class TChecker {
 		functions.add(new Function("Data[\"\"]", "ExpressionResultLiteral", "RelatedProduct"));
 		functions.add(new Function("Gtin", "Gtin", "RelatedProduct"));
 		functions.add(new Function("Format", "ExpressionResultLiteral", "Gtin"));
-		functions.add(new Function("HasValue", "ExpressionResultLiteral", "ExpressionResultNumeric"));
-		functions.add(new Function("Height", "ExpressionResultNumeric", "ProductPackage"));
-		functions.add(new Function("Width", "ExpressionResultNumeric", "ProductPackage"));
-		functions.add(new Function("Weight", "ExpressionResultNumeric", "ProductPackage"));
+		functions.add(new Function("HasValue", "ExpressionResultLiteral", "ExpressionResultNumeric",
+				"NullableValueUnitPair"));
+		functions.add(new Function("Height", "NullableValueUnitPair", "ProductPackage"));
+		functions.add(new Function("Width", "NullableValueUnitPair", "ProductPackage"));
+		functions.add(new Function("Weight", "NullableValueUnitPair", "ProductPackage"));
 		functions.add(new Function("Package", "ProductPackage", "RelatedProduct"));
 		functions.add(new Function("IsBiggerThan()", "ExpressionResultLiteral", "ProductPackage"));
 		functions.add(new Function("BulletFeatures[]", "ExpressionResultLiteral", "TemplexGenerator"));
@@ -1730,7 +1732,7 @@ public class TChecker {
 					// check if text
 					boolean isString = parameters.matches("\".*\"");
 					// check if number
-					boolean isDouble = parameters.matches("\\d+\\.\\d+");
+					boolean isDouble = parameters.matches("(\\d+)?\\.\\d+");
 					boolean isInteger = parameters.matches("\\d+");
 
 					if (!parameters.isEmpty() && !isString && !isDouble && !isInteger) {

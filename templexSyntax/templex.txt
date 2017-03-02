@@ -1175,7 +1175,7 @@ ExpressionResultNumeric|
 ##### ProductPackage #####
 
 Height constant
-ExpressionResultNumeric|
+NullableValueUnitPair|
  Empty description.
 
 IsBiggerThan function
@@ -1183,15 +1183,15 @@ ExpressionResultLiteral|
  Empty description.
 
 Weight constant
-ExpressionResultNumeric|
+NullableValueUnitPair|
  Empty description.
 
 Width constant
-ExpressionResultNumeric|
+NullableValueUnitPair|
  Empty description.
 
 Length constant
-ExpressionResultNumeric|
+NullableValueUnitPair|
  Empty description.
 
 
@@ -1339,6 +1339,17 @@ String|
  Empty description.
 
 Name constant
+String|
+ Empty description.
+
+
+##### NullableValueUnitPair #####
+
+HasValue constant
+ExpressionResultLiteral|
+ Empty description.
+ 
+Value constant
 String|
  Empty description.
 
