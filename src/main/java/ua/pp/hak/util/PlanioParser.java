@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JLabel;
+
 import org.apache.commons.io.Charsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -178,17 +180,20 @@ public class PlanioParser {
 
 				String result = TChecker.checkExpression(exprCode);
 				if (result != null) {
-					String status = exprObj.getStatus();
+					
+					// // take only expression with status "[tx] ready"
+					// String status = exprObj.getStatus();
+					// if (status != null && status.contains("ready")) {
 
-					// take only expression with status "[tx] ready"
-					if (status != null && status.contains("ready")) {
-						exprObj.setIsExpressionValid(false);
-						exprObj.setExpressionResult(result);
-						exprListWithErrors.add(exprObj);
-						logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - not ok");
-					} else {
-						logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - " + status + " (isn't checked)");
-					}
+					exprObj.setIsExpressionValid(false);
+					exprObj.setExpressionResult(result);
+					exprListWithErrors.add(exprObj);
+					logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - not ok");
+
+					// } else {
+					// logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + "
+					// - " + status + " (isn't checked)");
+					// }
 				} else {
 					logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - ok");
 				}
@@ -203,13 +208,14 @@ public class PlanioParser {
 
 		// parse expression code
 		int index = 1;
-		String oldProcessingLabelText = LoadingPanel.getLabel().getText();
+		JLabel label = LoadingPanel.getLabel();
+		String oldProcessingLabelText = label.getText();
 		for (ExpressionObject expressionObject : exprSet) {
 			if (Thread.currentThread().isInterrupted()) {
 				break;
 			}
-
-			LoadingPanel.getLabel().setText(oldProcessingLabelText.concat(" (" + (index) + "/" + exprSet.size() + ")"));
+			
+			label.setText(oldProcessingLabelText.concat(" (" + (index) + "/" + exprSet.size() + ")"));
 
 			// add "/" at the beginning to be valid
 			String exprJson = getJson("/" + expressionObject.getId());

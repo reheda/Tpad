@@ -151,4 +151,22 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 
 		return skuListPanel;
 	}
+
+	// private JPanel createCheckBoxPanel() {
+	// FlowLayout experimentLayout = new FlowLayout();
+	// experimentLayout.setAlignment(FlowLayout.LEADING);
+	//
+	// JPanel checkboxPanel = new JPanel();
+	// checkboxPanel.setLayout(experimentLayout);
+	// checkboxPanel.setBorder(BorderFactory.createTitledBorder("Settings: "));
+	// checkboxPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+	//
+	// JCheckBox checkReadyStatusOnly = new JCheckBox("Check '[tx] ready' status
+	// only");
+	// checkReadyStatusOnly.setFocusable(false);
+	// checkboxPanel.add(checkReadyStatusOnly);
+	// checkboxPanel.setPreferredSize(new Dimension(400, 1));
+	//
+	// return checkboxPanel;
+	// }
 }
