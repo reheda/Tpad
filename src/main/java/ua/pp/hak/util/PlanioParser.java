@@ -56,7 +56,12 @@ public class PlanioParser {
 		fillExpresionListWithErrors(exprSet);
 
 		// get result page
-		String page = generatePage(exprListWithErrors);
+		String page = null;
+		if (exprListWithErrors.isEmpty()) {
+			page = generatePageWithoutErrors();
+		} else {
+			page = generatePage(exprListWithErrors);
+		}
 
 		logger.info("Finish check expression list.");
 		long elapsedTime = System.nanoTime() - start;
@@ -65,6 +70,30 @@ public class PlanioParser {
 
 		return page;
 
+	}
+
+	private String generatePageWithoutErrors() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html>");
+		sb.append(
+				"<head><style> div.centered {text-align: center;} div.centered table { border-collapse: collapse; margin: 0 auto;  background-color: white; padding:5px;} tr {border-bottom: 1px solid #dddddd; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; border-bottom: none; } td { text-align: left; border-right: 1px solid #dddddd;} td.red { border-right: 1px solid #E03134; } td.cntr {text-align: center;} body {font-family:Segoe UI; font-size:9px; } </style></head>");
+		sb.append("<body>");
+		sb.append("<div class='centered'>");
+		sb.append("<table>");
+		sb.append("<tbody>");
+		sb.append("<tbody>");
+		sb.append("<tr class='header'><td>");
+		sb.append("Message");
+		sb.append("</td></tr>");
+		sb.append("<tr><td>");
+		sb.append("All expressions are valid");
+		sb.append("</td></tr>");
+		sb.append("</tbody>");
+		sb.append("</table>");
+		sb.append("</div>");
+		sb.append("</body>");
+		sb.append("</html>");
+		return sb.toString();
 	}
 
 	private String generatePage(List<ExpressionObject> exprListWithErrors) {

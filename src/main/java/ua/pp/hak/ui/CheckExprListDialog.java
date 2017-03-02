@@ -77,7 +77,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 
 				JScrollPane jsp = new JScrollPane(textPane);
 
-				JFrame frame = new JFrame("Error results for Expression list");
+				JFrame frame = new JFrame("Results for Expression list check");
 				frame.setIconImage(new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)).getImage());
 				frame.add(jsp, BorderLayout.CENTER);
 				frame.setSize(new Dimension(800, 600));
