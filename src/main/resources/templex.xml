@@ -8,8 +8,8 @@
    Author:         VR
    Version:        0.1
 
-   This file was generated from: C:/Program Files/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-02-26 14:36:33
+   This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
+   on date: 2017-03-02 09:44:54
 
 -->
 <api language="Templex">
@@ -105,13 +105,6 @@
 </keyword>
 <keyword name="CompatibleProducts" type="constant" returnType="ExpressionResultList" definedIn="Specs">
 	<desc>Empty description.</desc>
-</keyword>
-<keyword name="Count" type="constant" returnType="Decimal" definedIn="ExpressionResultLiteral">
-	<desc>Empty description.</desc>
-</keyword>
-<keyword name="Count" type="constant" returnType="Decimal" definedIn="ExpressionResultNumeric">
-	<desc><![CDATA[Empty description.<br>
-]]></desc>
 </keyword>
 <keyword name="Count" type="constant" returnType="Decimal" definedIn="PdmMultivalueAttribute">
 	<desc><![CDATA[Returns the number of values in this this multi-valued attribute. (<a href="http://txdev1.cnetcontent.com/Reference#923E11A3">Reference link</a>)<br>
@@ -1094,7 +1087,8 @@
 </keyword>
 <keyword name="ToUpperFirstChar" type="function" returnType="ExpressionResult" definedIn="ExpressionResultNumeric">
 	<desc><![CDATA[Returns this numeric value with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#958A4673">Reference link</a>)<br>
-<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>]]></desc>
+<br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
+]]></desc>
 </keyword>
 <keyword name="Unit" type="constant" returnType="String" definedIn="PdmAttribute">
 	<desc><![CDATA[Returns the unit of this attribute, if any. (<a href="http://txdev1.cnetcontent.com/Reference#4C4A8CE">Reference link</a>)<br>

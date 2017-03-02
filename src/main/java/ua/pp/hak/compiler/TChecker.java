@@ -403,9 +403,8 @@ public class TChecker {
 		functions.add(new Function("IsDescendantOf()", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("LaunchDate", "DateTime", "Sku"));
 		functions.add(new Function("GetDateTime()", "DateTimeOffset", "SystemObject"));
-		functions
-				.add(new Function("Count", "ExpressionResultNumeric", "ExpressionResultList", "ExpressionResultLiteral",
-						"ExpressionResultNumeric", "PdmMultivalueAttribute", "PdmRepeatingAttribute", "Specs"));
+		functions.add(new Function("Count", "ExpressionResultNumeric", "ExpressionResultList", "PdmMultivalueAttribute",
+				"PdmRepeatingAttribute", "Specs"));
 		functions.add(
 				new Function("Total", "ExpressionResultNumeric", "PdmMultivalueAttribute", "PdmRepeatingAttribute"));
 		functions.add(new Function("BestImage", "DigitalContentItem", "DigitalContent"));
@@ -1875,7 +1874,8 @@ public class TChecker {
 			String stmnt = m.group(1);
 
 			// CASE can't contains UNDERSCORE
-			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_") && !returnValue.contains("COALESCE(")) {
+			if (stmnt.trim().toUpperCase().contains("CASE") && returnValue.contains("_")
+					&& !returnValue.contains("COALESCE(")) {
 				errors.append("CASE condition shouldn't contains UNDERSCORE");
 				errors.append(NEW_LINE);
 				errors.append(NEW_LINE);

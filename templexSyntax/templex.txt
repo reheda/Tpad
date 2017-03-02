@@ -533,10 +533,6 @@ ExpressionResult|
  Returns this string with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#2A047B8B">Reference link</a>)
  <br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
 
-Count constant
-Decimal|
- Empty description.
-
 Round function
 Nullable`1|
  Returns this numeric value rounded to the nearest integer value. (<a href="http://txdev1.cnetcontent.com/Reference#52E45B5D">Reference link</a>)
@@ -709,10 +705,6 @@ ToUpperFirstChar function
 ExpressionResult|
  Returns this numeric value with the first letter in upper case. (<a href="http://txdev1.cnetcontent.com/Reference#958A4673">Reference link</a>)
  <br />Remarks: <em>This will not capitalize a lower case first letter in a string containing an uppercase second letter, such as iPhone.</em>
-
-Count constant
-Decimal|
- Empty description.
 
 
 ##### PdmAttribute #####
