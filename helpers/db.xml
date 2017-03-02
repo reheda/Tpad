@@ -8790,4 +8790,12 @@
 	<attribute> <id>10690</id> <type>Multi-valued</type> <name>Miscellaneous - OEM Manufacturer Equivalent Part Number</name> </attribute>
 	<attribute> <id>10692</id> <type>Simple numeric</type> <name>Washing Machine - Additional Washer Capacity</name> </attribute>
 	<attribute> <id>10693</id> <type>Simple</type> <name>Heating /// Cooling - Charge Acceptance</name> </attribute>
+	<attribute> <id>10705</id> <type>Simple</type> <name>Internet of Things (IoT) - Internet of Things (IoT) Compatible</name> </attribute>
+	<attribute> <id>10708</id> <type>Simple</type> <name>Internet of Things (IoT) - Internet of Things (IoT) Hub</name> </attribute>
+	<attribute> <id>10706</id> <type>Multi-valued</type> <name>Internet of Things (IoT) - Platform</name> </attribute>
+	<attribute> <id>10707</id> <type>Multi-valued</type> <name>Internet of Things (IoT) - Service Provider</name> </attribute>
+	<attribute> <id>10709</id> <type>Simple</type> <name>Settings, Controls /// Indicators - Overload Indicator</name> </attribute>
+	<attribute> <id>10712</id> <type>Simple</type> <name>Scales - Removable Tray / Bowl</name> </attribute>
+	<attribute> <id>10710</id> <type>Simple</type> <name>Scales - Zero Reset</name> </attribute>
+	<attribute> <id>10711</id> <type>Simple</type> <name>Display - Angled</name> </attribute>
 </attributes>  
