@@ -828,24 +828,6 @@ public class TChecker {
 				return errors.toString();
 			}
 
-			int underScroreCount = conCleaned.length() - conCleaned.replaceAll("_", "").length();
-			if (underScroreCount > 0) {
-				error = "Condition DON'T have to contains underscore";
-				errors.append(error);
-				errors.append(NEW_LINE);
-				errors.append(NEW_LINE);
-				errors.append("-----");
-				errors.append(NEW_LINE);
-				errors.append(con);
-				if (!con.equals(condition)) {
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(condition);
-				}
-				return errors.toString();
-			}
-
 			// check values
 			if (conCleaned.toUpperCase().contains(" IS ")) {
 				String[] values = conCleaned.split("(?i) IS ");
@@ -873,6 +855,24 @@ public class TChecker {
 					}
 
 					// check left part
+					int underScroreCount = values[0].length() - values[0].replaceAll("_", "").length();
+					if (underScroreCount > 0) {
+						error = "Left part of the condition DON'T have to contains underscore";
+						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(con);
+						if (!con.equals(condition)) {
+							errors.append(NEW_LINE);
+							errors.append("-----");
+							errors.append(NEW_LINE);
+							errors.append(condition);
+						}
+						return errors.toString();
+					}
+
 					error = checkValue(values[0]);
 					if (error != null) {
 						errors.append(error);
@@ -924,21 +924,47 @@ public class TChecker {
 				{
 					String[] values = conCleaned.split("(?i)<>|>=|<=|>|<|=| NOT LIKE | LIKE | NOT IN\\(\\)| IN\\(\\)");
 					for (int i = 0; i < values.length; i++) {
-						error = checkValue(values[i]);
-						if (error != null) {
-							errors.append(error);
-							errors.append(NEW_LINE);
-							errors.append(NEW_LINE);
-							errors.append("-----");
-							errors.append(NEW_LINE);
-							errors.append(con);
-							if (!con.equals(condition)) {
+						
+						//check left part for underscore
+						if (values.length==2 && i==0){
+							int underScroreCount = values[i].length() - values[i].replaceAll("_", "").length();
+							if (underScroreCount > 0) {
+								error = "Left part of the condition DON'T have to contains underscore";
+								errors.append(error);
+								errors.append(NEW_LINE);
 								errors.append(NEW_LINE);
 								errors.append("-----");
 								errors.append(NEW_LINE);
-								errors.append(condition);
+								errors.append(con);
+								if (!con.equals(condition)) {
+									errors.append(NEW_LINE);
+									errors.append("-----");
+									errors.append(NEW_LINE);
+									errors.append(condition);
+								}
+								return errors.toString();
 							}
-							return errors.toString();
+						}
+						
+						String[] valuesSplitByUnderscore = values[i].split(" ?_ ?");
+						for (int j = 0; j < valuesSplitByUnderscore.length; j++) {
+							
+							error = checkValue(valuesSplitByUnderscore[j]);
+							if (error != null) {
+								errors.append(error);
+								errors.append(NEW_LINE);
+								errors.append(NEW_LINE);
+								errors.append("-----");
+								errors.append(NEW_LINE);
+								errors.append(con);
+								if (!con.equals(condition)) {
+									errors.append(NEW_LINE);
+									errors.append("-----");
+									errors.append(NEW_LINE);
+									errors.append(condition);
+								}
+								return errors.toString();
+							}
 						}
 
 					}
