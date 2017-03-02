@@ -2,6 +2,7 @@
 - fixed issue with COALESCE function with underscore in the CASE statement. E.g. <code>CASE COALESCE(1_2) WHEN "2" THEN "2" END</code><br />
 - fixed issue with invoking Value function on NullableValueUnitPair. E.g. <code>Request.Package.Height.Value</code><br />
 - fixed issue with Underscore in the right part of the condition. E.g. <code>IF "sometext" LIKE "some"_"text" THEN "yep"</code><br />
+- fixed issue with Throw exception in Coalesce function. E.g <code>Coalesce(A[3366].Value.ExtractDecimals() .Last(), THROW )</code>
 - changed return type of Height, Width and Weight functions to NullableValueUnitPair<br />
 - added <code>Check expr list...</code> menu item to <code>Expression</code> menu (thanks to Kolia for the idea)<br />
 - added attributes: <code>10705, 10706, 10707, 10708, 10709, 10710, 10711, 10712</code>
