@@ -8803,4 +8803,5 @@
 	<attribute> <id>10716</id> <type>Simple</type> <name>Internet of Things (IoT) - Intelligent Assistant</name> </attribute>
 	<attribute> <id>10717</id> <type>Simple</type> <name>Internet of Things (IoT) - Voice Controlled</name> </attribute>
 	<attribute> <id>10713</id> <type>Simple</type> <name>Game - DLC</name> </attribute>
+	<attribute> <id>10718</id> <type>Simple</type> <name>Electric Ovens - Convection</name> </attribute>
 </attributes>  
