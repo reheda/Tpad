@@ -6,7 +6,7 @@
 - changed return type of Height, Width and Weight functions to NullableValueUnitPair<br />
 - added <code>Check expr list...</code> menu item to <code>Expression</code> menu (thanks to Kolia for the idea)<br />
 - added attributes: <code>10705, 10706, 10707, 10708, 10709, 10710, 10711, 10712, 10713, 10714, 10715, 10716, 10717, 10718</code><br />
-- placed cursor inside the square braces while invoking autocomplete for <code>A[], Data[""], BUlletFeatures[] and Ksp[]</code> functions
+- placed cursor inside the square brackets while invoking autocomplete for <code>A[], Data[""], BulletFeatures[] and Ksp[]</code> functions (thanks to Taras for the idea)
 ---
 <b>v 1.0.11</b><br /> 
 - added attributes: <code>10692, 10693</code><br />
