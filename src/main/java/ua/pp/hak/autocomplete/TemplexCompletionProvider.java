@@ -52,15 +52,15 @@ public class TemplexCompletionProvider extends LanguageAwareCompletionProvider {
 		// codeCP.addCompletion(new ShorthandCompletion(codeCP, "main", "int
 		// main(int argc, char **argv)"));
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "line",
-				"-------------------------------------------------------------"));
+				"-------------------------------------------------------------\n"));
 		
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Data[String value]", "Data[\"\"]", "String",
+		codeCP.addCompletion(new TemplexTemplateCompletion(codeCP, "Data[String value]", "Data", "Data[\"${}\"]${cursor}", "String",
 				"<strong>String Data[String value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>RelatedProduct</em>"));
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "BulletFeatures[Int32 value]", "BulletFeatures[]", "String",
+		codeCP.addCompletion(new TemplexTemplateCompletion(codeCP, "BulletFeatures[Int32 value]", "BulletFeatures","BulletFeatures[${0}]${cursor}", "String",
 				"<strong>String BulletFeatures[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>TemplexGenerator</em>"));
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "Ksp[Int32 value]", "Ksp[]", "String",
+		codeCP.addCompletion(new TemplexTemplateCompletion(codeCP, "Ksp[Int32 value]","Ksp", "Ksp[${0}]${cursor}", "String",
 				"<strong>String Ksp[Int32 value]</strong><br /><hr /><br />Empty description.<br /><br /><hr />Defined in: <em>DigitalContent</em>"));
-		codeCP.addCompletion(new ShorthandCompletion(codeCP, "A[Int32 attrCode]", "A[]", "TemplexAttribute",
+		codeCP.addCompletion(new TemplexTemplateCompletion(codeCP, "A[Int32 attrCode]","A", "A[${}]${cursor}", "TemplexAttribute",
 				"<strong>TemplexAttribute A[Int32 attrCode]</strong><br /><hr /><br />"
 				+ "The number between square brackets contains the ID of the attribute, for instance the attribute [35].<br /><br /><hr />Defined in: <em>Nothing</em>"));
 		codeCP.addCompletion(new ShorthandCompletion(codeCP, "REFERENCE", "$TXCLIENTIDENTIFIER$", "String",
