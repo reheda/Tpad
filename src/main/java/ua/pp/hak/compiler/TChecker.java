@@ -1714,6 +1714,15 @@ public class TChecker {
 				String[] values = correctSplitByComma(returnValueCleaned);
 				if (values.length > 0) {
 
+					if (!values[values.length - 1].toUpperCase().contains("THROW")) {
+						errors.append("You should place Throw as the last element of Coalesce function");
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(values[values.length - 1]);
+						return errors.toString();
+					}
 					error = checkThrowCorrectness(values[values.length - 1]);
 					if (error != null) {
 						errors.append(error);
@@ -1778,7 +1787,7 @@ public class TChecker {
 	}
 
 	private static String checkThrowCorrectness(String returnValue) {
-		 StringBuilder errors = new StringBuilder();
+		StringBuilder errors = new StringBuilder();
 		String error = null;
 		// erase brackets, but left Match(number) cause it should return
 		// PdmMultivalueAttribute instead of PdmAttributeSet
