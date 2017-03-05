@@ -330,7 +330,7 @@ public class PlanioParser {
 
 	private String getJson(String link) throws IOException {
 
-		String[] values = link.split("/");
+		String[] values = link.trim().split("/");
 		if (values.length < 1) {
 			logger.error("Link is wrong: " + link);
 			return null;

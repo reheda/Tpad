@@ -99,7 +99,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 		String[] links = input.split("\\n");
 		for (int i = 0; i < links.length; i++) {
 
-			String link = links[i];
+			String link = links[i].trim();
 			if (!link.trim().isEmpty()) {
 
 				boolean isCnetContentUrl = link.matches("https?://claims\\.cnetcontent\\.com/issues/\\d+/?");
