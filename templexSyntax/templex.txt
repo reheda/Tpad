@@ -1180,6 +1180,10 @@ NullableValueUnitPair|
 
 IsBiggerThan function
 ExpressionResultLiteral|
+Double length|
+Double width|
+Double height|
+Double weight|
  Empty description.
 
 Weight constant
