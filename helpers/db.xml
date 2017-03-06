@@ -8804,4 +8804,7 @@
 	<attribute> <id>10717</id> <type>Simple</type> <name>Internet of Things (IoT) - Voice Controlled</name> </attribute>
 	<attribute> <id>10713</id> <type>Simple</type> <name>Game - DLC</name> </attribute>
 	<attribute> <id>10718</id> <type>Simple</type> <name>Electric Ovens - Convection</name> </attribute>
+	<attribute> <id>10719</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Voice Codecs</name> </attribute>
+	<attribute> <id>10721</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Compatible Software</name> </attribute>
+	<attribute> <id>10720</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Network Protocols</name> </attribute>
 </attributes>  

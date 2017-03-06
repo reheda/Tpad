@@ -1,5 +1,6 @@
 <b>v 1.0.13</b><br /> 
 - added parameters for <code>IsBiggerThan</code> function while invoking autocomplete<br />
+- added attributes: <code>10719, 10720, 10721</code><br />
 - trim links while checking expression list
 ---
 <b>v 1.0.12</b><br /> 
