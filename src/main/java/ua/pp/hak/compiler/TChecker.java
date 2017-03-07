@@ -1374,7 +1374,7 @@ public class TChecker {
 				// check coalesce
 				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(),
 						pointCoalesce);
-				error = checkCoalesceOrInFunctionParameters(conCleaned, p, "COALESCE");
+				error = checkMultiCoalesce(conCleaned, p, COALESCE_TEXT);
 				if (error != null) {
 					errors.append(error);
 					return errors.toString();
@@ -1394,63 +1394,10 @@ public class TChecker {
 
 		} else if (condition.contains(COALESCE_TEXT)) {
 
-			// count external COALESCE (for COALESCE in COALESCE check)
-			int coalesceCounter = 0;
-			{
-				int tempIndex = 0;
-				int tempLen = condition.length();
-				while (tempIndex != -1 && tempIndex < tempLen) {
-					tempIndex = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, tempIndex));
-					if (tempIndex != -1) {
-						coalesceCounter++;
-					}
-				}
-			}
-
-			int startIndex = 0;
-			StringBuilder sbAllExceptFunc = new StringBuilder();
-			// all before coalesce
-			sbAllExceptFunc.append(condition.substring(0, condition.indexOf(COALESCE_TEXT)));
-			for (int j = 0; j < coalesceCounter; j++) {
-				int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
-
-				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT, startIndex) + COALESCE_TEXT.length(),
-						point);
-				error = checkCoalesceOrInFunctionParameters(conCleaned, p, "COALESCE");
-				if (error != null) {
-					errors.append(error);
-					return errors.toString();
-				}
-
-				startIndex = point;
-
-				// insert COALESCE("") without parameters
-				sbAllExceptFunc.append("COALESCE(\"\")");
-
-				// all after coalesce till the next coalesce or end of the
-				// string
-				if (j + 1 < coalesceCounter) {
-					sbAllExceptFunc
-							.append(condition.substring(point + 1, condition.indexOf(COALESCE_TEXT, startIndex)));
-				} else {
-					if (point + 1 < condition.length()) {
-						sbAllExceptFunc.append(condition.substring(point + 1));
-					}
-				}
-			}
-
-			// check all expect coalesce
-			String allExceptFunc = sbAllExceptFunc.toString();
-			if (!allExceptFunc.trim().isEmpty()) {
-				String[] values = allExceptFunc.split(" ?_ ?");
-				for (int i = 0; i < values.length; i++) {
-					error = checkValue(values[i]);
-					if (error != null) {
-						errors.append(error);
-						return errors.toString();
-					}
-
-				}
+			error = checkMultiCoalesce(condition, p, COALESCE_TEXT);
+			if (error != null) {
+				errors.append(error);
+				return errors.toString();
 			}
 
 		} else if (condition.contains(IN_TEXT)) {
@@ -1527,6 +1474,73 @@ public class TChecker {
 			}
 		}
 
+		return null;
+	}
+
+	private static String checkMultiCoalesce(String condition, Pattern p,
+			final String COALESCE_TEXT) {
+		StringBuilder errors = new StringBuilder();
+		String error;
+		String conCleaned;
+		// count external COALESCE (for COALESCE in COALESCE check)
+		int coalesceCounter = 0;
+		{
+			int tempIndex = 0;
+			int tempLen = condition.length();
+			while (tempIndex != -1 && tempIndex < tempLen) {
+				tempIndex = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, tempIndex));
+				if (tempIndex != -1) {
+					coalesceCounter++;
+				}
+			}
+		}
+
+		int startIndex = 0;
+		StringBuilder sbAllExceptFunc = new StringBuilder();
+		// all before coalesce
+		sbAllExceptFunc.append(condition.substring(0, condition.indexOf(COALESCE_TEXT)));
+		for (int j = 0; j < coalesceCounter; j++) {
+			int point = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, startIndex));
+
+			conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT, startIndex) + COALESCE_TEXT.length(),
+					point);
+			error = checkCoalesceOrInFunctionParameters(conCleaned, p, "COALESCE");
+			if (error != null) {
+				errors.append(error);
+				return errors.toString();
+			}
+
+			startIndex = point;
+
+			// insert COALESCE("") without parameters
+			sbAllExceptFunc.append("COALESCE(\"\")");
+
+			// all after coalesce till the next coalesce or end of the
+			// string
+			if (j + 1 < coalesceCounter) {
+				sbAllExceptFunc
+						.append(condition.substring(point + 1, condition.indexOf(COALESCE_TEXT, startIndex)));
+			} else {
+				if (point + 1 < condition.length()) {
+					sbAllExceptFunc.append(condition.substring(point + 1));
+				}
+			}
+		}
+
+		// check all expect coalesce
+		String allExceptFunc = sbAllExceptFunc.toString();
+		if (!allExceptFunc.trim().isEmpty()) {
+			String[] values = allExceptFunc.split(" ?_ ?");
+			for (int i = 0; i < values.length; i++) {
+				error = checkValue(values[i]);
+				if (error != null) {
+					errors.append(error);
+					return errors.toString();
+				}
+
+			}
+		}
+		
 		return null;
 	}
 
