@@ -138,7 +138,6 @@ public class TChecker {
 		if (error != null) {
 			error = "Comment can't contains quote";
 			errors.append(error);
-
 			return errors.toString();
 		}
 
@@ -149,12 +148,21 @@ public class TChecker {
 		error = checkQuotes(expr);
 		if (error != null) {
 			errors.append(error);
+			return errors.toString();
+		}
 
+		// check references
+		error = checkReferences(expr);
+		if (error != null) {
+			errors.append(error);
 			return errors.toString();
 		}
 
 		// erase text surrounded by quotes
 		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
+		
+		// replace Reference with text(REFERENCE) within text surrounded by dollar ($)
+		exprCleaned = exprCleaned.replaceAll("(?s)\\$.*?\\$", "\\$REFERENCE\\$");
 
 		// clean expression to make it parsable
 		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll("(?i)ELSE IF", "ELSEIF")
@@ -299,6 +307,70 @@ public class TChecker {
 		}
 
 		return false;
+	}
+
+	private static String errorOfReferences(String input) {
+		String str = input.replaceAll("\\s+", " ");
+		int count = str.length() - str.replace("$", "").length();
+
+		if (count % 2 != 0) {
+			String error = "Reference is not closed";
+			return error;
+		}
+
+		int endIndex = 0;
+		for (int i = 0; i < count / 2; i++) {
+
+			int startIndex = str.indexOf("$", endIndex);
+			endIndex = str.indexOf("$", startIndex + 1) + 1;
+			String reference = str.substring(startIndex, endIndex);
+			if (reference.replace("$", "").trim().contains(" ")) {
+				String error = "You shouldn't use space or line feed in Reference";
+				return error;
+			}
+		}
+
+		return null;
+	}
+
+	private static String checkReferences(String expr) {
+		StringBuilder errors = null;
+		int charsBeforeTheCurrentLine = 0;
+		if (errorOfReferences(expr) != null) {
+			SquigglePainter red = new SquigglePainter(Color.RED);
+			int p0 = 0, p1 = 0;
+			String[] lines = expr.split("\\n");
+			for (int i = 0; i < lines.length; i++) {
+				String line = lines[i];
+				String error = errorOfReferences(line);
+				if (error != null) {
+//					p0 = line.lastIndexOf("$");
+					p0 = 0;
+					p1 = line.length();
+					try {
+						highlighterTags.add(taExpr.getHighlighter().addHighlight(charsBeforeTheCurrentLine + p0,
+								charsBeforeTheCurrentLine + p1, red));
+						taExpr.repaint();
+					} catch (BadLocationException e) {
+						logger.error(e.getMessage());
+					}
+					if (errors == null) {
+						errors = new StringBuilder("Lines: ");
+						errors.append(i + 1);
+					} else {
+						errors.append(",").append(i + 1);
+					}
+				}
+				charsBeforeTheCurrentLine += line.length() + 1;
+			}
+
+			if (errors != null) {
+				errors.append(". ").append(errorOfReferences(expr));
+				return errors.toString();
+			}
+		}
+
+		return null;
 	}
 
 	static String checkComments(String textExpr) {
