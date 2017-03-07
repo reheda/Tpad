@@ -121,15 +121,13 @@ public class TChecker {
 				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 	}
 
-	public static String checkExpression(String expr) {
-
-		expr = expr.trim();
-
+	public static String checkExpression(String exprOriginal) {
+		
 		StringBuilder errors = new StringBuilder();
 		String error = null;
-		String exprCleaned = null;
+		String exprCleaned = exprOriginal.trim();
 
-		if (expr.isEmpty()) {
+		if (exprCleaned.isEmpty()) {
 			error = "Expression is empty";
 			errors.append(error);
 
@@ -137,7 +135,7 @@ public class TChecker {
 		}
 
 		// check comments
-		error = checkComments(expr);
+		error = checkComments(exprCleaned);
 		if (error != null) {
 			error = "Comment can't contains quote";
 			errors.append(error);
@@ -145,10 +143,17 @@ public class TChecker {
 		}
 
 		// erase comments. will erase until line feed
-		exprCleaned = expr.replaceAll("--.*", "");
+		exprCleaned = exprCleaned.replaceAll("--.*", "");
 
 		// check quotes
-		error = checkQuotes(expr);
+		error = checkQuotes(exprCleaned);
+		if (error != null) {
+			errors.append(error);
+			return errors.toString();
+		}
+
+		// check references
+		error = checkReferences(exprOriginal);
 		if (error != null) {
 			errors.append(error);
 			return errors.toString();
@@ -156,13 +161,6 @@ public class TChecker {
 
 		// erase text surrounded by quotes
 		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
-
-		// check references
-		error = checkReferences(exprCleaned);
-		if (error != null) {
-			errors.append(error);
-			return errors.toString();
-		}
 
 		// replace Reference with text(REFERENCE) within text surrounded by
 		// dollar ($)
@@ -338,15 +336,19 @@ public class TChecker {
 	}
 
 	private static String checkReferences(String expr) {
+		String exprCleaned = expr;
+		// erase text surrounded by quotes
+		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
+
 		StringBuilder errors = null;
 		int charsBeforeTheCurrentLine = 0;
-		if (errorOfReferences(expr) != null) {
+		if (errorOfReferences(exprCleaned) != null) {
 			SquigglePainter red = new SquigglePainter(Color.RED);
 			int p0 = 0, p1 = 0;
 			String[] lines = expr.split("\\n");
 			for (int i = 0; i < lines.length; i++) {
 				String line = lines[i];
-				String error = errorOfReferences(line);
+				String error = errorOfReferences(line.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\""));
 				if (error != null) {
 					// p0 = line.lastIndexOf("$");
 					p0 = 0;
@@ -369,7 +371,7 @@ public class TChecker {
 			}
 
 			if (errors != null) {
-				errors.append(". ").append(errorOfReferences(expr));
+				errors.append(". ").append(errorOfReferences(exprCleaned));
 				return errors.toString();
 			}
 		}
