@@ -8083,7 +8083,7 @@
 	<attribute> <id>10011</id> <type>Simple numeric</type> <name>Fireplaces - Shelves Qty</name> </attribute>
 	<attribute> <id>10002</id> <type>Multi-valued</type> <name>Fireplaces - Details</name> </attribute>
 	<attribute> <id>9197</id> <type>Simple</type> <name>Soft Heat - Washable</name> </attribute>
-	<attribute> <id>9927</id> <type>Simple numeric</type> <name>Lighting - Supported Light Bulb Wattage</name> </attribute>
+	<attribute> <id>9927</id> <type>Multi-valued</type> <name>Lighting - Supported Light Bulb Wattage</name> </attribute>
 	<attribute> <id>9929</id> <type>Simple</type> <name>Lighting - Socket Type</name> </attribute>
 	<attribute> <id>10135</id> <type>Simple</type> <name>Lighting - Lighting Pull Chain</name> </attribute>
 	<attribute> <id>9930</id> <type>Simple</type> <name>Lighting - Dimmable</name> </attribute>
@@ -8807,4 +8807,7 @@
 	<attribute> <id>10719</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Voice Codecs</name> </attribute>
 	<attribute> <id>10721</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Compatible Software</name> </attribute>
 	<attribute> <id>10720</id> <type>Multi-valued</type> <name>Network /// Internet Multimedia - Network Protocols</name> </attribute>
+	<attribute> <id>10722</id> <type>Simple</type> <name>Display - Color Support</name> </attribute>
+	<attribute> <id>10724</id> <type>Simple</type> <name>Miscellaneous - Fingerprint Resistant</name> </attribute>
+	<attribute> <id>10723</id> <type>Simple</type> <name>Dishwashers - Handle Design</name> </attribute>
 </attributes>  
