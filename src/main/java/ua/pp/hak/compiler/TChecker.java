@@ -154,15 +154,15 @@ public class TChecker {
 			return errors.toString();
 		}
 
+		// erase text surrounded by quotes
+		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
+
 		// check references
-		error = checkReferences(expr);
+		error = checkReferences(exprCleaned);
 		if (error != null) {
 			errors.append(error);
 			return errors.toString();
 		}
-
-		// erase text surrounded by quotes
-		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
 
 		// replace Reference with text(REFERENCE) within text surrounded by
 		// dollar ($)
