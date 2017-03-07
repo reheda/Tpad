@@ -1969,15 +1969,17 @@ public class TChecker {
 					"Match()");
 			String[] values = returnValueCleaned.split(" ?_ ?");
 			for (int i = 0; i < values.length; i++) {
-				error = checkValue(values[i]);
-				if (error != null) {
-					errors.append(error);
-					errors.append(NEW_LINE);
-					errors.append(NEW_LINE);
-					errors.append("-----");
-					errors.append(NEW_LINE);
-					errors.append(values[i]);
-					return errors.toString();
+				if (!values[i].trim().matches("IS (NOT )?NULL")) {
+					error = checkValue(values[i]);
+					if (error != null) {
+						errors.append(error);
+						errors.append(NEW_LINE);
+						errors.append(NEW_LINE);
+						errors.append("-----");
+						errors.append(NEW_LINE);
+						errors.append(values[i]);
+						return errors.toString();
+					}
 				}
 
 			}
@@ -1999,7 +2001,8 @@ public class TChecker {
 		String structure = NEW_LINE + NEW_LINE + "Valid structure:" + NEW_LINE + "CASE value" + NEW_LINE
 				+ "[ WHEN value THEN returnValue ]" + NEW_LINE + "[ ELSE returnValue ]" + NEW_LINE + "END";
 
-		boolean isCaseStatementValid = caseStatement.matches("(?i)^ ?CASE .*?( WHEN .*? THEN .*?)+?( ELSE .*?)?( END)?");
+		boolean isCaseStatementValid = caseStatement
+				.matches("(?i)^ ?CASE .*?( WHEN .*? THEN .*?)+?( ELSE .*?)?( END)?");
 
 		if (!isCaseStatementValid) {
 			errors.append("Invalid CASE statements. ");

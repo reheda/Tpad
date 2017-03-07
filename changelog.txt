@@ -1,6 +1,7 @@
 <b>v 1.0.13</b><br /> 
 - fixed issue with Underscore in Reference. E.g. <code>$Number_Of_Expansion_Handsets_Included$</code> (thanks to Kolia for identifying)<br />
 - fixed issue with Case statement without END keyword. E.g. <code>CASE A[601].Value WHEN 2 THEN 2</code> (thanks to Kolia for identifying)<br />
+- fixed issue with NULL function in When condition within Case statement. E.g. <code>Case A[4133].Value WHEN IS NOT NULL THEN "null" END</code> (thanks to Kolia for identifying)<br />
 - changed attribute type of <code>9927</code> to Multi-valued<br />
 - added parameters for <code>IsBiggerThan</code> function while invoking autocomplete<br />
 - added attributes: <code>10719, 10720, 10721, 10722, 10723, 10724</code><br />
