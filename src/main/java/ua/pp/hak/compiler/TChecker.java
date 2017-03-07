@@ -1284,7 +1284,7 @@ public class TChecker {
 
 	public static String getFunctionReturnType(String functionName, String previousType) {
 		if (functionName.matches("Match\\(\\d+\\)")) {
-			return "PdmMultivalueAttribute";
+			return "PdmRepeatingAttribute";
 		}
 		for (Function function : functions) {
 			if (function.getName().equals(functionName)) {
