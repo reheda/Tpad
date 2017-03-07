@@ -136,7 +136,7 @@ public class PlanioParser {
 				exprResult = exprResult.substring(0, endIndex).trim();
 			}
 			// ---------------------
-			sb.append(exprResult.replaceAll("\\n", "<br />"));
+			sb.append(TParser.escapeHtml(exprResult).replaceAll("\\n", "<br />"));
 			sb.append("</td>");
 			sb.append("</tr>");
 		}
