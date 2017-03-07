@@ -122,7 +122,7 @@ public class TChecker {
 	}
 
 	public static String checkExpression(String exprOriginal) {
-		
+
 		StringBuilder errors = new StringBuilder();
 		String error = null;
 		String exprCleaned = exprOriginal.trim();
@@ -1477,8 +1477,7 @@ public class TChecker {
 		return null;
 	}
 
-	private static String checkMultiCoalesce(String condition, Pattern p,
-			final String COALESCE_TEXT) {
+	private static String checkMultiCoalesce(String condition, Pattern p, final String COALESCE_TEXT) {
 		StringBuilder errors = new StringBuilder();
 		String error;
 		String conCleaned;
@@ -1518,8 +1517,7 @@ public class TChecker {
 			// all after coalesce till the next coalesce or end of the
 			// string
 			if (j + 1 < coalesceCounter) {
-				sbAllExceptFunc
-						.append(condition.substring(point + 1, condition.indexOf(COALESCE_TEXT, startIndex)));
+				sbAllExceptFunc.append(condition.substring(point + 1, condition.indexOf(COALESCE_TEXT, startIndex)));
 			} else {
 				if (point + 1 < condition.length()) {
 					sbAllExceptFunc.append(condition.substring(point + 1));
@@ -1540,7 +1538,7 @@ public class TChecker {
 
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -1568,7 +1566,7 @@ public class TChecker {
 				return errors.toString();
 			}
 			String[] valuesSplitedByUnderscore = correctSplitByUnderscore(values[i]);
-			
+
 			for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
 				String value = valuesSplitedByUnderscore[j];
 				if (value.trim().isEmpty()) {
@@ -2103,8 +2101,12 @@ public class TChecker {
 
 		return list.toArray(new String[list.size()]);
 	}
-	
+
 	private static String[] correctSplitByUnderscore(String str) {
+		if (str.trim().isEmpty()) {
+			return new String[] { "" };
+		}
+
 		str = str.replaceAll(" ?_ ?", "_");
 
 		List<String> list = new ArrayList<>();
