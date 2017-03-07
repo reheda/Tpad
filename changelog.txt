@@ -3,6 +3,7 @@
 - fixed issue with Case statement without END keyword. E.g. <code>CASE A[601].Value WHEN 2 THEN 2</code> (thanks to Kolia for identifying)<br />
 - fixed issue with NULL function in When condition within Case statement. E.g. <code>Case A[4133].Value WHEN IS NOT NULL THEN "null" END</code> (thanks to Kolia for identifying)<br />
 - fixed issue with return type of Match function. E.g. <code>A[1527].Where("woofer driver") .Match(1529).Where("%""%") .Match(1528).Total</code> (thanks to Kolia for identifying)<br />
+- fixed issue with 3 times Coalesce. E.g. <code>COALESCE(COALESCE( COALESCE(2_3)))</code><br />
 - changed attribute type of <code>9927</code> to Multi-valued<br />
 - added parameters for <code>IsBiggerThan</code> function while invoking autocomplete<br />
 - added attributes: <code>10719, 10720, 10721, 10722, 10723, 10724</code><br />

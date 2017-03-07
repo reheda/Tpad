@@ -1398,7 +1398,7 @@ public class TChecker {
 			int coalesceCounter = 0;
 			{
 				int tempIndex = 0;
-				int tempLen = condition.length() - condition.indexOf(COALESCE_TEXT);
+				int tempLen = condition.length();
 				while (tempIndex != -1 && tempIndex < tempLen) {
 					tempIndex = getLastBracketIndex(condition, condition.indexOf(COALESCE_TEXT, tempIndex));
 					if (tempIndex != -1) {
@@ -1553,40 +1553,42 @@ public class TChecker {
 				errors.append(values[i]);
 				return errors.toString();
 			}
-			String[] valuesSplitedByUnderscore = values[i].split(" ?_ ?");
+			String[] valuesSplitedByUnderscore = correctSplitByUnderscore(values[i]);
+			
 			for (int j = 0; j < valuesSplitedByUnderscore.length; j++) {
-				if (valuesSplitedByUnderscore[j].trim().isEmpty()) {
+				String value = valuesSplitedByUnderscore[j];
+				if (value.trim().isEmpty()) {
 					errors.append("Value in the " + functionText + " shouldn't be empty");
 					return errors.toString();
 				}
 
 				// add COALESCE in COALESCE check
-				if (valuesSplitedByUnderscore[j].contains(functionText)) {
-					error = checkParametersInCondition(valuesSplitedByUnderscore[j]);
+				if (value.contains(functionText)) {
+					error = checkParametersInCondition(value);
 					if (error != null) {
 						errors.append(error);
 						errors.append(NEW_LINE);
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(valuesSplitedByUnderscore[j]);
+						errors.append(value);
 						return errors.toString();
 					}
 
 				} else {
 
-					error = checkValue(valuesSplitedByUnderscore[j]);
+					error = checkValue(value);
 					if (error != null) {
 						errors.append(error);
 						errors.append(NEW_LINE);
 						errors.append(NEW_LINE);
 						errors.append("-----");
 						errors.append(NEW_LINE);
-						errors.append(valuesSplitedByUnderscore[j]);
+						errors.append(value);
 						return errors.toString();
 					}
 
-					Matcher m = p.matcher(valuesSplitedByUnderscore[j]);
+					Matcher m = p.matcher(value);
 					while (m.find()) {
 						String functionName = m.group(1) + "()";
 						String parameters = m.group(2);
@@ -2063,6 +2065,42 @@ public class TChecker {
 		int point = 0;
 		while (start < str.length() && point != -1) {
 			point = str.indexOf(",", start);
+
+			if (point != -1) {
+				temp = str.substring(startWithOld, point);
+
+			} else {
+				temp = str.substring(startWithOld);
+			}
+			if (matchBrackets(temp)) {
+				list.add(temp);
+				counter = 0;
+				start = point + 1;
+				startWithOld = start;
+			} else {
+				if (counter == 0) {
+					startWithOld = start;
+				}
+				start = point + 1;
+				counter++;
+			}
+
+		}
+
+		return list.toArray(new String[list.size()]);
+	}
+	
+	private static String[] correctSplitByUnderscore(String str) {
+		str = str.replaceAll(" ?_ ?", "_");
+
+		List<String> list = new ArrayList<>();
+		String temp = null;
+		int start = 0;
+		int startWithOld = 0;
+		int counter = 0;
+		int point = 0;
+		while (start < str.length() && point != -1) {
+			point = str.indexOf("_", start);
 
 			if (point != -1) {
 				temp = str.substring(startWithOld, point);
