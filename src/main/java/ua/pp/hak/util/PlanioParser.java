@@ -32,8 +32,10 @@ public class PlanioParser {
 
 	private List<ExpressionObject> exprListWithErrors;
 	private boolean outputExpressionCode;
+	private boolean isReadyOnly;
 
-	public String getResultPage(String[] inputLinks) throws IOException {
+	public String getResultPage(String[] inputLinks, boolean isReadyOnly) throws IOException {
+		this.isReadyOnly = isReadyOnly;
 		long start = System.nanoTime();
 		exprListWithErrors = new ArrayList<>();
 		logger.info("Check expression list...");
@@ -173,32 +175,41 @@ public class PlanioParser {
 			if (exprCode == null) {
 				continue;
 			}
-			exprCode = exprCode.replace("<pre><code class=\"sql\">", "").replace("</code></pre>", "");
 
-			// don't take empty expression
-			if (!exprCode.trim().isEmpty()) {
+			Long id = exprObj.getId();
+			boolean addExpression = true;
 
-				String result = TChecker.checkExpression(exprCode);
-				if (result != null) {
-					
-					// // take only expression with status "[tx] ready"
-					// String status = exprObj.getStatus();
-					// if (status != null && status.contains("ready")) {
-
-					exprObj.setIsExpressionValid(false);
-					exprObj.setExpressionResult(result);
-					exprListWithErrors.add(exprObj);
-					logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - not ok");
-
-					// } else {
-					// logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + "
-					// - " + status + " (isn't checked)");
-					// }
-				} else {
-					logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - ok");
+			// take only expression with status "[tx] ready"
+			String status = exprObj.getStatus();
+			if (isReadyOnly) {
+				if (status == null || !status.contains("ready")) {
+					addExpression = false;
+					logger.info(CNET_CONTENT_ISSUES_URL + id + " - isn't checked due to status (" + status
+							+ ")");
 				}
-			} else {
-				logger.info(CNET_CONTENT_ISSUES_URL + exprObj.getId() + " - empty");
+			}
+
+			if (addExpression) {
+
+				exprCode = exprCode.replace("<pre><code class=\"sql\">", "").replace("</code></pre>", "");
+
+				// don't take empty expression
+				if (!exprCode.trim().isEmpty()) {
+
+					String result = TChecker.checkExpression(exprCode);
+					if (result != null) {
+
+						exprObj.setIsExpressionValid(false);
+						exprObj.setExpressionResult(result);
+						exprListWithErrors.add(exprObj);
+						logger.info(CNET_CONTENT_ISSUES_URL + id + " - not ok");
+
+					} else {
+						logger.info(CNET_CONTENT_ISSUES_URL + id + " - ok");
+					}
+				} else {
+					logger.info(CNET_CONTENT_ISSUES_URL + id + " - empty");
+				}
 			}
 		}
 
@@ -214,7 +225,7 @@ public class PlanioParser {
 			if (Thread.currentThread().isInterrupted()) {
 				break;
 			}
-			
+
 			label.setText(oldProcessingLabelText.concat(" (" + (index) + "/" + exprSet.size() + ")"));
 
 			// add "/" at the beginning to be valid

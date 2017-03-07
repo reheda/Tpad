@@ -4,13 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +32,7 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 
 	private JTextArea taLinksList;
 	private Notepad npd;
+	private JCheckBox checkReadyStatusOnly;
 
 	public void show(Notepad npd) {
 		this.npd = npd;
@@ -36,6 +40,8 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 			JPanel main = new JPanel();
 			main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
+			main.add(createCheckBoxPanel());
+			main.add(new JLabel("   "));
 			main.add(createExpressionListPanel());
 
 			main.setPreferredSize(new Dimension(400, 500));
@@ -65,7 +71,8 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 			if (result == JOptionPane.OK_OPTION) {
 				// "(?m)^[ \t]*\r?\n" - regex to remove empty lines
 				String links = taLinksList.getText();
-				String text = new PlanioParser().getResultPage(links.replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"));
+				String text = new PlanioParser().getResultPage(links.replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"),
+						checkReadyStatusOnly.isSelected());
 
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
@@ -152,21 +159,20 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 		return skuListPanel;
 	}
 
-	// private JPanel createCheckBoxPanel() {
-	// FlowLayout experimentLayout = new FlowLayout();
-	// experimentLayout.setAlignment(FlowLayout.LEADING);
-	//
-	// JPanel checkboxPanel = new JPanel();
-	// checkboxPanel.setLayout(experimentLayout);
-	// checkboxPanel.setBorder(BorderFactory.createTitledBorder("Settings: "));
-	// checkboxPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	//
-	// JCheckBox checkReadyStatusOnly = new JCheckBox("Check '[tx] ready' status
-	// only");
-	// checkReadyStatusOnly.setFocusable(false);
-	// checkboxPanel.add(checkReadyStatusOnly);
-	// checkboxPanel.setPreferredSize(new Dimension(400, 1));
-	//
-	// return checkboxPanel;
-	// }
+	private JPanel createCheckBoxPanel() {
+		FlowLayout experimentLayout = new FlowLayout();
+		experimentLayout.setAlignment(FlowLayout.LEADING);
+
+		JPanel checkboxPanel = new JPanel();
+		checkboxPanel.setLayout(experimentLayout);
+		checkboxPanel.setBorder(BorderFactory.createTitledBorder("Settings: "));
+		checkboxPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		checkReadyStatusOnly = new JCheckBox("Check '[tx] ready' status only");
+		checkReadyStatusOnly.setFocusable(false);
+		checkboxPanel.add(checkReadyStatusOnly);
+		checkboxPanel.setPreferredSize(new Dimension(400, 1));
+
+		return checkboxPanel;
+	}
 }
