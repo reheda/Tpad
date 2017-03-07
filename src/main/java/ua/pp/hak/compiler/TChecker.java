@@ -1999,7 +1999,7 @@ public class TChecker {
 		String structure = NEW_LINE + NEW_LINE + "Valid structure:" + NEW_LINE + "CASE value" + NEW_LINE
 				+ "[ WHEN value THEN returnValue ]" + NEW_LINE + "[ ELSE returnValue ]" + NEW_LINE + "END";
 
-		boolean isCaseStatementValid = caseStatement.matches("(?i)^ ?CASE .*?( WHEN .*? THEN .*?)+?( ELSE .*?)? END");
+		boolean isCaseStatementValid = caseStatement.matches("(?i)^ ?CASE .*?( WHEN .*? THEN .*?)+?( ELSE .*?)?( END)?");
 
 		if (!isCaseStatementValid) {
 			errors.append("Invalid CASE statements. ");
