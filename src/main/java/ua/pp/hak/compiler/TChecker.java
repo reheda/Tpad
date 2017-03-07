@@ -33,6 +33,9 @@ public class TChecker {
 
 	static RSyntaxTextArea taExpr;
 	static final String NEW_LINE = "\n";
+	static final String KEYWORD_NOTE = NEW_LINE + NEW_LINE + ">>> PAY ATTENTION <<<" + NEW_LINE
+			+ "KEYWORDS should be surrounded by space or line feed" + NEW_LINE
+			+ "- Hint: search for \"(?i)(?<!\\s)KEYWORD|KEYWORD(?!\\s)\" with turned on Regex";
 
 	static List<Attribute> attibutes = DatabaseStAXParser.parse();
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
@@ -160,8 +163,9 @@ public class TChecker {
 
 		// erase text surrounded by quotes
 		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
-		
-		// replace Reference with text(REFERENCE) within text surrounded by dollar ($)
+
+		// replace Reference with text(REFERENCE) within text surrounded by
+		// dollar ($)
 		exprCleaned = exprCleaned.replaceAll("(?s)\\$.*?\\$", "\\$REFERENCE\\$");
 
 		// clean expression to make it parsable
@@ -198,7 +202,7 @@ public class TChecker {
 				// } else {
 				errors.append("Look at empty values between two semicolons.");
 				errors.append(NEW_LINE);
-				errors.append("Search for \"; Space(s) And/Or LineFeed(s) ;\"");
+				errors.append("- Hint: search for \";\\s+;\" with turned on Regex");
 				// }
 				return errors.toString();
 
@@ -344,7 +348,7 @@ public class TChecker {
 				String line = lines[i];
 				String error = errorOfReferences(line);
 				if (error != null) {
-//					p0 = line.lastIndexOf("$");
+					// p0 = line.lastIndexOf("$");
 					p0 = 0;
 					p1 = line.length();
 					try {
@@ -672,6 +676,7 @@ public class TChecker {
 		String temp = str.replaceAll("(?i) ELSE ", " ELS ");
 		int elseCounter = str.length() - temp.length();
 		if (elseCounter > 1) {
+
 			return "You are using ELSE statement " + elseCounter + " times, but have to use only 1 time";
 
 		}
@@ -726,6 +731,7 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
 			return errors.toString();
 
 		}
@@ -735,6 +741,7 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
 			return errors.toString();
 		}
 
@@ -743,6 +750,7 @@ public class TChecker {
 		if (error != null) {
 			errors.append(error);
 			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
 			return errors.toString();
 		}
 
@@ -752,6 +760,7 @@ public class TChecker {
 		if (!isIfThenElseStatementValid) {
 			errors.append("Invalid IF THEN ELSE statements.");
 			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
 			return errors.toString();
 		}
 
@@ -870,6 +879,7 @@ public class TChecker {
 				error = "Condition '" + conCleaned + "' have to contains only 1 operator";
 				errors.append(error);
 				errors.append(structure);
+				errors.append(KEYWORD_NOTE);
 				errors.append(NEW_LINE);
 				errors.append(NEW_LINE);
 				errors.append("-----");
@@ -886,6 +896,7 @@ public class TChecker {
 				error = "Condition '" + conCleaned + "' have to contains operator";
 				errors.append(error);
 				errors.append(structure);
+				errors.append(KEYWORD_NOTE);
 				errors.append(NEW_LINE);
 				errors.append(NEW_LINE);
 				errors.append("-----");
@@ -1993,6 +2004,7 @@ public class TChecker {
 		if (!isCaseStatementValid) {
 			errors.append("Invalid CASE statements. ");
 			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
 			return errors.toString();
 		}
 
