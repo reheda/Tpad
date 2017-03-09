@@ -703,7 +703,14 @@ public class TChecker {
 		int thenCounter = str.length() - str.replaceAll("(?i)THEN ", "THE ").length();
 
 		if (thenCounter != elseIfCounter + ifCounter) {
-			return "You are using THEN statement " + thenCounter + " times, but have to use "
+			String lines = "";
+			if (thenCounter > (elseIfCounter + ifCounter)) {
+				lines = getLines(taExpr.getText(), "(?i)(?<!\\s|ELSE|^)IF|IF(?!\\s)");
+			} else {
+				lines = getLines(taExpr.getText(), "(?i)(?<!\\s)THEN|THEN(?!\\s)");
+
+			}
+			return lines + "You are using THEN statement " + thenCounter + " times, but have to use "
 					+ (elseIfCounter + ifCounter) + " time(s)";
 		}
 
@@ -767,6 +774,7 @@ public class TChecker {
 		}
 
 		// check conditions
+		int conditionCounter = 0;
 		{
 			String regex = "(?i)IF (.*?) THEN ";
 			Pattern p = Pattern.compile(regex);
@@ -778,20 +786,38 @@ public class TChecker {
 					errors.append(error);
 					return errors.toString();
 				}
+				conditionCounter++;
 			}
 		}
 
 		// check return values
-		String regex = "(?i)(?: THEN | ELSE )(.*)";
+		int returnValueCounter = 0;
+		String regex = "(?i)( THEN | ELSE )(.*)";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(exprCleaned.replaceAll(" ELSEIF ", "\n ELSEIF ").replaceAll(" ELSE ", "\n ELSE "));
 		while (m.find()) {
-			String returnValue = m.group(1);
+			String thenOrElse = m.group(1);
+			String returnValue = m.group(2);
 			error = checkReturnValue(returnValue);
 			if (error != null) {
 				errors.append(error);
 				return errors.toString();
 			}
+
+			if (thenOrElse.toUpperCase().contains("THEN")) {
+				returnValueCounter++;
+			}
+		}
+
+		// check if quantity of conditions is the same with returnValues after
+		// Then keyword
+		if (returnValueCounter != conditionCounter) {
+			errors.append("Invalid IF THEN ELSE statements.");
+			errors.append(NEW_LINE);
+			errors.append("- Hint: Check for empty return value");
+			errors.append(structure);
+			errors.append(KEYWORD_NOTE);
+			return errors.toString();
 		}
 
 		return null;
@@ -2140,6 +2166,55 @@ public class TChecker {
 		}
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	private static Integer[] getMatches(String text, String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(text);
+		// Check all occurrences
+		List<Integer> list = new ArrayList<>();
+		while (matcher.find()) {
+			int lineNumber = 0;
+			try {
+				int startIndex = matcher.start();
+				int endIndex = matcher.end();
+				lineNumber = taExpr.getLineOfOffset(startIndex);
+				SquigglePainter red = new SquigglePainter(Color.RED);
+				try {
+					highlighterTags.add(taExpr.getHighlighter().addHighlight(startIndex, endIndex, red));
+					taExpr.repaint();
+				} catch (BadLocationException e) {
+					logger.error(e.getMessage());
+				}
+
+			} catch (BadLocationException e) {
+				logger.error(e.getMessage());
+			}
+
+			list.add(lineNumber + 1);
+		}
+
+		return list.toArray(new Integer[list.size()]);
+	}
+
+	private static String getLines(String text, String regex) {
+		StringBuilder sb = new StringBuilder();
+		Integer[] arr = getMatches(text, regex);
+
+		for (int i = 0; i < arr.length; i++) {
+			if (i == 0) {
+				sb.append("Lines: ");
+				sb.append(arr[i]);
+			} else {
+				sb.append(",");
+				sb.append(arr[i]);
+			}
+			if (i + 1 == arr.length) {
+				sb.append(NEW_LINE);
+			}
+		}
+
+		return sb.toString();
 	}
 
 }
