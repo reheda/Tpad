@@ -104,7 +104,7 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private String getReturnType(String allText) {
-		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE ");
+		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR ");
 		
 		if (values.length == 0) {
 			return null;
