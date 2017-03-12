@@ -41,98 +41,98 @@ public class TpsInfo implements Constants, MenuConstants {
 	// 16102293
 
 	public static void show(Notepad npd) {
-		try{
-			
-		
-		JPanel main = new JPanel();
-		main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+		try {
 
-		JPanel buttons = new JPanel();
-		JRadioButton liveButton = new JRadioButton("live");
-		JRadioButton txdev1Button = new JRadioButton("txdev1");
-		txdev1Button.setSelected(true);
-		ButtonGroup group = new ButtonGroup();
-		group.add(liveButton);
-		group.add(txdev1Button);
-		buttons.add(liveButton);
-		buttons.add(txdev1Button);
-		buttons.setBorder(BorderFactory.createTitledBorder("Server: "));
+			JPanel main = new JPanel();
+			main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-		JLabel langLabel = new JLabel("lang: ", JLabel.TRAILING);
-		langLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		JLabel marketLabel = new JLabel("market: ", JLabel.TRAILING);
-		JLabel skuIdLabel = new JLabel("skuId: ", JLabel.TRAILING);
-		JTextField langField = new JTextField("en", 5);
-		JTextField marketField = new JTextField("US", 5);
-		JTextField skuIdField = new JTextField(npd.getSkuField().getText(), 5);
-		skuIdField.addAncestorListener(new RequestFocusListener());
-		skuIdField.selectAll();
+			JPanel buttons = new JPanel();
+			JRadioButton liveButton = new JRadioButton("live");
+			JRadioButton txdev1Button = new JRadioButton("txdev1");
+			txdev1Button.setSelected(true);
+			ButtonGroup group = new ButtonGroup();
+			group.add(liveButton);
+			group.add(txdev1Button);
+			buttons.add(liveButton);
+			buttons.add(txdev1Button);
+			buttons.setBorder(BorderFactory.createTitledBorder("Server: "));
 
-		parameters = new JPanel(new SpringLayout());
-		parameters.setBorder(BorderFactory.createTitledBorder("Parameters: "));
+			JLabel langLabel = new JLabel("lang: ", JLabel.TRAILING);
+			langLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+			JLabel marketLabel = new JLabel("market: ", JLabel.TRAILING);
+			JLabel skuIdLabel = new JLabel("skuId: ", JLabel.TRAILING);
+			JTextField langField = new JTextField("en", 5);
+			JTextField marketField = new JTextField("US", 5);
+			JTextField skuIdField = new JTextField(npd.getSkuField().getText(), 5);
+			skuIdField.addAncestorListener(new RequestFocusListener());
+			skuIdField.selectAll();
 
-		setField(langLabel, langField);
-		setField(marketLabel, marketField);
-		setField(skuIdLabel, skuIdField);
+			parameters = new JPanel(new SpringLayout());
+			parameters.setBorder(BorderFactory.createTitledBorder("Parameters: "));
 
-		// Lay out the panel.
-		SpringUtilities.makeCompactGrid(parameters, 3, 2, 6, 6, 6, 6);
+			setField(langLabel, langField);
+			setField(marketLabel, marketField);
+			setField(skuIdLabel, skuIdField);
 
-		main.add(buttons);
-		main.add(parameters);
+			// Lay out the panel.
+			SpringUtilities.makeCompactGrid(parameters, 3, 2, 6, 6, 6, 6);
 
-		int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, helpTpsInfo + ". Enter your test parameters",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			main.add(buttons);
+			main.add(parameters);
 
-		if (result == JOptionPane.OK_OPTION) {
-			String server = liveButton.isSelected() ? "templex" : txdev1Button.getText();
+			int result = JOptionPane.showConfirmDialog(npd.getFrame(), main,
+					helpTpsInfo + ". Enter your test parameters", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE);
 
-			Document doc = parseDoc(server, langField.getText(), marketField.getText(),
-					getCleanedSku(skuIdField.getText()));
-			String text = "";
-			if (doc != null) {
-				text = parseJson(doc);
-			} else {
-				logger.error("Document of TPS page is null!");
+			if (result == JOptionPane.OK_OPTION) {
+				String server = liveButton.isSelected() ? "templex" : txdev1Button.getText();
+
+				Document doc = parseDoc(server, langField.getText(), marketField.getText(),
+						getCleanedSku(skuIdField.getText()));
+				String text = "";
+				if (doc != null) {
+					text = parseJson(doc);
+				} else {
+					logger.error("Document of TPS page is null!");
+				}
+
+				JTextPane textPane = new JTextPane();
+				textPane.setContentType("text/html");
+				textPane.setBackground(null);
+				textPane.setOpaque(false);
+				textPane.setBorder(null);
+				textPane.setText(text);
+				textPane.setEditable(false);
+
+				JScrollPane jsp = new JScrollPane(textPane);
+
+				// textPane.setSize(new Dimension(480, 10));
+				// textPane.setPreferredSize(new Dimension(480, 400));
+				// // TIP: Make the JOptionPane resizable using the
+				// HierarchyListener
+				// textPane.addHierarchyListener(new HierarchyListener() {
+				// public void hierarchyChanged(HierarchyEvent e) {
+				// Window window = SwingUtilities.getWindowAncestor(textPane);
+				// if (window instanceof Dialog) {
+				// Dialog dialog = (Dialog)window;
+				// if (!dialog.isResizable()) {
+				// dialog.setResizable(true);
+				// }
+				// }
+				// }
+				// });
+				JFrame frame = new JFrame(helpTpsInfo);
+				frame.setIconImage(new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)).getImage());
+				frame.add(jsp, BorderLayout.CENTER);
+				frame.setSize(new Dimension(800, 600));
+				frame.setLocationRelativeTo(null);
+				textPane.setCaretPosition(0);
+				frame.setVisible(true);
+				// JOptionPane.showMessageDialog(null, textPane, "some title",
+				// JOptionPane.PLAIN_MESSAGE);
+				return;
 			}
-
-			JTextPane textPane = new JTextPane();
-			textPane.setContentType("text/html");
-			textPane.setBackground(null);
-			textPane.setOpaque(false);
-			textPane.setBorder(null);
-			textPane.setText(text);
-			textPane.setEditable(false);
-
-			JScrollPane jsp = new JScrollPane(textPane);
-
-			// textPane.setSize(new Dimension(480, 10));
-			// textPane.setPreferredSize(new Dimension(480, 400));
-			// // TIP: Make the JOptionPane resizable using the
-			// HierarchyListener
-			// textPane.addHierarchyListener(new HierarchyListener() {
-			// public void hierarchyChanged(HierarchyEvent e) {
-			// Window window = SwingUtilities.getWindowAncestor(textPane);
-			// if (window instanceof Dialog) {
-			// Dialog dialog = (Dialog)window;
-			// if (!dialog.isResizable()) {
-			// dialog.setResizable(true);
-			// }
-			// }
-			// }
-			// });
-			JFrame frame = new JFrame(helpTpsInfo);
-			frame.setIconImage(new ImageIcon(frame.getClass().getResource(imgTemplexBigLocation)).getImage());
-			frame.add(jsp, BorderLayout.CENTER);
-			frame.setSize(new Dimension(800, 600));
-			frame.setLocationRelativeTo(null);
-			textPane.setCaretPosition(0);
-			frame.setVisible(true);
-			// JOptionPane.showMessageDialog(null, textPane, "some title",
-			// JOptionPane.PLAIN_MESSAGE);
-			return;
-		}
-		} catch (Exception e){
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 	}
@@ -226,10 +226,10 @@ public class TpsInfo implements Constants, MenuConstants {
 		sb.append("<td>unit</td>");
 		sb.append("</tr>");
 		//////////////////////////////////////
-		sb.append(parseSpecsInfo(specsRes));		
+		sb.append(parseSpecsInfo(specsRes));
 		sb.append(parseFeatureInfo(textsRes));
 		sb.append(getEndRow());
-		
+
 		sb.append(parseAttributeInfo(avusRes));
 		sb.append(getEndRow());
 		//////////////////////////////////////
@@ -263,17 +263,16 @@ public class TpsInfo implements Constants, MenuConstants {
 					for (int i = 0; i < avus.length(); i++) {
 
 						JSONObject attr = avus.getJSONObject(i);
-						
+
 						int attrId = 0;
-						if (attr.has("attr")){
+						if (attr.has("attr")) {
 							attrId = attr.getInt("attr");
 						}
-						
-						JSONArray vals=null;
-						if (attr.has("vals")){
-							 vals = attr.getJSONArray("vals");
+
+						JSONArray vals = null;
+						if (attr.has("vals")) {
+							vals = attr.getJSONArray("vals");
 						}
-						
 
 						for (int j = 0; j < vals.length(); j++) {
 							JSONObject val = vals.getJSONObject(j);
@@ -347,7 +346,7 @@ public class TpsInfo implements Constants, MenuConstants {
 								List<Attribute> attibutes = TChecker.getAttributes();
 								for (Attribute attribute : attibutes) {
 									if (attribute.getId() == attrId) {
-										name = attribute.getName();
+										name = attribute.getGroupName() + " - " + attribute.getName();
 									}
 								}
 								sb.append("<td>");
@@ -427,7 +426,7 @@ public class TpsInfo implements Constants, MenuConstants {
 		if (obj.has("data")) {
 
 			JSONObject data = obj.getJSONObject("data");
-			
+
 			if (data.has("tx-feat")) {
 				JSONObject tx = data.getJSONObject("tx-feat");
 
@@ -489,7 +488,7 @@ public class TpsInfo implements Constants, MenuConstants {
 					}
 				}
 			}
-			
+
 			String[] arr = { "tx-mkt", "tx-ksp", "tx-wib" };
 			for (int k = 0; k < arr.length; k++) {
 
@@ -556,14 +555,12 @@ public class TpsInfo implements Constants, MenuConstants {
 				}
 			}
 
-			
 		}
 
 		return sb.toString();
 	}
-	
-	
-	private static String parseSpecsInfo(String json){
+
+	private static String parseSpecsInfo(String json) {
 		StringBuilder sb = new StringBuilder();
 
 		JSONObject obj = new JSONObject(json);
@@ -573,7 +570,7 @@ public class TpsInfo implements Constants, MenuConstants {
 			if (data.has("tx-std-desc")) {
 
 				String descr = data.getString("tx-std-desc");
-				
+
 				sb.append("<tr>");
 				sb.append("<td>");
 				sb.append("SD");
@@ -604,15 +601,15 @@ public class TpsInfo implements Constants, MenuConstants {
 
 		return sb.toString();
 	}
-	
-	private static String getEndRow (){
+
+	private static String getEndRow() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<tr class='header'>");
 		for (int i = 0; i < 9; i++) {
 			sb.append("<td class='red'>&nbsp;</td>");
 		}
 		sb.append("</tr>");
-		
+
 		return sb.toString();
 	}
 }

@@ -71,6 +71,10 @@ public class DatabaseStAXParser {
 			boolean bId = false;
 			boolean bType = false;
 			boolean bName = false;
+			boolean bDeactivated = false;
+			boolean bGroupId = false;
+			boolean bGroupName = false;
+			boolean bLastUpdate = false;
 
 			XMLInputFactory factory = XMLInputFactory.newInstance();
 			XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(xmlOut.getPath()));
@@ -78,6 +82,10 @@ public class DatabaseStAXParser {
 			int id = 0;
 			String type = null;
 			String name = null;
+			boolean isDeactivated = false;
+			int groupId = 0;
+			String groupName = null;
+			String lastUpdate = null;
 
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
@@ -91,6 +99,14 @@ public class DatabaseStAXParser {
 						bType = true;
 					} else if (qName.equalsIgnoreCase("name")) {
 						bName = true;
+					} else if (qName.equalsIgnoreCase("deactivated")) {
+						bDeactivated = true;
+					} else if (qName.equalsIgnoreCase("group-id")) {
+						bGroupId = true;
+					} else if (qName.equalsIgnoreCase("group-name")) {
+						bGroupName = true;
+					} else if (qName.equalsIgnoreCase("last-update")) {
+						bLastUpdate = true;
 					}
 					break;
 				case XMLStreamConstants.CHARACTERS:
@@ -107,11 +123,27 @@ public class DatabaseStAXParser {
 						name = characters.getData().replace("///", "&");
 						bName = false;
 					}
+					if (bDeactivated) {
+						isDeactivated = Boolean.parseBoolean(characters.getData());
+						bDeactivated = false;
+					}
+					if (bGroupId) {
+						groupId = Integer.valueOf(characters.getData());
+						bGroupId = false;
+					}
+					if (bGroupName) {
+						groupName = characters.getData().replace("///", "&");
+						bGroupName = false;
+					}
+					if (bLastUpdate) {
+						lastUpdate = characters.getData();
+						bLastUpdate = false;
+					}
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 					EndElement endElement = event.asEndElement();
 					if (endElement.getName().getLocalPart().equalsIgnoreCase("attribute")) {
-						list.add(new Attribute(id, type, name));
+						list.add(new Attribute(id, type, name, isDeactivated, groupId, groupName, lastUpdate));
 					}
 					break;
 				}
@@ -133,6 +165,7 @@ public class DatabaseStAXParser {
 		return list;
 	}
 
+	@Deprecated
 	private static List<Attribute> parseWithoutExi() {
 		String schemaLocation = FileLocation.getJarOrNotPath("/dbSchema.xsd");
 		String xmlLocation = FileLocation.getJarOrNotPath("/db.xml");
