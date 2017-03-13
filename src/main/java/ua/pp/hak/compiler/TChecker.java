@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,6 +82,7 @@ public class TChecker {
 
 			Color green = new Color(0, 188, 57);
 			Color red = new Color(189, 0, 0);
+			Color orange = new Color(233, 144, 2);
 
 			boolean isWholeExpressionValid = true;
 
@@ -99,7 +102,18 @@ public class TChecker {
 			Color color = null;
 			if (isWholeExpressionValid) {
 				color = green;
-				taExprRes.setText("Expression is valid!");
+				String textToOutput = "Expression is valid!";
+
+				// check deactivated attributes
+				String deactivatedAttrNote = checkDeactivatedAttributes(textExpr);
+				if (deactivatedAttrNote != null) {
+					textToOutput += NEW_LINE;
+					textToOutput += NEW_LINE;
+					textToOutput += deactivatedAttrNote;
+					color = orange;
+				}
+
+				taExprRes.setText(textToOutput);
 			} else {
 				color = red;
 				// taExprRes.setText("Error! \n" + sbErrors.toString());
@@ -2218,4 +2232,72 @@ public class TChecker {
 		return sb.toString();
 	}
 
+	public static String checkDeactivatedAttributes(String expr) {
+		String exprCleaned = expr;
+
+		// erase comments. will erase until line feed
+		exprCleaned = exprCleaned.replaceAll("--.*", "");
+
+		// erase text surrounded by quotes
+		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
+
+		// create set with attributes to check
+		Set<String> set = new LinkedHashSet<>();
+		String regex = "A\\s*?\\[\\s*?(\\d+?)\\s*?\\]";
+		{
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(exprCleaned);
+
+			while (m.find()) {
+				set.add(m.group(1));
+			}
+		}
+		// search for attributes in the Match function
+		{
+			regex = "Match\\s*?\\((?:\\s*?(\\d+)\\s*?,?\\s*?)*?\\)";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(exprCleaned);
+			while (m.find()) {
+
+				String regex2 = "(\\d+)";
+				Pattern p2 = Pattern.compile(regex2);
+				Matcher m2 = p2.matcher(m.group());
+
+				while (m2.find()) {
+					set.add(m2.group(1));
+				}
+			}
+
+		}
+
+		// create list with deactivated attributes
+		List<String> list = new ArrayList<>();
+		for (String strAttribute : set) {
+			int attrId = Integer.parseInt(strAttribute);
+			List<Attribute> attibutes = TChecker.getAttributes();
+			for (Attribute attr : attibutes) {
+				if (attr.getId() == attrId && attr.isDeactivated()) {
+					list.add(strAttribute);
+				}
+			}
+		}
+
+		if (list.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Note! You are using deactivated attribute(s): ");
+			int len = list.size();
+			for (int i = 0; i < len; i++) {
+				sb.append(list.get(i));
+
+				if ((i + 1) < len) {
+					sb.append(", ");
+				}
+			}
+
+			return sb.toString();
+		}
+
+		return null;
+
+	}
 }
