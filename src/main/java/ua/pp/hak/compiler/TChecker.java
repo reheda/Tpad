@@ -704,11 +704,13 @@ public class TChecker {
 
 		if (thenCounter != elseIfCounter + ifCounter) {
 			String lines = "";
-			if (thenCounter > (elseIfCounter + ifCounter)) {
-				lines = getLines(taExpr.getText(), "(?i)(?<!\\s|ELSE|^)IF|IF(?!\\s)");
-			} else {
-				lines = getLines(taExpr.getText(), "(?i)(?<!\\s)THEN|THEN(?!\\s)");
+			if (taExpr != null) {
+				if (thenCounter > (elseIfCounter + ifCounter)) {
+					lines = getLines(taExpr.getText(), "(?i)(?<!\\s|ELSE|^)IF|IF(?!\\s)");
+				} else {
+					lines = getLines(taExpr.getText(), "(?i)(?<!\\s)THEN|THEN(?!\\s)");
 
+				}
 			}
 			return lines + "You are using THEN statement " + thenCounter + " times, but have to use "
 					+ (elseIfCounter + ifCounter) + " time(s)";
@@ -1398,8 +1400,7 @@ public class TChecker {
 
 			{
 				// check coalesce
-				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT) + COALESCE_TEXT.length(),
-						pointCoalesce);
+				conCleaned = condition.substring(condition.indexOf(COALESCE_TEXT), pointCoalesce + 1);
 				error = checkMultiCoalesce(conCleaned, p, COALESCE_TEXT);
 				if (error != null) {
 					errors.append(error);
