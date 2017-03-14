@@ -102,7 +102,7 @@ public class AttributeNameIntoCommentDialog implements MenuConstants {
 						for (Attribute attr : attibutes) {
 							int attrId = Integer.parseInt(attrCode);
 							if (attr.getId() == attrId) {
-								String name = attr.getName();
+								String name = attr.getGroupName() + " - " + attr.getName();
 								comment = "-- " + attrId + " // " + name.replace("\"", "''");
 							}
 						}

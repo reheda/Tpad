@@ -29,15 +29,19 @@ public class AttributeInfoDialog implements MenuConstants {
 				List<Attribute> attibutes = TChecker.getAttributes();
 				for (Attribute attr : attibutes) {
 					if (attr.getId() == attrId) {
-						String name = attr.getName();
+						String name = attr.getGroupName() + " - " + attr.getName();
 						String type = attr.getType();
+						String status = attr.isDeactivated() ? "<span class='gray'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Deactivated" : "<span class='green'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Active";
+						String lastUpdate = attr.getLastUpdate();
 						String comment = "-- " + attrId + " // " + name.replace("\"", "''");
 
-						String text = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } </style> </head> <body> <div> <table width='500'> "
+						String text = "<html> <head> <style> table { border-collapse: collapse; } th, td { text-align: left; border-bottom: 1px solid #dddddd; } td.right { border-right: 1px solid #E03134; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; } body {font-family:Segoe UI; font-size:9px; } div {background-color: white; padding:5px; } span {border: 1px solid black; } .green{background-color:#00C152} .gray{background-color:silver}</style> </head> <body> <div> <table width='500'> "
 								+ "<tbody><tr class='header'><td width='90'>Parameter</td><td>Value</td></tr>"
 								+ "<tr><td class='right'>ID</td><td>" + attrId + "</td></tr>"
 								+ "<tr><td class='right'>Name</td><td>" + name + "</td></tr>"
 								+ "<tr><td class='right'>Type</td><td>" + type + "</td></tr> "
+								+ "<tr><td class='right'>Status</td><td>" + status + "</td></tr> "
+								+ "<tr><td class='right'>Last update (dd/mm/yyyy)</td><td>" + lastUpdate + "</td></tr> "
 								+ "</tbody> </table> </div><br />  "
 								+ "<div> <table width='500'> <tbody><tr class='header'><td width='90'>For Comments</td></tr>"
 								+ "<tr><td>" + comment + "</td></tr>" + "</tbody> </table> </div> </body></html>";

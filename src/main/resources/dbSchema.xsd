@@ -18,6 +18,10 @@
 			<xsd:element name="id" type="xsd:positiveInteger" />
 			<xsd:element name="type" type="tns:TypeFeature" />
 			<xsd:element name="name" type="xsd:string" />
+			<xsd:element name="deactivated" type="tns:DeactivatedFeature" />
+			<xsd:element name="group-id" type="xsd:positiveInteger" />
+			<xsd:element name="group-name" type="xsd:string" />
+			<xsd:element name="last-update" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -30,6 +34,13 @@
 			<xsd:enumeration value="Multi-valued numeric" />
 			<xsd:enumeration value="Repeating" />
 			<xsd:enumeration value="Repeating numeric" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DeactivatedFeature">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="true" />
+			<xsd:enumeration value="false" />
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>

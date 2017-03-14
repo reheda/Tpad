@@ -184,8 +184,7 @@ public class PlanioParser {
 			if (isReadyOnly) {
 				if (status == null || !status.contains("ready")) {
 					addExpression = false;
-					logger.info(CNET_CONTENT_ISSUES_URL + id + " - isn't checked due to status (" + status
-							+ ")");
+					logger.info(CNET_CONTENT_ISSUES_URL + id + " - isn't checked due to status (" + status + ")");
 				}
 			}
 
@@ -197,10 +196,11 @@ public class PlanioParser {
 				if (!exprCode.trim().isEmpty()) {
 
 					String result = TChecker.checkExpression(exprCode);
-					if (result != null) {
+					String deactivateAttrNote = TChecker.checkDeactivatedAttributes(exprCode);
+					if (result != null || deactivateAttrNote != null) {
 
 						exprObj.setIsExpressionValid(false);
-						exprObj.setExpressionResult(result);
+						exprObj.setExpressionResult(result != null ? result : deactivateAttrNote);
 						exprListWithErrors.add(exprObj);
 						logger.info(CNET_CONTENT_ISSUES_URL + id + " - not ok");
 
