@@ -1,7 +1,7 @@
 <b>v 1.0.14</b><br /> 
 - fixed issue with 4k resolution (thanks to Kolia for identifying)<br />
 - fixed issue with coalesce<br />
-- updated db with more than 1.6k attributes<br />
+- updated database with more than 1.6k attributes<br />
 - enhanced info about attribute in Attribute info dialog<br />
 - added check for deactivated attributes if expression is valid
 ---
