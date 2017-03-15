@@ -1,5 +1,8 @@
 <b>v 1.0.15</b><br /> 
 - fixed issue with Match function. E.g. <code>IF A[5476].Match(5475).Total = A[5476].Match(5477, 5476) .Values.Count THEN "ok"</code><br />
+- added possibility to get <code>Tps info</code> for several SKUs<br />
+- added sorting of attributes by group name in <code>Tps info</code> menu item<br />
+- added check for Canceling process
 ---
 <b>v 1.0.14</b><br /> 
 - fixed issue with 4k resolution (thanks to Kolia for identifying)<br />
