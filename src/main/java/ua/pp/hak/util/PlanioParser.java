@@ -47,6 +47,10 @@ public class PlanioParser {
 		// fill set with expressions
 		Set<ExpressionObject> exprSet = new HashSet<>();
 		for (int i = 0; i < distinctLinks.length; i++) {
+			if (Thread.currentThread().isInterrupted()) {
+				logger.warn("Canceling process...");
+				break;
+			}
 			String json = getJson(distinctLinks[i]);
 			if (json != null) {
 				fillExpressionSet(json, exprSet);
@@ -223,6 +227,7 @@ public class PlanioParser {
 		String oldProcessingLabelText = label.getText();
 		for (ExpressionObject expressionObject : exprSet) {
 			if (Thread.currentThread().isInterrupted()) {
+				logger.warn("Canceling process...");
 				break;
 			}
 

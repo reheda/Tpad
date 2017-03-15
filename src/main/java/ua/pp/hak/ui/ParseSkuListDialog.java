@@ -57,7 +57,12 @@ public class ParseSkuListDialog implements Constants, MenuConstants {
 				// "(?m)^[ \t]*\r?\n" - regex to remove empty lines
 				String text = TParser.parseForSkuList(expressionText, taParameters.getText(),
 						taSkuList.getText().replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"), loadTime, parseTime);
-
+				
+				//seems it will not happen
+				if (Thread.currentThread().isInterrupted()){
+					return;
+				}
+				
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
 				textPane.setBackground(null);

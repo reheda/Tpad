@@ -196,11 +196,10 @@ public class TParser {
 	}
 
 	public static String parseForSkuList(String expressionText, String parametersText, String[] skuList, int loadTime,
-			int parseTime) {
+			int parseTime) throws Exception {
 		long start = System.nanoTime();
 
 		StringBuilder sb = new StringBuilder();
-		try {
 			logger.info("Parsing expression for SKU list...");
 
 			// kill process if needed
@@ -263,6 +262,16 @@ public class TParser {
 
 				String oldProcessingLabelText = LoadingPanel.getLabel().getText();
 				for (int i = 0; i < skuList.length; i++) {
+					
+					if (Thread.currentThread().isInterrupted()){
+						System.out.println("---good");
+						logger.warn("Canceling process...");
+						if (ProcessKiller.isProcessRunning(processName)) {
+							ProcessKiller.killProcess(processName);
+						}
+						break;
+//						return "canceled";
+					}
 
 					LoadingPanel.getLabel()
 							.setText(oldProcessingLabelText.concat(" (" + (i + 1) + "/" + skuList.length + ")"));
@@ -305,19 +314,16 @@ public class TParser {
 				sb.append("</div>");
 				sb.append("</body>");
 				sb.append("</html>");
-			} catch (Exception e) {
-				logger.error(e.getMessage());
 			} finally {
-				driver.quit();
+				if (Thread.currentThread().isAlive()){
+					driver.quit();					
+				}
 			}
 
 			Runtime.getRuntime().exec("webdrivers/HideNSeek.exe 1 \"" + "Google Chrome" + "\"");
 
 			logger.info("Finish parsing expression for SKU list");
 
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
 
 		long elapsedTime = System.nanoTime() - start;
 		logger.info("Elapsed time to parse: " + elapsedTime + " ns (~ "

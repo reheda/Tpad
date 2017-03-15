@@ -73,7 +73,11 @@ public class CheckExprListDialog implements Constants, MenuConstants {
 				String links = taLinksList.getText();
 				String text = new PlanioParser().getResultPage(links.replaceAll("(?m)^[ \t]*\r?\n", "").split("\\n"),
 						checkReadyStatusOnly.isSelected());
-
+				
+				if (Thread.currentThread().isInterrupted()){
+					return;
+				}
+				
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
 				textPane.setBackground(null);
