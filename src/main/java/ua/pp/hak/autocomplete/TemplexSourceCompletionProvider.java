@@ -166,7 +166,7 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 
 		// erase brackets, but left Match(number) cause it should return
 		// PdmMultivalueAttribute instead of PdmAttributeSet
-		exprCleaned = exprCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
+		exprCleaned = TChecker.eraseBrackets(exprCleaned);
 
 		// ither cases
 		exprCleaned = exprCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]").replaceAll("Ksp\\[\\d+\\]",

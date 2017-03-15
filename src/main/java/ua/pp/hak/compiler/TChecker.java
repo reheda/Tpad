@@ -909,8 +909,9 @@ public class TChecker {
 
 			// erase brackets, but left Match(number) cause it should return
 			// PdmMultivalueAttribute instead of PdmAttributeSet
-			conCleaned = conCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
+			conCleaned = eraseBrackets(conCleaned);
 
+			
 			int operatorsQty = conCleaned.length() - conCleaned.replaceAll("<>", "1").replaceAll(">=", "1")
 					.replaceAll("<=", "1").replaceAll("<", "").replaceAll(">", "").replaceAll("=", "")
 					.replaceAll("(?i) LIKE ", " LIK ").replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
@@ -1135,7 +1136,8 @@ public class TChecker {
 		String valueCleaned = value.trim();
 		// erase brackets, but left Match(number) cause it should return
 		// PdmMultivalueAttribute instead of PdmAttributeSet
-		valueCleaned = valueCleaned.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)", "Match()");
+		valueCleaned = eraseBrackets(valueCleaned);
+
 		// ither cases
 		valueCleaned = valueCleaned.replaceAll("BulletFeatures\\[\\d+\\]", "BulletFeatures[]")
 				.replaceAll("Ksp\\[\\d+\\]", "Ksp[]");
@@ -1715,8 +1717,19 @@ public class TChecker {
 		// Replace("before", "after")
 		// functionName = Replace
 		// parameters = "\"before\", \"after\""
-
+		
 		StringBuilder errors = new StringBuilder();
+		
+		if (parameters.matches(".*\\, ?$")) {
+			errors.append("Parameters in the '" + functionName + "' function shouldn't be finished with COMMA");
+			return errors.toString();
+		}
+		
+		if (parameters.matches(".*\\, ?\\,.*")) {
+			errors.append("Parameters in the '" + functionName + "' function shouldn't be empty");
+			return errors.toString();
+		}
+		
 		String[] params = parameters.split(" ?, ?");
 
 		int paramsQty = 0;
@@ -1898,8 +1911,8 @@ public class TChecker {
 
 				// erase brackets, but left Match(number) cause it should return
 				// PdmMultivalueAttribute instead of PdmAttributeSet
-				String returnValueCleaned = returnValue.replaceAll("(?<!Match)\\(.*?\\)", "()")
-						.replaceAll("Match\\(.*?,.*?\\)", "Match()");
+				String returnValueCleaned = eraseBrackets(returnValue);
+
 				String[] values = returnValueCleaned.split(" ?_ ?");
 				for (int i = 0; i < values.length; i++) {
 					error = checkValue(values[i]);
@@ -1931,9 +1944,9 @@ public class TChecker {
 		String error = null;
 		// erase brackets, but left Match(number) cause it should return
 		// PdmMultivalueAttribute instead of PdmAttributeSet
-		String returnValueCleaned = returnValue.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)",
-				"Match()");
+		String returnValueCleaned = eraseBrackets(returnValue);
 
+		
 		// check throw structure
 		{
 			boolean isThrowError = false;
@@ -2022,8 +2035,8 @@ public class TChecker {
 
 			// erase brackets, but left Match(number) cause it should return
 			// PdmMultivalueAttribute instead of PdmAttributeSet
-			String returnValueCleaned = value.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(.*?,.*?\\)",
-					"Match()");
+			String returnValueCleaned = eraseBrackets(value);
+
 			String[] values = returnValueCleaned.split(" ?_ ?");
 			for (int i = 0; i < values.length; i++) {
 				if (!values[i].trim().matches("IS (NOT )?NULL")) {
@@ -2299,5 +2312,11 @@ public class TChecker {
 
 		return null;
 
+	}
+	
+	public static String eraseBrackets(String expr){
+		// erase brackets, but left Match(number) cause it should return PdmMultivalueAttribute instead of PdmAttributeSet
+		String exprCleaned = expr.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(\\s*?\\d+\\s*?,.*?\\)", "Match()");
+		return exprCleaned;
 	}
 }

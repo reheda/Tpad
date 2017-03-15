@@ -1,3 +1,6 @@
+<b>v 1.0.15</b><br /> 
+- fixed issue with Match function. E.g. <code>IF A[5476].Match(5475).Total = A[5476].Match(5477, 5476) .Values.Count THEN "ok"</code><br />
+---
 <b>v 1.0.14</b><br /> 
 - fixed issue with 4k resolution (thanks to Kolia for identifying)<br />
 - fixed issue with coalesce<br />
