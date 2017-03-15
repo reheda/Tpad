@@ -3,11 +3,14 @@ package ua.pp.hak.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -82,6 +85,7 @@ public class TpsInfo implements Constants, MenuConstants {
 			setField(skuIdLabel, skuIdField);
 			JButton btn = new JButton("...");
 			btn.setFocusable(false);
+			btn.setMargin(new Insets(1, 4, 1, 3));
 			btn.addActionListener(new ActionListener() {
 				private JTextArea taSkuList;
 
@@ -138,9 +142,9 @@ public class TpsInfo implements Constants, MenuConstants {
 			if (result == JOptionPane.OK_OPTION) {
 				String server = liveButton.isSelected() ? "templex" : txdev1Button.getText();
 				String lang = langField.getText();
-				String market =  marketField.getText();
+				String market = marketField.getText();
 				String skuIds = skuIdField.getText();
-						
+
 				String text = generatePage(server, lang, market, skuIds);
 
 				JTextPane textPane = new JTextPane();
@@ -192,10 +196,10 @@ public class TpsInfo implements Constants, MenuConstants {
 	 * @return
 	 */
 	private static String generatePage(String server, String lang, String market, String skuIds) {
-				StringBuilder sb = new StringBuilder();
-		
+		StringBuilder sb = new StringBuilder();
+
 		String[] skuIdArray = skuIds.split(",");
-		
+
 		sb.append("<html>");
 		sb.append(
 				"<head><style> div.centered {text-align: center;} div.centered table { border-collapse: collapse; margin: 0 auto;  background-color: white; padding:5px;} tr {border-bottom: 1px solid #dddddd; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; border-bottom: none; } td { text-align: left; border-right: 1px solid #dddddd;} td.red { border-right: 1px solid #E03134; } td.cntr {text-align: center;} body {font-family:Segoe UI; font-size:9px; } </style></head>");
@@ -216,13 +220,13 @@ public class TpsInfo implements Constants, MenuConstants {
 				logger.error("Document of TPS page is null!");
 			}
 		}
-		
+
 		sb.append("</tbody>");
 		sb.append("</table>");
 		sb.append("</div>");
 		sb.append("</body>");
 		sb.append("</html>");
-		
+
 		return sb.toString();
 	}
 
@@ -286,7 +290,6 @@ public class TpsInfo implements Constants, MenuConstants {
 
 		StringBuilder sb = new StringBuilder();
 
-
 		sb.append("<tr class='header'>");
 		sb.append("<td colspan='3' class='cntr'>");
 		//////////////////////////////////////
@@ -317,12 +320,12 @@ public class TpsInfo implements Constants, MenuConstants {
 		sb.append(getEndRow());
 		//////////////////////////////////////
 
-	
-
 		return sb.toString();
 	}
 
 	private static String parseAttributeInfo(String json) {
+		List<Row> list = new ArrayList<>();
+
 		StringBuilder sb = new StringBuilder();
 
 		JSONObject obj = new JSONObject(json);
@@ -338,7 +341,6 @@ public class TpsInfo implements Constants, MenuConstants {
 
 					//////////////////////////////////////////////
 
-					int prevAttrId = 0;
 					for (int i = 0; i < avus.length(); i++) {
 
 						JSONObject attr = avus.getJSONObject(i);
@@ -410,67 +412,86 @@ public class TpsInfo implements Constants, MenuConstants {
 							}
 
 							////////////////////////////////////////
-
-							sb.append("<tr>");
-
-							if ((prevAttrId == attrId && set > 1) || j > 0) {
-								sb.append("<td>&nbsp;</td>");
-								sb.append("<td>&nbsp;</td>");
-							} else {
-								sb.append("<td>");
-								sb.append(attrId);
-								sb.append("</td>");
-
-								String name = null;
-								List<Attribute> attibutes = TChecker.getAttributes();
-								for (Attribute attribute : attibutes) {
-									if (attribute.getId() == attrId) {
-										name = attribute.getGroupName() + " - " + attribute.getName();
-									}
-								}
-								sb.append("<td>");
-								sb.append(name);
-								sb.append("</td>");
-							}
-
-							sb.append("<td class='red'>");
-							sb.append(set == 0 ? "&nbsp;" : set);
-							sb.append("</td>");
-
-							sb.append("<td>");
-							sb.append(valueDefault != null ? valueDefault : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("<td class='red'>");
-							sb.append(unitDefault != null ? unitDefault : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("<td>");
-							sb.append(valueUsm != null ? valueUsm : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("<td class='red'>");
-							sb.append(unitUsm != null ? unitUsm : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("<td>");
-							sb.append(valueInv != null ? valueInv : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("<td class='red'>");
-							sb.append(unitInv != null ? unitInv : "&nbsp;");
-							sb.append("</td>");
-
-							sb.append("</tr>");
+							Row row = new Row(attrId, set, valueDefault, unitDefault, valueUsm, unitUsm, valueInv,
+									unitInv);
+							list.add(row);
 
 							////////////////////////////////////////
 						}
 
-						prevAttrId = attrId;
 					}
 				}
 			}
 		}
+
+		Collections.sort(list);
+		int prevAttrId = 0;
+		int prevGroupId = 0;
+		for (Row row : list) {
+			int attrId = row.getAttrId();
+			int set = row.getSet();
+			int groupId = row.getGroupId();
+			String name = row.getName();
+			String valueDefault = row.getValueDefault();
+			String unitDefault = row.getUnitDefault();
+			String valueUsm = row.getValueUsm();
+			String unitUsm = row.getUnitUsm();
+			String valueInv = row.getValueInv();
+			String unitInv = row.getUnitInv();
+
+			if (prevGroupId != groupId) {
+				sb.append("<tr style='border-top: 1px solid #E03134'>");
+			} else {
+				sb.append("<tr>");
+			}
+
+			if ((prevAttrId == attrId && set > 1)) {
+				sb.append("<td>&nbsp;</td>");
+				sb.append("<td>&nbsp;</td>");
+			} else {
+				sb.append("<td>");
+				sb.append(attrId);
+				sb.append("</td>");
+
+				sb.append("<td>");
+				sb.append(name);
+				sb.append("</td>");
+			}
+
+			sb.append("<td class='red'>");
+			sb.append(set == 0 ? "&nbsp;" : set);
+			sb.append("</td>");
+
+			sb.append("<td>");
+			sb.append(valueDefault != null ? valueDefault : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("<td class='red'>");
+			sb.append(unitDefault != null ? unitDefault : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("<td>");
+			sb.append(valueUsm != null ? valueUsm : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("<td class='red'>");
+			sb.append(unitUsm != null ? unitUsm : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("<td>");
+			sb.append(valueInv != null ? valueInv : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("<td class='red'>");
+			sb.append(unitInv != null ? unitInv : "&nbsp;");
+			sb.append("</td>");
+
+			sb.append("</tr>");
+
+			prevAttrId = attrId;
+			prevGroupId = groupId;
+		}
+
 		return sb.toString();
 	}
 
@@ -691,15 +712,114 @@ public class TpsInfo implements Constants, MenuConstants {
 
 		return sb.toString();
 	}
+
 	private static String getEndRow(int heightPx) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<tr class='header'>");
 		for (int i = 0; i < 9; i++) {
-			sb.append("<td class='red'><font style='font-size: "+heightPx+"px;'>&nbsp;</font></td>");
+			sb.append("<td class='red'><font style='font-size: " + heightPx + "px;'>&nbsp;</font></td>");
 		}
 		sb.append("</tr>");
-		
+
 		return sb.toString();
 	}
 
+}
+
+class Row implements Comparable<Row> {
+
+	private int attrId;
+	private int set;
+	private String valueDefault;
+	private String unitDefault;
+	private String valueUsm;
+	private String unitUsm;
+	private String valueInv;
+	private String unitInv;
+
+	private int groupId;
+	private String name;
+
+	public Row(int attrId, int set, String valueDefault, String unitDefault, String valueUsm, String unitUsm,
+			String valueInv, String unitInv) {
+		this.attrId = attrId;
+		this.set = set;
+		this.valueDefault = valueDefault;
+		this.unitDefault = unitDefault;
+		this.valueUsm = valueUsm;
+		this.unitUsm = unitUsm;
+		this.valueInv = valueInv;
+		this.unitInv = unitInv;
+
+		fillAttrInfo(attrId);
+	}
+
+	private void fillAttrInfo(int attrId) {
+		List<Attribute> attrs = TChecker.getAttributes();
+		for (Attribute attr : attrs) {
+			if (attr.getId() == attrId) {
+				this.groupId = attr.getGroupId();
+				this.name = attr.getGroupName() + " - " + attr.getName();
+			}
+		}
+
+	}
+
+	public int getAttrId() {
+		return attrId;
+	}
+
+	public int getSet() {
+		return set;
+	}
+
+	public String getValueDefault() {
+		return valueDefault;
+	}
+
+	public String getUnitDefault() {
+		return unitDefault;
+	}
+
+	public String getValueUsm() {
+		return valueUsm;
+	}
+
+	public String getUnitUsm() {
+		return unitUsm;
+	}
+
+	public String getValueInv() {
+		return valueInv;
+	}
+
+	public String getUnitInv() {
+		return unitInv;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public int compareTo(Row o) {
+		// if group name equal 'header' (id=63) then place at the top
+		if (this.groupId == 63 && o.getGroupId() != 63) {
+			return -1;
+		} else if (this.groupId != 63 && o.getGroupId() == 63) {
+			return 1;
+		}
+
+		if (this.groupId < o.getGroupId()) {
+			return -1;
+		} else if (this.groupId > o.getGroupId()) {
+			return 1;
+		}
+
+		return 0;
+	}
 }
