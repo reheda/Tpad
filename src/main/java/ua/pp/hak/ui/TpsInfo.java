@@ -3,6 +3,8 @@ package ua.pp.hak.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,12 +14,14 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
@@ -36,13 +40,14 @@ import ua.pp.hak.util.RequestFocusListener;
 
 public class TpsInfo implements Constants, MenuConstants {
 	final static Logger logger = LogManager.getLogger(TpsInfo.class);
-	static JPanel parameters;
+	private static JPanel parameters;
+	private static Notepad npd;
 
 	// 16102293
 
-	public static void show(Notepad npd) {
+	public static void show(Notepad notepad) {
 		try {
-
+			npd = notepad;
 			JPanel main = new JPanel();
 			main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
@@ -71,11 +76,57 @@ public class TpsInfo implements Constants, MenuConstants {
 			parameters.setBorder(BorderFactory.createTitledBorder("Parameters: "));
 
 			setField(langLabel, langField);
+			parameters.add(new JLabel(" "));
 			setField(marketLabel, marketField);
+			parameters.add(new JLabel(" "));
 			setField(skuIdLabel, skuIdField);
+			JButton btn = new JButton("...");
+			btn.setFocusable(false);
+			btn.addActionListener(new ActionListener() {
+				private JTextArea taSkuList;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					JPanel main = new JPanel();
+					main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+
+					main.add(createSkuListPanel());
+
+					main.setPreferredSize(new Dimension(200, 400));
+
+					int result = JOptionPane.showConfirmDialog(npd.getFrame(), main, "Paste Sku list",
+							JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+					if (result == JOptionPane.OK_OPTION) {
+						skuIdField.setText(taSkuList.getText().trim().replaceAll("\\n+", ","));
+					}
+				}
+
+				private JPanel createSkuListPanel() {
+
+					taSkuList = new JTextArea();
+					taSkuList.setLineWrap(true);
+					taSkuList.setFont(npd.getDefaultFont().deriveFont(12f));
+					taSkuList.addAncestorListener(new RequestFocusListener());
+					JScrollPane spSkuList = new JScrollPane(taSkuList);
+					spSkuList.setPreferredSize(new Dimension(200, 100));
+					spSkuList.setMinimumSize(new Dimension(200, 50));
+					spSkuList.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+					JPanel skuListPanel = new JPanel();
+					skuListPanel.setLayout(new BoxLayout(skuListPanel, BoxLayout.Y_AXIS));
+					skuListPanel.setBorder(BorderFactory.createTitledBorder("SKU list: "));
+					skuListPanel.add(spSkuList);
+
+					return skuListPanel;
+				}
+
+			});
+			parameters.add(btn);
 
 			// Lay out the panel.
-			SpringUtilities.makeCompactGrid(parameters, 3, 2, 6, 6, 6, 6);
+			SpringUtilities.makeCompactGrid(parameters, 3, 3, 6, 6, 6, 6);
 
 			main.add(buttons);
 			main.add(parameters);
@@ -86,15 +137,11 @@ public class TpsInfo implements Constants, MenuConstants {
 
 			if (result == JOptionPane.OK_OPTION) {
 				String server = liveButton.isSelected() ? "templex" : txdev1Button.getText();
-
-				Document doc = parseDoc(server, langField.getText(), marketField.getText(),
-						getCleanedSku(skuIdField.getText()));
-				String text = "";
-				if (doc != null) {
-					text = parseJson(doc);
-				} else {
-					logger.error("Document of TPS page is null!");
-				}
+				String lang = langField.getText();
+				String market =  marketField.getText();
+				String skuIds = skuIdField.getText();
+						
+				String text = generatePage(server, lang, market, skuIds);
 
 				JTextPane textPane = new JTextPane();
 				textPane.setContentType("text/html");
@@ -135,6 +182,48 @@ public class TpsInfo implements Constants, MenuConstants {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+	}
+
+	/**
+	 * @param server
+	 * @param lang
+	 * @param market
+	 * @param skuIds
+	 * @return
+	 */
+	private static String generatePage(String server, String lang, String market, String skuIds) {
+				StringBuilder sb = new StringBuilder();
+		
+		String[] skuIdArray = skuIds.split(",");
+		
+		sb.append("<html>");
+		sb.append(
+				"<head><style> div.centered {text-align: center;} div.centered table { border-collapse: collapse; margin: 0 auto;  background-color: white; padding:5px;} tr {border-bottom: 1px solid #dddddd; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; border-bottom: none; } td { text-align: left; border-right: 1px solid #dddddd;} td.red { border-right: 1px solid #E03134; } td.cntr {text-align: center;} body {font-family:Segoe UI; font-size:9px; } </style></head>");
+		sb.append("<body>");
+		sb.append("<div class='centered'>");
+		sb.append("<table>");
+		sb.append("<tbody>");
+		for (int i = 0; i < skuIdArray.length; i++) {
+			String skuId = getCleanedSku(skuIdArray[i]);
+			if (skuId.isEmpty()) {
+				continue;
+			}
+
+			Document doc = parseDoc(server, lang, market, skuId);
+			if (doc != null) {
+				sb.append(parseJson(doc));
+			} else {
+				logger.error("Document of TPS page is null!");
+			}
+		}
+		
+		sb.append("</tbody>");
+		sb.append("</table>");
+		sb.append("</div>");
+		sb.append("</body>");
+		sb.append("</html>");
+		
+		return sb.toString();
 	}
 
 	public static void setField(JLabel l, JTextField textField) {
@@ -197,13 +286,7 @@ public class TpsInfo implements Constants, MenuConstants {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<html>");
-		sb.append(
-				"<head><style> div.centered {text-align: center;} div.centered table { border-collapse: collapse; margin: 0 auto;  background-color: white; padding:5px;} tr {border-bottom: 1px solid #dddddd; } tr:hover{background-color:#f5f5f5 } tr.header{background-color: #E03134; color: white; font-weight: bold; border-bottom: none; } td { text-align: left; border-right: 1px solid #dddddd;} td.red { border-right: 1px solid #E03134; } td.cntr {text-align: center;} body {font-family:Segoe UI; font-size:9px; } </style></head>");
-		sb.append("<body>");
-		sb.append("<div class='centered'>");
-		sb.append("<table>");
-		sb.append("<tbody>");
+
 		sb.append("<tr class='header'>");
 		sb.append("<td colspan='3' class='cntr'>");
 		//////////////////////////////////////
@@ -228,17 +311,13 @@ public class TpsInfo implements Constants, MenuConstants {
 		//////////////////////////////////////
 		sb.append(parseSpecsInfo(specsRes));
 		sb.append(parseFeatureInfo(textsRes));
-		sb.append(getEndRow());
+		sb.append(getEndRow(2));
 
 		sb.append(parseAttributeInfo(avusRes));
 		sb.append(getEndRow());
 		//////////////////////////////////////
 
-		sb.append("</tbody>");
-		sb.append("</table>");
-		sb.append("</div>");
-		sb.append("</body>");
-		sb.append("</html>");
+	
 
 		return sb.toString();
 	}
@@ -612,4 +691,15 @@ public class TpsInfo implements Constants, MenuConstants {
 
 		return sb.toString();
 	}
+	private static String getEndRow(int heightPx) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<tr class='header'>");
+		for (int i = 0; i < 9; i++) {
+			sb.append("<td class='red'><font style='font-size: "+heightPx+"px;'>&nbsp;</font></td>");
+		}
+		sb.append("</tr>");
+		
+		return sb.toString();
+	}
+
 }
