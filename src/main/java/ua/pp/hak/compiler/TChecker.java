@@ -555,8 +555,7 @@ public class TChecker {
 				"ExpressionResultNumeric"));
 		functions.add(new Function("Shorten()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
 				"ExpressionResultNumeric", "String"));
-		functions.add(new Function("Split()", "ExpressionResultList", "ExpressionResultList", "ExpressionResultLiteral",
-				"ExpressionResultNumeric"));
+		functions.add(new Function("Split()", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
 		functions.add(new Function("UseSeparators()", "ExpressionResult", "ExpressionResultList"));
 		functions.add(new Function("InvariantValues", "ExpressionResultList", "PdmAttributeSet",
 				"PdmMultivalueAttribute", "PdmRepeatingAttribute"));

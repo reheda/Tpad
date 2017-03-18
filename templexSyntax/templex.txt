@@ -332,11 +332,6 @@ ExpressionResultList|
 Int32 count|
  Returns all elements from this list, discarding the first specified number of elements. (<a href="http://txdev1.cnetcontent.com/Reference#864BDE08">Reference link</a>)
 
-Split function
-ExpressionResult|
-String[] separator|
- Returns a list of strings after splitting the text value of each element at every occurrence of the specified separator(s). (<a href="http://txdev1.cnetcontent.com/Reference#7F71A789">Reference link</a>)
-
 Sum function
 ExpressionResult|
  Returns the sum of all elements in this list when converted to decimals. (<a href="http://txdev1.cnetcontent.com/Reference#E0D98372">Reference link</a>)
