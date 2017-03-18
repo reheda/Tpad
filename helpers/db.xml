@@ -10441,4 +10441,9 @@
 	<attribute> <id>10737</id> <type>Multi-valued</type>  <name>Built-in Devices</name> <deactivated>false</deactivated> <group-id>666</group-id> <group-name>Control Unit</group-name> <last-update>14/03/2017</last-update> </attribute>
 	<attribute> <id>10738</id> <type>Repeating</type>  <name>Resolution</name> <deactivated>false</deactivated> <group-id>788</group-id> <group-name>Scanning Resolution Details</group-name> <last-update>14/03/2017</last-update> </attribute>
 	<attribute> <id>10739</id> <type>Repeating</type>  <name>Comment</name> <deactivated>false</deactivated> <group-id>788</group-id> <group-name>Scanning Resolution Details</group-name> <last-update>14/03/2017</last-update> </attribute>
+	<attribute> <id>10740</id> <type>Multi-valued</type>  <name>3G UMTS Band</name> <deactivated>false</deactivated> <group-id>523</group-id> <group-name>Communications</group-name> <last-update>18/03/2017</last-update> </attribute>
+	<attribute> <id>10744</id> <type>Multi-valued</type>  <name>Sound Enhancements</name> <deactivated>false</deactivated> <group-id>164</group-id> <group-name>Digital Player (Recorder)</group-name> <last-update>18/03/2017</last-update> </attribute>
+	<attribute> <id>10745</id> <type>Simple</type>  <name>Audio Processor</name> <deactivated>false</deactivated> <group-id>164</group-id> <group-name>Digital Player (Recorder)</group-name> <last-update>18/03/2017</last-update> </attribute>
+	<attribute> <id>10746</id> <type>Simple</type>  <name>Audio Amplifier</name> <deactivated>false</deactivated> <group-id>164</group-id> <group-name>Digital Player (Recorder)</group-name> <last-update>18/03/2017</last-update> </attribute>
+	<attribute> <id>10743</id> <type>Multi-valued</type>  <name>Fast Charging Technology</name> <deactivated>false</deactivated> <group-id>37</group-id> <group-name>Battery</group-name> <last-update>18/03/2017</last-update> </attribute>
 </attributes>  
