@@ -445,7 +445,7 @@ public class TpsInfo implements Constants, MenuConstants {
 				sb.append("<tr>");
 			}
 
-			if ((prevAttrId == attrId && set > 1)) {
+			if ((prevAttrId == attrId && set != 1)) {
 				sb.append("<td>&nbsp;</td>");
 				sb.append("<td>&nbsp;</td>");
 			} else {
