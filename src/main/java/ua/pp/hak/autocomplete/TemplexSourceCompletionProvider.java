@@ -21,7 +21,7 @@ import ua.pp.hak.compiler.TChecker;
  * @version 1.0
  */
 public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
-	
+
 	final static Logger logger = LogManager.getLogger(TemplexSourceCompletionProvider.class);
 
 	public TemplexSourceCompletionProvider() {
@@ -36,13 +36,14 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
 		List<Completion> retVal = new ArrayList<Completion>();
 		String text = getAlreadyEnteredText(comp);
-		
-		//get return type of the expression and fill in possibleCompleteion list
+
+		// get return type of the expression and fill in possibleCompleteion
+		// list
 		List<Completion> possibleCompletions = new ArrayList<>();
 		int indexBeforeEnteredText = comp.getCaretPosition() - text.length();
 		if (indexBeforeEnteredText > -1) {
 			String allText = comp.getText().substring(0, indexBeforeEnteredText);
-			
+
 			try {
 				String returnType = getReturnType(allText);
 
@@ -56,20 +57,19 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 						}
 					}
 				}
-				
+
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
 
-
 		}
-		
-		//use default list if no suitable completions
+
+		// use default list if no suitable completions
 		if (possibleCompletions.isEmpty()) {
 			possibleCompletions = completions;
 		}
-		
-		//filter completions by already entered text 
+
+		// filter completions by already entered text
 		if (text != null) {
 
 			int index = Collections.binarySearch(possibleCompletions, text, comparator);
@@ -104,12 +104,13 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private String getReturnType(String allText) {
-		String[] values = allText.replaceAll("\\s+", " ").split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR ");
-		
+		String[] values = allText.replaceAll("--.*", "").replaceAll("\\s+", " ")
+				.split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR ");
+
 		if (values.length == 0) {
 			return null;
 		}
-		
+
 		String exprCleaned = values[values.length - 1].trim();
 
 		// erase text surrounded by quotes

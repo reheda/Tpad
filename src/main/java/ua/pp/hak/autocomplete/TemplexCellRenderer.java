@@ -1,16 +1,5 @@
 package ua.pp.hak.autocomplete;
 
-/*
- * 03/21/2010
- *
- * Copyright (C) 2010 Robert Futrell
- * robert_futrell at users.sourceforge.net
- * http://fifesoft.com/rsyntaxtextarea
- *
- * This library is distributed under a modified BSD license.  See the included
- * RSTALanguageSupport.License.txt file for details.
- */
-
 import javax.swing.Icon;
 import javax.swing.JList;
 
@@ -21,9 +10,9 @@ import org.fife.ui.autocomplete.VariableCompletion;
 
 
 /**
- * The cell renderer used for the C programming language.
+ * The cell renderer used for the Templex language.
  *
- * @author Robert Futrell
+ * @author VR
  * @version 1.0
  */
 class TemplexCellRenderer extends CompletionCellRenderer {

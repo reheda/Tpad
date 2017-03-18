@@ -7,9 +7,9 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 
 /**
- * Language support for C.
+ * Language support for Templex.
  *
- * @author Robert Futrell
+ * @author VR
  * @version 1.0
  */
 public class TemplexLanguageSupport extends AbstractLanguageSupport {
