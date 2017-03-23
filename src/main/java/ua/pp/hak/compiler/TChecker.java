@@ -1983,8 +1983,9 @@ public class TChecker {
 				// check if text
 				boolean isString = parameters.matches("\".*\"");
 				// check if number
-				boolean isDouble = parameters.matches("(\\d+)?\\.\\d+");
-				boolean isInteger = parameters.matches("\\d+");
+//				boolean isDouble = parameters.matches("(\\d+)?\\.\\d+");
+				boolean isDouble = isDouble(parameters);
+				boolean isInteger = parameters.matches("[+-]?\\d+");
 
 				if (!parameters.isEmpty() && !isString && !isDouble && !isInteger) {
 
@@ -2317,5 +2318,22 @@ public class TChecker {
 		// erase brackets, but left Match(number) cause it should return PdmMultivalueAttribute instead of PdmAttributeSet
 		String exprCleaned = expr.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(\\s*?\\d+\\s*?,.*?\\)", "Match()");
 		return exprCleaned;
+	}
+	
+	private static boolean isDouble(String text){
+		final String Digits = "(\\p{Digit}+)";
+		final String Exp = "[eE][+-]?" + Digits;
+		final String fpRegex    =
+			"[+-]?(" + // Optional sign character
+			
+			// Digits ._opt Digits_opt ExponentPart FloatTypeSuffix_opt
+			"("+Digits+"(\\.)?("+Digits+"?)("+Exp+"))|"+
+			
+			// . Digits ExponentPart_opt FloatTypeSuffix_opt
+			"(("+Digits+"?)\\.("+Digits+")("+Exp+")?)"+		
+			
+			")";
+		
+		return text.matches(fpRegex);
 	}
 }

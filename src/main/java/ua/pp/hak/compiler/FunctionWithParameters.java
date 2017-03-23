@@ -37,20 +37,21 @@ public class FunctionWithParameters {
 	}
 
 	public boolean isTypeValid(String parameter, int index) {
-		
-		if ( parameterTypes[0].contains("[]")){
+
+		if (parameterTypes[0].contains("[]")) {
 			index = 0;
 		}
-		
+
 		if (index < 0 || index > parameterTypes.length - 1) {
 			return false;
 		}
-
+		
 		// check if text
 		boolean isString = parameter.matches("\".*\"");
 		// check if number
-		boolean isDouble = parameter.matches("(\\d+)?\\.\\d+");
-		boolean isInteger = parameter.matches("\\d+");
+//		boolean isDouble = parameter.matches("(\\d+)?\\.\\d+");
+		boolean isDouble = isDouble(parameter);
+		boolean isInteger = parameter.matches("[+-]?\\d+");
 		// check if function
 		boolean isFunction = parameter.matches(".*\\.\\w+");
 		// check if boolean
@@ -87,6 +88,23 @@ public class FunctionWithParameters {
 		}
 
 		return false;
+	}
+	
+	private boolean isDouble(String text){
+		final String Digits = "(\\p{Digit}+)";
+		final String Exp = "[eE][+-]?" + Digits;
+		final String fpRegex    =
+			"[+-]?(" + // Optional sign character
+			
+			// Digits ._opt Digits_opt ExponentPart FloatTypeSuffix_opt
+			"("+Digits+"(\\.)?("+Digits+"?)("+Exp+"))|"+
+			
+			// . Digits ExponentPart_opt FloatTypeSuffix_opt
+			"(("+Digits+"?)\\.("+Digits+")("+Exp+")?)"+
+			
+			")";
+		
+		return text.matches(fpRegex);
 	}
 
 }
