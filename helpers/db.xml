@@ -10446,4 +10446,12 @@
 	<attribute> <id>10745</id> <type>Simple</type>  <name>Audio Processor</name> <deactivated>false</deactivated> <group-id>164</group-id> <group-name>Digital Player (Recorder)</group-name> <last-update>18/03/2017</last-update> </attribute>
 	<attribute> <id>10746</id> <type>Simple</type>  <name>Audio Amplifier</name> <deactivated>false</deactivated> <group-id>164</group-id> <group-name>Digital Player (Recorder)</group-name> <last-update>18/03/2017</last-update> </attribute>
 	<attribute> <id>10743</id> <type>Multi-valued</type>  <name>Fast Charging Technology</name> <deactivated>false</deactivated> <group-id>37</group-id> <group-name>Battery</group-name> <last-update>18/03/2017</last-update> </attribute>
+	<attribute> <id>10747</id> <type>Simple</type>  <name>Door Hinge</name> <deactivated>false</deactivated> <group-id>330</group-id> <group-name>Washers /// Dryers</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10748</id> <type>Simple</type>  <name>Mirror Area</name> <deactivated>false</deactivated> <group-id>789</group-id> <group-name>Makeup Mirrors</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10749</id> <type>Multi-valued</type>  <name>Magnification</name> <deactivated>false</deactivated> <group-id>789</group-id> <group-name>Makeup Mirrors</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10750</id> <type>Simple</type>  <name>Spot Mirror</name> <deactivated>false</deactivated> <group-id>789</group-id> <group-name>Makeup Mirrors</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10751</id> <type>Simple</type>  <name>Adjustable Depth</name> <deactivated>false</deactivated> <group-id>789</group-id> <group-name>Makeup Mirrors</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10742</id> <type>Multi-valued</type>  <name>4G LTE Band</name> <deactivated>false</deactivated> <group-id>523</group-id> <group-name>Communications</group-name> <last-update>24/03/2017</last-update> </attribute>
+	<attribute> <id>10752</id> <type>Simple numeric</type>  <name>Lighting Efficiency</name> <deactivated>false</deactivated> <group-id>349</group-id> <group-name>Power</group-name> <last-update>24/03/2017</last-update> </attribute>
+	
 </attributes>  
