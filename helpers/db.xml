@@ -10453,5 +10453,12 @@
 	<attribute> <id>10751</id> <type>Simple</type>  <name>Adjustable Depth</name> <deactivated>false</deactivated> <group-id>789</group-id> <group-name>Makeup Mirrors</group-name> <last-update>24/03/2017</last-update> </attribute>
 	<attribute> <id>10742</id> <type>Multi-valued</type>  <name>4G LTE Band</name> <deactivated>false</deactivated> <group-id>523</group-id> <group-name>Communications</group-name> <last-update>24/03/2017</last-update> </attribute>
 	<attribute> <id>10752</id> <type>Simple numeric</type>  <name>Lighting Efficiency</name> <deactivated>false</deactivated> <group-id>349</group-id> <group-name>Power</group-name> <last-update>24/03/2017</last-update> </attribute>
-	
+	<attribute> <id>10754</id> <type>Simple</type>  <name>Choking Hazard</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10755</id> <type>Simple</type>  <name>Toy Is/Contains a Latex Balloon</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10756</id> <type>Simple</type>  <name>Toy Is a Marble</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10757</id> <type>Simple</type>  <name>Toy Is a Small Ball</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10758</id> <type>Simple</type>  <name>Toy Contains a Marble</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10759</id> <type>Simple</type>  <name>Toy Contains a Small Ball</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10760</id> <type>Simple</type>  <name>Toy Contains Small Parts</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10753</id> <type>Repeating</type>  <name>Type</name> <deactivated>false</deactivated> <group-id>43</group-id> <group-name>Printer Media</group-name> <last-update>30/03/2017</last-update> </attribute>
 </attributes>  
