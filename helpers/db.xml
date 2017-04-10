@@ -10461,4 +10461,9 @@
 	<attribute> <id>10759</id> <type>Simple</type>  <name>Toy Contains a Small Ball</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
 	<attribute> <id>10760</id> <type>Simple</type>  <name>Toy Contains Small Parts</name> <deactivated>false</deactivated> <group-id>790</group-id> <group-name>Choking Hazard Warnings</group-name> <last-update>30/03/2017</last-update> </attribute>
 	<attribute> <id>10753</id> <type>Repeating</type>  <name>Type</name> <deactivated>false</deactivated> <group-id>43</group-id> <group-name>Printer Media</group-name> <last-update>30/03/2017</last-update> </attribute>
+	<attribute> <id>10761</id> <type>Simple numeric</type>  <name>Operating Hour</name> <deactivated>false</deactivated> <group-id>513</group-id> <group-name>Commercial Display</group-name> <last-update>10/04/2017</last-update> </attribute>
+	<attribute> <id>10762</id> <type>Simple</type>  <name>Max Resolution Class B/W</name> <deactivated>false</deactivated> <group-id>249</group-id> <group-name>Printing</group-name> <last-update>10/04/2017</last-update> </attribute>
+	<attribute> <id>10763</id> <type>Simple</type>  <name>Max Resolution Class Color</name> <deactivated>false</deactivated> <group-id>249</group-id> <group-name>Printing</group-name> <last-update>10/04/2017</last-update> </attribute>
+	<attribute> <id>10765</id> <type>Simple</type>  <name>Max Copying Resolution Class B/W</name> <deactivated>false</deactivated> <group-id>250</group-id> <group-name>Copying</group-name> <last-update>10/04/2017</last-update> </attribute>
+	<attribute> <id>10766</id> <type>Simple</type>  <name>Max Copying Resolution Class Color</name> <deactivated>false</deactivated> <group-id>250</group-id> <group-name>Copying</group-name> <last-update>10/04/2017</last-update> </attribute>
 </attributes>  
