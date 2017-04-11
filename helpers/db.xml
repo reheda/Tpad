@@ -10466,4 +10466,5 @@
 	<attribute> <id>10763</id> <type>Simple</type>  <name>Max Resolution Class Color</name> <deactivated>false</deactivated> <group-id>249</group-id> <group-name>Printing</group-name> <last-update>10/04/2017</last-update> </attribute>
 	<attribute> <id>10765</id> <type>Simple</type>  <name>Max Copying Resolution Class B/W</name> <deactivated>false</deactivated> <group-id>250</group-id> <group-name>Copying</group-name> <last-update>10/04/2017</last-update> </attribute>
 	<attribute> <id>10766</id> <type>Simple</type>  <name>Max Copying Resolution Class Color</name> <deactivated>false</deactivated> <group-id>250</group-id> <group-name>Copying</group-name> <last-update>10/04/2017</last-update> </attribute>
+	<attribute> <id>10768</id> <type>Simple</type>  <name>Navigation</name> <deactivated>false</deactivated> <group-id>651</group-id> <group-name>RC Vehicle</group-name> <last-update>11/04/2017</last-update> </attribute>
 </attributes>  
