@@ -61,7 +61,8 @@ public class TpadServlet extends HttpServlet {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
-        resp.getWriter().print("Server is up and running!");
+    	
+        req.getRequestDispatcher("status.jsp").forward(req, resp);
         
     }
 

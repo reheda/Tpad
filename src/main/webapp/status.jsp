@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Tpad web server</title>
 </head>
 <body>
-    ${expressionResult}
+Server is up and running!
 </body>
 </html>
