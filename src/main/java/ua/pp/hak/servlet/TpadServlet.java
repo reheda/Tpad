@@ -51,7 +51,7 @@ public class TpadServlet extends HttpServlet{
         resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
 //        resp.addHeader("Access-Control-Allow-Headers","Origin, Content-Type, X-Auth-Token");
         resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-//        resp.getWriter().print(expressionResult);
-        req.getRequestDispatcher("expression-result.jsp").forward(req, resp);
+        resp.getWriter().print(expressionResult);
+//        req.getRequestDispatcher("expression-result.jsp").forward(req, resp);
     }
 }
