@@ -7,8 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-
 import java.io.IOException;
 
 /**
@@ -16,11 +14,79 @@ import java.io.IOException;
  */
 
 @WebServlet("/")
-public class TpadServlet extends HttpServlet{
+public class TpadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	resp.getWriter().print("Server is up and running!");
+        try {
+            System.out.println("1: " + TpadServlet.class.getClass().getClassLoader().getResource("/resources/db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println("2: " + TpadServlet.class.getClass().getResource("/resources/db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("3: " + TpadServlet.class.getClassLoader().getResourceAsStream("/resources/db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("4: " + TpadServlet.class.getClassLoader().getResourceAsStream("/db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            //work!!!!!!
+            System.out.println("5: " + TpadServlet.class.getClassLoader().getResourceAsStream("db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("6: " + TpadServlet.class.getClass().getResourceAsStream("db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            System.out.println("7: " + TpadServlet.class.getClass().getResourceAsStream("/db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            //work!!!!!!
+            System.out.println("8: " + TpadServlet.class.getClassLoader().getResource("db.xml.exi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+//        resp.getWriter().print("bla");
+
+
+        String expression = req.getParameter("expression");
+        if (expression == null) {
+            expression = "";
+        }
+
+        String expressionResult = TChecker.checkExpression(expression);
+        final String NEW_LINE = "<br>";
+        if (expressionResult == null) {
+            expressionResult = "Expression is valid";
+
+            // check deactivated attributes
+            String deactivatedAttrNote = TChecker.checkDeactivatedAttributes(expression);
+            if (deactivatedAttrNote != null) {
+                expressionResult += NEW_LINE;
+                expressionResult += NEW_LINE;
+                expressionResult += deactivatedAttrNote;
+            }
+        } else {
+            expressionResult = expressionResult.replace("\n", NEW_LINE);
+        }
+
+        req.setAttribute("expressionResult", expressionResult);
+        req.getRequestDispatcher("expression-result.jsp").forward(req, resp);
     }
 
     @Override
