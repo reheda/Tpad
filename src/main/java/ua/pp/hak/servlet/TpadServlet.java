@@ -90,6 +90,7 @@ public class TpadServlet extends HttpServlet {
         }
 
         req.setAttribute("expressionResult", expressionResult);
+        resp.setCharacterEncoding("UTF-8");
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
 //        resp.addHeader("Access-Control-Allow-Headers","Origin, Content-Type, X-Auth-Token");
