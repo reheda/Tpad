@@ -39,7 +39,14 @@ public class TChecker {
 			+ "KEYWORDS should be surrounded by space or line feed" + NEW_LINE
 			+ "- Hint: search for \"(?i)(?<!\\s)KEYWORD|KEYWORD(?!\\s)\" with turned on Regex";
 
-	static List<Attribute> attibutes = DatabaseStAXParser.parse();
+	static List<Attribute> attibutes;
+	static {
+		try {
+			attibutes = DatabaseStAXParser.parse();
+		} catch (Exception e){
+			logger.error(e.getMessage());
+		}
+	}
 	static ArrayList<Object> highlighterTags = new ArrayList<>();
 
 	private static ArrayList<Function> functions;
