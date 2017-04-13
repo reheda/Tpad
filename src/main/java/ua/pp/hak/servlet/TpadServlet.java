@@ -1,7 +1,6 @@
 package ua.pp.hak.servlet;
 
 import ua.pp.hak.compiler.TChecker;
-import ua.pp.hak.ui.Constants;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,11 +16,11 @@ import java.io.IOException;
  */
 
 @WebServlet("/")
-public class TpadServlet extends HttpServlet implements Constants{
+public class TpadServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	resp.getWriter().print(applicationVersion);
+    	resp.getWriter().print("Server is up and running!");
     }
 
     @Override
@@ -52,7 +51,7 @@ public class TpadServlet extends HttpServlet implements Constants{
         resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
 //        resp.addHeader("Access-Control-Allow-Headers","Origin, Content-Type, X-Auth-Token");
         resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-        resp.getWriter().print(expressionResult);
-//        req.getRequestDispatcher("expression-result.jsp").forward(req, resp);
+//        resp.getWriter().print(expressionResult);
+        req.getRequestDispatcher("expression-result.jsp").forward(req, resp);
     }
 }
