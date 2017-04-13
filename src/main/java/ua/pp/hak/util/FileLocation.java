@@ -18,7 +18,7 @@ public class FileLocation {
 	public static String getJarOrNotPath(String resource) {
 		File file = null;
 		URL res = FileLocation.class.getClass().getResource(resource);
-		if (res.toString().startsWith("jar:")) {
+		if (res != null && res.toString().startsWith("jar:")) {
 			try {
 				InputStream input = FileLocation.class.getClass().getResourceAsStream(resource);
 				file = File.createTempFile("tempfile", ".tmp");
@@ -35,6 +35,11 @@ public class FileLocation {
 				logger.error(ex.getMessage());
 			}
 		} else {
+			// heroku
+			if (res == null) {
+				res = FileLocation.class.getClassLoader().getResource(resource);
+			}
+
 			// this will probably work in your IDE, but not from a JAR
 			String filePath;
 			try {

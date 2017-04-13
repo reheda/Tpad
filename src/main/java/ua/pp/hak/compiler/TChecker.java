@@ -288,6 +288,8 @@ public class TChecker {
 						taExpr.repaint();
 					} catch (BadLocationException e) {
 						logger.error(e.getMessage());
+					} catch (Exception e) {
+						logger.error(e.getMessage());
 					}
 					if (errors == null) {
 						errors = new StringBuilder("Lines: ");
@@ -373,6 +375,8 @@ public class TChecker {
 						taExpr.repaint();
 					} catch (BadLocationException e) {
 						logger.error(e.getMessage());
+					} catch (Exception e) {
+						logger.error(e.getMessage());
 					}
 					if (errors == null) {
 						errors = new StringBuilder("Lines: ");
@@ -411,6 +415,8 @@ public class TChecker {
 							charsBeforeTheCurrentLine + p1, redPainter));
 					taExpr.repaint();
 				} catch (BadLocationException e) {
+					logger.error(e.getMessage());
+				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
 
@@ -555,7 +561,8 @@ public class TChecker {
 				"ExpressionResultNumeric"));
 		functions.add(new Function("Shorten()", "ExpressionResult", "ExpressionResultList", "ExpressionResultLiteral",
 				"ExpressionResultNumeric", "String"));
-		functions.add(new Function("Split()", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
+		functions.add(
+				new Function("Split()", "ExpressionResultList", "ExpressionResultLiteral", "ExpressionResultNumeric"));
 		functions.add(new Function("UseSeparators()", "ExpressionResult", "ExpressionResultList"));
 		functions.add(new Function("InvariantValues", "ExpressionResultList", "PdmAttributeSet",
 				"PdmMultivalueAttribute", "PdmRepeatingAttribute"));
@@ -910,7 +917,6 @@ public class TChecker {
 			// PdmMultivalueAttribute instead of PdmAttributeSet
 			conCleaned = eraseBrackets(conCleaned);
 
-			
 			int operatorsQty = conCleaned.length() - conCleaned.replaceAll("<>", "1").replaceAll(">=", "1")
 					.replaceAll("<=", "1").replaceAll("<", "").replaceAll(">", "").replaceAll("=", "")
 					.replaceAll("(?i) LIKE ", " LIK ").replaceAll("(?i) IS ", " I ").replaceAll("(?i) IN\\(", " IN")
@@ -1716,19 +1722,19 @@ public class TChecker {
 		// Replace("before", "after")
 		// functionName = Replace
 		// parameters = "\"before\", \"after\""
-		
+
 		StringBuilder errors = new StringBuilder();
-		
+
 		if (parameters.matches(".*\\, ?$")) {
 			errors.append("Parameters in the '" + functionName + "' function shouldn't be finished with COMMA");
 			return errors.toString();
 		}
-		
+
 		if (parameters.matches(".*\\, ?\\,.*")) {
 			errors.append("Parameters in the '" + functionName + "' function shouldn't be empty");
 			return errors.toString();
 		}
-		
+
 		String[] params = parameters.split(" ?, ?");
 
 		int paramsQty = 0;
@@ -1945,7 +1951,6 @@ public class TChecker {
 		// PdmMultivalueAttribute instead of PdmAttributeSet
 		String returnValueCleaned = eraseBrackets(returnValue);
 
-		
 		// check throw structure
 		{
 			boolean isThrowError = false;
@@ -1983,7 +1988,7 @@ public class TChecker {
 				// check if text
 				boolean isString = parameters.matches("\".*\"");
 				// check if number
-//				boolean isDouble = parameters.matches("(\\d+)?\\.\\d+");
+				// boolean isDouble = parameters.matches("(\\d+)?\\.\\d+");
 				boolean isDouble = isDouble(parameters);
 				boolean isInteger = parameters.matches("[+-]?\\d+");
 
@@ -2213,6 +2218,8 @@ public class TChecker {
 					taExpr.repaint();
 				} catch (BadLocationException e) {
 					logger.error(e.getMessage());
+				} catch (Exception e) {
+					logger.error(e.getMessage());
 				}
 
 			} catch (BadLocationException e) {
@@ -2313,27 +2320,28 @@ public class TChecker {
 		return null;
 
 	}
-	
-	public static String eraseBrackets(String expr){
-		// erase brackets, but left Match(number) cause it should return PdmMultivalueAttribute instead of PdmAttributeSet
-		String exprCleaned = expr.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(\\s*?\\d+\\s*?,.*?\\)", "Match()");
+
+	public static String eraseBrackets(String expr) {
+		// erase brackets, but left Match(number) cause it should return
+		// PdmMultivalueAttribute instead of PdmAttributeSet
+		String exprCleaned = expr.replaceAll("(?<!Match)\\(.*?\\)", "()").replaceAll("Match\\(\\s*?\\d+\\s*?,.*?\\)",
+				"Match()");
 		return exprCleaned;
 	}
-	
-	private static boolean isDouble(String text){
+
+	private static boolean isDouble(String text) {
 		final String Digits = "(\\p{Digit}+)";
 		final String Exp = "[eE][+-]?" + Digits;
-		final String fpRegex    =
-			"[+-]?(" + // Optional sign character
-			
-			// Digits ._opt Digits_opt ExponentPart FloatTypeSuffix_opt
-			"("+Digits+"(\\.)?("+Digits+"?)("+Exp+"))|"+
-			
-			// . Digits ExponentPart_opt FloatTypeSuffix_opt
-			"(("+Digits+"?)\\.("+Digits+")("+Exp+")?)"+		
-			
-			")";
-		
+		final String fpRegex = "[+-]?(" + // Optional sign character
+
+		// Digits ._opt Digits_opt ExponentPart FloatTypeSuffix_opt
+				"(" + Digits + "(\\.)?(" + Digits + "?)(" + Exp + "))|" +
+
+				// . Digits ExponentPart_opt FloatTypeSuffix_opt
+				"((" + Digits + "?)\\.(" + Digits + ")(" + Exp + ")?)" +
+
+				")";
+
 		return text.matches(fpRegex);
 	}
 }
