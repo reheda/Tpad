@@ -158,7 +158,6 @@ public class TChecker {
 		// check comments
 		error = checkComments(exprCleaned);
 		if (error != null) {
-			error = "Comment can't contains quote";
 			errors.append(error);
 			return errors.toString();
 		}
