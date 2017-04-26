@@ -1,4 +1,5 @@
 <b>v 1.0.17</b><br /> 
+- fixed issue with comma in Parameters Generator<br />
 - added attributes: <code>10769, 10770, 10771, 10772, 10773, 10774, 10775</code><br />
 - added Values to autcompletion while invoking on DigitalContentItem. E.g. <code>DC.BoxContents.Values</code><br />
 - updated web driver

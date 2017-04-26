@@ -169,11 +169,11 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 
 		// check with comma
 		if (oldParamText.matches(".*,.*?" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll(",\\s*?\\b" + parameterName + "\\b.*?=.*?(,|$)", ",");
+			newParamText = newParamText.replaceAll(",\\s*?\\b" + parameterName + "\\b.*?=.*?(,\\s(?=[A-Z])|$)", ", ");
 
 			// check without comma
 		} else if (oldParamText.matches(".*?" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", "");
+			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,\\s(?=[A-Z])|$)", " ");
 		}
 
 		if (!newParamText.trim().isEmpty() && newParamText.trim().charAt(newParamText.trim().length() - 1) == ',') {
@@ -189,10 +189,10 @@ public class ParameterGeneratorDialog implements ActionListener, KeyListener {
 	private String addParameters(String parameterName, String parameterValue) {
 		String oldParamText = taParameters.getText();
 		String newParamText = oldParamText;
-		String txtToAdd = parameterName.concat("=").concat(parameterValue).concat(",");
+		String txtToAdd = parameterName.concat("=").concat(parameterValue).concat(", ");
 
 		if (oldParamText.matches(".*" + parameterName + ".*=.*")) {
-			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,|$)", txtToAdd);
+			newParamText = newParamText.replaceAll("\\b" + parameterName + "\\b.*?=.*?(,\\s(?=[A-Z])|$)", txtToAdd);
 		} else {
 			String trimmerdOldParamText = oldParamText.trim();
 			if (!trimmerdOldParamText.isEmpty()
