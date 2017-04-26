@@ -1,5 +1,6 @@
 <b>v 1.0.17</b><br /> 
 - added attributes: <code>10769, 10770, 10771, 10772, 10773, 10774, 10775</code>
+- updated web driver
 ---
 <b>v 1.0.16</b><br /> 
 - fixed issue with the Exp compatibility. E.g. <code>A[328].Value .ExtractDecimals(0.0) .First().MultiplyBy(1e-6)</code><br />
