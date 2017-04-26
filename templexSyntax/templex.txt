@@ -187,6 +187,10 @@ String|
  Returns this content in raw XML form. (<a href="http://txdev1.cnetcontent.com/Reference#E325AA14">Reference link</a>)
  <br />Remarks: <em>Only works for MIME type "application/xml".</em>
 
+Values constant
+ExpressionResultList|
+ Empty description.
+ 
 
 ##### ExpressionResultList #####
 

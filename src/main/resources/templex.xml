@@ -8,8 +8,8 @@
    Author:         VR
    Version:        0.1
 
-   This file was generated from: C:/Program Files/eclipse/workspace/Tpad/templexSyntax/templex.txt
-   on date: 2017-03-18 14:19:57
+   This file was generated from: C:/Users/rev/Documents/2_Soft/eclipse/workspace/Tpad/templexSyntax/templex.txt
+   on date: 2017-04-26 12:29:50
 
 -->
 <api language="Templex">
@@ -1153,6 +1153,10 @@
 <keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="DateTimeOffset">
 	<desc>Empty description.</desc>
 </keyword>
+<keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="DigitalContentItem">
+	<desc><![CDATA[Empty description.<br>
+]]></desc>
+</keyword>
 <keyword name="Values" type="constant" returnType="ExpressionResultList" definedIn="Gtin">
 	<desc><![CDATA[Empty description.<br>
 ]]></desc>
@@ -1310,8 +1314,7 @@
 </keyword>
 <keyword name="XmlContent" type="constant" returnType="String" definedIn="DigitalContentItem">
 	<desc><![CDATA[Returns this content in raw XML form. (<a href="http://txdev1.cnetcontent.com/Reference#E325AA14">Reference link</a>)<br>
-<br />Remarks: <em>Only works for MIME type "application/xml".</em>
-]]></desc>
+<br />Remarks: <em>Only works for MIME type "application/xml".</em>]]></desc>
 </keyword>
 <keyword name="Year" type="constant" returnType="ExpressionResultNumeric" definedIn="DateTime">
 	<desc><![CDATA[Empty description.<br>
