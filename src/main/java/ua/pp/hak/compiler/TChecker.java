@@ -1924,7 +1924,7 @@ public class TChecker {
 				// PdmMultivalueAttribute instead of PdmAttributeSet
 				String returnValueCleaned = eraseBrackets(returnValue);
 
-				String[] values = returnValueCleaned.split(" ?_ ?");
+				String[] values = returnValueCleaned.split(" ?_ ?", -1);
 				for (int i = 0; i < values.length; i++) {
 					error = checkValue(values[i]);
 					if (error != null) {
