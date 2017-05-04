@@ -104,7 +104,13 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private String getReturnType(String allText) {
-		String[] values = allText.replaceAll("--.*", "").replaceAll("\\s+", " ")
+		String[] values = allText
+				//erase comments
+				.replaceAll("--.*", "")
+				//erase multi spaces
+				.replaceAll("\\s+", " ")
+				// erase text surrounded by quotes
+				.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"")
 				.split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR ");
 
 		if (values.length == 0) {

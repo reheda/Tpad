@@ -1,6 +1,7 @@
 <b>v 1.0.17</b><br /> 
 - fixed issue with comma in Parameters Generator<br />
 - fixed issue with no value after underscore. E.g. <code>A[8028].Value_" "_</code><br />
+- fixed issue with autocompletion after using semicolon. E.g. <code>DC.BoxContents.Values .Flatten().Split(", ", "; ").</code><br />
 - added attributes: <code>10769, 10770, 10771, 10772, 10773, 10774, 10775</code><br />
 - added Values to autcompletion while invoking on DigitalContentItem. E.g. <code>DC.BoxContents.Values</code><br />
 - updated web driver
