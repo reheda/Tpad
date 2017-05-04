@@ -733,6 +733,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			LoadingPanel.doProcess("tps", npd);
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpShowLogs)) {
+			logger.info("Open Show Log in Explorer window");
+			ShowLog.show(frame);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpAbout) || evObj == aboutButton) {
 			logger.info("Open About window");
 			AboutDialog.showAbout(frame);
@@ -1046,6 +1051,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		helpMenu.addSeparator();
 		createMenuItem(helpResetSettings, KeyEvent.VK_R, helpMenu, this);
 		helpMenu.addSeparator();
+		createMenuItem(helpShowLogs, KeyEvent.VK_S, helpMenu, this);
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
 		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
