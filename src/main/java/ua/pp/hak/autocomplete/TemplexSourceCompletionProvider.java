@@ -111,16 +111,13 @@ public class TemplexSourceCompletionProvider extends DefaultCompletionProvider {
 				.replaceAll("\\s+", " ")
 				// erase text surrounded by quotes
 				.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"")
-				.split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR ");
+				.split("(?i)_|;|THEN |ELSE |IF |WHEN |CASE |AND |OR |LIKE |<>|>=|<=|=");
 
 		if (values.length == 0) {
 			return null;
 		}
 
 		String exprCleaned = values[values.length - 1].trim();
-
-		// erase text surrounded by quotes
-		exprCleaned = exprCleaned.replaceAll("(?s)\".*?\"", "\"\"").replaceAll("(\"\")+", "\"\"");
 
 		// clean expression to make it parsable
 		exprCleaned = exprCleaned.replaceAll("\\n+", " ").replaceAll("\\s+", " ").replaceAll(" ?\\. ?", ".")
