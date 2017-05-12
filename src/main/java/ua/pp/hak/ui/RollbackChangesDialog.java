@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ua.pp.hak.util.PlanioParser;
+import ua.pp.hak.util.RequestFocusListener;
 
 public class RollbackChangesDialog implements MenuConstants {
 	final static Logger logger = LogManager.getLogger(RollbackChangesDialog.class);
@@ -122,6 +123,7 @@ public class RollbackChangesDialog implements MenuConstants {
 		exprLinkLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		JLabel diffLinkLabel = new JLabel("Diff link: ", JLabel.TRAILING);
 		exprLinkField = new JTextField(25);
+		exprLinkField.addAncestorListener(new RequestFocusListener());
 		diffLinkField = new JTextField(25);
 		JPanel parameters = new JPanel(new SpringLayout());
 		// Lay out the panel.
