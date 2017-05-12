@@ -51,7 +51,7 @@ public class PlanioParser {
 				logger.warn("Canceling process...");
 				break;
 			}
-			String json = getJson(distinctLinks[i]);
+			String json = getJson(distinctLinks[i], Include.CHILDREN);
 			if (json != null) {
 				fillExpressionSet(json, exprSet);
 			}
@@ -78,6 +78,99 @@ public class PlanioParser {
 
 		return page;
 
+	}
+
+	public String getJournalExpression(String issueLink, String differencesLink) throws IOException {
+		long start = System.nanoTime();
+		logger.info("Rollback changes...");
+		
+		String[] values = differencesLink.trim().split("/");
+		if (values.length < 2) {
+			logger.error("Link is wrong: " + issueLink);
+			return null;
+		}
+
+		int idJournal = 0;
+		try {
+			idJournal = Integer.parseInt(values[values.length - 2]);
+		} catch (NumberFormatException e) {
+			logger.error("Id is wrong: " + idJournal + " (" + issueLink + ")");
+			return null;
+		}
+
+		String result = parseRolledExpression(issueLink, idJournal);
+		
+		logger.info("Finish rollback changes.");
+		long elapsedTime = System.nanoTime() - start;
+		logger.info("Elapsed time to rollback changes: " + elapsedTime + " ns (~ "
+				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
+		
+		return result;
+	}
+
+	private String parseRolledExpression(String issueLink, int idJournal) throws IOException {
+		boolean isIdFound = false;
+		String json = getJson(issueLink, Include.JOURNALS);
+		if (json != null) {
+
+			JSONObject jsonObj = new JSONObject(json);
+			if (jsonObj.has("issue")) {
+
+				JSONObject obj = jsonObj.getJSONObject("issue");
+
+				if (obj.has("journals")) {
+					JSONArray objJournals = obj.getJSONArray("journals");
+
+					for (int i = 0; i < objJournals.length(); i++) {
+
+						JSONObject diff = objJournals.getJSONObject(i);
+
+						if (diff.has("id") && diff.getInt("id") == idJournal && diff.has("details")) {
+							
+							isIdFound = true;
+
+							JSONArray objDetails = diff.getJSONArray("details");
+
+							if (objDetails.length() == 1) {
+
+								for (int j = 0; j < objDetails.length(); j++) {
+									JSONObject objOldValue = objDetails.getJSONObject(j);
+
+									// get data
+									if (objOldValue.has("old_value")) {
+										String oldExpression = objOldValue.getString("old_value");
+										logger.info("Expression is restored successfully");
+										return oldExpression;
+									}
+								}
+							} else {
+								logger.error("Json object 'details' length more than 1");
+
+							}
+						}
+
+					}
+
+				} else {
+					logger.error("Json doesn't contain 'journals'");
+				}
+
+			} else {
+				logger.error("Json doesn't contain 'issue'");
+			}
+		} else {
+			logger.error("Json didn't parsed correctly");			
+		}
+		
+		
+		if (!isIdFound) {
+			String error = "Journal ID is not found at the expression differences list!";
+			logger.info(error);
+			
+			return error + "\n\nPlease make sure links are linked";
+		}
+		
+		return null;
 	}
 
 	private String generatePageWithoutErrors() {
@@ -234,7 +327,7 @@ public class PlanioParser {
 			label.setText(oldProcessingLabelText.concat(" (" + (index) + "/" + exprSet.size() + ")"));
 
 			// add "/" at the beginning to be valid
-			String exprJson = getJson("/" + expressionObject.getId());
+			String exprJson = getJson("/" + expressionObject.getId(), Include.CHILDREN);
 			if (exprJson != null) {
 				JSONObject jsonObj = new JSONObject(exprJson);
 				if (jsonObj.has("issue")) {
@@ -344,24 +437,37 @@ public class PlanioParser {
 		return objList;
 	}
 
-	private String getJson(String link) throws IOException {
+	private enum Include {
+		CHILDREN("children"), JOURNALS("journals");
+		private String value;
 
-		String[] values = link.trim().split("/");
+		Include(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+	}
+
+	private String getJson(String issueLink, Include value) throws IOException {
+
+		String[] values = issueLink.trim().split("/");
 		if (values.length < 1) {
-			logger.error("Link is wrong: " + link);
+			logger.error("Link is wrong: " + issueLink);
 			return null;
 		}
 
 		String id = values[values.length - 1];
 		if (!id.matches("\\d+")) {
-			logger.error("Id is wrong: " + id + " (" + link + ")");
+			logger.error("Id is wrong: " + id + " (" + issueLink + ")");
 			return null;
 		}
 
 		// section 106039
 		// item 106172
 		// expr 108583
-		String serviceURL = "https://cnet.plan.io/issues/" + id + ".json?include=children";
+		String serviceURL = "https://cnet.plan.io/issues/" + id + ".json?include=" + value.getValue();
 		URL obj = new URL(serviceURL);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestProperty("User-Agent", USER_AGENT);

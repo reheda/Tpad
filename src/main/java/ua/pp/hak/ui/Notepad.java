@@ -733,6 +733,12 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			LoadingPanel.doProcess("tps", npd);
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpRollbackChanges)) {
+			logger.info("Open RollbackChanges window");
+			// TpsInfo.show(this);
+			LoadingPanel.doProcess("rollback-changes", npd);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpShowLogs)) {
 			logger.info("Open Show Log in Explorer window");
 			ShowLog.show(frame);
@@ -1047,6 +1053,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		createMenuItem(helpLegacyInfo, KeyEvent.VK_L, helpMenu, KeyEvent.VK_L, this);
 		createMenuItem(helpAttributeInfo, KeyEvent.VK_I, helpMenu, KeyEvent.VK_I, this);
 		createMenuItem(helpTpsInfo, KeyEvent.VK_P, helpMenu, KeyEvent.VK_P, this);
+		createMenuItem(helpRollbackChanges, KeyEvent.VK_R, helpMenu, KeyEvent.VK_R, this);
 		createMenuItem(helpHelpTopic, KeyEvent.VK_H, helpMenu, this);
 		helpMenu.addSeparator();
 		createMenuItem(helpResetSettings, KeyEvent.VK_R, helpMenu, this);

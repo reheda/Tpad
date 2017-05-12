@@ -24,23 +24,22 @@ import ua.pp.hak.compiler.TParser;
 
 public class LoadingPanel {
 	private static JLabel label;
-	
+
 	public static JLabel getLabel() {
 		return label;
 	}
 
 	public static void doProcess(String processToDo, Notepad npd) {
-		
-		
+
 		JFrame frame = npd.getFrame();
 		JTextArea taExprRes = npd.getExprResTextArea();
-		
+
 		final JPanel popup = new JPanel(new BorderLayout(5, 5));
 		popup.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
 				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		popup.setBackground(Color.white);
 		frame.getLayeredPane().add(popup);
-		
+
 		String prorcessToDoCapitalized = processToDo.substring(0, 1).toUpperCase() + processToDo.substring(1);
 		label = new JLabel("[" + prorcessToDoCapitalized + "] Processing...");
 		popup.add(label, BorderLayout.NORTH);
@@ -68,14 +67,16 @@ public class LoadingPanel {
 				publish(processToDo);
 				if (processToDo.equals("parse")) {
 					TParser.parse(npd);
-				}else if (processToDo.equals("parse-sku-list")){
+				} else if (processToDo.equals("parse-sku-list")) {
 					new ParseSkuListDialog().show(npd);
 				} else if (processToDo.equals("check")) {
 					TChecker.check(npd);
 				} else if (processToDo.equals("check-expr-list")) {
 					new CheckExprListDialog().show(npd);
-				} else if (processToDo.equals("tps")){
+				} else if (processToDo.equals("tps")) {
 					TpsInfo.show(npd);
+				} else if (processToDo.equals("rollback-changes")) {
+					RollbackChangesDialog.show(npd);
 				}
 				return null;
 			}

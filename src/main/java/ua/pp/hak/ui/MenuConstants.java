@@ -56,6 +56,7 @@ public interface MenuConstants extends Constants{
 	final String helpLegacyInfo = "Legacy Info";
 	final String helpAttributeInfo = "Attribute Info";
 	final String helpTpsInfo = "TPS Info";
+	final String helpRollbackChanges = "Rollback changes...";
 	final String helpHelpTopic = "Help Topic";
 	final String helpResetSettings = "Reset settings...";
 	final String helpShowLogs= "Show Log in Explorer";
