@@ -8,3 +8,4 @@
 * Selenium
 * Log4j
 * EXIficient
+* Maven
