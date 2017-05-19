@@ -697,6 +697,7 @@ public class TChecker {
 		functions.add(new Function("DECODE()", "You can invoke nothing on it"));
 		functions.add(new Function("GetPath()", "ExpressionResultLiteral", "AlternativeCategory"));
 		functions.add(new Function("CategoryCode", "ExpressionResultLiteral", "Sku"));
+		functions.add(new Function("Sum()", "ExpressionResultNumeric", "ExpressionResultList"));
 
 	}
 
