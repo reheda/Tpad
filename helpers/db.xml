@@ -10475,4 +10475,6 @@
 	<attribute> <id>10775</id> <type>Simple</type>  <name>Max Descent Speed</name> <deactivated>false</deactivated> <group-id>651</group-id> <group-name>RC Vehicle</group-name> <last-update>21/04/2017</last-update> </attribute>
 	<attribute> <id>10772</id> <type>Simple</type>  <name>Max Wind Speed Resistance</name> <deactivated>false</deactivated> <group-id>651</group-id> <group-name>RC Vehicle</group-name> <last-update>21/04/2017</last-update> </attribute>
 	<attribute> <id>10773</id> <type>Simple numeric</type>  <name>Max Service Ceiling</name> <deactivated>false</deactivated> <group-id>651</group-id> <group-name>RC Vehicle</group-name> <last-update>21/04/2017</last-update> </attribute>
+	<attribute> <id>10778</id> <type>Simple</type>  <name>Induction Motor</name> <deactivated>false</deactivated> <group-id>330</group-id> <group-name>Washers /// Dryers</group-name> <last-update>25/05/2017</last-update> </attribute>
+	<attribute> <id>10777</id> <type>Simple</type>  <name>Induction Motor</name> <deactivated>false</deactivated> <group-id>322</group-id> <group-name>Dishwashers</group-name> <last-update>25/05/2017</last-update> </attribute>
 </attributes>  

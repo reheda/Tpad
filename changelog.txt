@@ -1,5 +1,6 @@
 <b>v 1.0.18</b><br /> 
-- added <code>Sum</code> function to check. E.g. <code>A[606].Value .Prefix("10 10 15 4").ExtractDecimals() .Sum()</code>
+- added <code>Sum</code> function to check. E.g. <code>A[606].Value .Prefix("10 10 15 4").ExtractDecimals() .Sum()</code><br />
+- added new attributes: <code>10777, 10778</code>
 ---
 <b>v 1.0.17</b><br /> 
 - fixed issue with comma in Parameters Generator<br />
