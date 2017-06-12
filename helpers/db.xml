@@ -10477,4 +10477,14 @@
 	<attribute> <id>10773</id> <type>Simple numeric</type>  <name>Max Service Ceiling</name> <deactivated>false</deactivated> <group-id>651</group-id> <group-name>RC Vehicle</group-name> <last-update>21/04/2017</last-update> </attribute>
 	<attribute> <id>10778</id> <type>Simple</type>  <name>Induction Motor</name> <deactivated>false</deactivated> <group-id>330</group-id> <group-name>Washers /// Dryers</group-name> <last-update>25/05/2017</last-update> </attribute>
 	<attribute> <id>10777</id> <type>Simple</type>  <name>Induction Motor</name> <deactivated>false</deactivated> <group-id>322</group-id> <group-name>Dishwashers</group-name> <last-update>25/05/2017</last-update> </attribute>
+	<attribute> <id>10784</id> <type>Simple</type>  <name>Cover Type</name> <deactivated>false</deactivated> <group-id>65</group-id> <group-name>Reference Resource</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10785</id> <type>Simple numeric</type>  <name>Image Brightness</name> <deactivated>false</deactivated> <group-id>421</group-id> <group-name>Studio /// Field Monitors</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10786</id> <type>Simple</type>  <name>Resolution</name> <deactivated>false</deactivated> <group-id>664</group-id> <group-name>Camera Display</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10788</id> <type>Multi-valued</type>  <name>Display Languages</name> <deactivated>false</deactivated> <group-id>664</group-id> <group-name>Camera Display</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10789</id> <type>Simple</type>  <name>On-Screen Display Languages</name> <deactivated>false</deactivated> <group-id>224</group-id> <group-name>Monitor</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10780</id> <type>Multi-valued</type>  <name>Intended For</name> <deactivated>false</deactivated> <group-id>79</group-id> <group-name>Antenna</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10782</id> <type>Multi-valued</type>  <name>Antenna Placing / Mounting</name> <deactivated>false</deactivated> <group-id>79</group-id> <group-name>Antenna</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10783</id> <type>Multi-valued</type>  <name>Bands/Channels</name> <deactivated>false</deactivated> <group-id>79</group-id> <group-name>Antenna</group-name> <last-update>12/06/2017</last-update> </attribute>
+	<attribute> <id>10790</id> <type>Repeating</type>  <name>Type</name> <deactivated>false</deactivated> <group-id>2</group-id> <group-name>Interface Provided</group-name> <last-update>12/06/2017</last-update> </attribute>
+	
 </attributes>  
