@@ -8489,7 +8489,7 @@
 	<attribute> <id>9521</id> <type>Repeating</type>  <name>Material</name> <deactivated>false</deactivated> <group-id>688</group-id> <group-name>Components Details</group-name> <last-update>11/03/2017</last-update> </attribute>
 	<attribute> <id>9522</id> <type>Multi-valued</type>  <name>Package Content</name> <deactivated>false</deactivated> <group-id>31</group-id> <group-name>Miscellaneous</group-name> <last-update>11/03/2017</last-update> </attribute>
 	<attribute> <id>9490</id> <type>Simple</type>  <name>Instrument Type</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
-	<attribute> <id>9677</id> <type>Simple</type>  <name>MIDI Controller Interface</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
+	<attribute> <id>9677</id> <type>Multi-valued</type>  <name>MIDI Controller Interface</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
 	<attribute> <id>9878</id> <type>Simple</type>  <name>Portable</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
 	<attribute> <id>9658</id> <type>Simple</type>  <name>Learning Function</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
 	<attribute> <id>9672</id> <type>Simple</type>  <name>Auto Accompaniment</name> <deactivated>false</deactivated> <group-id>726</group-id> <group-name>Musical Instrument</group-name> <last-update>11/03/2017</last-update> </attribute>
@@ -10486,5 +10486,6 @@
 	<attribute> <id>10782</id> <type>Multi-valued</type>  <name>Antenna Placing / Mounting</name> <deactivated>false</deactivated> <group-id>79</group-id> <group-name>Antenna</group-name> <last-update>12/06/2017</last-update> </attribute>
 	<attribute> <id>10783</id> <type>Multi-valued</type>  <name>Bands/Channels</name> <deactivated>false</deactivated> <group-id>79</group-id> <group-name>Antenna</group-name> <last-update>12/06/2017</last-update> </attribute>
 	<attribute> <id>10790</id> <type>Repeating</type>  <name>Type</name> <deactivated>false</deactivated> <group-id>2</group-id> <group-name>Interface Provided</group-name> <last-update>12/06/2017</last-update> </attribute>
-	
+	<attribute> <id>10791</id> <type>Simple</type>  <name>Bundled with</name> <deactivated>false</deactivated> <group-id>63</group-id> <group-name>Header</group-name> <last-update>23/06/2017</last-update> </attribute>
+
 </attributes>  

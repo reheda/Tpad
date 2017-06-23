@@ -1,5 +1,6 @@
 <b>v 1.0.19</b><br /> 
-- added new attributes: <code>10780, 10782, 10783, 10784, 10785, 10786, 10788, 10789, 10790</code>
+- added new attributes: <code>10780, 10782, 10783, 10784, 10785, 10786, 10788, 10789, 10790, 10791</code>
+- changed type of the attr <code>9677</code> to <code>Multi-valued</code>
 ---
 <b>v 1.0.18</b><br /> 
 - added <code>Sum</code> function to check. E.g. <code>A[606].Value .Prefix("10 10 15 4").ExtractDecimals() .Sum()</code><br />
