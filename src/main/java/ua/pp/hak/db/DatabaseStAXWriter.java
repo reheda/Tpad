@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -38,22 +37,13 @@ public class DatabaseStAXWriter {
 	final static Logger logger = LogManager.getLogger(DatabaseStAXWriter.class);
 
 	public static void main(String[] args) {
-		long start, elapsedTime;
 		System.out.println("Parse....");
-
-		start = System.nanoTime();
 		List<Attribute> attr = DatabaseStAXParser.parse();
-		elapsedTime = System.nanoTime() - start;
-		logger.info("Elapsed time to check: " + elapsedTime + " ns (~ "
-				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 
 		System.out.println();
+		
 		System.out.println("Save....");
-		start = System.nanoTime();
 		save(attr);
-		elapsedTime = System.nanoTime() - start;
-		logger.info("Elapsed time to check: " + elapsedTime + " ns (~ "
-				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
 
 	}
 
