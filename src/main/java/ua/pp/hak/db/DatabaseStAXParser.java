@@ -1,4 +1,4 @@
-package ua.pp.hak.compiler;
+package ua.pp.hak.db;
 
 import java.io.File;
 import java.io.FileInputStream;

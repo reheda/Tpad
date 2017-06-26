@@ -53,4 +53,12 @@ public class Attribute {
 		return lastUpdate;
 	}
 
+	@Override
+	public String toString() {
+		return "Attribute [id=" + id + ", type=" + type + ", name=" + name + ", groupId=" + groupId + ", groupName="
+				+ groupName + ", lastUpdate=" + lastUpdate + ", isDeactivated=" + isDeactivated + "]";
+	}
+
+	
+	
 }

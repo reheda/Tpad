@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import ua.pp.hak.db.DatabaseStAXParser;
 import ua.pp.hak.ui.Notepad;
 import ua.pp.hak.ui.SquigglePainter;
 import ua.pp.hak.util.Attribute;
