@@ -65,7 +65,11 @@ public class TChecker {
 		highlighterTags.clear();
 		taExpr.repaint();
 	}
-
+	
+	public static void setAttributes(List<Attribute> attrs){
+		attibutes = attrs; 
+	}
+	
 	public static List<Attribute> getAttributes() {
 		return attibutes;
 	}

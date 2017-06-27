@@ -77,6 +77,8 @@ public class LoadingPanel {
 					TpsInfo.show(npd);
 				} else if (processToDo.equals("rollback-changes")) {
 					RollbackChangesDialog.show(npd);
+				} else if (processToDo.equals("db-update")) {
+					DatabaseUpdateDialog.show(npd);
 				}
 				return null;
 			}

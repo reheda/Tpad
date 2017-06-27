@@ -41,7 +41,7 @@ public class AttributeInfoDialog implements MenuConstants {
 								+ "<tr><td class='right'>Name</td><td>" + name + "</td></tr>"
 								+ "<tr><td class='right'>Type</td><td>" + type + "</td></tr> "
 								+ "<tr><td class='right'>Status</td><td>" + status + "</td></tr> "
-								+ "<tr><td class='right'>Last update (dd/mm/yyyy)</td><td>" + lastUpdate + "</td></tr> "
+								+ "<tr><td class='right'>Last update (yyyy-mm-dd)</td><td>" + lastUpdate + "</td></tr> "
 								+ "</tbody> </table> </div><br />  "
 								+ "<div> <table width='500'> <tbody><tr class='header'><td width='90'>For Comments</td></tr>"
 								+ "<tr><td>" + comment + "</td></tr>" + "</tbody> </table> </div> </body></html>";

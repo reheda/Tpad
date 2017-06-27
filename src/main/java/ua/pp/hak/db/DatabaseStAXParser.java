@@ -1,10 +1,13 @@
 package ua.pp.hak.db;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,23 +42,27 @@ import ua.pp.hak.util.XSDValidator;
 public class DatabaseStAXParser {
 
 	static final boolean USE_SCHEMA = true;
+	final static String encoding = "UTF-8";
 	final static Logger logger = LogManager.getLogger(DatabaseStAXParser.class);
 
 	public static List<Attribute> parse() {
 		List<Attribute> list = new ArrayList<>();
+		FileInputStream exiIns = null;
+		FileOutputStream xmlOuts = null;
+		File xmlOut = null;
 		try {
-			String xmlLocation = FileLocation.getJarOrNotPath("/db.xml.exi");
+			String xmlLocation = getXmlLocation();
 			String schemaLocation = FileLocation.getJarOrNotPath("/dbSchema.xsd");
 			File exi = new File(xmlLocation);
-			File xmlOut = new File(xmlLocation + (USE_SCHEMA ? "schema" : "schemaless") + ".xml");
+			xmlOut = new File(xmlLocation + "." + (USE_SCHEMA ? "schema" : "schemaless") + ".xml");
 
 			// settings
 			EXIFactory exiFactory = DefaultEXIFactory.newInstance();
 			exiFactory.setGrammars(GrammarFactory.newInstance().createGrammars(schemaLocation));
 
 			// decode
-			FileOutputStream xmlOuts = new FileOutputStream(xmlOut);
-			FileInputStream exiIns = new FileInputStream(exi);
+			xmlOuts = new FileOutputStream(xmlOut);
+			exiIns = new FileInputStream(exi);
 			InputSource exiIs = new InputSource(exiIns);
 			EXISource exiSource = USE_SCHEMA ? new EXISource(exiFactory) : new EXISource();
 			exiSource.setInputSource(exiIs);
@@ -148,6 +155,7 @@ public class DatabaseStAXParser {
 					break;
 				}
 			}
+
 		} catch (FileNotFoundException e) {
 			logger.error(e.getMessage());
 		} catch (XMLStreamException e) {
@@ -160,75 +168,27 @@ public class DatabaseStAXParser {
 			logger.error(e.getMessage());
 		} catch (TransformerFactoryConfigurationError e) {
 			logger.error(e.getMessage());
-		}
-
-		return list;
-	}
-
-	@Deprecated
-	private static List<Attribute> parseWithoutExi() {
-		String schemaLocation = FileLocation.getJarOrNotPath("/dbSchema.xsd");
-		String xmlLocation = FileLocation.getJarOrNotPath("/db.xml");
-		boolean isValid = XSDValidator.validateXMLSchema(schemaLocation, xmlLocation);
-		if (!isValid) {
-			System.err.println("XML file is not valid against XSD Schema");
-			return null;
-		}
-
-		List<Attribute> list = new ArrayList<>();
-
-		boolean bId = false;
-		boolean bType = false;
-		boolean bName = false;
-		try {
-			XMLInputFactory factory = XMLInputFactory.newInstance();
-			XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(xmlLocation));
-
-			int id = 0;
-			String type = null;
-			String name = null;
-
-			while (eventReader.hasNext()) {
-				XMLEvent event = eventReader.nextEvent();
-				switch (event.getEventType()) {
-				case XMLStreamConstants.START_ELEMENT:
-					StartElement startElement = event.asStartElement();
-					String qName = startElement.getName().getLocalPart();
-					if (qName.equalsIgnoreCase("id")) {
-						bId = true;
-					} else if (qName.equalsIgnoreCase("type")) {
-						bType = true;
-					} else if (qName.equalsIgnoreCase("name")) {
-						bName = true;
-					}
-					break;
-				case XMLStreamConstants.CHARACTERS:
-					Characters characters = event.asCharacters();
-					if (bId) {
-						id = Integer.valueOf(characters.getData());
-						bId = false;
-					}
-					if (bType) {
-						type = characters.getData();
-						bType = false;
-					}
-					if (bName) {
-						name = characters.getData().replace("///", "&");
-						bName = false;
-					}
-					break;
-				case XMLStreamConstants.END_ELEMENT:
-					EndElement endElement = event.asEndElement();
-					if (endElement.getName().getLocalPart().equalsIgnoreCase("attribute")) {
-						list.add(new Attribute(id, type, name));
-					}
-					break;
-				}
+		} finally {
+			try {
+				exiIns.close();
+			} catch (IOException e) {
+				// do nothing
 			}
-		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage());
-		} catch (XMLStreamException e) {
-			logger.error(e.getMessage());
+
+			try {
+				xmlOuts.close();
+			} catch (IOException e) {
+				// do nothing
+			}
+
+			try {
+				if (xmlOut != null) {
+					xmlOut.delete();
+					xmlOut.deleteOnExit();
+				}
+			} catch (Exception e) {
+				// do nothing
+			}
 		}
 
 		return list;
@@ -239,6 +199,56 @@ public class DatabaseStAXParser {
 		for (Attribute attr : list) {
 			System.out.printf("id=%d, type='%s', name='%s'%n", attr.getId(), attr.getType(), attr.getName());
 		}
+	}
+
+	private static String getXmlLocation() {
+		File file = new File("db/db-web.xml.exi");
+		if (file != null && file.exists()) {
+			return file.getPath();
+		}
+
+		return FileLocation.getJarOrNotPath("/db.xml.exi");
+
+	}
+
+	public static String readLastUpdate(File temp) {
+		if (temp == null || !temp.exists()) {
+			return null;
+		}
+
+		FileInputStream fin = null;
+		BufferedReader din = null;
+
+		StringBuilder sb = new StringBuilder();
+		try {
+			fin = new FileInputStream(temp);
+			din = new BufferedReader(new InputStreamReader(fin, encoding));
+			String str = " ";
+			while (str != null) {
+				str = din.readLine();
+				if (str == null)
+					break;
+
+				sb.append(str);
+				sb.append(System.getProperty("line.separator"));
+			}
+
+		} catch (IOException ioe) {
+			logger.error(ioe.getMessage());
+		} finally {
+			try {
+				din.close();
+				fin.close();
+			} catch (IOException excp) {
+				logger.error(excp.getMessage());
+			} finally {
+				if (sb.length() > 0) {
+					return sb.toString();
+				}
+			}
+
+		}
+		return null;
 	}
 
 }

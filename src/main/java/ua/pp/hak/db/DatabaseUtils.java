@@ -5,14 +5,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ua.pp.hak.util.Attribute;
 import ua.pp.hak.util.EncryptUtils;
 
 public class DatabaseUtils {
+	final static Logger logger = LogManager.getLogger(DatabaseUtils.class);
+	public final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
 	private static Connection getConnection() throws SQLException {
 		String key = "tpad-pg";
@@ -22,13 +28,7 @@ public class DatabaseUtils {
 		return DriverManager.getConnection(dbUrl);
 	}
 
-	public static void main(String[] args) {
-		new DatabaseUtils().connectToAndQueryHerokuDatabase();
-	}
-
-	public void connectToAndQueryHerokuDatabase() {
-		long start, elapsedTime;
-		start = System.nanoTime();
+	public List<Attribute> downloadAttributes() {
 		List<Attribute> attributes = new ArrayList<>();
 		Connection con = null;
 		Statement stmt = null;
@@ -63,25 +63,62 @@ public class DatabaseUtils {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				// do nothing
 			}
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				// do nothing
 			}
 			try {
 				con.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				// do nothing
 			}
 		}
 
-		System.out.println("Save...");
+		return attributes;
+	}
 
-		DatabaseStAXWriter.save(attributes);
-		elapsedTime = System.nanoTime() - start;
-		System.out.println("Elapsed time to check: " + elapsedTime + " ns (~ "
-				+ new DecimalFormat("#.###").format(elapsedTime * 1e-9) + " s)");
+	public Timestamp downloadLastUpdate() {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		Timestamp lastUpdate = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			con = getConnection();
+
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT MAX(updated) as max FROM update_log where table_name='attributes'");
+
+			while (rs.next()) {
+				lastUpdate = new Timestamp(rs.getTimestamp("max").getTime());
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+		}
+
+		return lastUpdate;
 	}
 }

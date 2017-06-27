@@ -1,0 +1,2 @@
+INSERT INTO attributes ( group_id, group_name, id, name, type, deactivated, comment ) VALUES ('337', 'Shavers, Trimmers /// Epilators', '99990001', 'Heads Qty', 'Simple numeric', 'false', NULL);
+INSERT INTO attributes ( group_id, group_name, id, name, type, deactivated, comment ) VALUES ('337', 'Shavers, Trimmers /// Epilators', '99990002', 'Blades Qty', 'Simple numeric', 'false', NULL);

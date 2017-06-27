@@ -765,6 +765,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			}
 		}
 		////////////////////////////////////
+		else if (cmdText.equals(helpCheckDatabaseUpdates)) {
+			logger.info("Checking Database updates...");
+			LoadingPanel.doProcess("db-update", npd);
+		}
+		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
 			logger.info("Open HelpTopic window");
 			HelpTopicDialog.showHelpTopic(frame);
@@ -1060,6 +1065,7 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		helpMenu.addSeparator();
 		createMenuItem(helpShowLogs, KeyEvent.VK_S, helpMenu, this);
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
+		createMenuItem(helpCheckDatabaseUpdates, KeyEvent.VK_D, helpMenu, this);
 		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 

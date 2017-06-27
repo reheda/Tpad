@@ -36,19 +36,10 @@ public class DatabaseStAXWriter {
 	final static String encoding = "UTF-8";
 	final static Logger logger = LogManager.getLogger(DatabaseStAXWriter.class);
 
-	public static void main(String[] args) {
-		System.out.println("Parse....");
-		List<Attribute> attr = DatabaseStAXParser.parse();
 
-		System.out.println();
-		
-		System.out.println("Save....");
-		save(attr);
-
-	}
-
-	public static void save(List<Attribute> attributes) {
+	public static void save(List<Attribute> attributes, String filePath, String lastUpdate) {
 		try {
+
 			StringWriter stringWriter = new StringWriter();
 
 			XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
@@ -61,6 +52,7 @@ public class DatabaseStAXWriter {
 			xMLStreamWriter.writeAttribute("xsi:schemaLocation", "http://hak.pp.ua/dbSchema dbSchema.xsd");
 
 			for (Attribute attribute : attributes) {
+
 
 				xMLStreamWriter.writeStartElement("attribute");
 
@@ -106,8 +98,8 @@ public class DatabaseStAXWriter {
 
 			stringWriter.close();
 
-			saveToFile(xmlString, new File("db/db.xml"));
-			// System.out.println(xmlString);
+			saveExiToFile(xmlString, new File(filePath));
+			saveTextToFile(lastUpdate, new File("db/last-update.txt"));
 
 		} catch (XMLStreamException e) {
 			logger.error(e);
@@ -116,7 +108,7 @@ public class DatabaseStAXWriter {
 		}
 	}
 
-	private static void saveToFile(String content, File file) {
+	private static void saveExiToFile(String content, File file) {
 		File parent = file.getParentFile();
 		if (!parent.exists() && !parent.mkdirs()) {
 			throw new IllegalStateException("Couldn't create dir: " + parent);
@@ -142,8 +134,33 @@ public class DatabaseStAXWriter {
 		} catch (EXIException | IOException | SAXException e) {
 			logger.error(e);
 		}
+		
+		if (file!=null){
+			file.delete();
+			file.deleteOnExit();
+		}
+	}
 
-		file.deleteOnExit();
+	private static void saveTextToFile(String content, File file) {
+		File parent = file.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) {
+			throw new IllegalStateException("Couldn't create dir: " + parent);
+		}
+		Writer fout = null;
+		try {
+			fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
+			fout.write(content);
+
+		} catch (IOException ioe) {
+			logger.error(ioe.getMessage());
+		} finally {
+			try {
+				fout.close();
+			} catch (IOException excp) {
+				logger.error(excp.getMessage());
+			}
+		}
+
 	}
 
 	private static void encodeXmlToExi(String xmlLocation, String schemaLocation)
