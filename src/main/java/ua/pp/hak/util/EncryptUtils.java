@@ -33,8 +33,7 @@ public class EncryptUtils {
 	// System.out.println(txt + " XOR-ed to: " + (txt = xorMessage(txt, key)));
 	//
 	// String encoded = base64encode(txt);
-	// System.out.println(" is encoded to: " + encoded + " and that is decoding
-	// to: " + (txt = base64decode(encoded)));
+	// System.out.println(" is encoded to: " + encoded + "\n and that is decoding to: " + (txt = base64decode(encoded)));
 	// System.out.print("XOR-ing back to original: " + xorMessage(txt, key));
 	// }
 

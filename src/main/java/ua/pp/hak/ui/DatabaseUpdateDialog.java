@@ -40,7 +40,7 @@ public class DatabaseUpdateDialog implements Constants {
 				infoPane.setFont(font);
 //				infoPane.setContentType("text/html");
 				String formattedDate = DatabaseUtils.dateFormat.format(webLastUpdate);
-				String text = new StringBuilder().append("Web DB version: \n")
+				String text = new StringBuilder().append("Web DB version (UTC): \n")
 						.append(formattedDate).toString();
 				infoPane.setText(text);
 				int answer = JOptionPane.showOptionDialog(npd.getFrame(), infoPane, "New Database Update Found",

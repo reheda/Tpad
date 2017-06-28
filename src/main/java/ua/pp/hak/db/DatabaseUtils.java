@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,25 +49,37 @@ public class DatabaseUtils {
 		return buffer.toString();
 	}
 
-	public List<Attribute> downloadAttributes() {
-		List<Attribute> attributes = new ArrayList<>();
+	private String getHashUrl(String dbName) {
+		if (dbName == null) {
+			return null;
+		}
 		String data = null;
 		try {
 			data = getData(dbHashURL);
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		if (data == null) {
-			return attributes;
+		
+		if (data != null) {
+			return data.substring(data.indexOf("[" + dbName + "]") + dbName.length() + 2, data.indexOf("[/" + dbName + "]"));
 		}
+
+		return null;
+	}
+
+	public List<Attribute> downloadAttributes() {
+		List<Attribute> attributes = new ArrayList<>();
 
 		try {
 
-			final String hashTpadWeb = data.substring(data.indexOf("[tpadweb]") + 9, data.indexOf("[/tpadweb]"));
-			final String hashTpadWebDb = data.substring(data.indexOf("[tpadwebdb]") + 11, data.indexOf("[/tpadwebdb]"));
+			final String hashTpadWeb = getHashUrl("tpadweb");
+			final String hashTpadWebDb = getHashUrl("tpadwebdb");
 
-			attributes.addAll(downloadAttributes(hashTpadWeb));
-			attributes.addAll(downloadAttributes(hashTpadWebDb));
+			if (hashTpadWeb == null || hashTpadWebDb == null) {
+				return attributes;
+			}
+			attributes.addAll(downloadAttributes(hashTpadWeb, "tpadweb"));
+			attributes.addAll(downloadAttributes(hashTpadWebDb, "tpadwebdb"));
 
 		} catch (Exception e) {
 			logger.error(e);
@@ -75,7 +88,225 @@ public class DatabaseUtils {
 		return attributes;
 	}
 
-	public List<Attribute> downloadAttributes(String hashUrl) {
+	public boolean storeAttribute(Attribute attribute) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		int affectedRows = 0;
+
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			String hashUrl = getHashUrl("tpadweb");
+			if (hashUrl == null) {
+				return false;
+			}
+			con = getConnection(hashUrl);
+
+			stmt = con.prepareStatement(
+					"INSERT INTO attributes (id,type,name,deactivated,group_id,group_name,last_update,comment) VALUES (?,?,?,?,?,?,?,?)");
+			stmt.setInt(1, attribute.getId());
+			stmt.setString(2, attribute.getType());
+			stmt.setString(3, attribute.getName());
+			stmt.setBoolean(4, attribute.isDeactivated());
+			stmt.setInt(5, attribute.getGroupId());
+			stmt.setString(6, attribute.getGroupName());
+			stmt.setString(7, attribute.getLastUpdate());
+			stmt.setString(8, attribute.getComment());
+			affectedRows = stmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+		}
+
+		if (affectedRows > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean updateAttribute(Attribute attribute) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		int affectedRows = 0;
+
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			String hashUrl = getHashUrl("tpadweb");
+			if (hashUrl == null) {
+				return false;
+			}
+			con = getConnection(hashUrl);
+
+			stmt = con.prepareStatement(
+					"UPDATE attributes SET type=?,name=?,deactivated=?,group_id=?,group_name=?,last_update=?,comment=? WHERE id=?");
+
+			stmt.setString(1, attribute.getType());
+			stmt.setString(2, attribute.getName());
+			stmt.setBoolean(3, attribute.isDeactivated());
+			stmt.setInt(4, attribute.getGroupId());
+			stmt.setString(5, attribute.getGroupName());
+			stmt.setString(6, attribute.getLastUpdate());
+			stmt.setString(7, attribute.getComment());
+			stmt.setInt(8, attribute.getId());
+			affectedRows = stmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+		}
+
+		if (affectedRows > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean deleteAttribute(Attribute attribute) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		int affectedRows = 0;
+
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			String hashUrl = getHashUrl("tpadweb");
+			if (hashUrl == null) {
+				return false;
+			}
+			con = getConnection(hashUrl);
+
+			stmt = con.prepareStatement("DELETE FROM attributes WHERE id=?");
+			stmt.setInt(1, attribute.getId());
+			affectedRows = stmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+		}
+
+		if (affectedRows > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public Attribute downloadAttribute(Integer attrId) {
+		List<Attribute> attributes = new ArrayList<>();
+
+		try {
+
+			final String hashTpadWeb = getHashUrl("tpadweb");
+			final String hashTpadWebDb = getHashUrl("tpadwebdb");
+			
+			if (hashTpadWeb == null || hashTpadWebDb == null) {
+				return null;
+			}
+			attributes.addAll(downloadAttribute(attrId, hashTpadWeb, "tpadweb"));
+			attributes.addAll(downloadAttribute(attrId, hashTpadWebDb, "tpadwebdb"));
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+
+		if (attributes.size() > 0) {
+			return attributes.get(0);
+		}
+		return null;
+	}
+
+	private List<Attribute> downloadAttribute(Integer attrId, String hashUrl, String dbName) {
+		List<Attribute> attributes = new ArrayList<>();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			con = getConnection(hashUrl);
+
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM attributes WHERE id=" + attrId);
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String type = rs.getString("type");
+				String name = rs.getString("name");
+				boolean isDeactivated = rs.getBoolean("deactivated");
+				int groupId = rs.getInt("group_id");
+				String groupName = rs.getString("group_name");
+				String lastUpdate = rs.getString("last_update");
+				String comment = rs.getString("comment");
+
+				// add to list
+				attributes.add(
+						new Attribute(id, type, name, isDeactivated, groupId, groupName, lastUpdate, comment, dbName));
+
+			}
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// do nothing
+			}
+		}
+
+		return attributes;
+	}
+
+	private List<Attribute> downloadAttributes(String hashUrl, String dbName) {
 		List<Attribute> attributes = new ArrayList<>();
 		Connection con = null;
 		Statement stmt = null;
@@ -97,15 +328,17 @@ public class DatabaseUtils {
 				int groupId = rs.getInt("group_id");
 				String groupName = rs.getString("group_name");
 				String lastUpdate = rs.getString("last_update");
+				String comment = rs.getString("comment");
 
 				// add to list
-				attributes.add(new Attribute(id, type, name, isDeactivated, groupId, groupName, lastUpdate));
+				attributes.add(
+						new Attribute(id, type, name, isDeactivated, groupId, groupName, lastUpdate, comment, dbName));
 
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} finally {
 			try {
 				rs.close();
@@ -128,22 +361,16 @@ public class DatabaseUtils {
 	}
 
 	public Timestamp downloadLastUpdate() {
-		String data = null;
-		try {
-			data = getData(dbHashURL);
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		if (data == null) {
-			return null;
-		}
 
 		Timestamp ts1 = null;
 		Timestamp ts2 = null;
 		try {
-			final String hashTpadWeb = data.substring(data.indexOf("[tpadweb]") + 9, data.indexOf("[/tpadweb]"));
-			final String hashTpadWebDb = data.substring(data.indexOf("[tpadwebdb]") + 11, data.indexOf("[/tpadwebdb]"));
+			final String hashTpadWeb = getHashUrl("tpadweb");
+			final String hashTpadWebDb = getHashUrl("tpadwebdb");
 
+			if (hashTpadWeb == null || hashTpadWebDb == null) {
+				return null;
+			}
 			ts1 = downloadLastUpdate(hashTpadWeb);
 			ts2 = downloadLastUpdate(hashTpadWebDb);
 		} catch (Exception e) {
@@ -158,7 +385,7 @@ public class DatabaseUtils {
 
 	}
 
-	public Timestamp downloadLastUpdate(String hashUrl) {
+	private Timestamp downloadLastUpdate(String hashUrl) {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -176,9 +403,9 @@ public class DatabaseUtils {
 				lastUpdate = new Timestamp(rs.getTimestamp("max").getTime());
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		} finally {
 			try {
 				rs.close();
