@@ -59,9 +59,10 @@ public class DatabaseUtils {
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		
+
 		if (data != null) {
-			return data.substring(data.indexOf("[" + dbName + "]") + dbName.length() + 2, data.indexOf("[/" + dbName + "]"));
+			return data.substring(data.indexOf("[" + dbName + "]") + dbName.length() + 2,
+					data.indexOf("[/" + dbName + "]"));
 		}
 
 		return null;
@@ -88,7 +89,8 @@ public class DatabaseUtils {
 		return attributes;
 	}
 
-	public boolean storeAttribute(Attribute attribute) {
+	public boolean storeAttribute(Attribute attribute) throws SQLException {
+
 		Connection con = null;
 		PreparedStatement stmt = null;
 		int affectedRows = 0;
@@ -101,22 +103,18 @@ public class DatabaseUtils {
 				return false;
 			}
 			con = getConnection(hashUrl);
-
 			stmt = con.prepareStatement(
-					"INSERT INTO attributes (id,type,name,deactivated,group_id,group_name,last_update,comment) VALUES (?,?,?,?,?,?,?,?)");
+					"INSERT INTO attributes (id,type,name,deactivated,group_id,group_name,comment) VALUES (?,?::\"enum_types\",?,?,?,?,?)");
 			stmt.setInt(1, attribute.getId());
 			stmt.setString(2, attribute.getType());
 			stmt.setString(3, attribute.getName());
 			stmt.setBoolean(4, attribute.isDeactivated());
 			stmt.setInt(5, attribute.getGroupId());
 			stmt.setString(6, attribute.getGroupName());
-			stmt.setString(7, attribute.getLastUpdate());
-			stmt.setString(8, attribute.getComment());
+			stmt.setString(7, attribute.getComment());
 			affectedRows = stmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
-			logger.error(e);
-		} catch (SQLException e) {
 			logger.error(e);
 		} finally {
 			try {
@@ -145,23 +143,22 @@ public class DatabaseUtils {
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			String hashUrl = getHashUrl("tpadweb");
+			String hashUrl = getHashUrl(attribute.getDbName());
 			if (hashUrl == null) {
 				return false;
 			}
 			con = getConnection(hashUrl);
 
 			stmt = con.prepareStatement(
-					"UPDATE attributes SET type=?,name=?,deactivated=?,group_id=?,group_name=?,last_update=?,comment=? WHERE id=?");
+					"UPDATE attributes SET type=?::\"enum_types\",name=?,deactivated=?,group_id=?,group_name=?,last_update=DEFAULT,comment=? WHERE id=?");
 
 			stmt.setString(1, attribute.getType());
 			stmt.setString(2, attribute.getName());
 			stmt.setBoolean(3, attribute.isDeactivated());
 			stmt.setInt(4, attribute.getGroupId());
 			stmt.setString(5, attribute.getGroupName());
-			stmt.setString(6, attribute.getLastUpdate());
-			stmt.setString(7, attribute.getComment());
-			stmt.setInt(8, attribute.getId());
+			stmt.setString(6, attribute.getComment());
+			stmt.setInt(7, attribute.getId());
 			affectedRows = stmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
@@ -187,7 +184,7 @@ public class DatabaseUtils {
 		return false;
 	}
 
-	public boolean deleteAttribute(Attribute attribute) {
+	public boolean deleteAttribute(Integer id, String dbName) {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		int affectedRows = 0;
@@ -195,14 +192,14 @@ public class DatabaseUtils {
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			String hashUrl = getHashUrl("tpadweb");
+			String hashUrl = getHashUrl(dbName);
 			if (hashUrl == null) {
 				return false;
 			}
 			con = getConnection(hashUrl);
 
 			stmt = con.prepareStatement("DELETE FROM attributes WHERE id=?");
-			stmt.setInt(1, attribute.getId());
+			stmt.setInt(1, id);
 			affectedRows = stmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
@@ -235,7 +232,7 @@ public class DatabaseUtils {
 
 			final String hashTpadWeb = getHashUrl("tpadweb");
 			final String hashTpadWebDb = getHashUrl("tpadwebdb");
-			
+
 			if (hashTpadWeb == null || hashTpadWebDb == null) {
 				return null;
 			}

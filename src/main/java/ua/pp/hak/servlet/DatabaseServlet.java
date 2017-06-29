@@ -3,6 +3,7 @@ package ua.pp.hak.servlet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import ua.pp.hak.db.DatabaseUtils;
 import ua.pp.hak.util.Attribute;
@@ -28,43 +30,69 @@ import ua.pp.hak.util.Attribute;
 public class DatabaseServlet extends HttpServlet {
 
 	final static Logger logger = LogManager.getLogger(DatabaseServlet.class);
-	// @Override
-	// protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// String json = new Gson().toJson(new
-	// DatabaseUtils().downloadAttributes());
-	// resp.getWriter().write(json);
-	//
-	// }
-
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// String json = new Gson().toJson(new
-	// DatabaseUtils().downloadAttributes());
-	// resp.getWriter().write(json);
-	// }
 
 	/**
 	 * Store record "/photo"
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.addHeader("Access-Control-Allow-Origin", "*");
-		resp.addHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With");
-		// resp.addHeader("Access-Control-Allow-Headers","Origin, Content-Type,
-		// X-Auth-Token, X-Requested-With");
-		resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-		System.out.println("post");
-		System.out.println(req.getParameter("comment"));
-		// Map map = req.getParameterMap();
-		// for (Object key: map.keySet())
-		// {
-		// String keyStr = (String)key;
-		// String[] value = (String[])map.get(keyStr);
-		// System.out.println((String)key + " : " + Arrays.toString(value));
-		// }
-		resp.getWriter().write(new Gson().toJson("post"));
+		System.out.println("----------");
+		logger.info("----------");
+		System.out.println("POST request. URI: " + req.getRequestURI());
+		logger.info("POST request. URI: " + req.getRequestURI());
+		outputAll(req);
+
+		boolean success = false;
+		String message = "";
+		PrintWriter out = resp.getWriter();
+		JsonObject jsonAnswer = new JsonObject();
+
+		if (!hasAccess(req)) {
+			message = "Access is denied.";
+			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("message", message);
+
+			System.out.println("Response: " + jsonAnswer.toString());
+			logger.info("Response: " + jsonAnswer.toString());
+			out.write(jsonAnswer.toString());
+			return;
+		}
+
+		RestRequest resourceValues = new RestRequest(req.getPathInfo());
+		if (resourceValues.getId() == null) {
+
+			String json = readRequest(req);
+
+			System.out.println("Request json: " + json);
+			logger.info("Request json: " + json);
+
+			Attribute attribute = new Gson().fromJson(json, Attribute.class);
+
+			if (attribute != null) {
+
+				try {
+					success = new DatabaseUtils().storeAttribute(attribute);
+				} catch (SQLException e) {
+					message = e.getMessage();
+				}
+			}
+		} else {
+			message = "Invalid URI.";
+		}
+
+		jsonAnswer.addProperty("success", String.valueOf(success));
+		jsonAnswer.addProperty("message", message);
+
+		System.out.println("Response: " + jsonAnswer.toString());
+		logger.info("Response: " + jsonAnswer.toString());
+		out.write(jsonAnswer.toString());
+
+		try {
+			out.close();
+		} catch (Exception e) {
+			// do nothing
+		}
+
 	}
 
 	/**
@@ -72,15 +100,59 @@ public class DatabaseServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("put");
-		System.out.println("comment=" + req.getParameter("comment"));
-		Map map = req.getParameterMap();
-		for (Object key : map.keySet()) {
-			String keyStr = (String) key;
-			String[] value = (String[]) map.get(keyStr);
-			System.out.println((String) key + "   :   " + Arrays.toString(value));
+		System.out.println("----------");
+		logger.info("----------");
+		System.out.println("PUT request. URI: " + req.getRequestURI());
+		logger.info("PUT request. URI: " + req.getRequestURI());
+		outputAll(req);
+
+		JsonObject jsonAnswer = new JsonObject();
+		boolean success = false;
+		String message = "";
+		PrintWriter out = resp.getWriter();
+
+		if (!hasAccess(req)) {
+			message = "Access is denied.";
+			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("message", message);
+
+			System.out.println("Response: " + jsonAnswer.toString());
+			logger.info("Response: " + jsonAnswer.toString());
+			out.write(jsonAnswer.toString());
+			return;
 		}
-		resp.getWriter().write(new Gson().toJson("put"));
+
+		RestRequest resourceValues = new RestRequest(req.getPathInfo());
+		if (resourceValues.getId() != null) {
+
+			String json = readRequest(req);
+
+			System.out.println("Request json: " + json);
+			logger.info("Request json: " + json);
+
+			Attribute attribute = new Gson().fromJson(json, Attribute.class);
+
+			System.out.println(attribute);
+			logger.info(attribute);
+			if (attribute != null) {
+				success = new DatabaseUtils().updateAttribute(attribute);
+			}
+		} else {
+			message = "Invalid URI.";
+		}
+
+		jsonAnswer.addProperty("success", String.valueOf(success));
+		jsonAnswer.addProperty("message", message);
+
+		System.out.println("Response: " + jsonAnswer.toString());
+		logger.info("Response: " + jsonAnswer.toString());
+		out.write(jsonAnswer.toString());
+
+		try {
+			out.close();
+		} catch (Exception e) {
+			// do nothing
+		}
 	}
 
 	/**
@@ -88,72 +160,129 @@ public class DatabaseServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("delete");
-		System.out.println("comment=" + req.getParameter("comment"));
+		System.out.println("----------");
+		logger.info("----------");
+		System.out.println("DELETE request. URI: " + req.getRequestURI());
+		logger.info("DELETE request. URI: " + req.getRequestURI());
+		outputAll(req);
+
+		JsonObject jsonAnswer = new JsonObject();
+		boolean success = false;
+		String message = "";
+		PrintWriter out = resp.getWriter();
+
+		if (!hasAccess(req)) {
+			message = "Access is denied.";
+			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("message", message);
+
+			System.out.println("Response: " + jsonAnswer.toString());
+			logger.info("Response: " + jsonAnswer.toString());
+			out.write(jsonAnswer.toString());
+			return;
+		}
+
 		System.out.println(req.getRequestURI());
-
-		Enumeration headerNames = req.getHeaderNames();
-		while (headerNames.hasMoreElements()) {
-			String headerName = (String) headerNames.nextElement();
-			System.out.println("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
-		}
-
-		Enumeration params = req.getParameterNames();
-		while (params.hasMoreElements()) {
-			String paramName = (String) params.nextElement();
-			System.out.println("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
-		}
-
-		StringBuffer jb = new StringBuffer();
-		String line = null;
+		logger.info(req.getRequestURI());
 		try {
-			BufferedReader reader = req.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) {
-			/* report an error */ }
 
-		System.out.println(jb.toString());
-		
-		System.out.println(new Gson().fromJson(jb.toString(), Attribute.class));
-		
-		resp.getWriter().write(new Gson().toJson("delete"));
+			RestRequest resourceValues = new RestRequest(req.getPathInfo());
+			Integer id = resourceValues.getId();
+			if (id != null) {
+
+				String json = readRequest(req);
+
+				System.out.println("Request json: " + json);
+				logger.info("Request json: " + json);
+
+				JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
+				String dbName = jobj.get("dbName").getAsString();
+				success = new DatabaseUtils().deleteAttribute(id, dbName);
+				if (!success) {
+					message = "No attribute found in the db.";
+				}
+			} else {
+				message = "Invalid URI.";
+			}
+		} catch (ServletException e) {
+			resp.setStatus(400);
+			resp.resetBuffer();
+			e.printStackTrace();
+			message = e.toString();
+		} finally {
+			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("message", message);
+
+			System.out.println("Response: " + jsonAnswer.toString());
+			logger.info("Response: " + jsonAnswer.toString());
+			out.write(jsonAnswer.toString());
+
+			try {
+				out.close();
+			} catch (Exception e) {
+				// do nothing
+			}
+		}
+
 	}
 
 	/**
 	 * Index records "/photo" Show record "/photo/{photo}"
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		out.println("GET request handling");
-		out.println(request.getPathInfo());
-		out.println(request.getParameterMap());
+		System.out.println("----------");
+		logger.info("----------");
+		System.out.println("GET request. URI: " + req.getRequestURI());
+		logger.info("GET request. URI: " + req.getRequestURI());
+		outputAll(req);
+
+		boolean success = false;
+		String message = "";
+		JsonObject jsonAnswer = new JsonObject();
+
+		PrintWriter out = resp.getWriter();
 		try {
-			RestRequest resourceValues = new RestRequest(request.getPathInfo());
+			RestRequest resourceValues = new RestRequest(req.getPathInfo());
 			Integer id = resourceValues.getId();
-			out.println(id);
 			if (id != null) {
 				Attribute attr = new DatabaseUtils().downloadAttribute(id);
 				if (attr != null) {
-					out.println(new Gson().toJson(attr));
+					out.write(new Gson().toJson(attr));
 				} else {
-					out.println("cant download attr");
+					message = "No attribute found.";
+					jsonAnswer.addProperty("success", String.valueOf(success));
+					jsonAnswer.addProperty("message", message);
+
+					System.out.println("Response: " + jsonAnswer.toString());
+					logger.info("Response: " + jsonAnswer.toString());
+					out.write(jsonAnswer.toString());
 
 				}
 			} else {
 				List<Attribute> attrs = new DatabaseUtils().downloadAttributes();
-				out.println(new Gson().toJson(attrs));
+				out.write(new Gson().toJson(attrs));
 			}
 		} catch (ServletException e) {
-			response.setStatus(400);
-			response.resetBuffer();
+			resp.setStatus(400);
+			resp.resetBuffer();
 			e.printStackTrace();
-			out.println(e.toString());
+			message = e.toString();
+
+			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("message", message);
+
+			System.out.println("Response: " + jsonAnswer.toString());
+			logger.info("Response: " + jsonAnswer.toString());
+			out.write(jsonAnswer.toString());
 		}
-		out.close();
+
+		try {
+			out.close();
+		} catch (Exception e) {
+			// do nothing
+		}
 	}
 
 	private class RestRequest {
@@ -194,4 +323,48 @@ public class DatabaseServlet extends HttpServlet {
 		}
 	}
 
+	private boolean hasAccess(HttpServletRequest req) {
+		String userToken = req.getHeader("usertoken");
+		if (userToken == null || !userToken.equals("moar")) {
+			return false;
+		}
+		return true;
+	}
+
+	private void outputAll(HttpServletRequest req) {
+		Map map = req.getParameterMap();
+		for (Object key : map.keySet()) {
+			String keyStr = (String) key;
+			String[] value = (String[]) map.get(keyStr);
+			System.out.println((String) key + " : " + Arrays.toString(value));
+			logger.info((String) key + " : " + Arrays.toString(value));
+		}
+
+		Enumeration headerNames = req.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String headerName = (String) headerNames.nextElement();
+			System.out.println("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
+			logger.info("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
+		}
+
+		Enumeration params = req.getParameterNames();
+		while (params.hasMoreElements()) {
+			String paramName = (String) params.nextElement();
+			System.out.println("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
+			logger.info("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
+		}
+	}
+
+	private synchronized String readRequest(HttpServletRequest req) {
+		StringBuffer jb = new StringBuffer();
+		String line = null;
+		try {
+			BufferedReader reader = req.getReader();
+			while ((line = reader.readLine()) != null)
+				jb.append(line);
+		} catch (Exception e) {
+			/* report an error */
+		}
+		return jb.toString();
+	}
 }
