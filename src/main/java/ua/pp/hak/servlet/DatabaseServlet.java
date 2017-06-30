@@ -36,9 +36,9 @@ public class DatabaseServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("----------");
+
 		logger.info("----------");
-		System.out.println("POST request. URI: " + req.getRequestURI());
+
 		logger.info("POST request. URI: " + req.getRequestURI());
 		outputAll(req);
 
@@ -49,10 +49,9 @@ public class DatabaseServlet extends HttpServlet {
 
 		if (!hasAccess(req)) {
 			message = "Access is denied.";
-			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("success", success);
 			jsonAnswer.addProperty("message", message);
 
-			System.out.println("Response: " + jsonAnswer.toString());
 			logger.info("Response: " + jsonAnswer.toString());
 			out.write(jsonAnswer.toString());
 			return;
@@ -63,7 +62,6 @@ public class DatabaseServlet extends HttpServlet {
 
 			String json = readRequest(req);
 
-			System.out.println("Request json: " + json);
 			logger.info("Request json: " + json);
 
 			Attribute attribute = new Gson().fromJson(json, Attribute.class);
@@ -72,6 +70,9 @@ public class DatabaseServlet extends HttpServlet {
 
 				try {
 					success = new DatabaseUtils().storeAttribute(attribute);
+					if (success) {
+						message = "Attribute " + attribute.getId() + " was added.";
+					}
 				} catch (SQLException e) {
 					message = e.getMessage();
 				}
@@ -80,10 +81,9 @@ public class DatabaseServlet extends HttpServlet {
 			message = "Invalid URI.";
 		}
 
-		jsonAnswer.addProperty("success", String.valueOf(success));
+		jsonAnswer.addProperty("success", success);
 		jsonAnswer.addProperty("message", message);
 
-		System.out.println("Response: " + jsonAnswer.toString());
 		logger.info("Response: " + jsonAnswer.toString());
 		out.write(jsonAnswer.toString());
 
@@ -100,9 +100,9 @@ public class DatabaseServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("----------");
+
 		logger.info("----------");
-		System.out.println("PUT request. URI: " + req.getRequestURI());
+
 		logger.info("PUT request. URI: " + req.getRequestURI());
 		outputAll(req);
 
@@ -113,10 +113,9 @@ public class DatabaseServlet extends HttpServlet {
 
 		if (!hasAccess(req)) {
 			message = "Access is denied.";
-			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("success", success);
 			jsonAnswer.addProperty("message", message);
 
-			System.out.println("Response: " + jsonAnswer.toString());
 			logger.info("Response: " + jsonAnswer.toString());
 			out.write(jsonAnswer.toString());
 			return;
@@ -127,24 +126,30 @@ public class DatabaseServlet extends HttpServlet {
 
 			String json = readRequest(req);
 
-			System.out.println("Request json: " + json);
 			logger.info("Request json: " + json);
 
 			Attribute attribute = new Gson().fromJson(json, Attribute.class);
 
-			System.out.println(attribute);
 			logger.info(attribute);
 			if (attribute != null) {
-				success = new DatabaseUtils().updateAttribute(attribute);
+				try {
+					success = new DatabaseUtils().updateAttribute(attribute);
+					if (!success) {
+						message = "Attribute " + attribute.getId() + " was not found to update.";
+					} else {
+						message = "Attribute " + attribute.getId() + " was updated.";
+					}
+				} catch (SQLException e) {
+					message = e.getMessage();
+				}
 			}
 		} else {
 			message = "Invalid URI.";
 		}
 
-		jsonAnswer.addProperty("success", String.valueOf(success));
+		jsonAnswer.addProperty("success", success);
 		jsonAnswer.addProperty("message", message);
 
-		System.out.println("Response: " + jsonAnswer.toString());
 		logger.info("Response: " + jsonAnswer.toString());
 		out.write(jsonAnswer.toString());
 
@@ -160,9 +165,9 @@ public class DatabaseServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("----------");
+
 		logger.info("----------");
-		System.out.println("DELETE request. URI: " + req.getRequestURI());
+
 		logger.info("DELETE request. URI: " + req.getRequestURI());
 		outputAll(req);
 
@@ -173,17 +178,14 @@ public class DatabaseServlet extends HttpServlet {
 
 		if (!hasAccess(req)) {
 			message = "Access is denied.";
-			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("success", success);
 			jsonAnswer.addProperty("message", message);
 
-			System.out.println("Response: " + jsonAnswer.toString());
 			logger.info("Response: " + jsonAnswer.toString());
 			out.write(jsonAnswer.toString());
 			return;
 		}
 
-		System.out.println(req.getRequestURI());
-		logger.info(req.getRequestURI());
 		try {
 
 			RestRequest resourceValues = new RestRequest(req.getPathInfo());
@@ -192,14 +194,15 @@ public class DatabaseServlet extends HttpServlet {
 
 				String json = readRequest(req);
 
-				System.out.println("Request json: " + json);
 				logger.info("Request json: " + json);
 
 				JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
 				String dbName = jobj.get("dbName").getAsString();
 				success = new DatabaseUtils().deleteAttribute(id, dbName);
 				if (!success) {
-					message = "No attribute found in the db.";
+					message = "Attribute " + id + " was not found to delete.";
+				} else {
+					message = "Attribute " + id + " was deleted.";
 				}
 			} else {
 				message = "Invalid URI.";
@@ -210,10 +213,9 @@ public class DatabaseServlet extends HttpServlet {
 			e.printStackTrace();
 			message = e.toString();
 		} finally {
-			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("success", success);
 			jsonAnswer.addProperty("message", message);
 
-			System.out.println("Response: " + jsonAnswer.toString());
 			logger.info("Response: " + jsonAnswer.toString());
 			out.write(jsonAnswer.toString());
 
@@ -232,9 +234,7 @@ public class DatabaseServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		System.out.println("----------");
 		logger.info("----------");
-		System.out.println("GET request. URI: " + req.getRequestURI());
 		logger.info("GET request. URI: " + req.getRequestURI());
 		outputAll(req);
 
@@ -249,13 +249,14 @@ public class DatabaseServlet extends HttpServlet {
 			if (id != null) {
 				Attribute attr = new DatabaseUtils().downloadAttribute(id);
 				if (attr != null) {
-					out.write(new Gson().toJson(attr));
+					String responseStr = new Gson().toJson(attr);
+					logger.info("Response: " + responseStr);
+					out.write(responseStr);
 				} else {
-					message = "No attribute found.";
-					jsonAnswer.addProperty("success", String.valueOf(success));
+					message = "Attribute " + id + " was not found.";
+					jsonAnswer.addProperty("success", success);
 					jsonAnswer.addProperty("message", message);
 
-					System.out.println("Response: " + jsonAnswer.toString());
 					logger.info("Response: " + jsonAnswer.toString());
 					out.write(jsonAnswer.toString());
 
@@ -270,10 +271,9 @@ public class DatabaseServlet extends HttpServlet {
 			e.printStackTrace();
 			message = e.toString();
 
-			jsonAnswer.addProperty("success", String.valueOf(success));
+			jsonAnswer.addProperty("success", success);
 			jsonAnswer.addProperty("message", message);
 
-			System.out.println("Response: " + jsonAnswer.toString());
 			logger.info("Response: " + jsonAnswer.toString());
 			out.write(jsonAnswer.toString());
 		}
@@ -336,21 +336,21 @@ public class DatabaseServlet extends HttpServlet {
 		for (Object key : map.keySet()) {
 			String keyStr = (String) key;
 			String[] value = (String[]) map.get(keyStr);
-			System.out.println((String) key + " : " + Arrays.toString(value));
+
 			logger.info((String) key + " : " + Arrays.toString(value));
 		}
 
 		Enumeration headerNames = req.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String headerName = (String) headerNames.nextElement();
-			System.out.println("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
+
 			logger.info("Header Name - " + headerName + ", Value - " + req.getHeader(headerName));
 		}
 
 		Enumeration params = req.getParameterNames();
 		while (params.hasMoreElements()) {
 			String paramName = (String) params.nextElement();
-			System.out.println("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
+
 			logger.info("Parameter Name - " + paramName + ", Value - " + req.getParameter(paramName));
 		}
 	}

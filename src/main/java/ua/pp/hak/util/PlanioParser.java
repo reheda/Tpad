@@ -471,7 +471,7 @@ public class PlanioParser {
 		URL obj = new URL(serviceURL);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestProperty("User-Agent", USER_AGENT);
-		String apiKey = "621d09457c2241a811430fd372a668814aa3ae16";
+		String apiKey = "f917b0e9c0db3d976ba081f625e5e707c775e78d";
 		con.setRequestProperty("X-Redmine-API-Key", apiKey);
 		con.setRequestMethod("GET");
 		int responseCode = con.getResponseCode();

@@ -21,12 +21,70 @@ public class LogServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
 
-		String logs = readLogs(new File("logs/app.log"));
+		String logs = readLogs(new File("logs/app.log"), 500);
+		if (logs == null) {
+			logs = "";
+		}
 		out.write(logs);
 		try {
 			out.close();
 		} catch (Exception e) {
 			// do nothing
+		}
+	}
+
+	private String readLogs(File file, int lines) {
+		// https://stackoverflow.com/a/7322581/6346515
+
+		// If your line endings are \r\n or crlf or some other "double newline
+		// style newline", then you will have to specify n*2 lines to get the
+		// last n lines because it counts 2 lines for every line.
+		lines *= 2;
+
+		if (file == null || !file.exists()) {
+			return null;
+		}
+
+		java.io.RandomAccessFile fileHandler = null;
+		try {
+			fileHandler = new java.io.RandomAccessFile(file, "r");
+			long fileLength = fileHandler.length() - 1;
+			StringBuilder sb = new StringBuilder();
+			int line = 0;
+
+			for (long filePointer = fileLength; filePointer != -1; filePointer--) {
+				fileHandler.seek(filePointer);
+				int readByte = fileHandler.readByte();
+
+				if (readByte == 0xA) {
+					if (filePointer < fileLength) {
+						line = line + 1;
+					}
+				} else if (readByte == 0xD) {
+					if (filePointer < fileLength - 1) {
+						line = line + 1;
+					}
+				}
+				if (line >= lines) {
+					break;
+				}
+				sb.append((char) readByte);
+			}
+
+			String lastLine = sb.reverse().toString();
+			return lastLine;
+		} catch (java.io.FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (java.io.IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (fileHandler != null)
+				try {
+					fileHandler.close();
+				} catch (IOException e) {
+				}
 		}
 	}
 

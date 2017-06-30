@@ -135,7 +135,7 @@ public class DatabaseUtils {
 		return false;
 	}
 
-	public boolean updateAttribute(Attribute attribute) {
+	public boolean updateAttribute(Attribute attribute) throws SQLException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		int affectedRows = 0;
@@ -162,8 +162,6 @@ public class DatabaseUtils {
 			affectedRows = stmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
-			logger.error(e);
-		} catch (SQLException e) {
 			logger.error(e);
 		} finally {
 			try {
