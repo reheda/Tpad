@@ -325,7 +325,8 @@ public class DatabaseServlet extends HttpServlet {
 
 	private boolean hasAccess(HttpServletRequest req) {
 		String userToken = req.getHeader("usertoken");
-		if (userToken == null || !userToken.equals("moar")) {
+		if (userToken == null
+				|| !userToken.equals("2166d474feac44e1c801dd3ce4dff78ee32125de39f4065205a57165c6564040")) {
 			return false;
 		}
 		return true;
