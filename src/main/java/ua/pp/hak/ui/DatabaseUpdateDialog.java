@@ -19,11 +19,11 @@ import ua.pp.hak.db.DatabaseStAXWriter;
 import ua.pp.hak.db.DatabaseUtils;
 import ua.pp.hak.util.Attribute;
 
-public class DatabaseUpdateDialog implements Constants {
+public class DatabaseUpdateDialog {
 	final static Logger logger = LogManager.getLogger(DatabaseUpdateDialog.class);
 
 
-	public static void show(Notepad npd) {
+	public static boolean show(Notepad npd) {
 
 		Timestamp localLastUpdate = new DatabaseUpdateDialog().getLocalLastUpdate();
 
@@ -47,18 +47,21 @@ public class DatabaseUpdateDialog implements Constants {
 
 				if (answer == JOptionPane.YES_OPTION) {
 					updateDatabase(formattedDate);
-					JOptionPane.showMessageDialog(npd.getFrame(), "Update finished!", "Database Update",
-							JOptionPane.INFORMATION_MESSAGE);
+					logger.info("Update is finished for DB");
+					return true;
+//					JOptionPane.showMessageDialog(npd.getFrame(), "Update finished!", "Database Update",
+//							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else {
-				logger.info("No update is available");
-				JOptionPane.showMessageDialog(npd.getFrame(), "No update is available", "Database Update",
-						JOptionPane.INFORMATION_MESSAGE);
+				logger.info("No update is available for DB");
+//				JOptionPane.showMessageDialog(npd.getFrame(), "No update is available", "Database Update",
+//						JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else {
 			logger.error("webLastUpdate is NULL!");
 		}
-
+		
+		return false;
 	}
 
 	private static void updateDatabase(String lastUpdate) {

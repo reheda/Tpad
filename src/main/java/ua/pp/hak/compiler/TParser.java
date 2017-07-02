@@ -264,7 +264,6 @@ public class TParser {
 				for (int i = 0; i < skuList.length; i++) {
 					
 					if (Thread.currentThread().isInterrupted()){
-						System.out.println("---good");
 						logger.warn("Canceling process...");
 						if (ProcessKiller.isProcessRunning(processName)) {
 							ProcessKiller.killProcess(processName);

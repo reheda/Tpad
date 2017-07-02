@@ -9,7 +9,11 @@ import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Updater {
+import ua.pp.hak.ui.Constants;
+import ua.pp.hak.ui.DatabaseUpdateDialog;
+import ua.pp.hak.ui.Notepad;
+
+public class Updater implements Constants {
 	final static Logger logger = LogManager.getLogger(Updater.class);
 
 	private final static String versionURL = "http://tpad.hak.pp.ua/version.html";
@@ -44,13 +48,15 @@ public class Updater {
 		return buffer.toString();
 	}
 
-	public static void start(Version currentVersion) {
+	public static void updateTpad(boolean isDbWasUpdated, Notepad npd) {
 		// change look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+		
+		Version currentVersion = new Version(applicationVersion);
 		try {
 			Version latestVerion = new Version(Updater.getLatestVersion());
 			if (latestVerion.compareTo(currentVersion) > 0) {
@@ -58,16 +64,25 @@ public class Updater {
 				new UpdateInfo(Updater.getWhatsNew());
 				logger.info("Finish updating...");
 			} else {
-				logger.info("No update is available");
-				JOptionPane.showMessageDialog(null, "No update is available", "Update",
-						JOptionPane.INFORMATION_MESSAGE);
+				if (isDbWasUpdated) {
+					JOptionPane.showMessageDialog(npd.getFrame(), "Update finished!", "Update",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					logger.info("No update is available for Tpad");
+					JOptionPane.showMessageDialog(npd.getFrame(), "No update is available", "Update",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
 	}
-	
-	public static boolean isUpdateAvailable(Version currentVersion){
+
+	public static boolean updateDatabase(Notepad npd) {
+		return DatabaseUpdateDialog.show(npd);
+	}
+
+	public static boolean isUpdateAvailable(Version currentVersion) {
 		try {
 			Version latestVerion = new Version(Updater.getLatestVersion());
 			if (latestVerion.compareTo(currentVersion) > 0) {

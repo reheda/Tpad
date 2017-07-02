@@ -63,8 +63,6 @@ import org.fife.ui.rtextarea.SearchContext;
 
 import ua.pp.hak.autocomplete.LanguageSupportFactory;
 import ua.pp.hak.setting.SettingsOperation;
-import ua.pp.hak.update.Updater;
-import ua.pp.hak.update.Version;
 import ua.pp.hak.util.Actions;
 import ua.pp.hak.util.FileOperation;
 import ua.pp.hak.util.Listeners;
@@ -757,17 +755,11 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 			if (fileHandler.confirmSave()) {
 				logger.info("Checking updates...");
 				try {
-					Version currentVersion = new Version(applicationVersion);
-					Updater.start(currentVersion);
+					LoadingPanel.doProcess("update", npd);
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
 			}
-		}
-		////////////////////////////////////
-		else if (cmdText.equals(helpCheckDatabaseUpdates)) {
-			logger.info("Checking Database updates...");
-			LoadingPanel.doProcess("db-update", npd);
 		}
 		////////////////////////////////////
 		else if (cmdText.equals(helpHelpTopic) || evObj == helpButton) {
@@ -1065,7 +1057,6 @@ public class Notepad implements ActionListener, MenuConstants, Constants {
 		helpMenu.addSeparator();
 		createMenuItem(helpShowLogs, KeyEvent.VK_S, helpMenu, this);
 		createMenuItem(helpCheckUpdates, KeyEvent.VK_U, helpMenu, this);
-		createMenuItem(helpCheckDatabaseUpdates, KeyEvent.VK_D, helpMenu, this);
 		createMenuItem(helpAbout, KeyEvent.VK_A, helpMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 

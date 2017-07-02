@@ -21,8 +21,10 @@ import javax.swing.border.EmptyBorder;
 
 import ua.pp.hak.compiler.TChecker;
 import ua.pp.hak.compiler.TParser;
+import ua.pp.hak.update.Updater;
+import ua.pp.hak.update.Version;
 
-public class LoadingPanel {
+public class LoadingPanel implements Constants {
 	private static JLabel label;
 
 	public static JLabel getLabel() {
@@ -77,8 +79,9 @@ public class LoadingPanel {
 					TpsInfo.show(npd);
 				} else if (processToDo.equals("rollback-changes")) {
 					RollbackChangesDialog.show(npd);
-				} else if (processToDo.equals("db-update")) {
-					DatabaseUpdateDialog.show(npd);
+				} else if (processToDo.equals("update")) {
+					boolean isDbWasUpdated = Updater.updateDatabase(npd);
+					Updater.updateTpad(isDbWasUpdated, npd);
 				}
 				return null;
 			}

@@ -61,7 +61,6 @@ public interface MenuConstants extends Constants{
 	final String helpResetSettings = "Reset settings...";
 	final String helpShowLogs= "Show Log in Explorer";
 	final String helpCheckUpdates = "Check for Updates...";
-	final String helpCheckDatabaseUpdates = "Check for DB Updates...";
 	final String helpAbout = "About";
 
 }
