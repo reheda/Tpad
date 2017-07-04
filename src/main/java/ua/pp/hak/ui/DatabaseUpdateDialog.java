@@ -64,7 +64,7 @@ public class DatabaseUpdateDialog {
 		return false;
 	}
 
-	private static void updateDatabase(String lastUpdate) {
+	public static void updateDatabase(String lastUpdate) {
 		List<Attribute> attributes = new DatabaseUtils().downloadAttributes();
 		logger.info("Saving web db...");
 		DatabaseStAXWriter.save(attributes, "db/db-web.xml", lastUpdate);

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import ua.pp.hak.db.DatabaseUtils;
+import ua.pp.hak.ui.DatabaseUpdateDialog;
 import ua.pp.hak.util.Attribute;
 
 @WebServlet("/db/*")
@@ -93,6 +95,8 @@ public class DatabaseServlet extends HttpServlet {
 			// do nothing
 		}
 
+		updateDatabase();
+
 	}
 
 	/**
@@ -158,6 +162,8 @@ public class DatabaseServlet extends HttpServlet {
 		} catch (Exception e) {
 			// do nothing
 		}
+		
+		updateDatabase();
 	}
 
 	/**
@@ -226,6 +232,7 @@ public class DatabaseServlet extends HttpServlet {
 			}
 		}
 
+		updateDatabase();
 	}
 
 	/**
@@ -367,5 +374,19 @@ public class DatabaseServlet extends HttpServlet {
 			/* report an error */
 		}
 		return jb.toString();
+	}
+
+	private void updateDatabase() {
+		try {
+			Timestamp webLastUpdate = new DatabaseUtils().downloadLastUpdate();
+			if (webLastUpdate != null) {
+				String formattedDate = DatabaseUtils.dateFormat.format(webLastUpdate);
+				DatabaseUpdateDialog.updateDatabase(formattedDate);
+			} else {
+				logger.error("webLastUpdate is NULL!");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 }
